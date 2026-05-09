@@ -1,0 +1,18 @@
+# Template: .codex/config.toml
+# Purpose: Repo-specific Codex operational config (sandbox, network, approval policy). Personal/global Codex config stays in ~/.codex/config.toml.
+# Related principles: "Conditional patterns" (.codex/config.toml).
+# Use this template when: uses_codex == true.
+#
+# Comments use TOML's `#` syntax, not HTML comments. Generator must respect this when substituting.
+
+[sandbox]
+# Restrict which paths Codex may write to during a session.
+write_paths = ["<!-- PARAMETERIZE: repo_local_path -->"]
+
+[network]
+# Whether Codex may make outbound network calls. Default off; flip on only if a session needs it.
+enabled = false
+
+[approval]
+# Approval policy for tool calls. "always_ask" is safest for shared codebases. "auto" speeds up well-understood loops.
+policy = "always_ask"

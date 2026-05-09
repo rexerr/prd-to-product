@@ -1,0 +1,63 @@
+/*
+Template: app/styles/globals.css
+Purpose: Base resets and the @import for tokens.css. Only created if not already present.
+The generator checks for an existing globals.css before writing. If one exists, append
+the @import line at the top rather than overwriting.
+Related principles: n/a — minimal file.
+*/
+
+@import "./tokens.css";
+<!-- OPTIONAL: has_font_imports -->
+<!-- PARAMETERIZE: font_import_urls -->
+
+/* Base resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%; /* KEEP AS-IS: don't set a px base here; use --type-size-* tokens */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--type-family-body);
+  font-size: var(--type-size-md);
+  line-height: var(--type-leading-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-default);
+}
+
+/* Focus ring — applies to all interactive elements unless overridden */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Link base */
+a {
+  color: var(--color-text-link);
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

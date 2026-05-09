@@ -1,0 +1,47 @@
+<!--
+Template: docs/ARCHITECTURE.md
+Purpose: Implemented architecture. Data flow, page structure, mental model. Tiebreaker on conflicts about data model or implemented architecture.
+Use this template when: every project. Required.
+-->
+
+# Architecture
+
+Stack: see `package.json`<!-- OPTIONAL: and `docs/TECH_STACK.md` -->. The app is a Next.js App Router project deployed on Vercel.
+
+## <!-- PARAMETERIZE: primary_data_flow_name -->
+
+<!-- PARAMETERIZE: primary_data_flow_steps -->
+
+<!-- OPTIONAL: secondary_flow -->
+## <!-- PARAMETERIZE: secondary_flow_name -->
+
+<!-- PARAMETERIZE: secondary_flow_steps -->
+
+## Data persistence
+
+<!-- PARAMETERIZE: data_persistence_paragraph -->
+
+## External integrations
+
+<!-- PARAMETERIZE: external_integrations_list_or_none -->
+
+<!-- OPTIONAL: ai_layer_section — include if ai_surface_count >= 1 -->
+## AI layer
+
+- Implementation files: `<!-- PARAMETERIZE: ai_client_path -->`, `<!-- PARAMETERIZE: ai_prompts_path -->`.
+- Surfaces: <!-- PARAMETERIZE: ai_surfaces_summary -->.
+- Detail: `.claude/rules/ai-shared.md`.
+
+## Folder structure
+
+<!-- PARAMETERIZE: folder_structure_summary -->
+
+## Cross-references
+
+- Product requirements (canonical for product behavior): `docs/PRD.md`.
+- Roadmap and current phase: `ROADMAP.md`.
+<!-- OPTIONAL: ai_xref -->
+- AI rules (model split, prompt structure, surface-specific rules): `.claude/rules/ai-shared.md`.
+<!-- OPTIONAL: workflow_xref -->
+- Workflow behavior (canonical, tiebreaker on conflicts): `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md`.
+- Decisions log: `docs/DECISIONS.md`.

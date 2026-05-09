@@ -1,0 +1,84 @@
+/*
+Template: app/components/ui/Card.tsx
+Purpose: Seed card component. Demonstrates container and elevation token use.
+Rules: no hardcoded values; all styling via CSS custom properties in Card.module.css.
+Related principles: "Component architecture", "Why three seed components".
+*/
+
+import styles from "./Card.module.css";
+
+type CardVariant = "default" | "elevated" | "outlined" | "ghost";
+
+interface CardProps {
+  variant?: CardVariant;
+  /** Makes the entire card a clickable surface. Adds hover state and cursor pointer. */
+  as?: "div" | "article" | "section" | "li";
+  onClick?: () => void;
+  className?: string;
+  children: React.ReactNode;
+}
+
+const variantClass: Record<CardVariant, string> = {
+  default:  styles.default,
+  elevated: styles.elevated,
+  outlined: styles.outlined,
+  ghost:    styles.ghost,
+};
+
+export function Card({
+  variant = "default",
+  as: Tag = "div",
+  onClick,
+  className,
+  children,
+}: CardProps) {
+  const isClickable = !!onClick;
+
+  return (
+    <Tag
+      className={[
+        styles.card,
+        variantClass[variant],
+        isClickable ? styles.clickable : "",
+        className ?? "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      onClick={onClick}
+      role={isClickable ? "button" : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={
+        isClickable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onClick();
+            }
+          : undefined
+      }
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/* Convenience sub-components for common card layout patterns */
+function CardHeader({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={[styles.header, className ?? ""].filter(Boolean).join(" ")}>{children}</div>
+  );
+}
+
+function CardBody({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={[styles.body, className ?? ""].filter(Boolean).join(" ")}>{children}</div>
+  );
+}
+
+function CardFooter({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={[styles.footer, className ?? ""].filter(Boolean).join(" ")}>{children}</div>
+  );
+}
+
+Card.Header = CardHeader;
+Card.Body = CardBody;
+Card.Footer = CardFooter;

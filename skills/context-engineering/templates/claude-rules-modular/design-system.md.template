@@ -1,0 +1,69 @@
+---
+paths:
+  - "components/**"
+  - "features/**/*.jsx"
+  - "app/**/*.{jsx,tsx}"
+  - "styles/**/*.css"
+---
+
+<!--
+Template: .claude/rules/design-system.md
+Purpose: Path-scoped rule. Loads when working in any UI file. Carries non-normative design rationale; the token CSS file carries normative values.
+Related principles: "Conditional patterns" (design system rule).
+Use this template when: the project has a token file (CSS custom properties) and a "no hardcoded values" enforcement target. Skip for projects without a token system.
+-->
+
+# Design system
+
+Path-scoped rule. Loads when working in any UI file.
+
+This rule has two layers. **Tokens are normative.** `<!-- PARAMETERIZE: token_file_path -->` is the source of truth for every color, spacing, radius, shadow, and motion value. Product UI must resolve through a CSS custom property, never a literal. **This rule is non-normative rationale.** It carries the design judgment that lives outside the codebase and does not duplicate token values. If the two ever conflict, the CSS file wins.
+
+**Hard rule:** no hardcoded hex values anywhere in product UI. <!-- OPTIONAL: linter_line --> The `<!-- PARAMETERIZE: token_linter_command -->` linter enforces this and is wired into `npm run check`.
+
+## Foundations
+
+- **Typography:** <!-- PARAMETERIZE: typography_rules -->.
+- **Motion:** <!-- PARAMETERIZE: motion_tokens -->. No bounce, no spring.
+<!-- OPTIONAL: no_tailwind_ban -->
+- **No Tailwind. No shadcn.** Style everything via the design system CSS.
+- **Icons:** <!-- PARAMETERIZE: icon_set --> only.
+
+## Layout
+
+<!-- PARAMETERIZE: layout_rules -->
+
+## Indicator vocabulary
+
+<!-- PARAMETERIZE: indicator_vocabulary_table -->
+
+### Naming taboo
+
+Never use: <!-- PARAMETERIZE: forbidden_indicator_terms -->. Use the canonical terms above in design discussions, code comments, and documentation.
+
+## Button hierarchy
+
+<!-- PARAMETERIZE: button_tier_list -->
+
+Rules:
+
+- Buttons always use sentence case with a focus ring.
+- Icon sizes inside buttons are controlled by CSS descendant rules. Never set icon `font-size` inline inside a button.
+
+## Forms and inputs
+
+<!-- PARAMETERIZE: form_rules -->
+
+## Empty and error states
+
+Every data surface needs a defined empty state. Never render a blank region. Empty states are inline, centered, and calm. No error color unless something actually failed.
+
+## Things to avoid
+
+<!-- PARAMETERIZE: design_things_to_avoid_list -->
+
+## Cross-references
+
+- Design laws and ARIA: `.claude/rules/design-heuristics.md`.
+<!-- OPTIONAL: voice_cross_ref -->
+- Voice and copy in UI surfaces: `.claude/rules/voice-and-tone.md`.

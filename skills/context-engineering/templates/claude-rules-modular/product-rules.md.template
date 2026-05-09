@@ -1,0 +1,36 @@
+<!--
+Template: .claude/rules/product-rules.md
+Purpose: Always-on rule. Project-specific product rules that govern feature decisions. Sourced from PRD and architecture docs.
+Related principles: "Vocabulary lock" (rule-level reinforcement), "Conventions for writing rules" (imperatives not principles).
+Use this template when: the project has product invariants the agent must enforce on every feature decision. Skip if the product is small enough that PRD.md alone covers it.
+-->
+
+# Product rules
+
+Always-on agent rule. The product rules that govern every feature decision. Sourced from `docs/PRD.md`<!-- OPTIONAL: , `docs/ARCHITECTURE.md`, and `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md` -->.
+
+## Rules
+
+<!-- PARAMETERIZE: numbered_product_rules_list -->
+
+<!--
+Each rule should be:
+- An imperative, not a principle. ("Approve and skip are the only triage actions" — not "be thoughtful about triage UX".)
+- Specific enough to be checkable.
+- Defensible: every rule should answer "why does this exist."
+
+Example shape from a real project:
+
+1. Every status, badge, label, and action must answer: what does the user do next? If it does not help the reviewer decide, it does not appear in the primary interface.
+2. No public-facing content publishes without an explicit human-triggered action.
+3. Fallbacks over failures. If AI enrichment hasn't run, show a basic take. If extraction failed, say so and work with the headline. The system is always usable.
+4. <!-- PARAMETERIZE: vocabulary_lock_rule -->
+-->
+
+## Cross-references
+
+- Product requirements (canonical for product behavior and copy): `docs/PRD.md`.
+- Architecture and data model: `docs/ARCHITECTURE.md`.
+<!-- OPTIONAL: canonical_workflow_xref -->
+- Workflow behavior (canonical, tiebreaker on conflicts): `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md`.
+- Scope, verification, and commit gate that govern how these rules are applied: `.claude/rules/session-discipline.md`.

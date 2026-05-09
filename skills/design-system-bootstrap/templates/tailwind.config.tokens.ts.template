@@ -1,0 +1,88 @@
+/*
+Template: tailwind.config.ts (color, border, font extension snippet)
+Purpose: Wires semantic tokens from app/styles/tokens.css into Tailwind utilities.
+  Spacing and radius use Tailwind's default scale, not tokens.css — see DESIGN_SYSTEM.md
+  "A note on the Tailwind path" for the reason.
+Merge into the existing tailwind.config.ts under `theme.extend` — do not overwrite the file.
+The generator emits this file as a snippet to merge by hand, not as a wholesale replacement.
+*/
+
+import type { Config } from "tailwindcss";
+
+const config: Partial<Config> = {
+  theme: {
+    extend: {
+      colors: {
+        // Backgrounds
+        "bg-default":  "var(--color-bg-default)",
+        "bg-elevated": "var(--color-bg-elevated)",
+        "bg-subtle":   "var(--color-bg-subtle)",
+        "bg-inverse":  "var(--color-bg-inverse)",
+
+        // Text
+        "text-primary":   "var(--color-text-primary)",
+        "text-secondary": "var(--color-text-secondary)",
+        "text-tertiary":  "var(--color-text-tertiary)",
+        "text-inverse":   "var(--color-text-inverse)",
+        "text-link":      "var(--color-text-link)",
+
+        // Borders (used as `border-border-default`, etc.)
+        "border-default": "var(--color-border-default)",
+        "border-strong":  "var(--color-border-strong)",
+        "border-subtle":  "var(--color-border-subtle)",
+
+        // Brand interactive
+        "brand-primary":       "var(--color-brand-primary)",
+        "brand-primary-hover": "var(--color-brand-primary-hover)",
+        "brand-primary-text":  "var(--color-brand-primary-text)",
+        <!-- OPTIONAL: has_secondary_brand_color -->
+        "brand-secondary":       "var(--color-brand-secondary)",
+        "brand-secondary-hover": "var(--color-brand-secondary-hover)",
+
+        // Feedback
+        "success":    "var(--color-success)",
+        "success-bg": "var(--color-success-bg)",
+        "warning":    "var(--color-warning)",
+        "warning-bg": "var(--color-warning-bg)",
+        "error":      "var(--color-error)",
+        "error-bg":   "var(--color-error-bg)",
+        "info":       "var(--color-info)",
+        "info-bg":    "var(--color-info-bg)",
+
+        // Focus
+        "focus-ring": "var(--color-focus-ring)",
+      },
+
+      fontFamily: {
+        display: ["var(--type-family-display)"],
+        body:    ["var(--type-family-body)"],
+        <!-- OPTIONAL: has_mono_font -->
+        mono:    ["var(--type-family-mono)"],
+      },
+    },
+  },
+};
+
+export default config;
+
+/*
+Notes on what is NOT extended here.
+
+Spacing: Tailwind's default 0.25rem-step scale (`p-1` = 4px, `p-4` = 16px) is left intact.
+  --space-* tokens in tokens.css remain available for raw CSS contexts but are not mirrored
+  into Tailwind utilities. If you need to override Tailwind's spacing scale, do it here in
+  this config, not in tokens.css.
+
+Radius: Tailwind's default scale (`rounded-md` = 6px, `rounded-lg` = 8px) is left intact.
+  Same reasoning as spacing.
+
+Shadow: Tailwind's default `shadow-sm`, `shadow-md`, etc. are left intact. The --shadow-*
+  tokens in tokens.css are available for raw CSS contexts. If your brand uses very specific
+  shadow recipes, you can mirror them via `boxShadow` extend keys.
+
+Z-index: not extended. Use the --z-* tokens in tokens.css via `z-[var(--z-modal)]` arbitrary
+  values where needed, or extend `zIndex` here if you reference them frequently.
+
+Motion: not extended. Tailwind's `transition-*` and `duration-*` are sufficient for most
+  components. The --motion-* tokens in tokens.css remain for non-Tailwind contexts.
+*/

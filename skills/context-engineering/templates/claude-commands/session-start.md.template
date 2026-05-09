@@ -1,0 +1,23 @@
+<!--
+Template: .claude/commands/session-start.md
+Purpose: Slash command that orients the agent at the start of a session. Reads the entry-point file, the roadmap, the most recent retro, and (optionally) the parking lot.
+Related principles: "Always-on patterns" (session-start command).
+Use this template when: every project. Required.
+-->
+
+Read the following files in this order before responding:
+
+1. AGENTS.md
+2. ROADMAP.md
+3. The most recent file in docs/retros/ — sort by filename date, read the latest one
+<!-- OPTIONAL: parking_lot_step — include if include_parking_lot == true -->
+4. docs/PARKING_LOT.md
+
+When done, give me:
+
+- One sentence on where we left off based on the retro
+- The next uncompleted item on the ROADMAP
+<!-- OPTIONAL: parking_lot_report -->
+- Any parking lot items that are now blocking progress
+
+Do not write any code. Do not propose solutions yet. Just orient us.

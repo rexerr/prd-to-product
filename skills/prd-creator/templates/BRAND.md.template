@@ -1,0 +1,42 @@
+<!-- KEEP AS-IS: Sibling file emitted when cluster 8 produces a substantive set. The PRD's "Supporting documents" section links here. Do not duplicate the PRD's product summary in this file; this file is brand-and-voice content only. -->
+# <!-- PARAMETERIZE: project_name --> brand and voice
+
+<!-- KEEP AS-IS: One paragraph naming what this file is for and who reads it. Typically: the agent and the human writing user-facing copy. -->
+<!-- PARAMETERIZE: brand_purpose_paragraph -->
+
+## Audience
+
+<!-- KEEP AS-IS: Who reads or hears the product's voice. Concrete segments, not "everyone." If multiple segments, name each with a one-line role description and a tone note. -->
+<!-- PARAMETERIZE: audience_block -->
+
+## Tone attributes
+
+<!-- KEEP AS-IS: Named tone attributes. Each attribute has a one-line definition and a one-line example showing the attribute applied. Three to five attributes is typical; more than seven is too many. -->
+
+- **<!-- PARAMETERIZE: tone_attribute_1_name -->.** <!-- PARAMETERIZE: tone_attribute_1_definition --> Example: <!-- PARAMETERIZE: tone_attribute_1_example -->
+- **<!-- PARAMETERIZE: tone_attribute_2_name -->.** <!-- PARAMETERIZE: tone_attribute_2_definition --> Example: <!-- PARAMETERIZE: tone_attribute_2_example -->
+<!-- OPTIONAL: additional tone attributes as captured in cluster 8 -->
+
+<!-- OPTIONAL: include this section when the user named domain-specific terms with canonical and forbidden alternatives. Drop it when the project has no vocabulary to lock. -->
+## Vocabulary
+
+<!-- KEEP AS-IS: Canonical names plus the forbidden alternatives. The forbidden list is what makes the rule work. Without it, the agent has no signal that the alternatives are wrong. -->
+
+- Canonical: <!-- PARAMETERIZE: canonical_terms -->
+- Do not use: <!-- PARAMETERIZE: forbidden_terms -->
+
+## Voice examples
+
+<!-- KEEP AS-IS: Two to four short examples showing the voice applied. Pair "on-voice" with "off-voice" so the difference is checkable. Use realistic product strings, not abstract Lorem. -->
+
+**On voice.** <!-- PARAMETERIZE: voice_example_on_1 -->
+
+**Off voice.** <!-- PARAMETERIZE: voice_example_off_1 --> Why off: <!-- PARAMETERIZE: voice_example_off_1_why -->
+
+<!-- OPTIONAL: additional on/off pairs as captured in cluster 8 -->
+
+<!-- OPTIONAL: include this section when the user named patterns to avoid that are not captured by tone attributes or vocabulary. -->
+## Do not
+
+- <!-- PARAMETERIZE: do_not_item_1 -->
+- <!-- PARAMETERIZE: do_not_item_2 -->

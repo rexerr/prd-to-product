@@ -1,0 +1,40 @@
+<!--
+Template: docs/PRD.md
+Purpose: Product requirements. The "what" of the project. Tiebreaker on conflicts about product behavior and copy.
+Use this template when: every project. Required.
+-->
+
+# Product requirements: <!-- PARAMETERIZE: project_name -->
+
+## Product summary
+
+<!-- PARAMETERIZE: product_summary_paragraph -->
+
+## Target users
+
+<!-- PARAMETERIZE: target_users_list -->
+
+## Core problem
+
+<!-- PARAMETERIZE: core_problem_paragraph -->
+
+## Main workflow
+
+<!-- PARAMETERIZE: main_workflow_steps -->
+
+## Out of scope
+
+<!-- PARAMETERIZE: out_of_scope_list -->
+
+## Deferred capabilities
+
+Capabilities considered and deferred for V2 or later. Recorded here so they don't get re-proposed in future sessions.
+
+<!-- PARAMETERIZE: deferred_capabilities_list_or_none -->
+
+## Cross-references
+
+- Architecture: `docs/ARCHITECTURE.md`.
+- Roadmap: `ROADMAP.md`.
+<!-- OPTIONAL: workflow_doc_ref -->
+- Workflow behavior (canonical): `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md`.

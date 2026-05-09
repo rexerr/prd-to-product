@@ -1,0 +1,98 @@
+/*
+Template: app/components/ui/Input.module.css
+Purpose: CSS module for the Input seed component. All values via CSS custom properties.
+Hard rule: no hardcoded hex values, px font sizes, or magic spacing numbers.
+Related principles: "Component architecture", "Token naming convention".
+*/
+
+/* Wrapper */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* Label */
+.label {
+  font-family: var(--type-family-body);
+  font-size: var(--type-size-sm);
+  font-weight: var(--type-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--type-leading-tight);
+}
+
+/* Screen-reader-only label (when hideLabel is true) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Input field */
+.input {
+  font-family: var(--type-family-body);
+  font-size: var(--type-size-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  height: var(--space-10);
+  width: 100%;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-easing-default),
+    box-shadow   var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+.input:focus-visible {
+  outline: none;
+  border-color: var(--color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus-ring) 20%, transparent);
+}
+
+/* Error state */
+.hasError {
+  border-color: var(--color-error);
+}
+
+.hasError:focus-visible {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 20%, transparent);
+}
+
+/* Disabled state */
+.disabled,
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-border-subtle);
+}
+
+/* Error message */
+.errorMessage {
+  font-size: var(--type-size-xs);
+  color: var(--color-error);
+  line-height: var(--type-leading-tight);
+}
+
+/* Hint */
+.hint {
+  font-size: var(--type-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--type-leading-tight);
+}

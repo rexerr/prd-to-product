@@ -1,0 +1,142 @@
+<!--
+Template: CLAUDE.md (flat-shape alternative)
+Purpose: For small projects where modular .claude/rules/ is overkill. CLAUDE.md is canonical and carries all rules inline. AGENTS.md is a thin pointer (template: claude-rules-flat-AGENTS.md.template).
+Related principles: "Always-on vs path-scoped split" (flat shape decision), "Thin-pointer pair" (inverse direction).
+Use this template when: the project is small enough to fit in one rule file (one or two AI surfaces, no design system, single-page or two-page app). For larger projects, use AGENTS.md.template + claude-rules-modular/.
+Pairs with: claude-rules-flat-AGENTS.md.template (the AGENTS.md the generator writes alongside this CLAUDE.md).
+-->
+
+# CLAUDE.md — <!-- PARAMETERIZE: project_name -->
+
+This file is read automatically at the start of every Claude Code session. Follow these rules for every task in this project.
+
+`AGENTS.md` is a thin pointer that tells Codex to read this file plus Codex-specific additions. `CLAUDE.md` is the single source of truth. If you change a rule here, no mirroring is needed.
+
+See `README.md` for product overview and stack.
+
+---
+
+## What this project is
+
+<!-- PARAMETERIZE: project_description_one_paragraph -->
+
+---
+
+## Primary constraints (read before doing anything)
+
+The full set is at the bottom of this file in "Before you respond." Read this block first if attention is short.
+
+1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
+3. **Direct on `main`. No branches. No worktrees. No Vercel CLI.**
+
+---
+
+## Architecture rules (non-negotiable)
+
+<!-- PARAMETERIZE: architecture_rules_numbered_list -->
+
+<!--
+Example shape:
+
+1. **Scoring is deterministic.** All scoring logic lives in `lib/assessmentEngine.js`. The AI never touches the score, the readiness level, the recommended markets, or the risk titles. The AI rewrites descriptions, the headline, and the next-step copy only.
+2. **Never call the AI layer from a client component.** Always route through a Next.js API route.
+3. **Fallbacks over failures.** If the AI call fails or the API key is missing, fall back to deterministic narrative. Never break this fallback.
+-->
+
+---
+
+<!-- OPTIONAL: product_ux_rules_section — include only if has_product_ux_rules == true -->
+## Product UX rules
+
+<!-- PARAMETERIZE: product_ux_rules_list -->
+
+---
+
+## Session discipline
+
+These rules prevent scope creep, hallucinated success, and lost context between sessions.
+
+### Hard limits
+
+- **Bug fix or small tweak:** ≤ 3 files, ≤ 50 lines.
+- **Feature work:** ≤ 300 lines per session.
+- **File size:** ≤ 500 lines before extraction.
+- If a task would exceed these limits, stop before writing code. State the full scope and wait for confirmation.
+
+### Scope check before coding
+
+Before writing code, state which files you will touch, what you will change and why, and estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
+
+### Verification before claiming done
+
+Never claim success based on "the code looks correct."
+
+- UI changes: run `npm run dev`, describe what to look for and on which page, wait for <!-- PARAMETERIZE: visual_confirmer_name -->'s visual confirmation.
+- Logic or data changes: run `npm run check`<!-- OPTIONAL: , and `npm run eval` if applicable -->, report results.
+
+### Reproduce before fixing
+
+For any bug, write the failing reproduction first, then the fix, then verify the same reproduction now passes.
+
+### Commit gate — mandatory for UI changes
+
+**Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change looks correct.** Workflow: apply changes → `npm run dev` → confirm no build errors → tell <!-- PARAMETERIZE: visual_confirmer_name --> what to look for and on which page → wait for confirmation → commit and push.
+
+### Session retros
+
+Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. At the start of a new session, read the most recent retro before doing anything else.
+
+---
+
+## Code rules
+
+- Never hardcode secrets. Credentials live in `.env.local` (local) and Vercel env vars (production). Never commit `.env.local`.
+- Never use the Vercel CLI. Pushes to `main` deploy automatically.
+- Always work directly on `main` in `<!-- PARAMETERIZE: repo_local_path -->`. Never create branches or use `git worktree`. Worktrees create isolated copies the dev server can't see, breaking visual verification. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`).
+- Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`) and state "waiting for Vercel deploy." Do not declare the session task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms the deploy reached production.
+- Never preemptively pass `-c` config overrides to `git` without asking first.
+<!-- OPTIONAL: stack_constraint_line -->
+- Do not silently change <!-- PARAMETERIZE: critical_invariants -->. Document product-impacting changes in `docs/DECISIONS.md`.
+
+---
+
+## Decisions log
+
+Log significant decisions in `docs/DECISIONS.md` per its own instructions. <!-- OPTIONAL: active_decisions_line --> If the decision imposes a binding constraint not visible in code, also mirror a one-liner into `docs/DECISIONS_ACTIVE.md`.
+
+---
+
+## Where to look
+
+Read at start of every session: this file, `AGENTS.md`, <!-- OPTIONAL: `docs/DECISIONS_ACTIVE.md`, --> the most recent file in `docs/retros/`.
+
+Then read the doc that governs what you're about to touch. Source of truth on conflict is the right-hand column:
+
+| Touching | Doc → conflict source of truth |
+|---|---|
+| Product behavior, copy | `docs/PRD.md` |
+| Architecture, data model | `docs/ARCHITECTURE.md` |
+<!-- OPTIONAL: ux_row — include only if the project has UX or styling docs. Generator parameterizes the doc names from the project's actual docs/ contents. Omit the row entirely if neither applies. -->
+| UX or visual changes | <!-- PARAMETERIZE: ux_row_doc_names --> |
+| Status, current phase | `docs/ROADMAP.md` |
+<!-- OPTIONAL: decisions_active_row -->
+| Recent binding decisions | `docs/DECISIONS_ACTIVE.md` |
+
+If a conflict isn't covered above, surface it as an open question. Don't pick silently.
+
+---
+
+## Before you respond — load-bearing constraints
+
+These are the rules that must not be lost mid-session. Read this block last so it stays in attention.
+
+1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
+3. **Direct on `main`. No branches. No worktrees.**
+4. **No Vercel CLI.**
+5. **Reproduce before fixing.**
+<!-- OPTIONAL: ai_constraint -->
+6. **Never call the AI layer from a client component.**
+
+If any constraint above conflicts with a request, surface the conflict before acting.

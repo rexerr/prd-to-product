@@ -1,0 +1,26 @@
+<!--
+Template: docs/FUTURE.md (or FUTURE.md at repo root)
+Purpose: V2-and-beyond items deferred from MVP. Distinct from PARKING_LOT.md, which holds mid-session deferrals. FUTURE.md holds capabilities deliberately out of MVP scope.
+Related principles: "Conditional patterns" (FUTURE.md).
+Use this template when: include_future == true. Recommended for any project with a clear MVP / V2 split.
+-->
+
+# Future — <!-- PARAMETERIZE: project_name -->
+
+V2-and-beyond capabilities. Deferred from MVP, not from a session. Do not propose any of these as MVP work.
+
+When an item moves from V2 candidate to actual roadmap, delete it here and add it to `ROADMAP.md`.
+
+## Format
+
+- **[Short title]** — what it is, why it's deferred (cost, dependency, sequencing), what would unlock it.
+
+## Items
+
+<!-- Items get appended below as they are scoped out. -->
+
+## Cross-references
+
+- MVP scope: `docs/PRD.md` "Out of scope" and "Deferred capabilities".
+- Mid-session deferrals (different surface): `docs/PARKING_LOT.md`.
+- Roadmap: `ROADMAP.md`.

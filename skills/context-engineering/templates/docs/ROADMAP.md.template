@@ -1,0 +1,39 @@
+<!--
+Template: ROADMAP.md (or docs/ROADMAP.md)
+Purpose: Current phase, completed work, open items. Read at session start.
+Note on location: feed has ROADMAP.md at root; assessment has docs/ROADMAP.md. The generator places it at root by default but can be overridden.
+Use this template when: every project. Required.
+-->
+
+# Roadmap — <!-- PARAMETERIZE: project_name -->
+
+What's left, in priority order. Read this at the start of every session alongside the most recent retro.
+
+Check off tasks as they are completed. Mark phases done only when all tasks are checked and the done-when criteria is met.
+
+---
+
+## Phase 1: <!-- PARAMETERIZE: phase_1_name -->
+
+**Goal:** <!-- PARAMETERIZE: phase_1_goal -->
+
+- [ ] <!-- PARAMETERIZE: phase_1_task_placeholder -->
+
+**Done when:** <!-- PARAMETERIZE: phase_1_done_when -->
+
+---
+
+## Open decisions
+
+Decisions deferred until more information is available. Move into `docs/DECISIONS.md` when resolved.
+
+<!-- PARAMETERIZE: open_decisions_list_or_none -->
+
+## Cross-references
+
+- Product requirements: `docs/PRD.md`.
+- Architecture and data model: `docs/ARCHITECTURE.md`.
+<!-- OPTIONAL: parking_lot_xref -->
+- Mid-session deferred items: `docs/PARKING_LOT.md`.
+- Decisions log: `docs/DECISIONS.md`.
+- Session retros: `docs/retros/`.

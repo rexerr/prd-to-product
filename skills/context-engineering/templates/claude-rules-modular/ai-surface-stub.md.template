@@ -1,0 +1,60 @@
+---
+paths:
+  - "<!-- PARAMETERIZE: surface_implementation_path -->"
+  - "<!-- PARAMETERIZE: surface_api_route_path -->"
+  - "<!-- PARAMETERIZE: ai_prompts_path -->"
+---
+
+<!--
+Template: .claude/rules/ai-<surface>.md (one per AI surface)
+Purpose: Path-scoped rule. Loads when working in the implementation files for one AI surface. Carries surface-specific prompt rules, model choice, audience, and constraints.
+Related principles: "Conditional patterns" (used when ai_surface_count >= 1).
+Use this template when: instantiating one rule file per AI surface the user names. The generator should produce N copies of this file, one per surface, with file name ai-<surface_kebab_name>.md.
+Filename convention: ai-<surface_kebab_name>.md (e.g. ai-feed-enrichment.md, ai-content-generation.md).
+-->
+
+# AI <!-- PARAMETERIZE: surface_display_name -->
+
+Path-scoped rule. Loads when working in the implementation files for the <!-- PARAMETERIZE: surface_display_name --> surface.
+
+## Implementation
+
+- `<!-- PARAMETERIZE: surface_implementation_path -->` — runtime entry point.
+- `lib/ai/prompts.js` — `<!-- PARAMETERIZE: surface_system_prompt_constant -->` prompt constant.
+- `<!-- PARAMETERIZE: surface_api_route_path -->` — API route that calls the surface.
+
+## What this surface does
+
+<!-- PARAMETERIZE: surface_purpose_paragraph -->
+
+## Audience
+
+<!-- PARAMETERIZE: surface_audience -->
+
+## Model
+
+<!-- PARAMETERIZE: surface_model_choice -->. See `.claude/rules/ai-shared.md` "Model split" for the full table.
+
+## Prompt rules
+
+<!-- PARAMETERIZE: surface_prompt_rules_list -->
+
+<!--
+Example shape:
+
+- Keep it short.
+- State what changed and why it may matter.
+- Note uncertainty.
+- No public copy. This output is internal-only.
+- No customer action. Never recommend "tell customer X" or "do Y."
+-->
+
+## Output schema
+
+<!-- PARAMETERIZE: surface_output_schema_or_none -->
+
+## Cross-references
+
+- Cross-cutting AI rules (model split, server-only calls, source hierarchy): `.claude/rules/ai-shared.md`.
+<!-- OPTIONAL: voice_cross_ref -->
+- Voice and tone for any user-facing output: `.claude/rules/voice-and-tone.md`.

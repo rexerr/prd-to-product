@@ -1,0 +1,181 @@
+/*
+ * tokens.css
+ * Linkpad design system. Two-tier: primitives + semantic aliases.
+ * Canonical source of truth for color, type, spacing, radius, shadow, motion.
+ * Hard rule: no hardcoded hex values in product UI.
+ */
+
+/* ============================================================
+   PRIMITIVES
+   ============================================================ */
+
+:root {
+
+  /* -- Indigo scale (primary brand) -- */
+  --indigo-50:  #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #4f46e5;  /* base */
+  --indigo-600: #4338ca;
+  --indigo-700: #3730a3;
+  --indigo-800: #312e81;
+  --indigo-900: #1e1b4b;
+
+  /* Neutral scale */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #0a0a0a;
+
+  /* Feedback primitives */
+  --feedback-success-base:  #16a34a;
+  --feedback-warning-base:  #d97706;
+  --feedback-error-base:    #dc2626;
+  --feedback-info-base:     #2563eb;
+
+  --feedback-success-light: #dcfce7;
+  --feedback-warning-light: #fef3c7;
+  --feedback-error-light:   #fee2e2;
+  --feedback-info-light:    #dbeafe;
+
+  /* ============================================================
+     SEMANTIC ALIASES — color
+     ============================================================ */
+
+  /* Backgrounds */
+  --color-bg-default:  var(--neutral-0);
+  --color-bg-elevated: var(--neutral-0);
+  --color-bg-subtle:   var(--neutral-50);
+  --color-bg-inverse:  var(--neutral-900);
+
+  /* Text */
+  --color-text-primary:   var(--neutral-900);
+  --color-text-secondary: var(--neutral-700);
+  --color-text-tertiary:  var(--neutral-500);
+  --color-text-inverse:   var(--neutral-0);
+  --color-text-link:      var(--indigo-600);
+
+  /* Borders */
+  --color-border-default: var(--neutral-200);
+  --color-border-strong:  var(--neutral-400);
+  --color-border-subtle:  var(--neutral-100);
+
+  /* Brand interactive */
+  --color-brand-primary:       var(--indigo-500);
+  --color-brand-primary-hover: var(--indigo-600);
+  --color-brand-primary-text:  var(--neutral-0);
+
+  /* Feedback semantic */
+  --color-success:    var(--feedback-success-base);
+  --color-success-bg: var(--feedback-success-light);
+  --color-warning:    var(--feedback-warning-base);
+  --color-warning-bg: var(--feedback-warning-light);
+  --color-error:      var(--feedback-error-base);
+  --color-error-bg:   var(--feedback-error-light);
+  --color-info:       var(--feedback-info-base);
+  --color-info-bg:    var(--feedback-info-light);
+
+  /* Focus ring */
+  --color-focus-ring: var(--indigo-500);
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+
+  --type-family-display: "Inter", system-ui, -apple-system, sans-serif;
+  --type-family-body:    "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Type scale (comfortable) */
+  --type-size-2xs: 12px;  /* metadata, captions */
+  --type-size-xs:  14px;  /* body small, helper text */
+  --type-size-sm:  16px;  /* body, buttons, labels */
+  --type-size-md:  18px;  /* card titles, prominent labels */
+  --type-size-lg:  21px;  /* h3 */
+  --type-size-xl:  24px;  /* h2 */
+  --type-size-2xl: 30px;  /* h1 */
+
+  --type-weight-normal:   400;
+  --type-weight-medium:   500;
+  --type-weight-semibold: 600;
+  --type-weight-bold:     700;
+
+  --type-leading-tight:   1.2;
+  --type-leading-normal:  1.5;
+  --type-leading-relaxed: 1.7;
+
+  /* ============================================================
+     SPACING (base unit 4px)
+     ============================================================ */
+
+  --space-px: 1px;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ============================================================
+     RADIUS
+     ============================================================ */
+
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-full: 9999px;
+
+  /* ============================================================
+     SHADOWS (soft)
+     ============================================================ */
+
+  --shadow-none: none;
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 4px 8px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-xl:  0 24px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+
+  /* ============================================================
+     MOTION (snappy)
+     ============================================================ */
+
+  --motion-duration-instant: 0ms;
+  --motion-duration-fast:    120ms;
+  --motion-duration-normal:  200ms;
+  --motion-duration-slow:    320ms;
+
+  --motion-easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-easing-enter:   cubic-bezier(0, 0, 0.2, 1);
+  --motion-easing-exit:    cubic-bezier(0.4, 0, 1, 1);
+  --motion-easing-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ============================================================
+     Z-INDEX
+     ============================================================ */
+
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 20;
+  --z-overlay:  30;
+  --z-modal:    40;
+  --z-toast:    50;
+  --z-tooltip:  60;
+
+}

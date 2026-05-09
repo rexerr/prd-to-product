@@ -1,0 +1,98 @@
+/*
+Template: app/components/ui/Card.tsx (Tailwind path)
+Purpose: Seed card component. Container and elevation tokens wired through tailwind.config.ts.
+  Sub-components (Card.Header, Card.Body, Card.Footer) for common card layouts.
+Rules: no arbitrary value classes; all visual values via configured Tailwind utilities.
+Related principles: "Component architecture", "Why three seed components".
+*/
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+const cardVariants = cva("bg-bg-elevated rounded-lg overflow-hidden", {
+  variants: {
+    variant: {
+      default:  "shadow-sm",
+      elevated: "shadow-md",
+      outlined: "shadow-none border border-border-default",
+      ghost:    "bg-transparent shadow-none",
+    },
+    clickable: {
+      true: [
+        "cursor-pointer transition-shadow",
+        "hover:shadow-md active:translate-y-px",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
+      ].join(" "),
+      false: "",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    clickable: false,
+  },
+});
+
+interface CardProps extends VariantProps<typeof cardVariants> {
+  as?: "div" | "article" | "section" | "li";
+  onClick?: () => void;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export function Card({
+  variant,
+  as: Tag = "div",
+  onClick,
+  className,
+  children,
+}: CardProps) {
+  const isClickable = !!onClick;
+
+  return (
+    <Tag
+      className={cardVariants({ variant, clickable: isClickable, className })}
+      onClick={onClick}
+      role={isClickable ? "button" : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={
+        isClickable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function CardHeader({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`px-5 pt-5 text-sm font-semibold text-text-primary ${className ?? ""}`}>
+      {children}
+    </div>
+  );
+}
+
+function CardBody({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`px-5 py-4 text-sm leading-normal text-text-secondary ${className ?? ""}`}>
+      {children}
+    </div>
+  );
+}
+
+function CardFooter({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`px-5 pb-5 flex items-center gap-2 border-t border-border-subtle ${className ?? ""}`}>
+      {children}
+    </div>
+  );
+}
+
+Card.Header = CardHeader;
+Card.Body = CardBody;
+Card.Footer = CardFooter;

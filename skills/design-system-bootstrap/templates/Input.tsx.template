@@ -1,0 +1,69 @@
+/*
+Template: app/components/ui/Input.tsx
+Purpose: Seed input component. Demonstrates form control token use: label, placeholder,
+  focus ring, error state, disabled state. Uses forwardRef for form library compatibility.
+Rules: no hardcoded values; all styling via CSS custom properties in Input.module.css.
+Related principles: "Component architecture", "Why three seed components".
+*/
+
+import { forwardRef } from "react";
+import styles from "./Input.module.css";
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Visible label text. Required for accessibility — do not omit. */
+  label: string;
+  /** Hides the label visually but keeps it in the accessibility tree. */
+  hideLabel?: boolean;
+  /** Error message. Presence triggers the error state. */
+  error?: string;
+  /** Helper text shown below the input when no error is present. */
+  hint?: string;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { label, hideLabel = false, error, hint, id, className, disabled, ...props },
+  ref
+) {
+  const inputId = id ?? `input-${label.toLowerCase().replace(/\s+/g, "-")}`;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const hintId = hint && !error ? `${inputId}-hint` : undefined;
+
+  return (
+    <div className={[styles.wrapper, className ?? ""].filter(Boolean).join(" ")}>
+      <label
+        htmlFor={inputId}
+        className={[styles.label, hideLabel ? styles.srOnly : ""].filter(Boolean).join(" ")}
+      >
+        {label}
+      </label>
+
+      <input
+        ref={ref}
+        id={inputId}
+        className={[
+          styles.input,
+          error ? styles.hasError : "",
+          disabled ? styles.disabled : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        aria-invalid={!!error}
+        aria-describedby={errorId ?? hintId}
+        disabled={disabled}
+        {...props}
+      />
+
+      {error && (
+        <span id={errorId} className={styles.errorMessage} role="alert">
+          {error}
+        </span>
+      )}
+
+      {hint && !error && (
+        <span id={hintId} className={styles.hint}>
+          {hint}
+        </span>
+      )}
+    </div>
+  );
+});

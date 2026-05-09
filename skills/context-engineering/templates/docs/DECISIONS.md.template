@@ -1,0 +1,45 @@
+<!--
+Template: docs/DECISIONS.md
+Purpose: Append-only log of significant technical and product decisions. Reference, not session-start reading.
+Related principles: "Always-on patterns" (decisions log discipline).
+Use this template when: every project. Required.
+-->
+
+# Decisions log
+
+Append-only log of significant technical and product decisions for <!-- PARAMETERIZE: project_name -->.
+
+> For currently binding constraints, see `docs/DECISIONS_ACTIVE.md`. New decisions are appended here. Mirror to `DECISIONS_ACTIVE.md` only if they impose ongoing constraints not visible from reading code alone.
+
+## What goes here
+
+A decision belongs in this log if it is significant — meaning:
+
+- it would surprise a future session that hadn't seen it made
+- it ruled out an obvious alternative
+- it affects a core workflow
+- it touches a safety default
+
+Do not log every small implementation detail. Log the calls that matter.
+
+## Format
+
+### [Short title]
+
+**Date:** YYYY-MM-DD
+**Context:** What situation prompted the decision.
+**Decision:** What was chosen.
+**Reason:** Why — what was ruled out and why.
+**Revisit if:** Conditions that would make this worth reconsidering.
+
+---
+
+## Decisions
+
+<!-- Decisions get appended below as they are made. Numbered D-001, D-002, etc. -->
+
+## Cross-references
+
+- Currently-binding subset (curated): `docs/DECISIONS_ACTIVE.md`.
+- Decisions-log discipline (what counts as significant): `AGENTS.md` "Decisions log".
+- Roadmap and open decisions: `ROADMAP.md`.

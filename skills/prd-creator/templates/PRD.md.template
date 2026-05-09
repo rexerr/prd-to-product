@@ -1,0 +1,80 @@
+<!-- KEEP AS-IS: H1 carries the project name only. No tagline, no version suffix. -->
+# <!-- PARAMETERIZE: project_name -->
+
+<!-- KEEP AS-IS: Product summary is one paragraph, three to five sentences. Lead with what the product does, then who it is for, then why it exists. No marketing voice. -->
+## Product summary
+
+<!-- PARAMETERIZE: product_summary_paragraph -->
+
+## Target users
+
+<!-- KEEP AS-IS: Name the V1 user concretely. If there is more than one user type, list each with a one-line role description. Do not list everyone who might benefit; list who the product is built for in V1. -->
+<!-- PARAMETERIZE: target_users_block -->
+
+## Core problem
+
+<!-- KEEP AS-IS: What specifically are these users struggling with, and what do they currently do instead. One or two paragraphs. Cite the workaround so the problem is checkable. -->
+<!-- PARAMETERIZE: core_problem_block -->
+
+## Main workflow
+
+<!-- KEEP AS-IS: Numbered steps through the V1 happy path. Each step is one sentence. Do not include error states or edge cases here; those go in V1 scope or open questions. -->
+1. <!-- PARAMETERIZE: workflow_step_1 -->
+2. <!-- PARAMETERIZE: workflow_step_2 -->
+3. <!-- PARAMETERIZE: workflow_step_3 -->
+<!-- OPTIONAL: additional workflow steps as needed -->
+
+## Version 1 scope
+
+<!-- KEEP AS-IS: What V1 ships. Bullet list of capabilities, each one checkable. "Single-user, no auth" is checkable. "Simple onboarding" is not. -->
+- <!-- PARAMETERIZE: v1_scope_item_1 -->
+- <!-- PARAMETERIZE: v1_scope_item_2 -->
+- <!-- PARAMETERIZE: v1_scope_item_3 -->
+
+## Out of scope
+
+<!-- KEEP AS-IS: Explicit cuts for V1. Each item names a capability that was considered and rejected. If the user said "we'll figure it out later," that goes in deferred capabilities, not here. -->
+- <!-- PARAMETERIZE: out_of_scope_item_1 -->
+- <!-- PARAMETERIZE: out_of_scope_item_2 -->
+
+## Deferred capabilities
+
+<!-- KEEP AS-IS: V2 and later candidates. Each item points forward to a future version, not a "maybe never." -->
+- <!-- PARAMETERIZE: deferred_item_1 -->
+- <!-- PARAMETERIZE: deferred_item_2 -->
+
+## Architecture and stack
+
+<!-- KEEP AS-IS: What is decided about how this gets built. Stack, deploy target, key services, third-party dependencies. Prose plus a short bullet list. Do not design new architecture here; capture what the user has already decided. Open architectural questions go in open questions. -->
+<!-- PARAMETERIZE: architecture_block -->
+
+## Decisions already made
+
+<!-- KEEP AS-IS: Numbered seed list. Each decision has an ID (D-001..D-N), a one-line statement, and a one-line rationale. The context-engineering skill will lift this list into a separate DECISIONS.md when it scaffolds the project. Do not duplicate this section into a sibling file at PRD time. -->
+
+- **D-001** <!-- PARAMETERIZE: decision_001_statement --> Rationale: <!-- PARAMETERIZE: decision_001_rationale -->
+- **D-002** <!-- PARAMETERIZE: decision_002_statement --> Rationale: <!-- PARAMETERIZE: decision_002_rationale -->
+<!-- OPTIONAL: additional D-NNN entries as captured in cluster 6 -->
+
+## Open questions
+
+<!-- KEEP AS-IS: Questions that would change the build if answered differently. A question that does not change a decision does not belong here. -->
+- <!-- PARAMETERIZE: open_question_1 -->
+- <!-- PARAMETERIZE: open_question_2 -->
+
+## Success criteria
+
+<!-- KEEP AS-IS: Concrete done-when statements. Each one is checkable. If the user could not answer a criterion concretely, the unanswered version goes in open questions instead. -->
+- <!-- PARAMETERIZE: success_criterion_1 -->
+- <!-- PARAMETERIZE: success_criterion_2 -->
+
+<!-- OPTIONAL: include this section only when cluster 8 produced three or fewer items and the user chose inline placement. If the user chose sibling file, omit this section and link to docs/BRAND.md from Supporting documents instead. -->
+## Brand and voice
+
+<!-- PARAMETERIZE: brand_and_voice_inline_block -->
+
+<!-- OPTIONAL: include this section when there is a sibling BRAND.md, an external research dump, prior product docs, or other named sources the reader should know about. -->
+## Supporting documents
+
+- <!-- PARAMETERIZE: supporting_doc_link_1 -->
+- <!-- PARAMETERIZE: supporting_doc_link_2 -->

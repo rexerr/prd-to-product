@@ -1,0 +1,63 @@
+<!--
+Template: .claude/rules/git-and-deploy.md
+Purpose: Always-on rule. Governs commits, branches, pushes, and deployments. Prevents broken main, lost work, and unintended production state.
+Related principles: "Always-on patterns" (push protocol, no deploy CLI, direct-on-main).
+Use this template when: every project. Always-on by default.
+-->
+
+# Git and deploy
+
+Always-on agent rule. Governs commits, branches, pushes, and deployments. These rules prevent broken main, lost work, and unintended production state.
+
+## Branches and worktrees
+
+- Always work directly on `main` in the main checkout (`<!-- PARAMETERIZE: repo_local_path -->`).
+- Never create branches or worktrees.
+- Never invoke `git worktree`, `EnterWorktree`, `Agent` with `isolation: "worktree"`, or any equivalent. Worktrees create isolated copies the dev server cannot see, breaking visual verification.
+- If a situation seems to call for a branch, stop and ask before proceeding.
+
+## Commits
+
+- Do not push to GitHub unless the task explicitly says to commit and push. "Commit" alone means commit locally and stop.
+- Never preemptively pass a `-c` git config override (e.g. `commit.gpgsign=false`, `core.editor=`) without asking first.
+- Never hardcode secrets. Credentials live in `.env.local` locally and in Vercel environment variables in production. Never commit `.env.local`.
+- Stage files explicitly. Avoid `git add -A` or `git add .` when the working tree contains unrelated changes.
+
+## Push protocol
+
+After every push to `main`:
+
+- Paste the resulting commit URL: `<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`.
+- Explicitly state: "waiting for Vercel deploy."
+- Do not declare the task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms production. Wait for visual confirmation, not just Vercel's "Ready" status. Propagation plus browser cache can delay visible-on-production by a minute or two.
+
+## Vercel
+
+- Never use the Vercel CLI. Deployments trigger automatically when GitHub receives a push to `main`.
+- Do not run `vercel`, `vercel deploy`, `vercel ls`, `vercel logs`, or any other Vercel CLI command.
+- Do not poll deployment status or fetch preview URLs programmatically.
+
+## Why these rules exist
+
+Worktrees: isolated copies don't share the dev server, so visual confirmation of UI changes is impossible from the worktree. Visual confirmation is the commit gate.
+
+Branches: this is a single-developer pre-launch project. Branch overhead has no upside; PR-style review isn't part of the workflow.
+
+No Vercel CLI: deploys trigger from GitHub. Running CLI commands creates parallel deployment paths and confuses which version is "current."
+
+Push protocol: production confirmation is a human-in-the-loop check, not an automated one. Vercel's "Ready" status doesn't account for browser cache or CDN propagation.
+
+## Gotchas
+
+Experience-derived failure modes. Each is a real failure that has happened more than once.
+
+- **Vercel "Ready" is not "live."** CDN propagation and browser cache delay visible-on-production by a minute or two. Wait for human confirmation, not the platform's status.
+- **`git add -A` sweeps in `.env.local`.** When the working tree has unrelated changes, `-A` and `.` will stage secrets, large binaries, and untracked debug files. Stage explicit paths.
+- **A worktree feels harmless and breaks visual confirmation silently.** The dev server points at the main checkout. The worktree has its own working copy. Changes you "see" in the worktree are not what `npm run dev` is rendering.
+- **Pushing without being asked feels efficient and corrupts the workflow.** "Commit" alone means commit locally and stop. The push protocol exists because production confirmation is human-in-the-loop, and a surprise push skips the loop.
+
+## Cross-references
+
+- Commit gate, scope limits, verification rules that interact with the push protocol: `.claude/rules/session-discipline.md`.
+- Entry-point file (load-bearing constraints reiterated near the bottom): `AGENTS.md`.
+- Decisions log format: `docs/DECISIONS.md`.

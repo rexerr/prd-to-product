@@ -1,0 +1,8 @@
+<!--
+Template: CLAUDE.md
+Purpose: Thin pointer to AGENTS.md. Avoids drift by having Claude Code read the canonical entry point.
+Related principles: "Thin-pointer pair".
+Use this template when: AGENTS.md is canonical (default direction). For the inverse direction or the flat-shape alternative, see claude-rules-flat-CLAUDE.md.template.
+-->
+
+@AGENTS.md

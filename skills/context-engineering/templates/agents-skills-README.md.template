@@ -1,0 +1,37 @@
+<!--
+Template: .agents/skills/README.md
+Purpose: Explainer for repo-local Codex skills. Lives at the root of the .agents/skills/ folder.
+Related principles: "Conditional patterns" (.agents/skills/).
+Use this template when: uses_codex == true and the project has at least one repo-local skill. Skip otherwise.
+-->
+
+# Repo-local skills
+
+Per-repo Codex skills for `<!-- PARAMETERIZE: project_name -->`. Skills are execution guardrails for specific recurring tasks. Not sources of truth. If a skill conflicts with a canonical doc (`AGENTS.md`, `docs/PRD.md`, `docs/ARCHITECTURE.md`, or a canonical workflow doc), the canonical doc wins.
+
+## Available skills
+
+<!-- PARAMETERIZE: skill_list -->
+
+<!--
+Example shape:
+
+- `docs-sync`
+  - Use when updating documentation to match the current implemented system without changing product behavior.
+  - Not for ideation, broad rewrites, or system redesign.
+
+- `implementation-guardrails`
+  - Use when modifying code to align implementation with the canonical system without changing product behavior.
+  - Not for feature ideation or architectural redesign.
+-->
+
+## Skill rules
+
+- Prefer explicit invocation for high-stakes work, for example: "use docs-sync skill" or "use implementation-guardrails skill."
+- Do not invent additional repo skills unless explicitly requested.
+- Skills are guardrails, not capabilities. They constrain how a task is performed; they do not unlock new things to do.
+
+## Cross-references
+
+- Codex operational config: `.codex/config.toml`.
+- Entry-point file (Codex-specific section): `AGENTS.md`.

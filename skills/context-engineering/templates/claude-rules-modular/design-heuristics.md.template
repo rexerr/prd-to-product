@@ -1,0 +1,57 @@
+---
+paths:
+  - "components/**"
+  - "features/**/*.jsx"
+  - "app/**/*.{jsx,tsx}"
+  - "styles/**/*.css"
+---
+
+<!--
+Template: .claude/rules/design-heuristics.md
+Purpose: Path-scoped rule. Loads on UI work. Project-specific applications of established UX laws plus specific ARIA targets.
+Related principles: "Conditional patterns" (design heuristics rule).
+Use this template when: the project applies named UX laws (Fitts, Hick, Miller, Nielsen) to specific in-app decisions. Skip if the project is too small to justify the structure.
+-->
+
+# Design heuristics
+
+Path-scoped rule. Loads on UI work, alongside `.claude/rules/design-system.md`. The project-specific applications of established UX laws — the ratios and limits this product has chosen, plus its specific ARIA targets. Where the design system rule is silent on a specific case, these heuristics decide it.
+
+## 1. Hick's law — action ceiling
+
+_Hick 1952: more options = more decision time._
+
+**Rule:** No primary surface exposes more than <!-- PARAMETERIZE: action_ceiling_count --> primary actions simultaneously. Secondary actions go behind a menu or appear on hover. Adding a fourth visible action: stop.
+
+## 2. Fitts's law — target size and adjacency
+
+_Fitts 1954: acquisition time depends on distance and target size._
+
+**Rule:** Minimum interactive target size is 44×44px — icon-only buttons, nav items, chip toggles. Never place two destructive targets adjacent with less than `--space-3` between them.
+
+## 3. Miller's law — content blocks per card
+
+_Miller 1956: working memory holds ~7±2 chunks._
+
+**Rule:** <!-- PARAMETERIZE: miller_application -->.
+
+## 4. Nielsen — visibility of system status
+
+**Rule:** Every surface communicates what is happening. Loading, error, empty, and success states are all defined for every data surface. No surface renders silently empty or silently broken. Status communicated through content and iconography, not color alone.
+
+## 5. Nielsen — error prevention over recovery
+
+**Rule:** Prevent errors before they happen. When an error does occur, explain how to fix it, not just what went wrong. Required fields are obvious. Selection rules ("choose one" / "choose all that apply") are always visible.
+
+## 6. ARIA targets
+
+<!-- PARAMETERIZE: aria_specific_rules -->
+
+Icon-only buttons require `aria-label`. `title` alone is not sufficient. It announces inconsistently across screen readers and not at all on mobile. No exceptions.
+
+## Cross-references
+
+- Visual tokens, indicator vocabulary, button hierarchy, shared components: `.claude/rules/design-system.md`.
+<!-- OPTIONAL: voice_xref -->
+- Voice and copy in UI surfaces: `.claude/rules/voice-and-tone.md`.
+- Product invariants: `.claude/rules/product-rules.md`.

@@ -1,0 +1,65 @@
+/*
+Template: app/components/ui/Button.tsx (Tailwind path)
+Purpose: Seed button component. Uses cva for variant composition. Token references resolve
+  through tailwind.config.ts extend.colors (e.g., bg-brand-primary → var(--color-brand-primary)).
+  Spacing and radius use Tailwind's native scale.
+Rules: no inline hex values; no arbitrary value classes (`bg-[var(--...)]`) — wire through
+  the config instead.
+Related principles: "Component architecture", "Why three seed components".
+Companion: tailwind.config.ts must extend with the color and font keys this component references.
+*/
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+const buttonVariants = cva(
+  [
+    "inline-flex items-center justify-center gap-2",
+    "font-body font-medium leading-tight",
+    "rounded-md border border-transparent",
+    "transition-colors",
+    "disabled:opacity-40 disabled:cursor-not-allowed",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2",
+  ].join(" "),
+  {
+    variants: {
+      variant: {
+        primary:
+          "bg-brand-primary text-brand-primary-text border-brand-primary hover:bg-brand-primary-hover hover:border-brand-primary-hover",
+        secondary:
+          "bg-bg-default text-text-primary border-border-strong hover:bg-bg-subtle",
+        ghost:
+          "bg-transparent text-text-primary hover:bg-bg-subtle",
+        destructive:
+          "bg-error text-text-inverse border-error hover:brightness-90",
+      },
+      size: {
+        sm: "h-8 px-3 text-xs",
+        md: "h-10 px-4 text-sm",
+        lg: "h-12 px-5 text-base",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  }
+);
+
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  children: React.ReactNode;
+}
+
+export function Button({ variant, size, className, children, disabled, ...props }: ButtonProps) {
+  return (
+    <button
+      className={buttonVariants({ variant, size, className })}
+      disabled={disabled}
+      aria-disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}

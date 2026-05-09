@@ -1,0 +1,12 @@
+<!--
+Template: AGENTS.md (flat-shape companion)
+Purpose: Thin pointer to CLAUDE.md for projects using the flat shape. CLAUDE.md is canonical and carries all rules inline. This file imports it and adds one Codex-specific override.
+Related principles: "Thin-pointer pair" (inverse direction), "Always-on vs path-scoped split" (flat shape).
+Use this template when: rule_shape == "flat". Pairs with claude-rules-flat-CLAUDE.md.template.
+-->
+
+@CLAUDE.md
+
+All project rules are in `CLAUDE.md` (imported above). One Codex-specific override applies:
+
+**No visual confirmation.** Codex cannot run a browser. For any UI change, run `npm run check`, describe exactly what changed and where, and flag it for <!-- PARAMETERIZE: visual_confirmer_name --> to confirm visually before the change ships. Do not claim the UI is correct.

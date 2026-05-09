@@ -1,0 +1,110 @@
+<!--
+Template: .claude/rules/session-discipline.md
+Purpose: Always-on rule. Governs scope, verification, commits, and session close-out. Prevents scope creep, hallucinated success, and lost continuity between sessions.
+Related principles: "Always-on patterns" (hard scope limits, scope check, verification, commit gate, reproduce before fixing, retros).
+Use this template when: every project. Always-on by default.
+-->
+
+# Session discipline
+
+Always-on agent rule. Governs scope, verification, commits, and session close-out. These rules prevent scope creep, hallucinated success, and lost continuity between sessions.
+
+## Hard limits
+
+- **Bug fix or small tweak:** ≤ 3 files, ≤ 50 lines.
+- **Feature work:** ≤ 300 lines per session.
+- **File size:** if a file exceeds 500 lines, extract logic before adding more.
+- If a task would exceed these limits, stop before coding. State the full scope and wait for confirmation.
+
+## Simplicity first
+
+Ship the minimum code that solves the task:
+
+- No features the task didn't ask for.
+- No abstractions for single-use code. One function until a second caller exists.
+- No configuration flags or strategy patterns unless the task requires them.
+- No error handling for cases that can't happen at the actual call sites.
+
+If you're at or over the line caps and the weight is speculative flexibility, cut it. Add it back when the second use case shows up.
+
+## Scope check before coding
+
+Before writing any code, state the plan: which files, what changes and why, estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
+
+## Surgical changes
+
+When editing existing code, touch only what the task requires:
+
+- Don't reformat quotes, whitespace, or import order in files you're editing for an unrelated reason.
+- Don't add type hints, JSDoc, or docstrings unless the task is about types or docs.
+- Don't refactor adjacent code that isn't broken. Mention it instead.
+- Match existing style even if you'd write it differently.
+
+The test: every changed line should trace directly to the task. If a line in the diff doesn't, drop it.
+
+## Verification before claiming done
+
+- UI changes: describe exactly what to look for and where.
+- Logic or data changes: show output (query result, API response, console log).
+- Never claim success based on "the code looks correct." Run it or describe a concrete verification step.
+<!-- OPTIONAL: tooling_check — include if has_check_script == true -->
+- Before broad or repo-wide edits run `npm run format:check`. After broad edits run `npm run check`. Keep tooling-only diffs separate from product changes.
+
+## Reproduce before fixing
+
+For any bug, write the reproduction before the fix:
+
+- Describe the failing steps, capture the failing output, or write a failing test.
+- Then write the fix.
+- Verify the same reproduction now passes, and that the original behavior is what changed, not something adjacent.
+
+If reproducing is hard (race condition, prod-only data, intermittent), say so out loud. Don't skip silently and ship a guess.
+
+## Commit gate — mandatory for all UI changes
+
+Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change. Workflow:
+
+1. Apply changes.
+2. Start dev server.
+3. Confirm clean build (no errors in startup output).
+4. Tell <!-- PARAMETERIZE: visual_confirmer_name --> exactly what to look for and on which page.
+5. Wait for visual confirmation.
+6. Then commit (and push only if explicitly asked).
+
+Claude is responsible for starting and running the dev server. <!-- PARAMETERIZE: visual_confirmer_name -->'s role is visual confirmation only.
+
+<!-- OPTIONAL: globals_css_high_risk — include if has_design_system == true -->
+`globals.css` is high-risk: a single unclosed brace or malformed value disables all styles on every page. Any session touching `globals.css` requires dev server confirmation before committing, even for one-line changes.
+
+## Session retros
+
+At the end of every non-trivial session:
+
+1. Check off completed items in `ROADMAP.md`.
+<!-- OPTIONAL: parking_lot_step — include if include_parking_lot == true -->
+2. Check off resolved items in `docs/PARKING_LOT.md`.
+3. Write a retro to `docs/retros/YYYY-MM-DD-topic.md`. Template: `docs/retros/README.md`.
+4. <!-- OPTIONAL: tooling_check_step --> Run `npm run check`, then commit and push including doc updates.
+
+When <!-- PARAMETERIZE: visual_confirmer_name --> says **"end session"**, run the close-out without further prompts. When they say **"commit and push"**, run the same sequence but continue working after pushing.
+
+At the start of a new session, read the most recent retro before doing anything else. This replaces asking <!-- PARAMETERIZE: visual_confirmer_name --> to re-explain what was last worked on.
+
+## Gotchas
+
+Experience-derived failure modes. Each is a real failure that has happened more than once.
+
+- **"The code looks correct" is the most common false success.** Logic looks fine in the diff, fails in the running app. Always run it or describe a concrete verification step.
+- **Scope creep hides in "while I'm here" cleanups.** Touch only what the task requires. The reformatted-quotes diff that ships with the bug fix is the one that introduces a regression three sessions later.
+- **Reproduction shortcuts ship guesses.** When a bug is hard to reproduce, the temptation is to write the fix, run it once, and call it done. The same reproduction must pass after the fix. If you can't reproduce, say so out loud before shipping.
+- **Retros skipped at the end of a session cost time at the start of the next.** A two-minute retro saves a five-minute "what were we doing?" round at the next session start.
+
+## Cross-references
+
+- Commit-and-push behavior, deploy waiting protocol: `.claude/rules/git-and-deploy.md`.
+<!-- OPTIONAL: product_rules_xref -->
+- Product invariants the agent must enforce on feature decisions: `.claude/rules/product-rules.md`.
+- Retro template: `docs/retros/README.md`.
+- Session orientation slash command: `.claude/commands/session-start.md`.
+<!-- OPTIONAL: parking_lot_xref -->
+- Mid-session deferred items: `docs/PARKING_LOT.md`.

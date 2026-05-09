@@ -1,0 +1,30 @@
+# Architecture
+
+Stack: see `package.json`. The app is a Next.js App Router project deployed on Vercel.
+
+## Contact submission flow
+
+1. Visitor submits form on `/contact`.
+2. Client posts JSON to `POST /api/contact`.
+3. API route validates name, email format, and message length.
+4. API calls Resend `emails.send`.
+5. API returns success or error.
+6. Client renders confirmation or error state.
+
+## Data persistence
+
+No persistence. The app does not own a database. Submissions are forwarded to Resend and forgotten.
+
+## External integrations
+
+- Resend (email delivery).
+
+## Folder structure
+
+Standard App Router. `app/contact/page.jsx`, `app/api/contact/route.js`, `lib/email.js` for the Resend client wrapper.
+
+## Cross-references
+
+- Product requirements (canonical for product behavior): `docs/PRD.md`.
+- Roadmap and current phase: `ROADMAP.md`.
+- Decisions log: `docs/DECISIONS.md`.

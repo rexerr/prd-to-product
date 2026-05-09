@@ -1,0 +1,74 @@
+---
+paths:
+  - "lib/ai/**"
+  - "app/api/**/route.{js,ts}"
+---
+
+<!--
+Template: .claude/rules/ai-shared.md
+Purpose: Path-scoped rule. Loads when working in any AI implementation file. Governs cross-cutting AI rules (model split, server-only calls, source hierarchy).
+Related principles: "Always-on patterns" (server-only AI calls), "Conditional patterns" (used when ai_surface_count >= 1).
+Use this template when: the project has at least one AI surface. Adapt path globs and model split to the project.
+-->
+
+# AI shared
+
+Path-scoped rule. Loads when working in any AI implementation file. Editing surface-specific AI files also triggers their own rules (e.g. `ai-feed-enrichment.md`) via overlapping `paths:`.
+
+## Implementation files
+
+- `<!-- PARAMETERIZE: ai_client_path -->` — exports the model clients used by all AI surfaces.
+- `<!-- PARAMETERIZE: ai_prompts_path -->` — prompt constants. One per AI surface.
+
+## Model split
+
+<!-- PARAMETERIZE: model_split_table -->
+
+<!--
+Example shape:
+
+| Client   | Model ID                    | Used for                                        |
+| -------- | --------------------------- | ----------------------------------------------- |
+| `haiku`  | `claude-haiku-4-5-20251001` | Background enrichment, automated tagging        |
+| `sonnet` | `claude-sonnet-4-6`         | Reviewer-facing assistant, editorial generation |
+-->
+
+Rules:
+
+- <!-- PARAMETERIZE: model_split_rule_1 -->
+- <!-- PARAMETERIZE: model_split_rule_2 -->
+
+## Server-only AI calls
+
+**Never call the AI layer directly from a client component.** Always route through a Next.js API route.
+
+If you find yourself importing the AI SDK or the client file from a `.jsx` file under `features/`, `components/`, or `app/*/page.jsx`, stop. Route through an API route instead.
+
+## Prompt constant naming
+
+Each AI system has one system prompt constant in `<!-- PARAMETERIZE: ai_prompts_path -->`. Name new constants `<SURFACE>_SYSTEM`. Add the constant to the matching surface rule's `paths:` list, or create a new surface rule if a new AI surface emerges.
+
+## Source hierarchy
+
+When generating content, follow this order:
+
+1. Source facts.
+2. Voice guide.
+3. Output template.
+4. Product rules.
+
+**Never override source facts to fit brand messaging.** If the source says A and the brand voice would prefer B, the output reflects A.
+
+## Cross-cutting rules
+
+- Internal AI takes are never public copy.
+- Public summaries must not include internal strategy.
+- Prompts must not invent facts, dates, metrics, or capabilities.
+- Customer guidance requires reviewer approval. Emit `[REVIEW: ...]` placeholders, not invented advice.
+
+## Cross-references
+
+- Surface-specific rules (one per AI surface, named `ai-<surface>.md`): `.claude/rules/ai-<!-- PARAMETERIZE: ai_surface_kebab_name_list -->.md`.
+<!-- OPTIONAL: voice_xref -->
+- Voice and tone for any user-facing AI output: `.claude/rules/voice-and-tone.md`.
+- Architecture (AI layer overview): `docs/ARCHITECTURE.md`.

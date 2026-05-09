@@ -1,0 +1,167 @@
+<!--
+Template: AGENTS.md
+Purpose: Canonical entry-point file. Agent-agnostic. Claude Code reads it via @AGENTS.md in CLAUDE.md. Codex reads it directly.
+Related principles: "Thin-pointer pair", "Always-on vs path-scoped split", "Canonical-source-of-truth on conflict", "Recency safeguard".
+Use this template when: setting up a new project. Always.
+-->
+
+# AGENTS.md — <!-- PARAMETERIZE: project_name -->
+
+Master rules for this repo. Agent-agnostic. Applies to every coding session, in every tool. Claude Code reads this via `CLAUDE.md` (which imports this file). Codex reads it directly.
+
+This file is intentionally short. Detailed rules live in `.claude/rules/`. Always-on rules load every session. Path-scoped rules auto-load when matching files are touched. See "Path-scoped rules" below.
+
+`.claude/rules/*.md` is canonical. AGENTS.md is the entry point. It points at the rules and keeps a few load-bearing lines visible without a path trigger, but it does not duplicate rule content. If AGENTS.md and a rule file conflict, the rule file wins.
+
+<!-- OPTIONAL: include this section only if rule_shape == "flat" -->
+<!-- For flat-shape projects, replace the paragraph above with:
+This file carries the rules directly. Sections below are the rule set. There is no .claude/rules/ folder for this project at this scale.
+-->
+
+---
+
+## Primary constraints (read before doing anything)
+
+These are the absolute non-negotiables. The full set is at the bottom of this file in "Before you respond." Read this block first if attention is short.
+
+1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
+3. **Direct on `main`. No branches. No worktrees. No deploy CLI.**
+
+---
+
+## What this project is
+
+<!-- PARAMETERIZE: project_description_one_paragraph -->
+
+<!-- OPTIONAL: workflows_list — include if the project has more than one named workflow -->
+Workflows:
+
+- <!-- PARAMETERIZE: workflow_1_name --> — <!-- PARAMETERIZE: workflow_1_description -->
+- <!-- PARAMETERIZE: workflow_2_name --> — <!-- PARAMETERIZE: workflow_2_description -->
+
+---
+
+## Before writing any code
+
+Mandatory at session start:
+
+1. `AGENTS.md` — this file (loaded automatically; Claude Code loads it via `@AGENTS.md` in root `CLAUDE.md`).
+2. `ROADMAP.md` — current phase, completed work, open items.
+3. Most recent file in `docs/retros/` — resume from last session.
+<!-- OPTIONAL: parking_lot_line — include if include_parking_lot == true -->
+4. `docs/PARKING_LOT.md` — active deferred items.
+
+Read when relevant:
+
+- `docs/PRD.md` — full product requirements.
+- `docs/ARCHITECTURE.md` — data model, structure, mental model.
+<!-- OPTIONAL: tech_stack_line — include if include_tech_stack_doc == true -->
+- `docs/TECH_STACK.md` — stack, deployment, integrations.
+<!-- OPTIONAL: canonical_workflow_doc — include if has_canonical_workflow_doc == true -->
+- `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md` — canonical workflow behavior. Tiebreaker on conflicts.
+
+Never write code without reading the relevant docs first.
+
+---
+
+<!-- OPTIONAL: vocabulary_lock_section — include if has_domain_vocabulary == true -->
+## Vocabulary lock
+
+Canonical: <!-- PARAMETERIZE: canonical_vocabulary_list -->.
+
+Do not use old values: <!-- PARAMETERIZE: forbidden_vocabulary_list -->.
+
+Use only the canonical names in code, UI, docs, and conversation.
+
+---
+
+<!-- OPTIONAL: design_non_negotiables — include if has_design_system == true -->
+## Design non-negotiables (instant recall)
+
+Full design rule: `.claude/rules/design-system.md`. The lines below are load-bearing enough to keep visible without a path trigger.
+
+- <!-- PARAMETERIZE: design_rule_1 -->
+- <!-- PARAMETERIZE: design_rule_2 -->
+- <!-- PARAMETERIZE: design_rule_3 -->
+
+---
+
+## Tech stack
+
+<!-- KEEP AS-IS: V1 hardcodes Next.js + Vercel -->
+Next.js (App Router) on Vercel. <!-- PARAMETERIZE: additional_stack_summary -->. Full details: `docs/TECH_STACK.md`<!-- OPTIONAL: drop the doc reference if include_tech_stack_doc == false -->.
+
+---
+
+## Decisions log
+
+When making a significant technical or product choice, log it in `docs/DECISIONS.md` using the format defined there. <!-- OPTIONAL: active_decisions_line — include if include_decisions_active == true --> If the decision creates a binding constraint not visible from reading code alone, also mirror a one-liner into `docs/DECISIONS_ACTIVE.md`.
+
+A decision is significant if:
+
+- it would surprise a future session that hadn't seen it made
+- it ruled out an obvious alternative
+- it affects a core workflow
+- it touches a safety default
+
+Do not log every small implementation detail. Log the calls that matter.
+
+---
+
+## When in doubt
+
+| Touching | Doc → conflict source of truth |
+|---|---|
+| Product behavior, copy | `docs/PRD.md` |
+| Architecture, data model | `docs/ARCHITECTURE.md` |
+<!-- OPTIONAL: canonical_workflow_row -->
+| Workflow behavior | `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md` (canonical) |
+<!-- OPTIONAL: ux_row -->
+| UX or visual changes | `.claude/rules/design-system.md` |
+| Status, current phase | `ROADMAP.md` |
+<!-- OPTIONAL: parking_lot_row -->
+| Mid-session deferred items | `docs/PARKING_LOT.md` |
+| Recent binding decisions | `docs/DECISIONS_ACTIVE.md` |
+
+If a conflict isn't covered above, surface it as an open question. Don't pick silently.
+
+---
+
+## Path-scoped rules in `.claude/rules/`
+
+Modular rules with `paths:` frontmatter that auto-load when matching files are read. **Claude Code honors `paths:` automatically.** Always-on rules (no `paths:` field) load every session.
+
+**For Codex and other tools that don't honor `paths:` natively:** at session start, read every file in `.claude/rules/`. Each rule has a `paths:` frontmatter (or none, for always-on rules). When you open or edit a file, mentally check which rules' `paths:` match and treat their content as if loaded.
+
+Always-on rules: `git-and-deploy.md`, `session-discipline.md`<!-- OPTIONAL: , `product-rules.md` -->.
+
+<!-- OPTIONAL: path_scoped_list — include only the rules that exist for this project -->
+Path-scoped rules: <!-- PARAMETERIZE: path_scoped_rule_list -->.
+
+---
+
+<!-- OPTIONAL: codex_section — include if uses_codex == true -->
+## Codex-specific
+
+Repo-specific Codex operational config (sandbox, network, approval policy) lives in `.codex/config.toml`. Personal/global Codex config stays in `~/.codex/config.toml`.
+
+Repo-local skills live in `.agents/skills/`. Use them deliberately when the task matches. Skills are execution guardrails, not sources of truth. If a skill conflicts with canonical docs, canonical docs win.
+
+---
+
+## Before you respond — load-bearing constraints
+
+These are the rules that must not be lost mid-session. Read this block last so it stays in attention.
+
+1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session. File size cap: 500 lines. Detail: `.claude/rules/session-discipline.md`.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server. Detail: `.claude/rules/session-discipline.md`.
+3. **Direct on `main`. No branches. No worktrees.** Worktrees break visual confirmation. Detail: `.claude/rules/git-and-deploy.md`.
+4. **No deploy CLI.** Pushes to `main` deploy automatically via Vercel. Detail: `.claude/rules/git-and-deploy.md`.
+5. **Reproduce before fixing.** Write the failing reproduction, then the fix, then verify. Detail: `.claude/rules/session-discipline.md`.
+<!-- OPTIONAL: ai_constraint -->
+6. **Never call the AI layer from a client component.** Always route through an API route. Detail: `.claude/rules/ai-shared.md`.
+<!-- OPTIONAL: vocabulary_constraint -->
+7. **Vocabulary lock applies.** Use only the canonical names listed above. Detail: `AGENTS.md` "Vocabulary lock" section.
+
+If any constraint above conflicts with a request, surface the conflict before acting.

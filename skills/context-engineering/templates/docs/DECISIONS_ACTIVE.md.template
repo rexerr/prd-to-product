@@ -1,0 +1,32 @@
+<!--
+Template: docs/DECISIONS_ACTIVE.md
+Purpose: Curated view of currently-binding decisions whose constraints are not obvious from reading code. Read at session start.
+Related principles: "Conditional patterns" (DECISIONS_ACTIVE.md).
+Use this template when: include_decisions_active == true. Recommended for any project past two or three significant decisions.
+-->
+
+# Active decisions
+
+Curated view of currently-binding decisions whose constraints are not obvious from reading code alone. IDs mirror the full append-only history in `docs/DECISIONS.md`. Read the full entry there for rationale and context.
+
+A decision belongs here if **all** are true:
+
+- It imposes a rule the agent must follow now.
+- That rule is not enforced or visible by reading the code itself.
+- It has not been superseded by a later decision.
+
+When a new decision lands in `DECISIONS.md` that meets these criteria, mirror it here as a one-liner.
+
+---
+
+<!-- Active decisions get appended below as they are promoted. Format: -->
+<!--
+### D-XXX — <short title>
+
+<one-liner constraint, plus a sentence of context if needed>
+-->
+
+## Cross-references
+
+- Full append-only log with rationale: `docs/DECISIONS.md`.
+- Decisions-log discipline: `AGENTS.md` "Decisions log".

@@ -1,0 +1,89 @@
+/*
+Template: app/components/ui/Input.tsx (Tailwind path)
+Purpose: Seed labeled input. Uses cva for state composition (error/default), forwardRef for
+  form library compatibility. Token references resolve through tailwind.config.ts.
+Rules: no arbitrary value classes; all values via configured Tailwind utilities.
+Related principles: "Component architecture", "Why three seed components".
+*/
+
+import { forwardRef } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const inputVariants = cva(
+  [
+    "w-full h-10 px-3 py-2",
+    "font-body text-sm text-text-primary",
+    "bg-bg-elevated border rounded-md",
+    "transition-colors",
+    "placeholder:text-text-tertiary",
+    "hover:border-border-strong",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
+    "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-bg-subtle disabled:border-border-subtle",
+  ].join(" "),
+  {
+    variants: {
+      hasError: {
+        true:  "border-error focus-visible:border-error focus-visible:ring-error",
+        false: "border-border-default focus-visible:border-focus-ring focus-visible:ring-focus-ring",
+      },
+    },
+    defaultVariants: {
+      hasError: false,
+    },
+  }
+);
+
+interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement>,
+    Omit<VariantProps<typeof inputVariants>, "hasError"> {
+  /** Visible label text. Required for accessibility — do not omit. */
+  label: string;
+  /** Hides the label visually but keeps it in the accessibility tree. */
+  hideLabel?: boolean;
+  /** Error message. Presence triggers the error state. */
+  error?: string;
+  /** Helper text shown below the input when no error is present. */
+  hint?: string;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { label, hideLabel = false, error, hint, id, className, disabled, ...props },
+  ref
+) {
+  const inputId = id ?? `input-${label.toLowerCase().replace(/\s+/g, "-")}`;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const hintId = hint && !error ? `${inputId}-hint` : undefined;
+
+  return (
+    <div className={`flex flex-col gap-1 ${className ?? ""}`}>
+      <label
+        htmlFor={inputId}
+        className={`font-body text-sm font-medium leading-tight text-text-primary ${hideLabel ? "sr-only" : ""}`}
+      >
+        {label}
+      </label>
+
+      <input
+        ref={ref}
+        id={inputId}
+        className={inputVariants({ hasError: !!error })}
+        aria-invalid={!!error}
+        aria-describedby={errorId ?? hintId}
+        disabled={disabled}
+        {...props}
+      />
+
+      {error && (
+        <span id={errorId} role="alert" className="text-xs leading-tight text-error">
+          {error}
+        </span>
+      )}
+
+      {hint && !error && (
+        <span id={hintId} className="text-xs leading-tight text-text-secondary">
+          {hint}
+        </span>
+      )}
+    </div>
+  );
+});

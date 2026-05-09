@@ -1,0 +1,66 @@
+---
+paths:
+  - "lib/ai/**"
+  - "app/api/**"
+  - "components/**"
+  - "app/**/*.{jsx,tsx}"
+---
+
+<!--
+Template: .claude/rules/voice-and-tone.md
+Purpose: Path-scoped rule. Loads when working in any file that produces user-facing copy or AI-generated text.
+Related principles: "Conditional patterns" (voice-and-tone rule).
+Use this template when: the project produces user-facing copy, especially AI-generated copy that may end up customer-facing.
+-->
+
+# Voice and tone
+
+Path-scoped rule. Loads when working in AI generation paths, AI API surfaces, and UI files. Governs micro-copy, AI summaries, and any reviewer- or customer-facing content.
+
+When source materials conflict, use this order: <!-- PARAMETERIZE: voice_source_hierarchy -->.
+
+## Brand position
+
+<!-- PARAMETERIZE: brand_position_paragraph -->
+
+<!-- OPTIONAL: primary_brand_line -->
+Primary brand line: <!-- PARAMETERIZE: primary_brand_line -->.
+
+## Voice characteristics
+
+<!-- PARAMETERIZE: voice_characteristics_list -->
+
+## Preferred language
+
+Use these with intention and concrete support:
+
+<!-- PARAMETERIZE: preferred_terms_list -->
+
+## Avoid
+
+Avoid generic or over-claimed words:
+
+<!-- PARAMETERIZE: forbidden_terms_list -->
+
+## Writing rules
+
+- Lead with the sharpest useful insight.
+- Use source links for source-derived claims.
+- Keep paragraphs short.
+- Use active voice. Prefer subject-verb-object.
+- Use contractions where natural.
+- Never fabricate statistics, customer results, or operational claims.
+- <!-- PARAMETERIZE: project_specific_writing_rule -->
+
+## Positioning risks
+
+These apply to all generated copy:
+
+<!-- PARAMETERIZE: positioning_risks_list -->
+
+## Cross-references
+
+- Cross-cutting AI rules (model split, server-only calls, source hierarchy): `.claude/rules/ai-shared.md`.
+<!-- OPTIONAL: design_system_xref -->
+- Visual tokens, indicator vocabulary, button hierarchy: `.claude/rules/design-system.md`.
+- Product requirements: `docs/PRD.md`.

@@ -1,0 +1,250 @@
+/*
+Template: app/styles/tokens.css
+Purpose: CSS custom properties for the entire design system. Two layers:
+  1. Primitives — raw named values (color scales, base palette). Never referenced in components directly.
+  2. Semantic aliases — role-named tokens that reference primitives. Components reference only this layer.
+Canonical source of truth for all color, type, spacing, radius, shadow, and motion values.
+Related principles: "The two-tier token architecture", "Token naming convention".
+Hard rule: no hardcoded hex values in product UI. Every color, size, and spacing value must resolve through a token.
+*/
+
+/* ============================================================
+   PRIMITIVES
+   Raw named values. No semantic meaning. Components do not
+   reference these directly — they reference semantic aliases.
+   ============================================================ */
+
+:root {
+
+  /* -- Brand color scales -- */
+  /* <!-- PARAMETERIZE: brand_primary_name --> scale */
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-50:  <!-- PARAMETERIZE: brand_primary_50 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-100: <!-- PARAMETERIZE: brand_primary_100 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-200: <!-- PARAMETERIZE: brand_primary_200 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-300: <!-- PARAMETERIZE: brand_primary_300 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-400: <!-- PARAMETERIZE: brand_primary_400 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-500: <!-- PARAMETERIZE: brand_primary_500 -->;  /* base */
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-600: <!-- PARAMETERIZE: brand_primary_600 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-700: <!-- PARAMETERIZE: brand_primary_700 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-800: <!-- PARAMETERIZE: brand_primary_800 -->;
+  --<!-- PARAMETERIZE: brand_primary_token_prefix -->-900: <!-- PARAMETERIZE: brand_primary_900 -->;
+
+  <!-- OPTIONAL: has_secondary_brand_color -->
+  /* <!-- PARAMETERIZE: brand_secondary_name --> scale */
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-50:  <!-- PARAMETERIZE: brand_secondary_50 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-100: <!-- PARAMETERIZE: brand_secondary_100 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-200: <!-- PARAMETERIZE: brand_secondary_200 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-300: <!-- PARAMETERIZE: brand_secondary_300 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-400: <!-- PARAMETERIZE: brand_secondary_400 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-500: <!-- PARAMETERIZE: brand_secondary_500 -->;  /* base */
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-600: <!-- PARAMETERIZE: brand_secondary_600 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-700: <!-- PARAMETERIZE: brand_secondary_700 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-800: <!-- PARAMETERIZE: brand_secondary_800 -->;
+  --<!-- PARAMETERIZE: brand_secondary_token_prefix -->-900: <!-- PARAMETERIZE: brand_secondary_900 -->;
+
+  /* Neutral scale */
+  --neutral-0:   #ffffff;   /* KEEP AS-IS: white is always white */
+  --neutral-50:  <!-- PARAMETERIZE: neutral_50 -->;
+  --neutral-100: <!-- PARAMETERIZE: neutral_100 -->;
+  --neutral-200: <!-- PARAMETERIZE: neutral_200 -->;
+  --neutral-300: <!-- PARAMETERIZE: neutral_300 -->;
+  --neutral-400: <!-- PARAMETERIZE: neutral_400 -->;
+  --neutral-500: <!-- PARAMETERIZE: neutral_500 -->;
+  --neutral-600: <!-- PARAMETERIZE: neutral_600 -->;
+  --neutral-700: <!-- PARAMETERIZE: neutral_700 -->;
+  --neutral-800: <!-- PARAMETERIZE: neutral_800 -->;
+  --neutral-900: <!-- PARAMETERIZE: neutral_900 -->;
+
+  /* Feedback primitives */
+  --feedback-success-base:  <!-- PARAMETERIZE: feedback_success -->;  /* green-adjacent */
+  --feedback-warning-base:  <!-- PARAMETERIZE: feedback_warning -->;  /* amber-adjacent */
+  --feedback-error-base:    <!-- PARAMETERIZE: feedback_error -->;    /* red-adjacent */
+  --feedback-info-base:     <!-- PARAMETERIZE: feedback_info -->;     /* blue-adjacent */
+
+  --feedback-success-light: <!-- PARAMETERIZE: feedback_success_light -->;
+  --feedback-warning-light: <!-- PARAMETERIZE: feedback_warning_light -->;
+  --feedback-error-light:   <!-- PARAMETERIZE: feedback_error_light -->;
+  --feedback-info-light:    <!-- PARAMETERIZE: feedback_info_light -->;
+
+  /* ============================================================
+     SEMANTIC ALIASES — color
+     Role-named tokens. Components reference only these.
+     ============================================================ */
+
+  /* Backgrounds */
+  --color-bg-default:  <!-- PARAMETERIZE: color_bg_default -->;    /* primary page/app background */
+  --color-bg-elevated: <!-- PARAMETERIZE: color_bg_elevated -->;   /* cards, popovers, modals */
+  --color-bg-subtle:   <!-- PARAMETERIZE: color_bg_subtle -->;     /* sidebars, secondary surfaces */
+  --color-bg-inverse:  <!-- PARAMETERIZE: color_bg_inverse -->;    /* dark surfaces on light themes */
+
+  /* Text */
+  --color-text-primary:   <!-- PARAMETERIZE: color_text_primary -->;    /* body text, headings */
+  --color-text-secondary: <!-- PARAMETERIZE: color_text_secondary -->;  /* metadata, labels */
+  --color-text-tertiary:  <!-- PARAMETERIZE: color_text_tertiary -->;   /* placeholders, disabled */
+  --color-text-inverse:   <!-- PARAMETERIZE: color_text_inverse -->;    /* text on dark/brand surfaces */
+  --color-text-link:      <!-- PARAMETERIZE: color_text_link -->;       /* inline links */
+
+  /* Borders */
+  --color-border-default: <!-- PARAMETERIZE: color_border_default -->;  /* standard dividers, input borders */
+  --color-border-strong:  <!-- PARAMETERIZE: color_border_strong -->;   /* focused inputs, emphasis borders */
+  --color-border-subtle:  <!-- PARAMETERIZE: color_border_subtle -->;   /* very light separators */
+
+  /* Brand interactive */
+  --color-brand-primary:       var(--<!-- PARAMETERIZE: brand_primary_token_prefix -->-500);  /* primary CTA background */
+  --color-brand-primary-hover: var(--<!-- PARAMETERIZE: brand_primary_token_prefix -->-600);  /* CTA hover state */
+  --color-brand-primary-text:  var(--neutral-0);                                              /* text on primary CTA */
+  <!-- OPTIONAL: has_secondary_brand_color -->
+  --color-brand-secondary:       var(--<!-- PARAMETERIZE: brand_secondary_token_prefix -->-500);
+  --color-brand-secondary-hover: var(--<!-- PARAMETERIZE: brand_secondary_token_prefix -->-600);
+
+  /* Feedback semantic */
+  --color-success:       var(--feedback-success-base);
+  --color-success-bg:    var(--feedback-success-light);
+  --color-warning:       var(--feedback-warning-base);
+  --color-warning-bg:    var(--feedback-warning-light);
+  --color-error:         var(--feedback-error-base);
+  --color-error-bg:      var(--feedback-error-light);
+  --color-info:          var(--feedback-info-base);
+  --color-info-bg:       var(--feedback-info-light);
+
+  /* Focus ring */
+  --color-focus-ring: var(--<!-- PARAMETERIZE: brand_primary_token_prefix -->-500);  /* should meet 3:1 against --color-bg-default */
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+
+  /* Font families */
+  --type-family-display: <!-- PARAMETERIZE: font_family_display -->;  /* headings, display sizes */
+  --type-family-body:    <!-- PARAMETERIZE: font_family_body -->;     /* body, UI, labels */
+  <!-- OPTIONAL: has_mono_font -->
+  --type-family-mono:    <!-- PARAMETERIZE: font_family_mono -->;     /* code, numbers, timestamps */
+
+  /* Type scale
+     Use these tokens everywhere. Never hardcode px font sizes.
+     <!-- PARAMETERIZE: type_scale_comment_summary --> */
+  --type-size-2xs: <!-- PARAMETERIZE: type_size_2xs -->;  /* <!-- PARAMETERIZE: type_size_2xs_usage --> */
+  --type-size-xs:  <!-- PARAMETERIZE: type_size_xs -->;   /* <!-- PARAMETERIZE: type_size_xs_usage --> */
+  --type-size-sm:  <!-- PARAMETERIZE: type_size_sm -->;   /* <!-- PARAMETERIZE: type_size_sm_usage --> */
+  --type-size-md:  <!-- PARAMETERIZE: type_size_md -->;   /* <!-- PARAMETERIZE: type_size_md_usage --> */
+  --type-size-lg:  <!-- PARAMETERIZE: type_size_lg -->;   /* <!-- PARAMETERIZE: type_size_lg_usage --> */
+  --type-size-xl:  <!-- PARAMETERIZE: type_size_xl -->;   /* <!-- PARAMETERIZE: type_size_xl_usage --> */
+  --type-size-2xl: <!-- PARAMETERIZE: type_size_2xl -->; /* <!-- PARAMETERIZE: type_size_2xl_usage --> */
+  <!-- OPTIONAL: has_display_sizes -->
+  --type-size-3xl: <!-- PARAMETERIZE: type_size_3xl -->; /* display / marketing */
+  --type-size-4xl: <!-- PARAMETERIZE: type_size_4xl -->;
+
+  /* Font weights */
+  --type-weight-normal:   400;  /* KEEP AS-IS */
+  --type-weight-medium:   500;  /* KEEP AS-IS */
+  --type-weight-semibold: 600;  /* KEEP AS-IS */
+  --type-weight-bold:     700;  /* KEEP AS-IS */
+
+  /* Line heights */
+  --type-leading-tight:   <!-- PARAMETERIZE: line_height_tight -->;   /* headings */
+  --type-leading-normal:  <!-- PARAMETERIZE: line_height_normal -->;  /* body text */
+  --type-leading-relaxed: <!-- PARAMETERIZE: line_height_relaxed -->; /* long-form reading */
+
+  /* ============================================================
+     SPACING
+     Base unit: <!-- PARAMETERIZE: spacing_base_unit -->px.
+     Scale: each step = base × n (4px base → --space-1: 4px, --space-2: 8px, etc.)
+     ============================================================ */
+
+  --space-px: 1px;   /* KEEP AS-IS: single-pixel border offset */
+  --space-1:  <!-- PARAMETERIZE: space_1 -->;   /* <!-- PARAMETERIZE: spacing_base_unit -->px */
+  --space-2:  <!-- PARAMETERIZE: space_2 -->;
+  --space-3:  <!-- PARAMETERIZE: space_3 -->;
+  --space-4:  <!-- PARAMETERIZE: space_4 -->;
+  --space-5:  <!-- PARAMETERIZE: space_5 -->;
+  --space-6:  <!-- PARAMETERIZE: space_6 -->;
+  --space-7:  <!-- PARAMETERIZE: space_7 -->;
+  --space-8:  <!-- PARAMETERIZE: space_8 -->;
+  --space-10: <!-- PARAMETERIZE: space_10 -->;
+  --space-12: <!-- PARAMETERIZE: space_12 -->;
+  --space-16: <!-- PARAMETERIZE: space_16 -->;
+
+  /* ============================================================
+     RADIUS
+     ============================================================ */
+
+  --radius-none: 0;           /* KEEP AS-IS */
+  --radius-sm:   <!-- PARAMETERIZE: radius_sm -->;   /* subtle: inputs, small chips */
+  --radius-md:   <!-- PARAMETERIZE: radius_md -->;   /* default: buttons, cards */
+  --radius-lg:   <!-- PARAMETERIZE: radius_lg -->;   /* loose: modals, popovers */
+  --radius-xl:   <!-- PARAMETERIZE: radius_xl -->;   /* heavy: feature cards */
+  --radius-full: 9999px;      /* KEEP AS-IS: pill shape */
+
+  /* ============================================================
+     SHADOWS
+     RGBA only — no CSS variable references inside shadow values.
+     ============================================================ */
+
+  --shadow-none: none;        /* KEEP AS-IS */
+  --shadow-xs:  <!-- PARAMETERIZE: shadow_xs -->;   /* 0 1px 2px rgba(...) — hairline lift */
+  --shadow-sm:  <!-- PARAMETERIZE: shadow_sm -->;   /* cards at rest */
+  --shadow-md:  <!-- PARAMETERIZE: shadow_md -->;   /* cards on hover, dropdowns */
+  --shadow-lg:  <!-- PARAMETERIZE: shadow_lg -->;   /* modals, toasts */
+  --shadow-xl:  <!-- PARAMETERIZE: shadow_xl -->;   /* full-screen overlays */
+
+  <!-- OPTIONAL: has_inset_shadow -->
+  --shadow-inset: <!-- PARAMETERIZE: shadow_inset -->;  /* focus inset ring for inputs */
+
+  /* ============================================================
+     MOTION
+     Every duration token pairs with an easing token.
+     ============================================================ */
+
+  --motion-duration-instant: 0ms;    /* KEEP AS-IS: no animation */
+  --motion-duration-fast:    <!-- PARAMETERIZE: motion_duration_fast -->;   /* micro-interactions (button press, chip) */
+  --motion-duration-normal:  <!-- PARAMETERIZE: motion_duration_normal -->; /* standard transitions (panel, dropdown) */
+  --motion-duration-slow:    <!-- PARAMETERIZE: motion_duration_slow -->;   /* page-level transitions */
+
+  --motion-easing-default:   <!-- PARAMETERIZE: motion_easing_default -->;  /* ease-in-out for most transitions */
+  --motion-easing-enter:     <!-- PARAMETERIZE: motion_easing_enter -->;    /* ease-out for entering elements */
+  --motion-easing-exit:      <!-- PARAMETERIZE: motion_easing_exit -->;     /* ease-in for exiting elements */
+  --motion-easing-spring:    <!-- PARAMETERIZE: motion_easing_spring -->;   /* optional: use sparingly */
+
+  /* ============================================================
+     Z-INDEX
+     Named layers, not magic numbers.
+     ============================================================ */
+
+  --z-below:    -1;   /* KEEP AS-IS: behind default stacking context */
+  --z-base:      0;   /* KEEP AS-IS: default document flow */
+  --z-raised:   10;   /* sticky headers, floating labels */
+  --z-dropdown: 20;   /* dropdown menus, select popups */
+  --z-overlay:  30;   /* overlay backdrops */
+  --z-modal:    40;   /* modal dialogs */
+  --z-toast:    50;   /* toast notifications */
+  --z-tooltip:  60;   /* tooltips */
+
+}
+
+<!-- OPTIONAL: has_dark_mode -->
+/* ============================================================
+   DARK MODE TOKEN OVERRIDES
+   <!-- PARAMETERIZE: dark_mode_strategy --> strategy.
+   Only semantic aliases are overridden here. Primitives remain unchanged.
+   ============================================================ */
+
+<!-- PARAMETERIZE: dark_mode_selector --> {
+
+  /* Backgrounds */
+  --color-bg-default:  <!-- PARAMETERIZE: dark_color_bg_default -->;
+  --color-bg-elevated: <!-- PARAMETERIZE: dark_color_bg_elevated -->;
+  --color-bg-subtle:   <!-- PARAMETERIZE: dark_color_bg_subtle -->;
+  --color-bg-inverse:  <!-- PARAMETERIZE: dark_color_bg_inverse -->;
+
+  /* Text */
+  --color-text-primary:   <!-- PARAMETERIZE: dark_color_text_primary -->;
+  --color-text-secondary: <!-- PARAMETERIZE: dark_color_text_secondary -->;
+  --color-text-tertiary:  <!-- PARAMETERIZE: dark_color_text_tertiary -->;
+  --color-text-inverse:   <!-- PARAMETERIZE: dark_color_text_inverse -->;
+
+  /* Borders */
+  --color-border-default: <!-- PARAMETERIZE: dark_color_border_default -->;
+  --color-border-strong:  <!-- PARAMETERIZE: dark_color_border_strong -->;
+  --color-border-subtle:  <!-- PARAMETERIZE: dark_color_border_subtle -->;
+
+}
