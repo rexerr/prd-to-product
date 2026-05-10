@@ -109,6 +109,14 @@ Never claim success based on "the code looks correct."
 
 For any bug, write the failing reproduction first, then the fix, then verify the same reproduction now passes.
 
+### Session management
+
+Built-in commands that keep the conversation prefix clean. Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025.
+
+- **Prefer `/rewind` to re-prompting when an approach fails.** Re-prompting "that didn't work, try X" leaves the failed attempt in the prefix; `/rewind` reverts both conversation and working tree to a clean state.
+- **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is a single retro read.
+- **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one, which often fires when the model is at peak context-rot.
+
 ### Commit gate — mandatory for UI changes
 
 **Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change looks correct.** Workflow: apply changes → `npm run dev` → confirm no build errors → tell <!-- PARAMETERIZE: visual_confirmer_name --> what to look for and on which page → wait for confirmation → commit and push.

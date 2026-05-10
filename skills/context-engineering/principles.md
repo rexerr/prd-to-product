@@ -82,6 +82,14 @@ Each pattern below has a short rule. The corresponding template carries the full
 - **No worktrees when visual confirmation gates commits.** Conditional. `git worktree` is a legitimate Git feature — Claude Code itself uses it for parallel agent work. The constraint only applies when the workflow ties commits to visual confirmation in a single dev server: the dev server points at the main checkout, the worktree has its own working copy, and changes "made" in the worktree are not what `npm run dev` is rendering. For projects without a UI (CLI tools, backend services, Python projects) or with separate dev servers per worktree, this rule does not apply and is not emitted.
 - **No deploy CLI.** Only emitted when the deploy target uses a CLI that conflicts with auto-deploy. Pushes to `main` deploy automatically via the deploy target's GitHub integration. Running the CLI creates parallel deployment paths.
 
+### Always-on hooks vs on-demand hooks
+
+Hooks split into two shapes and the distinction matters. **Always-on hooks** enforce rules that must hold every session — the three the generator scaffolds (block-env-commit, block-deploy-cli when applicable, block-worktree when applicable) are always-on. They live in `.claude/settings.json` and fire automatically on every matching tool call. **On-demand hooks** are scoped to risky operations and invoked only when needed: a `/careful` style slash command that, for the duration of a session, blocks `rm -rf`, `DROP TABLE`, force-push, or other operations the user knows are about to be in play. The generator does not currently scaffold an on-demand example — pending a real failure mode that justifies it — but the principle informs the design: do not try to make every guard always-on. Always-on hooks have low cost per fire and high blast-radius if they slip; on-demand hooks have higher activation cost and are reserved for moments when the user has named the risk. Source: Thariq Shihipar, *Lessons from Building Claude Code: How We Use Skills* and *Hooks*, Anthropic 2025.
+
+### Context budget
+
+The 1M-context model degrades before it hits the wall. Empirical reports place the onset of context rot around 300–400k tokens, **task-dependent** — heavy reasoning and dense code degrade earlier than narrative reading. The threshold is approximate and likely to drift as models change; re-verify when consulting this number. The practical implication for this skill: the up-front load (`AGENTS.md` + most-recent retro + path-scoped rules touched) should leave plenty of headroom, and long debug sessions should `/compact` proactively with a description rather than waiting for autocompact to fire at peak rot. Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025.
+
 ## The conditional patterns
 
 Use these when the project's shape calls for them.

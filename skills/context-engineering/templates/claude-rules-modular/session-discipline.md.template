@@ -82,6 +82,14 @@ For any bug, write the reproduction before the fix:
 
 If reproducing is hard (race condition, prod-only data, intermittent), say so out loud. Don't skip silently and ship a guess.
 
+## Session management
+
+Built-in commands that keep the conversation prefix clean. Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025.
+
+- **Prefer `/rewind` to re-prompting when an approach fails.** Re-prompting "that didn't work, try X" leaves the failed attempt in the prefix and accumulates dead-end context. `/rewind` reverts both conversation and working tree to a clean state — use it instead of trying to talk the model out of its last bad turn.
+- **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is paid by reading the most recent retro at session start; that is cheaper than dragging the prior thread along.
+- **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** Autocompact picks the moment for you — often when the model is at peak context-rot and the summary captures the wrong things. A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one.
+
 ## Commit gate — mandatory for all UI changes
 
 Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change. Workflow:

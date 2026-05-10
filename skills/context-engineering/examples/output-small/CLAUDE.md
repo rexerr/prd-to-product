@@ -47,6 +47,10 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - **Checkpoint between phases of multi-step work.** Pause between phases and restate what was done / verified / left. Don't continue from a state you can't describe.
 - **Verification before claiming done.** UI: run `npm run dev`, tell Jordan what to look for and on which page, wait for visual confirmation. Logic: run `npm run check`, report results.
 - **Reproduce before fixing.** Failing reproduction first, then fix, then verify.
+- **Session management** (Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025):
+  - Prefer `/rewind` to re-prompting when an approach fails — reverts conversation and working tree instead of accumulating dead-end context.
+  - Start a new session for a new task. The orientation cost is one retro read.
+  - `/compact` proactively, with a description, during long debug sessions before autocompact fires at peak context-rot.
 - **Commit gate (UI changes).** Do not commit until Jordan visually confirms.
 - **Session retros.** Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. Read the most recent retro at session start.
 
