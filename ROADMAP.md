@@ -125,16 +125,16 @@ Pre-work and dog-food run in the same session because the quick wins are ~20 lin
 
 **Tasks:**
 
-- [ ] Regenerate `output-small/` reflecting current parameterized template output: refresh the `"//"` comment fields in `settings.json` and the comment headers + echo bodies in the three hook scripts so they match what the templates emit today. (Added in Phase 3 drain; the small example was Phase 1's regression-target and has drifted since the parameterization landed.)
-- [ ] Regenerate `output-medium-abbreviated.md` reflecting current state: Commands block, tightened recency, parameterized stack, hooks scaffold (modular shape).
-- [ ] Regenerate `output-large-abbreviated.md` reflecting current state.
-- [ ] Pick a different stack for at least one example (e.g., medium = Next.js + Vercel as today; large = something non-Vercel like Python ML on Fly, to demonstrate parameterization).
-- [ ] Confirm small/medium/large form a coherent progression in scale.
-- [ ] Write the phase retro to `docs/retros/YYYY-MM-DD-phase-4-regenerate-examples.md`.
+- [x] Regenerate `output-small/` reflecting current parameterized template output: refresh the `"//"` comment fields in `settings.json` and the comment headers + echo bodies in the three hook scripts so they match what the templates emit today. In-phase scope expansion: surfaced a markdown-vs-shell `env_pattern` ambiguity (literal backticks would trigger command substitution); resolved by making `env_pattern` plain strings at the source with markdown consumers wrapping at the substitution site. Doubled-period [FUTURE.md](docs/FUTURE.md) watch item hit second instance and was fixed per continuous-mode discipline.
+- [x] Regenerate `output-medium-abbreviated.md` reflecting current state. **Project replaced:** `craft-letters` (Vite+Cloudflare Pages, modular shape via the voice-and-tone trigger, one AI surface, basic styling). Transcript companion regenerated alongside.
+- [x] Regenerate `output-large-abbreviated.md` reflecting current state. **Project replaced:** `triage-classifier` (Python service on Fly.io, modular via three AI surfaces, no UI, no voice-and-tone). Demonstrates the four-flag structural suppression cascade. Transcript companion regenerated alongside.
+- [x] Pick a different stack for at least one example. **Both medium and large are non-Vercel** (Cloudflare and Fly). Result is stronger than the original ROADMAP suggestion of "at least one."
+- [x] Confirm small/medium/large form a coherent progression in scale. Coverage map documented in [Phase 4 retro](docs/retros/2026-05-10-phase-4-regenerate-examples.md): small=flat-baseline, medium=modular+voice+UI+non-Vercel, large=modular+3-surfaces+no-UI+structural-suppressions. Deliberate uncovered shapes (modular+UI+Vercel, flat+non-Vercel) also recorded.
+- [x] Write the phase retro to [`docs/retros/2026-05-10-phase-4-regenerate-examples.md`](docs/retros/2026-05-10-phase-4-regenerate-examples.md).
 
-**Done when:** all three example outputs reflect current skill state, at least one of medium/large demonstrates non-Vercel parameterization, retro is written.
+**Done when:** all three example outputs reflect current skill state, at least one of medium/large demonstrates non-Vercel parameterization, retro is written. **Met.**
 
-**Abort criterion:** if regenerating a medium or large example surfaces a skill gap (e.g., the generator has no template for a pattern the example needs), halt and capture in `docs/PARKING_LOT.md`. Decide whether to add the template now (extending the phase scope) or skip the example shape until later.
+**Abort criterion:** if regenerating a medium or large example surfaces a skill gap (e.g., the generator has no template for a pattern the example needs), halt and capture in `docs/PARKING_LOT.md`. Decide whether to add the template now (extending the phase scope) or skip the example shape until later. **Triggered once** (the `env_pattern` markdown-vs-shell ambiguity during task 1 regen); resolved in-phase per the criterion's "add the template now" branch. Resolution recorded in Phase 4 retro.
 
 ---
 
