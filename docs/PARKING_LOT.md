@@ -2,20 +2,30 @@
 
 Items deferred mid-session that need a decision or revisit. Add an entry whenever something is deferred mid-session.
 
+Drained at the end of each roadmap phase. Items resolve into one of three buckets: (a) a phase task, (b) a [`docs/FUTURE.md`](FUTURE.md) entry, or (c) closed as not a real concern. Resolved items stay logged here for the trail; do not silently delete.
+
 ## Format
 
 - **[Short description]** — why it was parked, what to consider when revisiting.
 
-## Items
+## Open items
 
-- **`env_pattern` doubled-period in emitted hook script.** Default `env_pattern` strings in [`skills/context-engineering/generator/decisions.md`](../skills/context-engineering/generator/decisions.md) end with periods (e.g., ``...Never commit `.env.local`.``) and the hook template appends another period after the marker. Substitution yields a doubled period. Cosmetic, not blocking. Surfaced in [`docs/retros/2026-05-10-phase-1-validation.md`](retros/2026-05-10-phase-1-validation.md). Fix in Phase 4 alongside example regeneration: drop the trailing period in the env_pattern defaults, or rephrase the hook template so the marker isn't followed by another period.
-- **`examples/output-small/` is stale relative to current templates.** The `"//"` comment fields in `settings.json` and the comment headers + echo bodies in the three hook scripts diverge from the current parameterized template output. Functional behavior is unchanged. Surfaced in [`docs/retros/2026-05-10-phase-1-validation.md`](retros/2026-05-10-phase-1-validation.md). Fix in Phase 4: regenerate the small example as part of the medium/large regeneration pass.
-- **`stack=other` defaults are all asked of the user.** [`skills/context-engineering/generator/decisions.md`](../skills/context-engineering/generator/decisions.md) "Stack and deploy-target defaults" table lists `(ask user)` for every command when `stack=other`. For a no-runtime project (like this one) the answer is "(none)" for almost everything, which is reasonable. For other `other` shapes (e.g., a Rust CLI, a Go service) the user fills in. No action needed unless a pattern emerges across multiple `other` runs.
-- **`stack_summary_one_line` for `stack=other` + `deploy_target=none` is not in the table.** Decisions table covers Next/React/Node/Python permutations but not `other + none`. The dog-food run derived "Skill-development workspace (markdown only, no runtime)" by hand. If `other + none` recurs, add a row to the table or a fallback rule.
+(none — drained 2026-05-10 as part of Phase 3.)
 
 ## Deferred feature ideas
 
 (none yet)
+
+## Resolved items
+
+- **`env_pattern` doubled-period in emitted hook script.** *Origin: Phase 1.* Default `env_pattern` strings in [`skills/context-engineering/generator/decisions.md`](../skills/context-engineering/generator/decisions.md) end with periods and the hook template appends another. Cosmetic.
+  - **Disposition (2026-05-10, Phase 3 drain): bucket (b) — moved to [`docs/FUTURE.md`](FUTURE.md) "Continuous-mode watch items".** Template-text fix, not example regen; outside Phase 4's scope. Wait for second instance per ROADMAP continuous-mode discipline.
+- **`examples/output-small/` is stale relative to current templates.** *Origin: Phase 1.* The `"//"` comment fields in `settings.json` and the comment headers + echo bodies in the three hook scripts diverge from current parameterized template output. Functional behavior unchanged.
+  - **Disposition (2026-05-10, Phase 3 drain): bucket (a) — Phase 4.** Phase 4 scope expanded in this drain to explicitly cover `output-small` regeneration alongside medium and large.
+- **`stack=other` defaults are all asked of the user.** *Origin: Phase 1.* For no-runtime projects the answer is "(none)" for almost everything. Reasonable behavior; for other `other` shapes (e.g., a Rust CLI) the user fills in.
+  - **Disposition (2026-05-10, Phase 3 drain): bucket (c) — closed.** No recurring user friction. If a pattern emerges across multiple `other` runs, re-open.
+- **`stack_summary_one_line` for `stack=other` + `deploy_target=none` is not in the table.** *Origin: Phase 2 dog-food.* Decisions table covers Next/React/Node/Python permutations but not `other + none`. The dog-food run derived "Skill-development workspace (markdown only, no runtime)" by hand.
+  - **Disposition (2026-05-10, Phase 3 drain): bucket (b) — moved to [`docs/FUTURE.md`](FUTURE.md) "Continuous-mode watch items".** Decisions-table fix, not example regen; outside Phase 4's scope. Wait for second `stack=other`-class project before extending the table.
 
 ## Cross-references
 

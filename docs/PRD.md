@@ -7,7 +7,6 @@
 - `context-engineering` — scaffolds `AGENTS.md`, `CLAUDE.md`, `.claude/rules/`, `.claude/settings.json`, `.claude/hooks/`, and the `docs/` shape (PRD, ARCHITECTURE, DECISIONS, ROADMAP, retros).
 - `prd-creator` — interview-driven PRD generation.
 - `design-system-bootstrap` — token-first design-system scaffolding.
-- `brand-voice` — brand-voice discovery, guideline generation, and enforcement.
 
 The "product" is the markdown content of these skills. They are consumed locally by Claude Code via symlinks in `~/.claude/skills/` and by Codex via `~/.codex/skills/` (when applicable). There is no deployed runtime application.
 

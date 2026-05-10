@@ -10,7 +10,7 @@ See `README.md` for product overview and stack.
 
 ## What this project is
 
-Skill-development workspace for the `context-engineering` skill (and sibling skills like `prd-creator`, `design-system-bootstrap`, `brand-voice`). The "product" here is a set of installable Claude Code / Codex skills that scaffold AI-assisted coding projects. No deployed application; output is consumed by Claude Code via symlinks in `~/.claude/skills/`. Single developer.
+Skill-development workspace for the `context-engineering` skill (and sibling skills `prd-creator`, `design-system-bootstrap`). The "product" here is a set of installable Claude Code / Codex skills that scaffold AI-assisted coding projects. No deployed application; output is consumed by Claude Code via symlinks in `~/.claude/skills/`. Single developer.
 
 ---
 

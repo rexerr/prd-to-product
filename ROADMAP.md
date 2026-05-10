@@ -101,11 +101,11 @@ Pre-work and dog-food run in the same session because the quick wins are ~20 lin
 
 **Tasks:**
 
-- [ ] Read SKILL.md of every skill in `skills/`: `context-engineering`, `prd-creator`, `design-system-bootstrap`, `brand-voice` (and any others). For each, audit the `description` field against the "describes when to trigger this" standard. Edits land **directly in each skill's `SKILL.md` file** (replacing summary-shaped descriptions with trigger-shaped ones). Commit each edit with a short note on what was wrong.
-- [ ] Categorize each skill against Thariq's 9 categories: Library/API Reference, Product Verification, Data Fetching, Business Process Automation, Code Scaffolding, Code Quality/Review, CI/CD, Runbooks, Infrastructure Ops.
-- [ ] Document the category gaps in **`docs/FUTURE.md`** (created in Phase 2). For each gap, write one line: "Category X — gap exists / no real failure yet" or "Category X — gap exists, real failure: [specific moment]." Only the gaps with a real failure become candidates for future skill development.
-- [ ] Drain `docs/PARKING_LOT.md` items captured during Phase 2's dog-food. Each becomes either: (a) a Phase 4+ task, (b) a `FUTURE.md` entry, or (c) closed as "not a real concern."
-- [ ] Write the phase retro to `docs/retros/YYYY-MM-DD-phase-3-ecosystem-audit.md`.
+- [x] Read SKILL.md of every skill in `skills/`: `context-engineering`, `prd-creator`, `design-system-bootstrap` (and any others). For each, audit the `description` field against the "describes when to trigger this" standard. Edits land **directly in each skill's `SKILL.md` file** (replacing summary-shaped descriptions with trigger-shaped ones). Commit each edit with a short note on what was wrong. **Audit result (2026-05-10): all three descriptions were already trigger-shaped — verb phrases, "Use when…" exemplars, explicit negative cases. No edits needed.** (The `brand-voice` reference originally on this line was struck — see Phase 3 retro; the installed `brand-voice:*` plugins are upstream Anthropic, not this repo's work.)
+- [x] Categorize each skill against Thariq's 9 categories: Library/API Reference, Product Verification, Data Fetching, Business Process Automation, Code Scaffolding, Code Quality/Review, CI/CD, Runbooks, Infrastructure Ops. **Result: all three skills land in Code Scaffolding; eight categories are uncovered.**
+- [x] Document the category gaps in **`docs/FUTURE.md`** (created in Phase 2). For each gap, write one line: "Category X — gap exists / no real failure yet" or "Category X — gap exists, real failure: [specific moment]." Only the gaps with a real failure become candidates for future skill development.
+- [x] Drain `docs/PARKING_LOT.md` items captured during Phase 2's dog-food. Each becomes either: (a) a Phase 4+ task, (b) a `FUTURE.md` entry, or (c) closed as "not a real concern."
+- [x] Write the phase retro to [`docs/retros/2026-05-10-phase-3-ecosystem-audit.md`](docs/retros/2026-05-10-phase-3-ecosystem-audit.md).
 
 **Done when:** all skill descriptions are trigger-shaped (or confirmed already are), gaps are documented in `FUTURE.md` with real-failure annotations where applicable, parking-lot is drained, retro is written.
 
@@ -115,23 +115,24 @@ Pre-work and dog-food run in the same session because the quick wins are ~20 lin
 
 ---
 
-## Phase 4: Regenerate medium and large abbreviated examples
+## Phase 4: Regenerate small, medium and large abbreviated examples
 
-**Goal:** the abbreviated example outputs (`skills/context-engineering/examples/output-medium-abbreviated.md`, `output-large-abbreviated.md`) reflect pre-refinement output. Bring them current.
+**Goal:** the example outputs (`skills/context-engineering/examples/output-small/`, `output-medium-abbreviated.md`, `output-large-abbreviated.md`) reflect pre-refinement output. Bring them current.
 
 **Failure modes prevented:**
 
-- Users reading the examples see stale patterns (Vercel hardcoded, 5-item recency block, no Commands section, no hooks scaffold). They scaffold projects that don't match what the skill now produces.
+- Users reading the examples see stale patterns (Vercel hardcoded, 5-item recency block, no Commands section, no hooks scaffold, divergent `settings.json` "//" comment fields and hook-script bodies). They scaffold projects that don't match what the skill now produces.
 
 **Tasks:**
 
+- [ ] Regenerate `output-small/` reflecting current parameterized template output: refresh the `"//"` comment fields in `settings.json` and the comment headers + echo bodies in the three hook scripts so they match what the templates emit today. (Added in Phase 3 drain; the small example was Phase 1's regression-target and has drifted since the parameterization landed.)
 - [ ] Regenerate `output-medium-abbreviated.md` reflecting current state: Commands block, tightened recency, parameterized stack, hooks scaffold (modular shape).
 - [ ] Regenerate `output-large-abbreviated.md` reflecting current state.
 - [ ] Pick a different stack for at least one example (e.g., medium = Next.js + Vercel as today; large = something non-Vercel like Python ML on Fly, to demonstrate parameterization).
 - [ ] Confirm small/medium/large form a coherent progression in scale.
 - [ ] Write the phase retro to `docs/retros/YYYY-MM-DD-phase-4-regenerate-examples.md`.
 
-**Done when:** both abbreviated examples reflect current skill state, at least one demonstrates non-Vercel parameterization, retro is written.
+**Done when:** all three example outputs reflect current skill state, at least one of medium/large demonstrates non-Vercel parameterization, retro is written.
 
 **Abort criterion:** if regenerating a medium or large example surfaces a skill gap (e.g., the generator has no template for a pattern the example needs), halt and capture in `docs/PARKING_LOT.md`. Decide whether to add the template now (extending the phase scope) or skip the example shape until later.
 
