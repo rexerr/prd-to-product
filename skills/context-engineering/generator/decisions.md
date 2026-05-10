@@ -10,9 +10,23 @@ The generator should hold answers in a state map with these keys:
 |---|---|---|---|
 | `project_name` | Q1 | string | |
 | `project_description` | Q2 | string (paragraph) | |
+| `project_tagline_one_line` | Q2a | string | One-line tagline used when `source_prd_present == true` and "What this project is" becomes a pointer to PRD.md. |
 | `repo_local_path` | Q3 | absolute path | |
 | `github_repo_url` | Q4 | URL | |
 | `visual_confirmer_name` | Q5 | string | Default: user's first name. |
+| `stack` | Q5a | enum | `nextjs`, `react-vite`, `node-cli`, `python`, `other`. |
+| `deploy_target` | Q5b | enum | `vercel`, `netlify`, `cloudflare`, `fly`, `railway`, `manual`, `none`. |
+| `deploy_target_name` | derived | string | Display name (e.g., "Vercel", "Netlify"). |
+| `deploy_target_has_cli_conflict` | derived | bool | True for Vercel and Netlify (CLI deploys conflict with auto-deploy via GitHub). False for Cloudflare Pages, Fly, Railway, manual, none. |
+| `deploy_cli_name` | derived | string | "Vercel" / "Netlify" / etc. — only used if `deploy_target_has_cli_conflict`. |
+| `stack_summary_one_line` | derived | string | E.g., "Next.js (App Router) on Vercel", "React + Vite on Cloudflare Pages". |
+| `stack_has_client_server_split` | derived | bool | True for `nextjs`, `react-vite` (with backend), false for `node-cli`, `python`. Drives the server-only AI call rule. |
+| `stack_has_ui` | derived | bool | True for `nextjs`, `react-vite`, false for `node-cli`, `python`. Drives whether visual confirmation gates commits. |
+| `uses_visual_confirmation_gate` | derived | bool | True when `stack_has_ui == true` *and* `visual_confirmer_name` is set. Drives the worktree restriction (worktrees break visual confirmation in single-dev-server workflows). False suppresses worktree-restriction rules and the visual-confirmation recency item. |
+| `enforce_rules_as_hooks` | Q5f | bool | When true, emit `.claude/settings.json` and `.claude/hooks/*.sh` to enforce load-bearing rules as actual blocks rather than prose. Default true; user can opt out. |
+| `deploy_cli_lower` | derived | string | Lowercased deploy CLI name for use in shell command matchers (`vercel`, `netlify`). Empty when `deploy_target_has_cli_conflict == false`. |
+| `install_cmd`, `dev_cmd`, `check_cmd`, `test_cmd`, `build_cmd` | Q5c | string | Commands. Defaults inferred from stack. |
+| `env_pattern` | Q5d | string | E.g., "`.env.local` locally; Vercel project env vars in production". |
 | `ai_surface_count` | Q6 | int | 0, 1, 2-3, or 4+. |
 | `ai_surfaces` | Q7–Q15 | list of dicts | One dict per surface. |
 | `model_split_table` | Q16 | string (markdown table) | |
@@ -26,6 +40,66 @@ The generator should hold answers in a state map with these keys:
 | `include_product_rules` | Q27 | bool | |
 | `workflows` | Q30 | list of `{name, description}` | |
 | (all content fills) | Q28–Q35 | strings | Used as direct substitutions. |
+
+## Stack and deploy-target defaults
+
+Defaults inferred from `stack` × `deploy_target`. The user can override any value during intake.
+
+| `stack` | `install_cmd` | `dev_cmd` | `check_cmd` | `test_cmd` | `build_cmd` |
+|---|---|---|---|---|---|
+| `nextjs` | `npm install` | `npm run dev` | `npm run check` | `npm test` (or "not configured") | `npm run build` |
+| `react-vite` | `npm install` | `npm run dev` | `npm run lint && npm run typecheck` | `npm test` | `npm run build` |
+| `node-cli` | `npm install` | (none — not a server) | `npm run lint && npm run typecheck` | `npm test` | `npm run build` |
+| `python` | `uv sync` | (varies) | `ruff check . && mypy .` | `pytest` | (varies) |
+| `other` | (ask user) | (ask user) | (ask user) | (ask user) | (ask user) |
+
+`env_pattern` defaults:
+
+| `deploy_target` | Default `env_pattern` |
+|---|---|
+| `vercel` | `` `.env.local` locally; Vercel project env vars in production. Never commit `.env.local`. `` |
+| `netlify` | `` `.env.local` locally; Netlify site env vars in production. Never commit `.env.local`. `` |
+| `cloudflare` | `` `.dev.vars` locally; Cloudflare Pages env vars in production. Never commit `.dev.vars`. `` |
+| `fly` | `` `.env` locally; `fly secrets` in production. Never commit `.env`. `` |
+| `railway` | `` `.env` locally; Railway project env vars in production. Never commit `.env`. `` |
+| `manual` | (ask user — depends on host) |
+| `none` | `.env` locally only. |
+
+`deploy_target_has_cli_conflict` truth table:
+
+| `deploy_target` | `deploy_target_has_cli_conflict` | `deploy_cli_name` (when conflict) |
+|---|---|---|
+| `vercel` | true | `Vercel` |
+| `netlify` | true | `Netlify` |
+| `cloudflare` | false | (no CLI gate; Wrangler is the standard deploy path for Workers) |
+| `fly` | false | (Fly CLI is the standard deploy path) |
+| `railway` | false | (Railway CLI is the standard deploy path) |
+| `manual` | false | |
+| `none` | false | |
+
+When `deploy_target_has_cli_conflict == true`, the flat-CLAUDE template's "Code rules" emits a "Never use the <deploy_cli_name> CLI" line, and the recency block's primary-constraints anchor (item 3) appends "No <deploy_cli_name> CLI." When false, both are suppressed.
+
+`stack_summary_one_line` is built from stack + deploy_target. Examples:
+
+| `stack` | `deploy_target` | `stack_summary_one_line` |
+|---|---|---|
+| `nextjs` | `vercel` | `Next.js (App Router) on Vercel` |
+| `nextjs` | `netlify` | `Next.js (App Router) on Netlify` |
+| `react-vite` | `cloudflare` | `React + Vite on Cloudflare Pages` |
+| `node-cli` | `fly` | `Node CLI on Fly.io` |
+| `python` | `manual` | `Python (deployed manually)` |
+
+## Server-only AI call rule (conditional)
+
+The `ai-shared.md` rule template carries a "never call AI from a client component" rule. This is only meaningful when `stack_has_client_server_split == true`. For `node-cli` and `python` stacks, suppress the rule (or replace with a stack-appropriate analogue if the project has one — e.g., "AI keys never in user-facing config" for a CLI). When suppressed, also suppress the corresponding recency-block item.
+
+## Redundancy guards
+
+The paper's redundancy finding (LLM context files improve by 2.7% when README is removed) means the practical risk is overlap inside our own outputs. PRD.md, ARCHITECTURE.md, and CLAUDE.md should not all describe the project.
+
+- **PRD redundancy guard.** When `source_prd_present == true` *or* the generator is producing `docs/PRD.md`, the "What this project is" section in CLAUDE.md/AGENTS.md becomes a one-line tagline + `See docs/PRD.md`. Use the `<!-- OPTIONAL: project_description_pointer -->` block in the templates and suppress the `<!-- OPTIONAL: project_description_section -->` block. The user is asked for `project_tagline_one_line` (Q2a, one short sentence) only when this guard fires.
+- **Architecture pointer guard.** When `docs/ARCHITECTURE.md` is being generated, the flat CLAUDE template's "Architecture rules (non-negotiable)" stays (those are behavioral rules, not layout description), but any prose paragraph that restates the layout, folder structure, or data model is dropped. The flat template does not currently include such prose; this guard is documented here so future template edits do not introduce duplication.
+- **Decisions guard.** When `include_decisions_active == true`, constraints already in `DECISIONS_ACTIVE.md` are not restated in the body of CLAUDE.md/AGENTS.md. They may still appear in the recency block if they meet the bar (the recency block is intentionally short and rules already in DECISIONS_ACTIVE are unlikely to clear that bar).
 
 ## Rule shape: flat vs modular
 
@@ -83,6 +157,11 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `claude-commands/session-start.md.template` | always | `.claude/commands/session-start.md` |
 | `codex-config.toml.template` | `codex_usage in ("regular", "occasional")` | `.codex/config.toml` |
 | `agents-skills-README.md.template` | `codex_usage == "regular"` | `.agents/skills/README.md` |
+| `claude-settings.json.template` | `enforce_rules_as_hooks == true` | `.claude/settings.json` |
+| `claude-hooks/README.md.template` | `enforce_rules_as_hooks == true` | `.claude/hooks/README.md` |
+| `claude-hooks/block-env-commit.sh.template` | `enforce_rules_as_hooks == true` | `.claude/hooks/block-env-commit.sh` (chmod +x) |
+| `claude-hooks/block-deploy-cli.sh.template` | `enforce_rules_as_hooks == true and deploy_target_has_cli_conflict == true` | `.claude/hooks/block-deploy-cli.sh` (chmod +x) |
+| `claude-hooks/block-worktree.sh.template` | `enforce_rules_as_hooks == true and uses_visual_confirmation_gate == true` | `.claude/hooks/block-worktree.sh` (chmod +x) |
 
 The flat-shape templates (`claude-rules-flat-CLAUDE.md.template` and `claude-rules-flat-AGENTS.md.template`) and the modular entry-point templates (`AGENTS.md.template`, `CLAUDE.md.template`) are governed by the paired-write rules above, not by this table.
 
@@ -120,18 +199,51 @@ Some markers gate inline cells in tables (e.g., `<!-- OPTIONAL: ux_row -->` in t
 
 ### KEEP AS-IS
 
-`<!-- KEEP AS-IS: <reason> -->` markers do not require substitution and should not be removed. They are documentation for the user that the line they precede is intentionally fixed (e.g., the "Vercel + Next.js" line in AGENTS.md).
+`<!-- KEEP AS-IS: <reason> -->` markers do not require substitution and should not be removed. They are documentation for the user that the line they precede is intentionally fixed.
+
+## Hooks enforcement (parallel to prose rules)
+
+When `enforce_rules_as_hooks == true`, the generator emits `.claude/settings.json` and supporting scripts under `.claude/hooks/`. The rationale is the AGENTS.md study finding that prose rules are interpreted as guidelines; for load-bearing constraints, the right enforcement layer is a hook from the harness, not a sentence in CLAUDE.md.
+
+Hooks emitted:
+
+| Hook script | Always or conditional | Blocks |
+|---|---|---|
+| `block-env-commit.sh` | Always (when `enforce_rules_as_hooks == true`) | `Bash(git add .env*)` — prevents staging env files. |
+| `block-deploy-cli.sh` | When `deploy_target_has_cli_conflict == true` | `Bash(<deploy_cli_lower> *)` — prevents deploy-CLI usage that conflicts with auto-deploy. |
+| `block-worktree.sh` | When `uses_visual_confirmation_gate == true` | `Bash(git worktree *)` and `EnterWorktree` tool — prevents worktree creation that would break visual confirmation. |
+
+The hooks coexist with the prose rules in CLAUDE.md/AGENTS.md. The prose explains *why*; the hook guarantees *that*. Removing one without the other breaks either orientation or enforcement. The prose rules are not removed when hooks are emitted.
+
+Scripts must be `chmod +x` after writing. The generator handles this as part of file emission; users adding new hooks manually must remember to do it themselves.
+
+## JSON-aware substitution
+
+`claude-settings.json.template` carries `<!-- PARAMETERIZE: -->` markers and `"//OPTIONAL"` keys, but the file itself is JSON, not Markdown. The substitution rules are slightly different:
+
+- `<!-- PARAMETERIZE: <key> -->` inside JSON string values: replace as normal (the marker syntax inside a string does not break JSON parsing).
+- `"//OPTIONAL": "<condition>"` keys: gate the JSON object containing them. If the condition is false, drop the *entire enclosing object* (not just the key). When dropping an object inside an array, also drop the trailing comma if it would create a syntax error.
+- `"//"` keys (without `OPTIONAL`): pure documentation. Claude Code ignores keys starting with `//`. Keep them as-is in the output; they are harmless and useful for the user.
+
+After substitution, the generator must validate the output is parseable JSON. If validation fails, the generator reports the file path and the parse error and stops; do not emit a syntactically broken `settings.json`.
 
 ## Recency safeguard renumbering rule
 
-The recency safeguard block in `AGENTS.md.template` and the equivalent in `claude-rules-flat-CLAUDE.md.template` carries items 1–5 always present and items 6 (AI), 7 (vocabulary) conditional.
+The recency safeguard block in `AGENTS.md.template` and the equivalent in `claude-rules-flat-CLAUDE.md.template` carries items 1–2 always present and items 3 (AI), 4 (vocabulary) conditional.
 
-Conditions:
+Always-on items:
 
-- Item 6 (AI client-component constraint) included if `ai_surface_count >= 1`.
-- Item 7 (vocabulary lock) included if vocabulary lock applies (any of `canonical_vocabulary_list` is non-empty).
+1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until `<visual_confirmer_name>` confirms in a running dev server.
 
-When optional items are skipped, renumber the remaining items so the list is contiguous (1, 2, 3, 4, 5 — not 1, 2, 3, 4, 5, 7).
+Conditions for optional items:
+
+- Item 3 (AI client-component constraint) included if `ai_surface_count >= 1` *and* `stack_has_client_server_split == true`. Suppressed for `node-cli` and `python` stacks even if AI surfaces exist.
+- Item 4 (vocabulary lock) included if vocabulary lock applies (any of `canonical_vocabulary_list` is non-empty).
+
+When optional items are skipped, renumber the remaining items so the list is contiguous (1, 2 — not 1, 2, 4).
+
+The block is intentionally short. Items previously in the block (direct-on-main, no deploy CLI, reproduce-before-fixing) live in the body of the template and are not duplicated in the recency block. The principle: items belong in the recency block only if violating them damages product, loses work, or burns a stakeholder, and only if duplicating them genuinely changes agent behavior under attention pressure.
 
 ## Path-scoped rule list (AGENTS.md "Path-scoped rules" section)
 

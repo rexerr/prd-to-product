@@ -27,6 +27,16 @@ Ship the minimum code that solves the task:
 
 If you're at or over the line caps and the weight is speculative flexibility, cut it. Add it back when the second use case shows up.
 
+## Read before you write
+
+Before adding code in a file, understand what's already there:
+
+- Read the file's exports and the immediate caller(s).
+- Read any obvious shared utilities the file imports from.
+- If the file is part of a pattern (route handlers, hooks, model adapters), skim a sibling that already works.
+
+If you do not understand why existing code is structured the way it is, ask before adding to it. "Looks orthogonal to me" is the most dangerous phrase in this codebase. The failure mode this prevents: adding a function next to an existing identical function nobody read, with import-order silently deciding which one wins.
+
 ## Scope check before coding
 
 Before writing any code, state the plan: which files, what changes and why, estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
@@ -41,6 +51,18 @@ When editing existing code, touch only what the task requires:
 - Match existing style even if you'd write it differently.
 
 The test: every changed line should trace directly to the task. If a line in the diff doesn't, drop it.
+
+## Checkpoint between phases of multi-step work
+
+For any task with more than one distinct phase (multi-file refactor, multi-step migration, sequenced debugging), pause between phases and restate:
+
+- What was done in the just-completed phase.
+- What was verified (concrete output, not "the code looks correct" — see "Verification before claiming done").
+- What remains.
+
+Do not continue from a state you cannot describe. If you lose track of where you are, stop and restate before doing more work. The failure mode this prevents: phase 4 of a 6-step refactor goes wrong, phases 5 and 6 land on top of the broken state, and untangling costs more than redoing the whole thing.
+
+This is not the same as the session retro at the end. Retros capture *what was learned*; checkpoints prevent *compounding broken state*.
 
 ## Verification before claiming done
 

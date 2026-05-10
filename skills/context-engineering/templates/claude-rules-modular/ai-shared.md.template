@@ -38,11 +38,30 @@ Rules:
 - <!-- PARAMETERIZE: model_split_rule_1 -->
 - <!-- PARAMETERIZE: model_split_rule_2 -->
 
+<!-- OPTIONAL: server_only_ai_section — include if stack_has_client_server_split == true -->
 ## Server-only AI calls
 
-**Never call the AI layer directly from a client component.** Always route through a Next.js API route.
+**Never call the AI layer directly from a client component.** Always route through a server-side API route or backend handler.
 
-If you find yourself importing the AI SDK or the client file from a `.jsx` file under `features/`, `components/`, or `app/*/page.jsx`, stop. Route through an API route instead.
+If you find yourself importing the AI SDK or the client file from a client component, stop. Route through an API route instead.
+
+## Use the model only for judgment calls
+
+The AI layer is for tasks that require language understanding or judgment. It is not a general-purpose dispatcher.
+
+Use the model for:
+
+- Classification, drafting, summarization, extraction from unstructured text.
+- Tone and rewrites where intent matters more than form.
+- Open-ended decisions where the input is genuinely ambiguous.
+
+Do **not** use the model for:
+
+- Routing, retries, status-code handling, deterministic transforms.
+- Anything a `switch` statement, lookup table, or schema validation already answers.
+- Arithmetic, sorting, deduplication, parsing of well-formed data.
+
+If a status code, schema, or rule already answers the question, plain code answers the question. The failure mode this prevents: model-driven control flow drifts because the prompt accidentally varies on every call. Deterministic logic in code stays deterministic; deterministic logic routed through a model goes flaky in two weeks.
 
 ## Prompt constant naming
 

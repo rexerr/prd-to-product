@@ -5,7 +5,7 @@ description: Scaffold the context structure (AGENTS.md, CLAUDE.md, .claude/rules
 
 # Context engineering skill
 
-Scaffolds the rules and docs that orient an AI agent in a new coding project. Modeled on conventions developed across two production projects. V1 assumes Vercel + Next.js App Router, single developer, single human visual confirmer. Other stacks come later.
+Scaffolds the rules and docs that orient an AI agent in a new coding project. Modeled on conventions developed across two production projects. Stack and deploy target are intake parameters: the generator supports Next.js, React + Vite, Node CLI, Python, or other; deploy targets include Vercel, Netlify, Cloudflare, Fly, Railway, manual, or none. Single developer, single human visual confirmer.
 
 ## When to trigger
 
@@ -50,6 +50,6 @@ Read `principles.md` only when the user asks why a pattern exists, or when you h
 
 ## What this skill does not do
 
-- Does not run on frameworks other than Next.js App Router or deploy targets other than Vercel. Future scope.
 - Does not manage multi-developer workflows, branch policies, or PR review templates. Future scope.
+- Does not handle build-system-specific rules (Turbo, Nx, monorepo layouts). Future scope.
 - Does not write product content (PRD body, domain vocabulary, voice rules). It scaffolds the shape; the user fills the content.

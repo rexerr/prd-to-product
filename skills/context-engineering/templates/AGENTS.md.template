@@ -26,13 +26,33 @@ These are the absolute non-negotiables. The full set is at the bottom of this fi
 
 1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees. No deploy CLI.**
+3. **Direct on `main`. No branches. No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No deploy CLI.
 
 ---
 
+## Commands
+
+The actual commands a session needs. Use these; do not invent alternatives.
+
+- Install: `<!-- PARAMETERIZE: install_cmd -->`
+- Dev server: `<!-- PARAMETERIZE: dev_cmd -->`
+- Type / lint check: `<!-- PARAMETERIZE: check_cmd -->`
+- Test: `<!-- PARAMETERIZE: test_cmd -->`
+- Build: `<!-- PARAMETERIZE: build_cmd -->`
+- Env vars: <!-- PARAMETERIZE: env_pattern -->
+
+---
+
+<!-- OPTIONAL: project_description_section — drop entire section if source_prd_present == true -->
 ## What this project is
 
 <!-- PARAMETERIZE: project_description_one_paragraph -->
+<!-- /OPTIONAL: project_description_section -->
+<!-- OPTIONAL: project_description_pointer — include if source_prd_present == true -->
+## What this project is
+
+<!-- PARAMETERIZE: project_tagline_one_line -->. See `docs/PRD.md`.
+<!-- /OPTIONAL: project_description_pointer -->
 
 <!-- OPTIONAL: workflows_list — include if the project has more than one named workflow -->
 Workflows:
@@ -89,8 +109,7 @@ Full design rule: `.claude/rules/design-system.md`. The lines below are load-bea
 
 ## Tech stack
 
-<!-- KEEP AS-IS: V1 hardcodes Next.js + Vercel -->
-Next.js (App Router) on Vercel. <!-- PARAMETERIZE: additional_stack_summary -->. Full details: `docs/TECH_STACK.md`<!-- OPTIONAL: drop the doc reference if include_tech_stack_doc == false -->.
+<!-- PARAMETERIZE: stack_summary_one_line -->. <!-- PARAMETERIZE: additional_stack_summary -->. Full details: `docs/TECH_STACK.md`<!-- OPTIONAL: drop the doc reference if include_tech_stack_doc == false -->.
 
 ---
 
@@ -152,16 +171,13 @@ Repo-local skills live in `.agents/skills/`. Use them deliberately when the task
 
 ## Before you respond — load-bearing constraints
 
-These are the rules that must not be lost mid-session. Read this block last so it stays in attention.
+These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules live in the body of this file; do not duplicate them here.
 
 1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session. File size cap: 500 lines. Detail: `.claude/rules/session-discipline.md`.
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server. Detail: `.claude/rules/session-discipline.md`.
-3. **Direct on `main`. No branches. No worktrees.** Worktrees break visual confirmation. Detail: `.claude/rules/git-and-deploy.md`.
-4. **No deploy CLI.** Pushes to `main` deploy automatically via Vercel. Detail: `.claude/rules/git-and-deploy.md`.
-5. **Reproduce before fixing.** Write the failing reproduction, then the fix, then verify. Detail: `.claude/rules/session-discipline.md`.
 <!-- OPTIONAL: ai_constraint -->
-6. **Never call the AI layer from a client component.** Always route through an API route. Detail: `.claude/rules/ai-shared.md`.
+3. **Never call the AI layer from a client component.** Always route through an API route. Detail: `.claude/rules/ai-shared.md`.
 <!-- OPTIONAL: vocabulary_constraint -->
-7. **Vocabulary lock applies.** Use only the canonical names listed above. Detail: `AGENTS.md` "Vocabulary lock" section.
+4. **Vocabulary lock applies.** Use only the canonical names listed above. Detail: `AGENTS.md` "Vocabulary lock" section.
 
 If any constraint above conflicts with a request, surface the conflict before acting.

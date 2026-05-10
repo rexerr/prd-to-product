@@ -16,11 +16,20 @@ See `README.md` for product overview and stack.
 
 ---
 
+<!-- OPTIONAL: project_description_section — drop entire section if source_prd_present == true -->
 ## What this project is
 
 <!-- PARAMETERIZE: project_description_one_paragraph -->
 
 ---
+<!-- /OPTIONAL: project_description_section -->
+<!-- OPTIONAL: project_description_pointer — include if source_prd_present == true -->
+## What this project is
+
+<!-- PARAMETERIZE: project_tagline_one_line -->. See `docs/PRD.md`.
+
+---
+<!-- /OPTIONAL: project_description_pointer -->
 
 ## Primary constraints (read before doing anything)
 
@@ -28,7 +37,20 @@ The full set is at the bottom of this file in "Before you respond." Read this bl
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees. No Vercel CLI.**
+3. **Direct on `main`. No branches. No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No <!-- PARAMETERIZE: deploy_cli_name --> CLI.
+
+---
+
+## Commands
+
+The actual commands a session needs. Use these; do not invent alternatives.
+
+- Install: `<!-- PARAMETERIZE: install_cmd -->`
+- Dev server: `<!-- PARAMETERIZE: dev_cmd -->`
+- Type / lint check: `<!-- PARAMETERIZE: check_cmd -->`
+- Test: `<!-- PARAMETERIZE: test_cmd -->`
+- Build: `<!-- PARAMETERIZE: build_cmd -->`
+- Env vars: <!-- PARAMETERIZE: env_pattern -->
 
 ---
 
@@ -40,7 +62,7 @@ The full set is at the bottom of this file in "Before you respond." Read this bl
 Example shape:
 
 1. **Scoring is deterministic.** All scoring logic lives in `lib/assessmentEngine.js`. The AI never touches the score, the readiness level, the recommended markets, or the risk titles. The AI rewrites descriptions, the headline, and the next-step copy only.
-2. **Never call the AI layer from a client component.** Always route through a Next.js API route.
+2. **Never call the AI layer from a client component.** Always route through a server-side API route. (Only relevant when the project has a client/server split.)
 3. **Fallbacks over failures.** If the AI call fails or the API key is missing, fall back to deterministic narrative. Never break this fallback.
 -->
 
@@ -64,9 +86,17 @@ These rules prevent scope creep, hallucinated success, and lost context between 
 - **File size:** ≤ 500 lines before extraction.
 - If a task would exceed these limits, stop before writing code. State the full scope and wait for confirmation.
 
+### Read before you write
+
+Before adding code in a file, read the file's exports, the immediate caller(s), and any obvious shared utilities. If the file is part of a pattern (route handlers, hooks, model adapters), skim a sibling that already works. If you do not understand why existing code is structured the way it is, ask before adding to it. "Looks orthogonal to me" is the most dangerous phrase in this codebase.
+
 ### Scope check before coding
 
 Before writing code, state which files you will touch, what you will change and why, and estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
+
+### Checkpoint between phases of multi-step work
+
+For any task with more than one distinct phase, pause between phases and restate: what was done, what was verified, what remains. Do not continue from a state you cannot describe. Prevents phase 4 of a 6-step refactor going wrong while phases 5 and 6 pile on top of broken state.
 
 ### Verification before claiming done
 
@@ -91,10 +121,13 @@ Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-t
 
 ## Code rules
 
-- Never hardcode secrets. Credentials live in `.env.local` (local) and Vercel env vars (production). Never commit `.env.local`.
-- Never use the Vercel CLI. Pushes to `main` deploy automatically.
-- Always work directly on `main` in `<!-- PARAMETERIZE: repo_local_path -->`. Never create branches or use `git worktree`. Worktrees create isolated copies the dev server can't see, breaking visual verification. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`).
-- Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`) and state "waiting for Vercel deploy." Do not declare the session task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms the deploy reached production.
+- Never hardcode secrets. Credentials live in <!-- PARAMETERIZE: env_pattern -->. Never commit local env files.
+<!-- OPTIONAL: deploy_cli_rule — include if deploy_target_has_cli_conflict == true -->
+- Never use the <!-- PARAMETERIZE: deploy_cli_name --> CLI. Pushes to `main` deploy automatically via <!-- PARAMETERIZE: deploy_target_name -->.
+- Always work directly on `main` in `<!-- PARAMETERIZE: repo_local_path -->`. Do not create branches.
+<!-- OPTIONAL: worktree_restriction — include if uses_visual_confirmation_gate == true. Suppress for CLI/backend-only stacks where worktrees are fine. -->
+- Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`) for this project. Worktrees themselves are a legitimate Git feature; the restriction is workflow-specific.
+- Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`) and state "waiting for <!-- PARAMETERIZE: deploy_target_name --> deploy." Do not declare the session task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms the deploy reached production.
 - Never preemptively pass `-c` config overrides to `git` without asking first.
 <!-- OPTIONAL: stack_constraint_line -->
 - Do not silently change <!-- PARAMETERIZE: critical_invariants -->. Document product-impacting changes in `docs/DECISIONS.md`.
@@ -129,14 +162,13 @@ If a conflict isn't covered above, surface it as an open question. Don't pick si
 
 ## Before you respond — load-bearing constraints
 
-These are the rules that must not be lost mid-session. Read this block last so it stays in attention.
+These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules (direct-on-main, no deploy CLI, reproduce-before-fixing) live in the body of this file; do not duplicate them here.
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines.
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees.**
-4. **No Vercel CLI.**
-5. **Reproduce before fixing.**
 <!-- OPTIONAL: ai_constraint -->
-6. **Never call the AI layer from a client component.**
+3. **Never call the AI layer from a client component.**
+<!-- OPTIONAL: vocabulary_constraint -->
+4. **Vocabulary lock applies.** Use only the canonical names listed in the project vocabulary section.
 
 If any constraint above conflicts with a request, surface the conflict before acting.

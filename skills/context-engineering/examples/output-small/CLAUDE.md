@@ -2,15 +2,32 @@
 
 This file is read automatically at the start of every Claude Code session. Follow these rules for every task in this project.
 
-`AGENTS.md` is a thin pointer that tells Codex to read this file plus Codex-specific additions. `CLAUDE.md` is the single source of truth. If you change a rule here, no mirroring is needed.
-
-See `README.md` for product overview and stack.
-
----
+`AGENTS.md` is a thin pointer that tells Codex to read this file plus Codex-specific additions. `CLAUDE.md` is the single source of truth.
 
 ## What this project is
 
-A single-page contact form for a freelance designer's portfolio site. Visitors fill a name, email, and message; the form posts to an API route that emails the designer via Resend. No database, no auth, no logged-in state.
+A single-page contact form for a freelance designer's portfolio site. See `docs/PRD.md`.
+
+---
+
+## Primary constraints
+
+1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+2. **Visual confirmation gates the commit.** Do not commit UI changes until Jordan confirms in a running dev server.
+3. **Direct on `main`. No branches. No worktrees. No Vercel CLI.**
+
+---
+
+## Commands
+
+The actual commands a session needs. Use these; do not invent alternatives.
+
+- Install: `npm install`
+- Dev server: `npm run dev`
+- Type / lint check: `npm run check`
+- Test: not configured (this project has no test suite)
+- Build: `npm run build`
+- Env vars: `.env.local` locally; Vercel project env vars in production. Never commit `.env.local`.
 
 ---
 
@@ -24,37 +41,14 @@ A single-page contact form for a freelance designer's portfolio site. Visitors f
 
 ## Session discipline
 
-These rules prevent scope creep, hallucinated success, and lost context between sessions.
-
-### Hard limits
-
-- **Bug fix or small tweak:** ≤ 3 files, ≤ 50 lines.
-- **Feature work:** ≤ 300 lines per session.
-- **File size:** ≤ 500 lines before extraction.
-- If a task would exceed these limits, stop before writing code. State the full scope and wait for confirmation.
-
-### Scope check before coding
-
-Before writing code, state which files you will touch, what you will change and why, and estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
-
-### Verification before claiming done
-
-Never claim success based on "the code looks correct."
-
-- UI changes: run `npm run dev`, describe what to look for and on which page, wait for Jordan's visual confirmation.
-- Logic or data changes: run `npm run check`, report results.
-
-### Reproduce before fixing
-
-For any bug, write the failing reproduction first, then the fix, then verify the same reproduction now passes.
-
-### Commit gate — mandatory for UI changes
-
-**Do not commit until Jordan visually confirms the change looks correct.** Workflow: apply changes → `npm run dev` → confirm no build errors → tell Jordan what to look for and on which page → wait for confirmation → commit and push.
-
-### Session retros
-
-Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. At the start of a new session, read the most recent retro before doing anything else.
+- **Hard limits:** bug fix ≤ 3 files / ≤ 50 lines, feature ≤ 300 lines, file ≤ 500 lines. If a task would exceed, stop and state full scope before writing code.
+- **Read before you write.** Read the file's exports, immediate callers, and obvious shared utilities before adding code. "Looks orthogonal to me" is the most dangerous phrase in this codebase.
+- **Scope check before coding.** State files, intended changes, scope estimate. If > 2 files or scope uncertain, wait for confirmation.
+- **Checkpoint between phases of multi-step work.** Pause between phases and restate what was done / verified / left. Don't continue from a state you can't describe.
+- **Verification before claiming done.** UI: run `npm run dev`, tell Jordan what to look for and on which page, wait for visual confirmation. Logic: run `npm run check`, report results.
+- **Reproduce before fixing.** Failing reproduction first, then fix, then verify.
+- **Commit gate (UI changes).** Do not commit until Jordan visually confirms.
+- **Session retros.** Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. Read the most recent retro at session start.
 
 ---
 
@@ -62,42 +56,19 @@ Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-t
 
 - Never hardcode secrets. Credentials live in `.env.local` (local) and Vercel env vars (production). Never commit `.env.local`.
 - Never use the Vercel CLI. Pushes to `main` deploy automatically.
-- Always work directly on `main` in `/Users/jordan/Sites/simple-form`. Never create branches or use `git worktree`. Worktrees create isolated copies the dev server can't see, breaking visual verification. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`).
-- Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`https://github.com/jordan-d/simple-form/commit/<sha>`) and state "waiting for Vercel deploy." Do not declare the session task complete until Jordan confirms the deploy reached production.
-- Never preemptively pass `-c` config overrides to `git` without asking first.
+- Always work directly on `main` in `/Users/jordan/Sites/simple-form`. Do not create branches.
+- Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`) for this project.
+- After every push, paste the commit URL (`https://github.com/jordan-d/simple-form/commit/<sha>`) and state "waiting for Vercel deploy." Do not declare done until Jordan confirms production.
 
----
-
-## Decisions log
-
-Log significant decisions in `docs/DECISIONS.md` per its own instructions.
-
----
-
-## Where to look
-
-Read at start of every session: this file, `AGENTS.md`, the most recent file in `docs/retros/`.
-
-Then read the doc that governs what you're about to touch. Source of truth on conflict is the right-hand column:
-
-| Touching | Doc → conflict source of truth |
-|---|---|
-| Product behavior, copy | `docs/PRD.md` |
-| Architecture, data model | `docs/ARCHITECTURE.md` |
-| Status, current phase | `ROADMAP.md` |
-
-If a conflict isn't covered above, surface it as an open question. Don't pick silently.
+Decisions log in `docs/DECISIONS.md`.
 
 ---
 
 ## Before you respond — load-bearing constraints
 
-These are the rules that must not be lost mid-session. Read this block last so it stays in attention.
+Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules (direct-on-main, no Vercel CLI, reproduce-before-fixing) live in the body above; do not duplicate them here.
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines.
 2. **Visual confirmation gates the commit.** Do not commit UI changes until Jordan confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees.**
-4. **No Vercel CLI.**
-5. **Reproduce before fixing.**
 
 If any constraint above conflicts with a request, surface the conflict before acting.

@@ -6,7 +6,7 @@ Use this template when: every project. Required.
 
 # Architecture
 
-Stack: see `package.json`<!-- OPTIONAL: and `docs/TECH_STACK.md` -->. The app is a Next.js App Router project deployed on Vercel.
+Stack: <!-- PARAMETERIZE: stack_summary_one_line -->. <!-- OPTIONAL: tech_stack_doc_pointer --> See `docs/TECH_STACK.md` for the full stack breakdown.
 
 ## <!-- PARAMETERIZE: primary_data_flow_name -->
 

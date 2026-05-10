@@ -9,18 +9,18 @@ Use this template when: every project. Always-on by default.
 
 Always-on agent rule. Governs commits, branches, pushes, and deployments. These rules prevent broken main, lost work, and unintended production state.
 
-## Branches and worktrees
+## Branches<!-- OPTIONAL: branches_and_worktrees_heading_suffix --> and worktrees
 
-- Always work directly on `main` in the main checkout (`<!-- PARAMETERIZE: repo_local_path -->`).
-- Never create branches or worktrees.
-- Never invoke `git worktree`, `EnterWorktree`, `Agent` with `isolation: "worktree"`, or any equivalent. Worktrees create isolated copies the dev server cannot see, breaking visual verification.
+- Always work directly on `main` in the main checkout (`<!-- PARAMETERIZE: repo_local_path -->`). Do not create branches.
 - If a situation seems to call for a branch, stop and ask before proceeding.
+<!-- OPTIONAL: worktree_restriction — include if uses_visual_confirmation_gate == true. Suppress for CLI/backend-only stacks where worktrees are fine. -->
+- Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke `git worktree`, `EnterWorktree`, `Agent` with `isolation: "worktree"`, or any equivalent for this project. Worktrees themselves are a legitimate Git feature (Claude Code uses them for parallel agent work); the restriction is workflow-specific.
 
 ## Commits
 
 - Do not push to GitHub unless the task explicitly says to commit and push. "Commit" alone means commit locally and stop.
 - Never preemptively pass a `-c` git config override (e.g. `commit.gpgsign=false`, `core.editor=`) without asking first.
-- Never hardcode secrets. Credentials live in `.env.local` locally and in Vercel environment variables in production. Never commit `.env.local`.
+- Never hardcode secrets. Credentials follow this project's env pattern: <!-- PARAMETERIZE: env_pattern -->.
 - Stage files explicitly. Avoid `git add -A` or `git add .` when the working tree contains unrelated changes.
 
 ## Push protocol
@@ -28,32 +28,36 @@ Always-on agent rule. Governs commits, branches, pushes, and deployments. These 
 After every push to `main`:
 
 - Paste the resulting commit URL: `<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`.
-- Explicitly state: "waiting for Vercel deploy."
-- Do not declare the task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms production. Wait for visual confirmation, not just Vercel's "Ready" status. Propagation plus browser cache can delay visible-on-production by a minute or two.
+- Explicitly state: "waiting for <!-- PARAMETERIZE: deploy_target_name --> deploy."
+- Do not declare the task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms production. Wait for visual confirmation, not just the deploy provider's status. Propagation plus browser cache can delay visible-on-production by a minute or two.
 
-## Vercel
+<!-- OPTIONAL: deploy_cli_section — include if deploy_target_has_cli_conflict == true -->
+## <!-- PARAMETERIZE: deploy_target_name -->
 
-- Never use the Vercel CLI. Deployments trigger automatically when GitHub receives a push to `main`.
-- Do not run `vercel`, `vercel deploy`, `vercel ls`, `vercel logs`, or any other Vercel CLI command.
+- Never use the <!-- PARAMETERIZE: deploy_cli_name --> CLI. Deployments trigger automatically when GitHub receives a push to `main`.
+- Do not run <!-- PARAMETERIZE: deploy_cli_forbidden_command_examples --> or any other <!-- PARAMETERIZE: deploy_cli_name --> CLI command.
 - Do not poll deployment status or fetch preview URLs programmatically.
 
 ## Why these rules exist
 
-Worktrees: isolated copies don't share the dev server, so visual confirmation of UI changes is impossible from the worktree. Visual confirmation is the commit gate.
-
 Branches: this is a single-developer pre-launch project. Branch overhead has no upside; PR-style review isn't part of the workflow.
 
-No Vercel CLI: deploys trigger from GitHub. Running CLI commands creates parallel deployment paths and confuses which version is "current."
+<!-- OPTIONAL: worktree_why — include if uses_visual_confirmation_gate == true -->
+Worktrees: isolated copies don't share the dev server, so visual confirmation of UI changes is impossible from the worktree. Visual confirmation is this project's commit gate. Worktrees themselves are not bad — Claude Code uses them for parallel agent work — they just can't coexist with this specific gate.
 
-Push protocol: production confirmation is a human-in-the-loop check, not an automated one. Vercel's "Ready" status doesn't account for browser cache or CDN propagation.
+<!-- OPTIONAL: deploy_cli_why — include if deploy_target_has_cli_conflict == true -->
+No <!-- PARAMETERIZE: deploy_cli_name --> CLI: deploys trigger from GitHub. Running CLI commands creates parallel deployment paths and confuses which version is "current."
+
+Push protocol: production confirmation is a human-in-the-loop check, not an automated one. The deploy provider's "Ready" status doesn't account for browser cache or CDN propagation.
 
 ## Gotchas
 
 Experience-derived failure modes. Each is a real failure that has happened more than once.
 
-- **Vercel "Ready" is not "live."** CDN propagation and browser cache delay visible-on-production by a minute or two. Wait for human confirmation, not the platform's status.
+- **The deploy provider's "Ready" is not "live."** CDN propagation and browser cache delay visible-on-production by a minute or two. Wait for human confirmation, not the platform's status.
 - **`git add -A` sweeps in `.env.local`.** When the working tree has unrelated changes, `-A` and `.` will stage secrets, large binaries, and untracked debug files. Stage explicit paths.
-- **A worktree feels harmless and breaks visual confirmation silently.** The dev server points at the main checkout. The worktree has its own working copy. Changes you "see" in the worktree are not what `npm run dev` is rendering.
+<!-- OPTIONAL: worktree_gotcha — include if uses_visual_confirmation_gate == true -->
+- **A worktree feels harmless and breaks visual confirmation silently.** The dev server points at the main checkout. The worktree has its own working copy. Changes you "see" in the worktree are not what `npm run dev` is rendering. (Outside this workflow, worktrees are fine.)
 - **Pushing without being asked feels efficient and corrupts the workflow.** "Commit" alone means commit locally and stop. The push protocol exists because production confirmation is human-in-the-loop, and a surprise push skips the loop.
 
 ## Cross-references

@@ -54,6 +54,65 @@ Then in a second call:
 4. **GitHub repo URL.** Format `https://github.com/<org>/<repo>`. → `github_repo_url`.
 5. **Visual confirmer name.** The human who confirms UI changes in a running dev server. Default: the user's first name. → `visual_confirmer_name`.
 
+If `source_prd_present == true`, also extract a one-line tagline from the PRD's first paragraph (or ask if extraction fails):
+
+5a. **Project tagline (one line).** Used when CLAUDE.md/AGENTS.md "What this project is" becomes a pointer to PRD.md. Free text. → `project_tagline_one_line`.
+
+## Cluster 1.5: Stack and commands
+
+This cluster drives the Commands block in AGENTS.md/CLAUDE.md (the paper's strongest empirical positive on context files: tools mentioned in context get used; tools not mentioned almost never do). It also drives stack-conditional rules (server-only AI calls, deploy-CLI restrictions).
+
+Branching first:
+
+5b. **Stack.** Pick the closest:
+   - **Next.js** — App Router, Pages Router, or either.
+   - **React + Vite** — SPA, no Next.js.
+   - **Node CLI** — command-line tool, no UI.
+   - **Python** — Python project (data, ML, CLI, or service).
+   - **Other** — describe in free text.
+
+→ `stack` enum.
+
+5c. **Deploy target.** Where production runs:
+   - **Vercel** — auto-deploy on push to `main`.
+   - **Netlify** — auto-deploy on push to `main`.
+   - **Cloudflare Pages or Workers** — Wrangler is the standard deploy path.
+   - **Fly.io** — Fly CLI is the standard deploy path.
+   - **Railway** — Railway CLI or auto-deploy.
+   - **Manual** — host varies; user describes.
+   - **None** — local-only, no production target.
+
+→ `deploy_target` enum. Drives `deploy_target_has_cli_conflict`, `deploy_cli_name`, `env_pattern` defaults.
+
+After branching, default the commands per stack from the table in `decisions.md`. Show the defaults to the user in one batch and ask "confirm or override":
+
+5d. **Commands.** Confirm or override the inferred defaults:
+- `install_cmd` — install dependencies.
+- `dev_cmd` — start dev server (or "(none — not a server)" for non-server stacks).
+- `check_cmd` — type/lint check.
+- `test_cmd` — run tests (or "not configured" if there's no test suite).
+- `build_cmd` — production build.
+
+5e. **Env vars pattern.** Confirm or override the deploy-target default. Free text. → `env_pattern`.
+
+5f. **Enforce load-bearing rules as hooks?** (Recommended.)
+   - **Yes** — emit `.claude/settings.json` and `.claude/hooks/*.sh` to block load-bearing rule violations at the harness level (deploy CLI, env-file commits, worktree creation when applicable). Prose in CLAUDE.md explains *why*; hooks guarantee *that*. The AGENTS.md study found prose rules get interpreted as guidelines under attention pressure; hooks do not.
+   - **No** — keep enforcement to prose only. Choose this if you do not want any harness-level blocking, or if you plan to write your own hooks separately.
+
+→ `enforce_rules_as_hooks` bool. Default `true`.
+
+State map keys set by cluster 1.5:
+
+- `stack` — Q5b
+- `deploy_target` — Q5c
+- `install_cmd`, `dev_cmd`, `check_cmd`, `test_cmd`, `build_cmd` — Q5d
+- `env_pattern` — Q5e
+- `enforce_rules_as_hooks` — Q5f
+
+Derived (computed by `decisions.md`, not asked):
+
+- `deploy_target_name`, `deploy_target_has_cli_conflict`, `deploy_cli_name`, `stack_summary_one_line`, `stack_has_client_server_split`.
+
 ## Cluster 2: AI surfaces
 
 **If PRD provided:** scan the PRD for AI mentions (model names, prompt files, AI surfaces, agentic patterns). If found, propose surface count and per-surface answers (name, purpose, audience, model). Present as "I found N AI surfaces in your PRD: [list]. Confirm or correct." Then ask the remaining per-surface fills (paths, prompt constants, prompt rules, output schema) as confirm-or-correct against extraction.
@@ -170,7 +229,7 @@ Free-text fills for the docs templates:
 29. **Architecture content.** `primary_data_flow_name`, `primary_data_flow_steps`, optional `secondary_flow_name`/`secondary_flow_steps`, `data_persistence_paragraph`, `external_integrations_list_or_none`, `folder_structure_summary`.
 30. **Workflow names.** Up to N. → `workflow_<n>_name`, `workflow_<n>_description`.
 31. **Roadmap Phase 1.** `phase_1_name`, `phase_1_goal`, `phase_1_task_placeholder`, `phase_1_done_when`.
-32. **Stack additions beyond Next.js + Vercel.** Database, jobs runner, AI provider, external integrations. → `additional_stack_summary`.
+32. **Stack additions beyond the framework + deploy target captured in cluster 1.5.** Database, jobs runner, AI provider, external integrations. → `additional_stack_summary`.
 33. **Vocabulary lock.** Canonical names and forbidden old values, if any. → `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule`.
 34. **Architecture rules** (only for flat shape). 3–5 numbered architecture rules. → `architecture_rules_numbered_list`.
 35. **Product UX rules** (only for flat shape, if applicable). → `product_ux_rules_list`, `critical_invariants`.
@@ -211,9 +270,30 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 
 - `project_name` — Q1
 - `project_description_one_paragraph` — Q2
+- `project_tagline_one_line` — Q5a (only when `source_prd_present == true` or PRD redundancy guard fires)
 - `repo_local_path` — Q3
 - `github_repo_url` — Q4
 - `visual_confirmer_name` — Q5
+
+### Cluster 1.5: stack and commands
+
+- `stack` — Q5b (state map)
+- `deploy_target` — Q5c (state map)
+- `install_cmd` — Q5d
+- `dev_cmd` — Q5d
+- `check_cmd` — Q5d
+- `test_cmd` — Q5d
+- `build_cmd` — Q5d
+- `env_pattern` — Q5e
+- `enforce_rules_as_hooks` — Q5f (state map; default true)
+- `deploy_target_name` — derived from `deploy_target`
+- `deploy_cli_lower` — derived from `deploy_target` (lowercased CLI name; empty when no CLI conflict)
+- `deploy_target_has_cli_conflict` — derived from `deploy_target`
+- `deploy_cli_name` — derived (only used when `deploy_target_has_cli_conflict == true`)
+- `stack_summary_one_line` — derived from `stack` + `deploy_target`
+- `stack_has_client_server_split` — derived from `stack`
+- `stack_has_ui` — derived from `stack`
+- `uses_visual_confirmation_gate` — derived from `stack_has_ui` and `visual_confirmer_name`
 
 ### Cluster 2: AI surfaces
 
