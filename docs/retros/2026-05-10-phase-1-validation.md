@@ -71,7 +71,16 @@ Copied canonical settings + hooks to `/tmp/phase-1-hook-test/`, chmod +x.
 
 `python3 -m json.tool < settings.json` → OK. `chmod +x` confirmed via `ls -l`. **Result: PASS** at the script level.
 
-Harness-level (does Claude Code actually fire each hook on the matched event?) deferred to follow-up — requires a fresh Claude Code session inside `/tmp/phase-1-hook-test/` rather than firing from this session. The script-level tests rule out three of the four likely culprits named in [ROADMAP.md:34](../../ROADMAP.md): chmod missing, JSON malformed, exit/stderr wrong. Remaining open: confirm `if: "Bash(<pattern>)"` permission syntax and `EnterWorktree` matcher actually fire under the harness. Independent evidence for the latter: this session's deferred-tool list contains `EnterWorktree` as a real tool name, so the matcher is well-formed.
+**Harness-level live-fire (follow-up, completed same day):** ran a fresh Claude Code session in `/tmp/phase-1-hook-test/` and exercised all four blocked operations. All four fired, each surfacing the expected BLOCKED stderr to the model:
+
+| Operation | Hook fired | Result |
+|---|---|---|
+| `git add .env.local` | `block-env-commit.sh` | PASS |
+| `vercel deploy` | `block-deploy-cli.sh` | PASS |
+| `git worktree add ../foo` | `block-worktree.sh` (Bash matcher) | PASS |
+| `EnterWorktree` tool | `block-worktree.sh` (tool matcher) | PASS |
+
+This closes the last open question from the original retro: `if: "Bash(<pattern>)"` permission syntax works inside the inner hook entry, the `EnterWorktree` matcher fires correctly, and exit-2 + stderr surfaces to the model as designed. The hook contract is fully validated end-to-end.
 
 ## Findings worth carrying forward
 
@@ -91,4 +100,4 @@ No skill files modified. No abort triggered.
 - **Phase 2 starts next.** Quick wins (3 session-discipline bullets, principles.md additions) + dog-food the skill on this repo.
 - **Phase 4 should also regenerate the small example**, not just medium/large. The drift surfaced in Task 2 makes it concrete: comment fields in settings.json/hooks are out of sync with current templates.
 - **Cosmetic glitch (env_pattern doubled period)** captured as a candidate Phase 2 or Phase 4 micro-fix. Adding to docs/PARKING_LOT.md when that file is created in Phase 2.
-- **Harness-level hook live-fire** still TODO. Worth running once after Phase 2 so the dog-fooded scaffold is exercised end-to-end. Not a blocker — script-level + JSON parse + tool-name evidence cover the contract.
+- **Harness-level hook live-fire — DONE.** All four hooks fired in a fresh Claude Code session in `/tmp/phase-1-hook-test/` (see Task 3 table above). Hook contract is fully validated.
