@@ -51,7 +51,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - Type / lint check: `<!-- PARAMETERIZE: check_cmd -->`
 - Test: `<!-- PARAMETERIZE: test_cmd -->`
 - Build: `<!-- PARAMETERIZE: build_cmd -->`
-- Env vars: <!-- PARAMETERIZE: env_pattern -->
+- Env vars: `<!-- PARAMETERIZE: env_pattern -->`
 
 ---
 
@@ -133,7 +133,7 @@ Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-t
 
 ## Code rules
 
-- Never hardcode secrets. Credentials live in <!-- PARAMETERIZE: env_pattern -->. Never commit local env files.
+- Never hardcode secrets. Credentials live in `<!-- PARAMETERIZE: env_pattern -->`. Never commit local env files.
 <!-- OPTIONAL: deploy_cli_rule — include if deploy_target_has_cli_conflict == true -->
 - Never use the <!-- PARAMETERIZE: deploy_cli_name --> CLI. Pushes to `main` deploy automatically via <!-- PARAMETERIZE: deploy_target_name -->.
 - Always work directly on `main` in `<!-- PARAMETERIZE: repo_local_path -->`. Do not create branches.

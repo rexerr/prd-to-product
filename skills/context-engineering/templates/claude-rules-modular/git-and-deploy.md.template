@@ -20,7 +20,7 @@ Always-on agent rule. Governs commits, branches, pushes, and deployments. These 
 
 - Do not push to GitHub unless the task explicitly says to commit and push. "Commit" alone means commit locally and stop.
 - Never preemptively pass a `-c` git config override (e.g. `commit.gpgsign=false`, `core.editor=`) without asking first.
-- Never hardcode secrets. Credentials follow this project's env pattern: <!-- PARAMETERIZE: env_pattern -->.
+- Never hardcode secrets. Credentials follow this project's env pattern: `<!-- PARAMETERIZE: env_pattern -->`.
 - Stage files explicitly. Avoid `git add -A` or `git add .` when the working tree contains unrelated changes.
 
 ## Push protocol

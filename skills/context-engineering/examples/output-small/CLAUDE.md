@@ -27,7 +27,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - Type / lint check: `npm run check`
 - Test: not configured (this project has no test suite)
 - Build: `npm run build`
-- Env vars: `.env.local` locally; Vercel project env vars in production. Never commit `.env.local`.
+- Env vars: `.env.local locally; Vercel project env vars in production. Never commit .env.local.`
 
 ---
 
@@ -58,7 +58,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 
 ## Code rules
 
-- Never hardcode secrets. Credentials live in `.env.local` (local) and Vercel env vars (production). Never commit `.env.local`.
+- Never hardcode secrets. Credentials live in `.env.local locally; Vercel project env vars in production. Never commit .env.local.`. Never commit local env files.
 - Never use the Vercel CLI. Pushes to `main` deploy automatically.
 - Always work directly on `main` in `/Users/jordan/Sites/simple-form`. Do not create branches.
 - Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`) for this project.

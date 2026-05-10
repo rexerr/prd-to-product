@@ -57,13 +57,15 @@ Defaults inferred from `stack` × `deploy_target`. The user can override any val
 
 | `deploy_target` | Default `env_pattern` |
 |---|---|
-| `vercel` | `` `.env.local` locally; Vercel project env vars in production. Never commit `.env.local`. `` |
-| `netlify` | `` `.env.local` locally; Netlify site env vars in production. Never commit `.env.local`. `` |
-| `cloudflare` | `` `.dev.vars` locally; Cloudflare Pages env vars in production. Never commit `.dev.vars`. `` |
-| `fly` | `` `.env` locally; `fly secrets` in production. Never commit `.env`. `` |
-| `railway` | `` `.env` locally; Railway project env vars in production. Never commit `.env`. `` |
+| `vercel` | .env.local locally; Vercel project env vars in production. Never commit .env.local. |
+| `netlify` | .env.local locally; Netlify site env vars in production. Never commit .env.local. |
+| `cloudflare` | .dev.vars locally; Cloudflare Pages env vars in production. Never commit .dev.vars. |
+| `fly` | .env locally; fly secrets in production. Never commit .env. |
+| `railway` | .env locally; Railway project env vars in production. Never commit .env. |
 | `manual` | (ask user — depends on host) |
-| `none` | `.env` locally only. |
+| `none` | .env locally only. |
+
+**Convention: `env_pattern` is a plain string** — no markdown formatting in the value itself. Markdown consumers (template lines that render this in `.md` output) are responsible for wrapping the substituted value in backticks at the substitution site (e.g., `` `<!-- PARAMETERIZE: env_pattern --> ` `` in the template). Shell consumers (`block-env-commit.sh.template`) substitute the plain value into a double-quoted `echo` without backticks, so command-substitution can't fire. This avoids context-dependent stripping logic in the generator and avoids parameter doubling. Same rule applies to any future parameter that needs to appear in both markdown and shell contexts.
 
 `deploy_target_has_cli_conflict` truth table:
 

@@ -33,8 +33,9 @@ Candidates promote to a roadmap phase only when a real failure is observed and r
 
 Per [`ROADMAP.md`](../ROADMAP.md) "Continuous mode" — one-off failures may not be the rule's fault; patterns are. These items have a single observed instance each. Fix when the second instance lands.
 
-- **`env_pattern` doubled-period in emitted hook script.** Default `env_pattern` strings in [`skills/context-engineering/generator/decisions.md`](../skills/context-engineering/generator/decisions.md) end with periods (e.g., ``...Never commit `.env.local`.``) and the hook template appends another period after the marker. Substitution yields a doubled period. Cosmetic, single observation in Phase 1 ([retro](retros/2026-05-10-phase-1-validation.md)). When second instance hits: drop the trailing period in env_pattern defaults, or rephrase the hook template so the marker isn't followed by another period.
 - **`stack_summary_one_line` row missing for `stack=other + deploy_target=none`.** Decisions table in [`skills/context-engineering/generator/decisions.md`](../skills/context-engineering/generator/decisions.md) covers Next/React/Node/Python permutations but not `other + none`. The Phase 2 dog-food run derived "Skill-development workspace (markdown only, no runtime)" by hand. Single observation. When second `stack=other`-class project surfaces: either add a row, or write a fallback rule covering the `other` family.
+
+(The `env_pattern` doubled-period item was resolved in Phase 4 when the second instance landed — see [`PARKING_LOT.md`](PARKING_LOT.md) "Resolved items".)
 
 ---
 

@@ -40,7 +40,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - Type / lint check: `<!-- PARAMETERIZE: check_cmd -->`
 - Test: `<!-- PARAMETERIZE: test_cmd -->`
 - Build: `<!-- PARAMETERIZE: build_cmd -->`
-- Env vars: <!-- PARAMETERIZE: env_pattern -->
+- Env vars: `<!-- PARAMETERIZE: env_pattern -->`
 
 ---
 
