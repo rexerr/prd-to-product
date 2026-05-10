@@ -36,8 +36,9 @@ See `README.md` for product overview and stack.
 The full set is at the bottom of this file in "Before you respond." Read this block first if attention is short.
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+<!-- OPTIONAL: visual_confirmation_primary — include if uses_visual_confirmation_gate == true. Renumber remaining items contiguously when dropped. -->
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No <!-- PARAMETERIZE: deploy_cli_name --> CLI.
+3. **Direct on `main`. No branches.<!-- OPTIONAL: no_worktrees_inline — include if uses_visual_confirmation_gate == true --> No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No <!-- PARAMETERIZE: deploy_cli_name --> CLI.
 
 ---
 
@@ -102,8 +103,9 @@ For any task with more than one distinct phase, pause between phases and restate
 
 Never claim success based on "the code looks correct."
 
-- UI changes: run `npm run dev`, describe what to look for and on which page, wait for <!-- PARAMETERIZE: visual_confirmer_name -->'s visual confirmation.
-- Logic or data changes: run `npm run check`<!-- OPTIONAL: , and `npm run eval` if applicable -->, report results.
+<!-- OPTIONAL: verification_ui_bullet — include if uses_visual_confirmation_gate == true -->
+- UI changes: run `<!-- PARAMETERIZE: dev_cmd -->`, describe what to look for and on which page, wait for <!-- PARAMETERIZE: visual_confirmer_name -->'s visual confirmation.
+- Logic or data changes: run `<!-- PARAMETERIZE: check_cmd -->`<!-- OPTIONAL: , and `npm run eval` if applicable -->, report results.
 
 ### Reproduce before fixing
 
@@ -117,9 +119,11 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 - **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is a single retro read.
 - **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one, which often fires when the model is at peak context-rot.
 
+<!-- OPTIONAL: commit_gate_section — include if uses_visual_confirmation_gate == true -->
 ### Commit gate — mandatory for UI changes
 
-**Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change looks correct.** Workflow: apply changes → `npm run dev` → confirm no build errors → tell <!-- PARAMETERIZE: visual_confirmer_name --> what to look for and on which page → wait for confirmation → commit and push.
+**Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change looks correct.** Workflow: apply changes → `<!-- PARAMETERIZE: dev_cmd -->` → confirm no build errors → tell <!-- PARAMETERIZE: visual_confirmer_name --> what to look for and on which page → wait for confirmation → commit and push.
+<!-- /OPTIONAL: commit_gate_section -->
 
 ### Session retros
 
@@ -135,7 +139,10 @@ Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-t
 - Always work directly on `main` in `<!-- PARAMETERIZE: repo_local_path -->`. Do not create branches.
 <!-- OPTIONAL: worktree_restriction — include if uses_visual_confirmation_gate == true. Suppress for CLI/backend-only stacks where worktrees are fine. -->
 - Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`) for this project. Worktrees themselves are a legitimate Git feature; the restriction is workflow-specific.
+<!-- OPTIONAL: push_protocol_with_deploy — include if deploy_target != "none". Use this form when there's a production deploy to wait for. -->
 - Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`) and state "waiting for <!-- PARAMETERIZE: deploy_target_name --> deploy." Do not declare the session task complete until <!-- PARAMETERIZE: visual_confirmer_name --> confirms the deploy reached production.
+<!-- OPTIONAL: push_protocol_no_deploy — include if deploy_target == "none". No production deploy to wait for. -->
+- Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`).
 - Never preemptively pass `-c` config overrides to `git` without asking first.
 <!-- OPTIONAL: stack_constraint_line -->
 - Do not silently change <!-- PARAMETERIZE: critical_invariants -->. Document product-impacting changes in `docs/DECISIONS.md`.
@@ -173,6 +180,7 @@ If a conflict isn't covered above, surface it as an open question. Don't pick si
 These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules (direct-on-main, no deploy CLI, reproduce-before-fixing) live in the body of this file; do not duplicate them here.
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines.
+<!-- OPTIONAL: visual_confirmation_recency — include if uses_visual_confirmation_gate == true. Renumber remaining items contiguously when dropped. -->
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
 <!-- OPTIONAL: ai_constraint -->
 3. **Never call the AI layer from a client component.**

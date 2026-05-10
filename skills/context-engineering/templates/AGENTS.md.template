@@ -25,8 +25,9 @@ This file carries the rules directly. Sections below are the rule set. There is 
 These are the absolute non-negotiables. The full set is at the bottom of this file in "Before you respond." Read this block first if attention is short.
 
 1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+<!-- OPTIONAL: visual_confirmation_primary — include if uses_visual_confirmation_gate == true. Renumber remaining items contiguously when dropped. -->
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server.
-3. **Direct on `main`. No branches. No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No deploy CLI.
+3. **Direct on `main`. No branches.<!-- OPTIONAL: no_worktrees_inline — include if uses_visual_confirmation_gate == true --> No worktrees.**<!-- OPTIONAL: deploy_cli_constraint_inline --> No deploy CLI.
 
 ---
 
@@ -174,6 +175,7 @@ Repo-local skills live in `.agents/skills/`. Use them deliberately when the task
 These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules live in the body of this file; do not duplicate them here.
 
 1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session. File size cap: 500 lines. Detail: `.claude/rules/session-discipline.md`.
+<!-- OPTIONAL: visual_confirmation_recency — include if uses_visual_confirmation_gate == true. Renumber remaining items contiguously when dropped. -->
 2. **Visual confirmation gates the commit.** Do not commit UI changes until <!-- PARAMETERIZE: visual_confirmer_name --> confirms in a running dev server. Detail: `.claude/rules/session-discipline.md`.
 <!-- OPTIONAL: ai_constraint -->
 3. **Never call the AI layer from a client component.** Always route through an API route. Detail: `.claude/rules/ai-shared.md`.

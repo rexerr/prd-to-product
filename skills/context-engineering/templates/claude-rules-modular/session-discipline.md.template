@@ -66,6 +66,7 @@ This is not the same as the session retro at the end. Retros capture *what was l
 
 ## Verification before claiming done
 
+<!-- OPTIONAL: verification_ui_bullet — include if uses_visual_confirmation_gate == true -->
 - UI changes: describe exactly what to look for and where.
 - Logic or data changes: show output (query result, API response, console log).
 - Never claim success based on "the code looks correct." Run it or describe a concrete verification step.
@@ -90,6 +91,7 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 - **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is paid by reading the most recent retro at session start; that is cheaper than dragging the prior thread along.
 - **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** Autocompact picks the moment for you — often when the model is at peak context-rot and the summary captures the wrong things. A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one.
 
+<!-- OPTIONAL: commit_gate_section — include if uses_visual_confirmation_gate == true -->
 ## Commit gate — mandatory for all UI changes
 
 Do not commit until <!-- PARAMETERIZE: visual_confirmer_name --> visually confirms the change. Workflow:
@@ -105,6 +107,7 @@ Claude is responsible for starting and running the dev server. <!-- PARAMETERIZE
 
 <!-- OPTIONAL: globals_css_high_risk — include if has_design_system == true -->
 `globals.css` is high-risk: a single unclosed brace or malformed value disables all styles on every page. Any session touching `globals.css` requires dev server confirmation before committing, even for one-line changes.
+<!-- /OPTIONAL: commit_gate_section -->
 
 ## Session retros
 

@@ -229,19 +229,34 @@ After substitution, the generator must validate the output is parseable JSON. If
 
 ## Recency safeguard renumbering rule
 
-The recency safeguard block in `AGENTS.md.template` and the equivalent in `claude-rules-flat-CLAUDE.md.template` carries items 1–2 always present and items 3 (AI), 4 (vocabulary) conditional.
+The recency safeguard block in `AGENTS.md.template` and the equivalent in `claude-rules-flat-CLAUDE.md.template` carries item 1 always present and items 2 (visual confirmation), 3 (AI), 4 (vocabulary) conditional.
 
-Always-on items:
+Always-on item:
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
-2. **Visual confirmation gates the commit.** Do not commit UI changes until `<visual_confirmer_name>` confirms in a running dev server.
 
 Conditions for optional items:
 
+- Item 2 (visual confirmation gates the commit) included if `uses_visual_confirmation_gate == true`. Suppressed for no-UI projects (`node-cli`, `python`, `other` without UI). Same gate also drops the visual-confirmation line from "Primary constraints (read before doing anything)" near the top, the "Commit gate" body section, the "UI changes" bullet under "Verification before claiming done", and the "No worktrees" suffix in primary-constraints item 3.
 - Item 3 (AI client-component constraint) included if `ai_surface_count >= 1` *and* `stack_has_client_server_split == true`. Suppressed for `node-cli` and `python` stacks even if AI surfaces exist.
 - Item 4 (vocabulary lock) included if vocabulary lock applies (any of `canonical_vocabulary_list` is non-empty).
 
-When optional items are skipped, renumber the remaining items so the list is contiguous (1, 2 — not 1, 2, 4).
+When optional items are skipped, renumber the remaining items so the list is contiguous (1 — not 1, 2; or 1, 2 — not 1, 3).
+
+## No-UI project handling
+
+When `uses_visual_confirmation_gate == false`, the following content is dropped from the flat-CLAUDE template, the modular AGENTS template, the modular session-discipline template, and the flat-AGENTS Codex-override paragraph:
+
+- Primary-constraints item 2 ("Visual confirmation gates the commit") — both templates.
+- The "No worktrees." suffix on primary-constraints item 3 — both templates.
+- Recency-block item 2 — both templates.
+- Body "Commit gate" section — flat CLAUDE and modular session-discipline.
+- "UI changes" bullet under "Verification before claiming done" — flat CLAUDE and modular session-discipline.
+- The Codex-override paragraph in flat-AGENTS.md.template (the entire override is about visual confirmation).
+- The worktree-restriction code rule (already gated by the same flag — confirm it stays gated).
+- The block-worktree.sh hook and its two `settings.json` entries (already gated).
+
+When `deploy_target == "none"`, the push-protocol body bullet drops the "waiting for `<deploy_target_name>` deploy" wording and the production-confirmation requirement; the user still pastes the commit URL but the agent declares done after the push.
 
 The block is intentionally short. Items previously in the block (direct-on-main, no deploy CLI, reproduce-before-fixing) live in the body of the template and are not duplicated in the recency block. The principle: items belong in the recency block only if violating them damages product, loses work, or burns a stakeholder, and only if duplicating them genuinely changes agent behavior under attention pressure.
 

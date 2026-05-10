@@ -7,6 +7,7 @@ Use this template when: rule_shape == "flat". Pairs with claude-rules-flat-CLAUD
 
 @CLAUDE.md
 
-All project rules are in `CLAUDE.md` (imported above). One Codex-specific override applies:
+All project rules are in `CLAUDE.md` (imported above).<!-- OPTIONAL: codex_override_intro — include if uses_visual_confirmation_gate == true --> One Codex-specific override applies:
 
-**No visual confirmation.** Codex cannot run a browser. For any UI change, run `npm run check`, describe exactly what changed and where, and flag it for <!-- PARAMETERIZE: visual_confirmer_name --> to confirm visually before the change ships. Do not claim the UI is correct.
+<!-- OPTIONAL: codex_visual_override — include if uses_visual_confirmation_gate == true -->
+**No visual confirmation.** Codex cannot run a browser. For any UI change, run `<!-- PARAMETERIZE: check_cmd -->`, describe exactly what changed and where, and flag it for <!-- PARAMETERIZE: visual_confirmer_name --> to confirm visually before the change ships. Do not claim the UI is correct.
