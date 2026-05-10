@@ -1,126 +1,175 @@
 # Example transcript: large project
 
-The large-shape regression test. Modeled on `epost-intelligence-feed` (the feed project audited in `findings.md`). Lands in the **modular shape** because every modular threshold is crossed: three AI surfaces, token system with linter, multiple workflows, voice-and-tone rule.
+The large-shape regression test for structural parameterization. **Modular shape** via the `ai_surface_count >= 2` trigger, but the project is a no-UI Python service on Fly.io — a stack-and-deploy combination that exercises **four distinct suppressions** and a recency-block shrink that the prior Next.js+Vercel large example could not.
 
-This case exercises the regression test definition in `NOTES.md`: the generator must reproduce feed's structure plus the two corrections (AGENTS canonical direction, `DECISIONS_ACTIVE.md` present). If the generator reproduces feed exactly, the criterion has not been applied.
+**Project shape:** Python service on Fly.io, three LLM surfaces in a classification pipeline, no UI (HTTP service consumed by upstream support tooling), single developer, no voice-and-tone (output is internal routing data, not user-facing copy), Codex used regularly for backend pairing.
 
 This is a transcript only. Output sketch follows.
 
 ---
 
+## Cluster 0: source material
+
+- `source_prd_present`: no
+- `source_other_material`: none
+
 ## Cluster 1: project basics
 
-- `project_name`: `intelligence-feed`
-- `project_description_one_paragraph`: A private internal workflow tool. Monitors international shipping and customs sources, surfaces relevant items for human review, and supports content production with three workflows (Sources, Feed Review, Content) and a draft-only publishing model.
-- `repo_local_path`: `/Users/rexc/Sites/intelligence-feed`
-- `github_repo_url`: `https://github.com/rex-org/intelligence-feed`
-- `visual_confirmer_name`: Rex
+- `project_name`: `triage-classifier`
+- `project_description_one_paragraph`: A Python service that ingests customer-support tickets, classifies them by topic and urgency, and produces a routing summary for handoff. Three LLM surfaces work in a pipeline: topic classification → urgency detection → handoff summary. Consumed by the existing support tooling over HTTP; no UI of its own.
+- `repo_local_path`: `/Users/devon/Sites/triage-classifier`
+- `github_repo_url`: `https://github.com/devon-ops/triage-classifier`
+- `visual_confirmer_name`: Devon (named for the intake, but `uses_visual_confirmation_gate` resolves false because `stack_has_ui == false`)
+
+## Cluster 1.5: stack and commands
+
+- `stack`: `python`
+- `deploy_target`: `fly`
+- `install_cmd`: `uv sync`
+- `dev_cmd`: `uv run uvicorn app.main:app --reload`
+- `check_cmd`: `ruff check . && mypy .`
+- `test_cmd`: `pytest`
+- `build_cmd`: (none — Fly builds the Docker image at deploy time)
+- `env_pattern`: `.env locally; fly secrets in production. Never commit .env.` (Fly default; not overridden.)
+- `enforce_rules_as_hooks`: yes
+
+Derived:
+
+- `deploy_target_name`: `Fly.io`
+- `deploy_target_has_cli_conflict`: **false** (Fly CLI is the standard deploy path)
+- `stack_summary_one_line`: `Python service on Fly.io`
+- `stack_has_client_server_split`: **false** (Python service; no client-side execution context)
+- `stack_has_ui`: **false**
+- `uses_visual_confirmation_gate`: **false** (no UI to confirm)
+
+This combination is the structural parameterization demo. Four derived flags resolve false; each gates a distinct suppression downstream.
 
 ## Cluster 2: AI surfaces
 
 - `ai_surface_count`: 3
-- **Surface 1: `feed-enrichment`**
-  - `surface_implementation_path`: `lib/ai/enrich.js`
-  - `surface_api_route_path`: `app/api/feeds/[id]/enrich/route.js`
-  - `surface_system_prompt_constant`: `AI_TAKE_SYSTEM`
-  - `surface_purpose_paragraph`: Background system that enriches every ingested feed item: categorization, Important flag, and AI Take generation. Runs in Inngest, never client-side.
-  - `surface_audience`: internal reviewer
-  - `surface_model_choice`: Haiku primary, Gemini fallback (enrichment only)
-  - `surface_prompt_rules_list`: Keep AI Take short. State what changed and why it may matter to ePost. Note uncertainty. No public copy. No customer action. No reviewer workflow direction.
-  - `surface_output_schema_or_none`: AI Take Schema (canonical in `docs/PRD.md`): WHAT CHANGED, WHY IT MATTERS TO EPOST, RELEVANCE, URGENCY, CROSS-SOURCE NOTE, CONFIDENCE.
-- **Surface 2: `feed-assistant`**
-  - `surface_implementation_path`: `lib/ai/assistant.js`
-  - `surface_api_route_path`: `app/api/feeds/ai-assist/route.js`
-  - `surface_system_prompt_constant`: `ASSISTANT_SYSTEM`
-  - `surface_purpose_paragraph`: Streaming conversational helper inside the Feed Review surface. Triggered from a feed item or selected items, not a standalone page.
-  - `surface_audience`: internal reviewer
-  - `surface_model_choice`: Sonnet
-  - `surface_prompt_rules_list`: Ambient, not chatbot. Reference items in context. No invented facts. No customer guidance without `[REVIEW: ...]` placeholder.
-  - `surface_output_schema_or_none`: streaming text
-- **Surface 3: `content-generation`**
-  - `surface_implementation_path`: `lib/ai/generate.js`
-  - `surface_api_route_path`: `app/api/content/generate/route.js`
-  - `surface_system_prompt_constant`: `CONTENT_ASSISTANT_SYSTEM`
-  - `surface_purpose_paragraph`: Editorial draft generation for INTERNAL, NEWSLETTER, BLOG output types. LINK is excluded; LINK never uses AI generation.
-  - `surface_audience`: customer-facing through reviewer-edited drafts
-  - `surface_model_choice`: Sonnet
-  - `surface_prompt_rules_list`: Follow voice-and-tone rules. Source facts override brand messaging. Customer guidance requires reviewer approval; emit `[REVIEW: ...]` placeholders. No invented metrics. INTERNAL/NEWSLETTER/BLOG produce drafts. LINK skips this surface entirely.
-  - `surface_output_schema_or_none`: per-output-type templates
+
+**Surface 1: `topic-classifier`**
+- `surface_implementation_path`: `app/ai/topic.py`
+- `surface_api_route_path`: `app/api/classify.py`
+- `surface_system_prompt_constant`: `TOPIC_CLASSIFIER_SYSTEM`
+- `surface_purpose_paragraph`: Reads a support ticket and assigns one of a fixed topic taxonomy (Billing, Account, Product, Technical, Other). Used to route the ticket to the right team queue.
+- `surface_audience`: internal support routing (not customer-visible)
+- `surface_model_choice`: Haiku
+- `surface_prompt_rules_list`: Topic must be from the fixed taxonomy. No invented categories. If a ticket genuinely doesn't fit, choose `Other` rather than guessing. Confidence threshold: low-confidence routing falls back to Other plus a flag for human review.
+- `surface_output_schema_or_none`: `{ topic: enum, confidence: float }`
+
+**Surface 2: `urgency-detector`**
+- `surface_implementation_path`: `app/ai/urgency.py`
+- `surface_api_route_path`: `app/api/classify.py` (same route — composes the two classifiers)
+- `surface_system_prompt_constant`: `URGENCY_DETECTOR_SYSTEM`
+- `surface_purpose_paragraph`: Reads the ticket and assigns one of four urgency levels (Critical, High, Normal, Low) based on explicit signals (system down, blocked, time-sensitive) — not on the customer's tone.
+- `surface_audience`: internal support routing
+- `surface_model_choice`: Haiku
+- `surface_prompt_rules_list`: Score on explicit signals only. Do not infer urgency from emotional tone. Default to Normal when signals are ambiguous. Reasoning trace required (one short sentence citing the signal that justifies the level).
+- `surface_output_schema_or_none`: `{ urgency: enum, reasoning: string }`
+
+**Surface 3: `summary-generator`**
+- `surface_implementation_path`: `app/ai/summary.py`
+- `surface_api_route_path`: `app/api/summarize.py`
+- `surface_system_prompt_constant`: `SUMMARY_GENERATOR_SYSTEM`
+- `surface_purpose_paragraph`: Produces a two-sentence handoff summary for the support agent who will own the ticket: what the customer reported, what's been tried, and what the suggested next action is.
+- `surface_audience`: internal support agents (the receiving team)
+- `surface_model_choice`: Sonnet
+- `surface_prompt_rules_list`: Two sentences maximum. Cite specific ticket details, not paraphrase. Flag any ticket where the customer's request is genuinely unclear; never invent a "what's been tried" if the ticket doesn't say.
+- `surface_output_schema_or_none`: `{ summary: string }`
+
 - `model_split_table`:
-  | Client   | Model ID                    | Used for |
-  | -------- | --------------------------- | -------- |
-  | `haiku`  | `claude-haiku-4-5-20251001` | Background enrichment |
-  | `sonnet` | `claude-sonnet-4-6`         | Assistant + editorial generation |
-- `ai_client_path`: `lib/ai/client.js`
-- `ai_prompts_path`: `lib/ai/prompts.js`
+  | Client | Model ID | Used for |
+  | --- | --- | --- |
+  | `haiku` | `claude-haiku-4-5-20251001` | topic + urgency classification |
+  | `sonnet` | `claude-sonnet-4-6` | handoff summary |
+- `ai_client_path`: `app/ai/client.py`
+- `ai_prompts_path`: `app/ai/prompts.py`
 
-## Cluster 3: design system
+## Cluster 3: design system and UX
 
-- `design_shape`: `tokens_with_linter`. Token CSS at `design-system/colors_and_type.css`, linter `npm run check:tokens` wired into `npm run check`.
-- `apply_design_heuristics`: yes
-- Token-system fills include: typography (Geist sans, Chivo Mono for UI labels), motion (`--dur-fast` + `--ease-out`), icons (Material Icons Outlined only), layout (240px sidebar plus scrollable main), indicator vocabulary (status chip / type badge / category tag / relevance chip / output history chip / alert / banner / badge), naming taboo (no pill, no label, no bubble), button hierarchy (primary, approve, secondary, tertiary, ghost, with destructive variants), forms, things to avoid (no gradients, no Tailwind, no shadcn, no Instrument Serif).
-- Three load-bearing one-liners for AGENTS.md instant-recall block: every color/spacing/radius/shadow uses a CSS custom property; Geist for body, Chivo Mono for UI labels; Material Icons Outlined only.
-- Design heuristics specifics: `action_ceiling_count` = 3 (Approve, Skip, Add to chat). `miller_application` = "no card body shows more than 7 distinct content blocks before requiring expansion." `aria_specific_rules` = ".btn-icon requires aria-label; aria-expanded on accordion toggles; aria-live=polite on assistant message thread."
+- `design_shape`: `none` (Python service, no UI)
+- `apply_design_heuristics`: skipped
 
 ## Cluster 4: voice and tone
 
-- `voice_and_tone`: yes
-- Source hierarchy: approved brand book → strategic positioning → public website → discovery summaries → general practice.
-- Brand position, primary brand line ("Global shipping. Zero surprises."), voice characteristics (calm confidence, problem-first, concrete, advisory, plainspoken, active, efficient, human), preferred terms (resilience, orchestration, infrastructure, predictability, DDP, landed cost, customs, etc.), forbidden terms (seamless, end-to-end, streamlined, best-in-class, simplify, leverage, cutting-edge, scalable, innovative, disruptive, revolutionary), positioning risks (do not sound like only a carrier reseller, do not overstate automation, etc.).
+- `voice_and_tone`: **no** (output is internal routing data and internal handoff summaries; no brand voice concern)
 
 ## Cluster 5: conditional patterns
 
 - `include_parking_lot`: yes
-- `include_decisions_active`: **yes** (this is one of the two corrections; feed had only `decisions-history.md`)
-- `include_future`: yes
+- `include_decisions_active`: yes
+- `include_future`: yes (V2 list: switch from API LLM to fine-tuned classifier for high-volume topics; add streaming summary for real-time agent UI; per-team confidence thresholds)
 - `codex_usage`: regular → emit both `.codex/config.toml` and `.agents/skills/README.md`
-- `canonical_workflow_doc_name`: `CONTENT_SYSTEM` → `docs/CONTENT_SYSTEM.md` is the canonical tiebreaker
-- `include_product_rules`: yes
+- `canonical_workflow_doc_name`: none
+- `include_product_rules`: no (PRD plus per-surface AI rules carry the load)
+- `external_skill_references`: none
 
 ## Cluster 6: content fills
 
 (condensed)
 
-- PRD content captures the three workflows, the reviewer audience, the AI Take Schema, the output type taxonomy with vocabulary lock.
-- Architecture content captures the ingestion → enrichment → review → content production pipeline, Neon Postgres, Inngest, WordPress draft publishing.
-- Workflows: 1) Sources (manage and monitor RSS), 2) Feed Review (primary daily review), 3) Content (publishing workspace).
-- `additional_stack_summary`: Neon Postgres, Inngest for background jobs, Tiptap, TanStack Table.
-- Vocabulary lock: canonical `INTERNAL`, `NEWSLETTER`, `BLOG`, `LINK`, `ALERT`. Forbidden `internal-brief`, `customer-newsletter`, `weekly-news-roundup`, `news-update`, `breaking-alert`.
-- Product rules: 17 rules sourced from PRD and CONTENT_SYSTEM (every status answers "what next," Feed Review is daily triage, two actions only, no auto drafts, no auto publish, INTERNAL/NEWSLETTER/BLOG create drafts, LINK direct-publish, fallbacks over failures, vocabulary lock applies, do not build ALERT, etc.).
+- PRD content captures the three-surface pipeline, the internal-support audience, the "tickets routed late + summaries inconsistent" problem, and the five-step workflow (ingest → classify topic → detect urgency → generate summary → write back to support tool).
+- Architecture content captures the FastAPI service, async LLM calls with retry, Postgres for ticket state and classification audit log, no caching of LLM responses (audit trail must reflect real model output), structured JSON logging.
+- `additional_stack_summary`: FastAPI, Postgres (Fly Postgres add-on), Anthropic SDK, structlog for JSON logs.
+- Workflows: single primary workflow (classification pipeline). The three AI surfaces are pipeline stages, not parallel workflows.
+- Vocabulary lock: none. Topic and urgency taxonomies live in `docs/PRD.md` and the prompt constants; no project-wide vocabulary lockdown across docs.
+
+## Rule shape determination
+
+| Trigger | Value | Triggers modular? |
+|---|---|---|
+| `ai_surface_count >= 2` | **3** | **yes** |
+| `design_shape == "tokens_with_linter"` | none | no |
+| `len(workflows) > 1` | 1 | no |
+| `voice_and_tone == true` | no | no |
+
+**Result: modular**, driven entirely by the AI-surface count.
+
+## Suppression cascade (the demo)
+
+The combination `stack=python + deploy_target=fly + design_shape=none + voice_and_tone=no` triggers four distinct suppressions in the emitted output. Each suppression is documented in [`decisions.md`](../generator/decisions.md) and gates real content drops.
+
+| Flag | Value | Suppresses |
+|---|---|---|
+| `uses_visual_confirmation_gate` | false | Recency item 2, "No worktrees." suffix on primary-constraints item 3, body Commit gate section, UI bullet under Verification, Codex visual-confirmation override paragraph in AGENTS.md, `block-worktree.sh` hook + 2 `settings.json` entries |
+| `stack_has_client_server_split` | false | `ai-shared.md` rule file, recency item 3 (AI client-component constraint) |
+| `deploy_target_has_cli_conflict` | false | "Never use the X CLI" line in Code rules, "No X CLI" inline suffix on primary-constraints item 3, `block-deploy-cli.sh` hook + its `settings.json` entry |
+| `voice_and_tone` | false | `voice-and-tone.md` rule file |
 
 ## Confirmation
 
-> **Skill:** Rule shape: **modular**. Three AI surfaces, token-system-with-linter design, three workflows, voice-and-tone rule. All four modular thresholds crossed.
+> **Skill:** Rule shape: **modular**. Three AI surfaces; the other three triggers are not crossed.
 >
-> **Direction:** AGENTS canonical, CLAUDE.md is `@AGENTS.md`. (Correction 1: feed had this direction already.)
+> **Direction:** AGENTS canonical, CLAUDE.md is `@AGENTS.md`.
 >
-> **Decisions split:** `DECISIONS.md` plus `DECISIONS_ACTIVE.md` present. (Correction 2: feed had only `decisions-history.md`.)
+> **Hooks scaffold:** `block-env-commit.sh` only. Both other hooks suppressed by `uses_visual_confirmation_gate == false` and `deploy_target_has_cli_conflict == false`. The minimal hook scaffold case.
+>
+> **Recency block:** one item (hard scope limits). Items 2–4 all suppressed by the flag cascade above.
 >
 > **Files to write:**
-> - `AGENTS.md` (canonical, with recency safeguard items 1–7 including AI and vocabulary)
+> - `AGENTS.md` (canonical, modular, minimal recency)
 > - `CLAUDE.md` (one line: `@AGENTS.md`)
 > - `ROADMAP.md`
-> - `FUTURE.md` (or `docs/FUTURE.md`)
+> - `FUTURE.md` (V2 list)
 > - `.claude/commands/session-start.md`
+> - `.claude/settings.json` (one hook only)
+> - `.claude/hooks/block-env-commit.sh` + `README.md`
 > - `.claude/rules/git-and-deploy.md`
 > - `.claude/rules/session-discipline.md`
-> - `.claude/rules/product-rules.md`
-> - `.claude/rules/voice-and-tone.md`
-> - `.claude/rules/design-system.md`
-> - `.claude/rules/design-heuristics.md`
-> - `.claude/rules/ai-shared.md`
-> - `.claude/rules/ai-feed-enrichment.md`
-> - `.claude/rules/ai-feed-assistant.md`
-> - `.claude/rules/ai-content-generation.md`
+> - `.claude/rules/ai-topic-classifier.md`
+> - `.claude/rules/ai-urgency-detector.md`
+> - `.claude/rules/ai-summary-generator.md`
 > - `.codex/config.toml`
 > - `.agents/skills/README.md`
 > - `docs/PRD.md`
 > - `docs/ARCHITECTURE.md`
-> - `docs/CONTENT_SYSTEM.md` (named canonical workflow doc; the user fills the body)
 > - `docs/DECISIONS.md`
 > - `docs/DECISIONS_ACTIVE.md`
 > - `docs/PARKING_LOT.md`
 > - `docs/retros/README.md`
+>
+> **Not written:** `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `product-rules.md`, `ai-shared.md`, `block-deploy-cli.sh`, `block-worktree.sh`. Each absence traces to a specific suppression flag, not to a forgotten template.
 >
 > Proceed?
 
@@ -128,17 +177,4 @@ This is a transcript only. Output sketch follows.
 
 ## Output sketch
 
-Structural sketch only. The full file shapes follow the modular templates with all conditional sections enabled.
-
-Key checks for the regression test:
-
-- `AGENTS.md` is canonical. `CLAUDE.md` is one line. (Correction 1.)
-- `docs/DECISIONS_ACTIVE.md` exists with the assessment-shape promotion criteria. (Correction 2.)
-- `AGENTS.md` "Before you respond" block has all seven items (AI client-component constraint, vocabulary lock both included).
-- `path_scoped_rule_list` in AGENTS.md "Path-scoped rules" section reads: `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `ai-shared.md`, `ai-feed-enrichment.md`, `ai-feed-assistant.md`, `ai-content-generation.md`.
-- Each `ai-<surface>.md` file has substituted `paths:` frontmatter — no `<!-- PARAMETERIZE: ... -->` markers remain inside YAML.
-- The "When in doubt" table in AGENTS.md includes the workflow row pointing at `docs/CONTENT_SYSTEM.md`.
-- The vocabulary lock section in AGENTS.md carries both the canonical and forbidden lists.
-- The Codex section at the bottom of AGENTS.md is present.
-
-If any of these checks fail, the generator has a bug. If the file list matches but the corrections are missing (CLAUDE canonical, no `DECISIONS_ACTIVE.md`), the regression test framing is wrong and the generator is reproducing feed exactly instead of applying the corrections.
+See `output-large-abbreviated.md` for the structural sketch and the regression checks this case verifies.

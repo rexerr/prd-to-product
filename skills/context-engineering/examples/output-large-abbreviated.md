@@ -1,127 +1,162 @@
 # Output sketch: large project (abbreviated)
 
-Companion to `transcript-large.md`. The large case is the regression test against feed plus the two corrections from `NOTES.md`. No full file tree; structural sketch with the key checks.
+Companion to [`transcript-large.md`](transcript-large.md). The large case is the **structural parameterization regression test**: a no-UI Python service on Fly.io with three AI surfaces. Lands in modular shape via `ai_surface_count >= 2`, but the no-UI + no-CLI-conflict + no-voice-and-tone combination forces a four-flag suppression cascade visible across the file tree, hooks scaffold, recency block, and rule directory.
 
 ## File tree
 
 ```
-/Users/rexc/Sites/intelligence-feed/
-├── AGENTS.md                              # canonical, modular shape
-├── CLAUDE.md                              # one line: @AGENTS.md
+/Users/devon/Sites/triage-classifier/
+├── AGENTS.md                          # canonical, modular shape, minimal recency
+├── CLAUDE.md                          # one line: @AGENTS.md
 ├── ROADMAP.md
-├── FUTURE.md                              # at root
+├── FUTURE.md                          # V2 list
 ├── .codex/
 │   └── config.toml
 ├── .agents/
 │   └── skills/
-│       └── README.md
+│       └── README.md                  # codex_usage == "regular"
 ├── .claude/
+│   ├── settings.json                  # block-env-commit only
 │   ├── commands/
 │   │   └── session-start.md
+│   ├── hooks/
+│   │   ├── README.md
+│   │   └── block-env-commit.sh        # the only hook emitted
 │   └── rules/
-│       ├── git-and-deploy.md              # always-on
-│       ├── session-discipline.md          # always-on
-│       ├── product-rules.md               # always-on (17 rules)
-│       ├── voice-and-tone.md              # path-scoped
-│       ├── design-system.md               # path-scoped
-│       ├── design-heuristics.md           # path-scoped
-│       ├── ai-shared.md                   # path-scoped
-│       ├── ai-feed-enrichment.md          # path-scoped (from ai-surface-stub)
-│       ├── ai-feed-assistant.md           # path-scoped (from ai-surface-stub)
-│       └── ai-content-generation.md       # path-scoped (from ai-surface-stub)
+│       ├── git-and-deploy.md          # always-on
+│       ├── session-discipline.md      # always-on (no UI bullet, no Commit gate)
+│       ├── ai-topic-classifier.md     # path-scoped (one of three surfaces)
+│       ├── ai-urgency-detector.md     # path-scoped
+│       └── ai-summary-generator.md    # path-scoped
 └── docs/
     ├── PRD.md
     ├── ARCHITECTURE.md
-    ├── CONTENT_SYSTEM.md                  # canonical workflow doc; user fills body
     ├── DECISIONS.md
-    ├── DECISIONS_ACTIVE.md                # CORRECTION 2: present, with promotion criteria
+    ├── DECISIONS_ACTIVE.md
     ├── PARKING_LOT.md
     └── retros/
         └── README.md
 ```
 
-## Correction checks
+**Not emitted** (each absence has a specific suppression flag — see cascade table below):
 
-These are the two corrections from `NOTES.md`. The regression test passes only if both are present.
+- `voice-and-tone.md` — `voice_and_tone == false`.
+- `design-system.md`, `design-heuristics.md` — `design_shape == "none"`.
+- `product-rules.md` — `include_product_rules == false`.
+- `ai-shared.md` — `stack_has_client_server_split == false` (Python service has no client/server boundary; the "never call AI from a client component" rule has no analogue).
+- `block-deploy-cli.sh` (+ `settings.json` entry) — `deploy_target_has_cli_conflict == false` (Fly CLI is the standard deploy path).
+- `block-worktree.sh` (+ `settings.json` entries × 2) — `uses_visual_confirmation_gate == false` (no UI; worktrees do not break a non-existent visual-confirmation gate).
 
-### Correction 1: AGENTS canonical, CLAUDE thin
+## Suppression cascade (the demo)
 
-`AGENTS.md` is the canonical entry point with the full rule set, instant-recall design lines, "When in doubt" table, "Path-scoped rules" section, Codex-specific section, and "Before you respond" recency block at the bottom.
+This is what the large case exists to prove: the generator suppresses real content based on four orthogonal flags, not just one. Each row is a separate suppression, traceable to a specific line in [`decisions.md`](../generator/decisions.md).
 
-`CLAUDE.md` is one line:
+| Flag | Value | Drops in output |
+|---|---|---|
+| `uses_visual_confirmation_gate` | false | • Recency item 2 (visual confirmation gates the commit)<br>• "No worktrees." inline suffix on primary-constraints item 3<br>• Body Commit gate section in `session-discipline.md`<br>• UI bullet under Verification before claiming done<br>• Codex visual-confirmation override paragraph in `AGENTS.md`<br>• `block-worktree.sh` hook<br>• Two `settings.json` PreToolUse entries (Bash + EnterWorktree) |
+| `stack_has_client_server_split` | false | • `ai-shared.md` rule file<br>• Recency item 3 (AI client-component constraint) |
+| `deploy_target_has_cli_conflict` | false | • "Never use the X CLI" line in Code rules<br>• "No X CLI" inline suffix on primary-constraints item 3<br>• `block-deploy-cli.sh` hook<br>• One `settings.json` PreToolUse entry |
+| `voice_and_tone` | false | • `voice-and-tone.md` rule file<br>• `path_scoped_rule_list` entry for voice-and-tone |
 
+If any of these suppressions does not fire, the generator has a regression. The most likely culprit: the OPTIONAL gating logic in [`decisions.md`](../generator/decisions.md) misreading one of the flags.
+
+## Hooks scaffold (the minimal case)
+
+`.claude/settings.json` has a single `PreToolUse` hook block. This is the floor — the simplest hooks scaffold the generator can emit when `enforce_rules_as_hooks == true`.
+
+| Hook | Emitted | Why |
+|---|---|---|
+| `block-env-commit.sh` | yes | Always emitted (when `enforce_rules_as_hooks == true`) |
+| `block-deploy-cli.sh` | **no** | `deploy_target_has_cli_conflict == false` |
+| `block-worktree.sh` (Bash matcher) | **no** | `uses_visual_confirmation_gate == false` |
+| `block-worktree.sh` (EnterWorktree matcher) | **no** | `uses_visual_confirmation_gate == false` |
+
+JSON output is one PreToolUse object inside the array. The OPTIONAL gating must correctly drop the other three objects **and** the trailing comma that would otherwise produce invalid JSON.
+
+## Stack parameterization (visible in output)
+
+| Where | Value | Why |
+|---|---|---|
+| `AGENTS.md` "Tech stack" line | Python service on Fly.io | `stack_summary_one_line` derived |
+| `AGENTS.md` Commands → Install | `uv sync` | Python stack default |
+| `AGENTS.md` Commands → Check | `ruff check . && mypy .` | Python stack default |
+| `AGENTS.md` Commands → Test | `pytest` | Python stack default |
+| `AGENTS.md` Commands → Env vars | `` `.env locally; fly secrets in production. Never commit .env.` `` | `env_pattern` Fly default + markdown re-wrap |
+| `block-env-commit.sh` echo | "Credentials follow this project's env pattern: .env locally; fly secrets in production. Never commit .env. If you need..." | Shell consumer substitutes plain value |
+
+## Recency block
+
+`AGENTS.md` "Before you respond" has **one item**:
+
+1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
+
+Items 2, 3, and 4 are all suppressed by the flag cascade. This is the minimum recency block — three of the four conditional items dropped — and it tests the renumbering rule's contiguous-list invariant in the degenerate case.
+
+If the emitted recency block has more than one item, one of the suppression conditions misread.
+
+## AI rules (3 surfaces, no shared)
+
+Three surface-specific rule files, no `ai-shared.md`. Each has substituted `paths:` frontmatter with three plain string entries (no remaining markers).
+
+```yaml
+# ai-topic-classifier.md
+---
+paths:
+  - "app/ai/topic.py"
+  - "app/api/classify.py"
+  - "app/ai/prompts.py"
+---
 ```
-@AGENTS.md
+
+```yaml
+# ai-urgency-detector.md
+---
+paths:
+  - "app/ai/urgency.py"
+  - "app/api/classify.py"
+  - "app/ai/prompts.py"
+---
 ```
 
-If the generator inverts this (CLAUDE canonical, AGENTS thin), the correction has not been applied.
+```yaml
+# ai-summary-generator.md
+---
+paths:
+  - "app/ai/summary.py"
+  - "app/api/summarize.py"
+  - "app/ai/prompts.py"
+---
+```
 
-### Correction 2: DECISIONS_ACTIVE.md present
+The surface-specific files emit per [`decisions.md`](../generator/decisions.md) "Per-template inclusion table"; `ai-shared.md` is suppressed per the "Server-only AI call rule (conditional)" section because `stack_has_client_server_split == false`. If `ai-shared.md` is emitted anyway with the server-only rule active, the conditional logic was not read.
 
-`docs/DECISIONS_ACTIVE.md` exists with the three-condition promotion criteria:
-
-> A decision belongs here if **all** are true:
-> - It imposes a rule the agent must follow now.
-> - That rule is not enforced or visible by reading the code itself.
-> - It has not been superseded by a later decision.
-
-Feed had `decisions-history.md` only and pushed binding constraints into `.claude/rules/`. The generator must not reproduce that shape.
-
-## Recency block check
-
-`AGENTS.md` "Before you respond" block has all seven items:
-
-1. Hard scope limits.
-2. Visual confirmation gates the commit. (Confirmer: Rex.)
-3. Direct on `main`. No branches. No worktrees.
-4. No deploy CLI.
-5. Reproduce before fixing.
-6. **Never call the AI layer from a client component.** (Item 6 included because `ai_surface_count >= 1`.)
-7. **Vocabulary lock applies.** (Item 7 included because the canonical/forbidden lists are non-empty.)
-
-If only five or six items appear, the renumbering rule fired but the conditions were misread.
-
-## Path-scoped rule list check
+## Path-scoped rule list
 
 `AGENTS.md` "Path-scoped rules" section reads:
 
-> Path-scoped rules: `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `ai-shared.md`, `ai-feed-enrichment.md`, `ai-feed-assistant.md`, `ai-content-generation.md`.
+> `ai-topic-classifier.md`, `ai-urgency-detector.md`, `ai-summary-generator.md`.
 
-Always-on rules: `git-and-deploy.md`, `session-discipline.md`, `product-rules.md`.
+(No `voice-and-tone.md`, no `design-system.md`, no `ai-shared.md` — each absence traces to a flag.)
 
-## Frontmatter substitution check
+Always-on rules: `git-and-deploy.md`, `session-discipline.md`. (No `product-rules.md`.)
 
-Each surface-specific AI rule (`ai-feed-enrichment.md`, `ai-feed-assistant.md`, `ai-content-generation.md`) has a `paths:` frontmatter with three plain string entries. Example for `ai-feed-enrichment.md`:
+## Two corrections still apply
 
-```yaml
----
-paths:
-  - "lib/ai/enrich.js"
-  - "app/api/feeds/[id]/enrich/route.js"
-  - "lib/ai/prompts.js"
----
-```
+The two structural corrections from prior validation work still apply to this case:
 
-If any entry contains `<!-- PARAMETERIZE: ... -->`, the substitution rule was not applied and the file will not parse as YAML downstream.
+1. **AGENTS canonical, CLAUDE thin.** `AGENTS.md` is the full rule set; `CLAUDE.md` is one line: `@AGENTS.md`. Direction not inverted.
+2. **`DECISIONS_ACTIVE.md` present.** With promotion criteria and an empty body awaiting first promotion.
 
-## Vocabulary lock check
+## Regression checks
 
-`AGENTS.md` "Vocabulary lock" section lists both:
+The large-case test passes if:
 
-- Canonical: `INTERNAL`, `NEWSLETTER`, `BLOG`, `LINK`, `ALERT`.
-- Forbidden: `internal-brief`, `customer-newsletter`, `weekly-news-roundup`, `news-update`, `breaking-alert`.
+1. **Four suppressions fire.** Each of the four flag values in the suppression cascade drops the content listed in its row. Spot-check: `ai-shared.md` absent, `voice-and-tone.md` absent, both worktree-block entries absent from `settings.json`, only `block-env-commit.sh` in `.claude/hooks/`.
+2. **Recency block has one item.** Renumbering rule fires correctly in the degenerate case; output is `1.` alone, not an empty list and not items 1+something with broken numbering.
+3. **AGENTS canonical, CLAUDE thin.** Direction not inverted from the modular paired-write rule.
+4. **`settings.json` JSON validity.** With three of four hook objects dropped, the remaining JSON parses (trailing-comma cleanup fired).
+5. **Hook script substitution.** `block-env-commit.sh` echo includes the substituted Fly `env_pattern` as a plain string (single trailing period, no command-substitution backticks).
+6. **Surface-specific frontmatter substituted.** All three `ai-<surface>.md` files have plain `paths:` entries with no remaining `<!-- PARAMETERIZE: ... -->` markers.
+7. **No `ai-shared.md`.** Suppressed because `stack_has_client_server_split == false`; this is the harder check because the generator must read the conditional in [`decisions.md`](../generator/decisions.md) "Server-only AI call rule (conditional)" rather than treating `ai-shared.md` as unconditional for any project with AI.
 
-The forbidden list is what makes the rule work. Empty forbidden list = rule not doing its job.
-
-## When in doubt table check
-
-The "When in doubt" table in `AGENTS.md` includes the workflow row pointing at `docs/CONTENT_SYSTEM.md` because `canonical_workflow_doc_name` was set.
-
-## What's not present
-
-- `claude-rules-flat-CLAUDE.md.template` output (the flat shape templates are not used in modular shape).
-- A `TECH_STACK.md` (the user did not opt in; AGENTS.md "Tech stack" section drops the doc reference via OPTIONAL marker, falls back to `package.json`).
-
-## Test outcome
-
-The large-case test passes if all four correction checks pass plus all four structural checks pass. If any check fails, fix the generator (`decisions.md` or the substitution rules), not the templates.
+If any check fails, the bug is in the generator (`decisions.md` or substitution rules), not in the templates.
