@@ -1,0 +1,41 @@
+# `.claude/hooks/`
+
+Hooks turn load-bearing rules from `AGENTS.md`/`CLAUDE.md` into actual enforcement. Prose in a context file is a request the agent tries to follow; a hook is a guarantee from the harness.
+
+## Why this directory exists
+
+The "Evaluating AGENTS.md" study (2025) found that even well-written context files are interpreted as guidelines, not constraints. For rules that must hold every time — never commit `.env`, never run a destructive deploy CLI, never create a worktree that breaks visual confirmation — the right enforcement layer is a hook, not a prose rule.
+
+This directory holds the hooks that the context-engineering skill emitted for this project. Each script is short and single-purpose: it prints a reason and exits with code 2, which Claude Code surfaces back to the agent and blocks the tool call.
+
+## Hooks in this project
+
+| Hook | Fires on | What it blocks |
+|---|---|---|
+| `block-env-commit.sh` | `Bash(git add .env*)` | Staging env files (always emitted). |
+
+Two hooks the skill normally emits are **not** emitted here:
+
+- `block-deploy-cli.sh` — suppressed because `deploy_target = none` (no CLI conflict to guard against).
+- `block-worktree.sh` — suppressed because `uses_visual_confirmation_gate = false` (no UI, no single-dev-server constraint that worktrees would break).
+
+If either condition changes, regenerate by re-running the `context-engineering` skill rather than hand-editing.
+
+## How hooks integrate with `CLAUDE.md`
+
+The prose rules in `CLAUDE.md`/`AGENTS.md` describe the workflow for humans reading the context. The hooks here enforce the load-bearing subset. They are deliberately redundant: the prose explains *why*, the hook guarantees *that*. Removing the prose without removing the hook breaks orientation; removing the hook without removing the prose breaks enforcement.
+
+If you add a new rule to `CLAUDE.md` that must hold every time, consider whether it belongs as a hook here too.
+
+## Editing or disabling
+
+Each hook is a plain shell script. To disable one without removing it, comment out its block in `.claude/settings.json` (use `// disabled` keys; JSON does not support real comments, but Claude Code ignores keys starting with `//`).
+
+To add a new hook:
+
+1. Write the script in `.claude/hooks/<name>.sh`. Make it executable: `chmod +x`.
+2. Read tool input from stdin as JSON. Use `jq` to parse (e.g., `jq -r '.tool_input.command'`).
+3. To block, exit 2 and write the reason to stderr. To allow with no action, exit 0.
+4. Register the hook in `.claude/settings.json` under `hooks.PreToolUse` (or the relevant event).
+
+Reference: <https://code.claude.com/docs/en/hooks>.

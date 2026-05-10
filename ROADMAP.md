@@ -68,12 +68,12 @@ Pre-work and dog-food run in the same session because the quick wins are ~20 lin
 
 **Tasks (main — dog-food the skill on this repo):**
 
-- [ ] Run `context-engineering` skill on this repo. Stack: `other` (skill-development workspace, not a deployed app). Deploy target: `none`. Visual confirmer: user. `uses_visual_confirmation_gate`: false (no UI).
-- [ ] Confirm hooks-emission logic produces only the appropriate hooks for this repo type. The deploy-CLI hook should NOT emit (no deploy target with CLI conflict). The worktree-blocker hook should NOT emit (no visual confirmation gate). The env-commit hook still emits (universal).
-- [ ] Preserve and integrate existing files: `docs/retros/2026-05-10-context-engineering-skill-refinement.md`, this `ROADMAP.md`, `docs/html-over-markdown-brief.md`. The generator's output may overwrite or merge with the roadmap — confirm the phase content is preserved (write to a tmp location first, then merge if needed).
-- [ ] Decide on conditional patterns: include `PARKING_LOT.md` and `FUTURE.md` (skill is genuinely evolving). Include `DECISIONS_ACTIVE.md` if there are binding constraints not visible from code (probably yes — e.g., the "skill must stay markdown" decision from the HTML brief).
-- [ ] Run `/session-start` and confirm the orientation flow makes sense for this repo.
-- [ ] Write the phase retro to `docs/retros/YYYY-MM-DD-phase-2-quick-wins-and-dogfood.md`.
+- [x] Run `context-engineering` skill on this repo. Stack: `other` (skill-development workspace, not a deployed app). Deploy target: `none`. Visual confirmer: user. `uses_visual_confirmation_gate`: false (no UI). **Hit the abort criterion on first run** — templates assumed UI exists. Skill fix landed in commit `a30d008` (gate visual-confirmation content on `uses_visual_confirmation_gate`); re-ran cleanly.
+- [x] Confirm hooks-emission logic produces only the appropriate hooks for this repo type. Verified: `block-deploy-cli.sh` not emitted (`deploy_target_has_cli_conflict=false`), `block-worktree.sh` not emitted (`uses_visual_confirmation_gate=false`), `block-env-commit.sh` emitted (universal). `.claude/settings.json` parses; hook chmod +x.
+- [x] Preserve and integrate existing files: `docs/retros/2026-05-10-*.md`, this `ROADMAP.md`, `docs/html-over-markdown-brief.md` — all untouched. Templated ROADMAP staged to `/tmp/dogfood-prd-to-product/ROADMAP.md.template-output` for reference.
+- [x] Decide on conditional patterns: included `PARKING_LOT.md` (env_pattern doubled-period + output-small staleness from Phase 1 already captured), `FUTURE.md` (Phase 3 will populate), `DECISIONS_ACTIVE.md` (D-001 markdown-only, D-002 direct-on-main, D-003 no-UI gate).
+- [x] Run `/session-start` and confirm the orientation flow makes sense for this repo. Walked the steps; orientation is coherent (AGENTS.md → ROADMAP → latest retro → PARKING_LOT → DECISIONS_ACTIVE).
+- [x] Write the phase retro to `docs/retros/2026-05-10-phase-2-quick-wins-and-dogfood.md`.
 
 **Done when:**
 1. Quick-wins commit landed and pushed.
