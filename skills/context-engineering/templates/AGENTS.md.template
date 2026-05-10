@@ -55,7 +55,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 <!-- PARAMETERIZE: project_tagline_one_line -->. See `docs/PRD.md`.
 <!-- /OPTIONAL: project_description_pointer -->
 
-<!-- OPTIONAL: workflows_list — include if the project has more than one named workflow -->
+<!-- OPTIONAL: workflows_list — include if 2 <= len(workflows) <= 5; suppress for 0–1 (no list needed) or 6+ (lives in PRD only). See "PRD redundancy guard" in generator/decisions.md. -->
 Workflows:
 
 - <!-- PARAMETERIZE: workflow_1_name --> — <!-- PARAMETERIZE: workflow_1_description -->
