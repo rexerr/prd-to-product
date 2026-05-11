@@ -1,4 +1,6 @@
-# Working brief: Taste Builder
+# Working brief: Squirreled
+
+(Working name as of 2026-05-11. Original working name was *Taste Builder*; the brief filename preserves that. Final name is an open question for the PRD interview — see Naming below.)
 
 A web app that turns saving references into a training loop for aesthetic judgment — not just a better Pinterest. The library is a side effect; the product's actual value is the forced-interpretation moment during capture and the patterns that surface over time.
 
@@ -58,7 +60,7 @@ These are where prd-creator should focus.
 - **Mobile capture.** Native iOS, PWA, share-sheet target, or browser-only? "I saw this on my phone" is the dominant capture moment for many designers.
 - **Profile / pattern-surfacing scope in V1.** Is the taste profile a V1 feature or an unlock at N references saved? Specificity threshold for surfaced patterns to avoid astrology mode?
 - **Project boards in V1.** The client-work mining path is the difference between "tool I use for self-improvement" (gets abandoned in week 3) and "tool I use on billable work" (sticky). Project boards probably land V1, not V2 — confirm scope in PRD. Style-language extraction (turning 5–20 selected references into a promptable description) is the natural next feature; could be V1 or V1.5.
-- **Naming.** Working name "Taste Builder" is loaded. The candidates split along positioning lines: *personal-practice register* (modest, honest about behavior) — **Taste Journal**, **Squirreled**, Reps; *client-work register* (professional, working-tool) — **Throughline**, Atelier, **Taste Refinery**. Almost no name fits both registers cleanly. Best path: pick the load-bearing differentiator (personal practice) and let the client-work flow be a use case of that name. Current finalists: Taste Journal (safest, modest), Squirreled (most distinctive, personality risk), Throughline (most professional, hardest to use casually). Backup options preserved for the PRD: Point of View, Pattern Library, Aesthetic Memory, Atelier, Squint, Reps. Defer the final call but capture the registers for the PRD interview.
+- **Naming.** Current working name: **Squirreled** (chosen for the project folder, not yet locked in). The candidates split along positioning lines: *personal-practice register* (modest, honest about behavior) — Squirreled, Taste Journal, Reps; *client-work register* (professional, working-tool) — Throughline, Atelier, Taste Refinery. Almost no name fits both registers cleanly. Best path: pick the load-bearing differentiator (personal practice) and let the client-work flow be a use case of that name. Squirreled fits this logic, with the caveat that it carries cutesy / animal-named risk for a working tool used in client kickoffs. Backup options preserved for the PRD: Point of View, Pattern Library, Aesthetic Memory, Atelier, Squint, Reps. PRD interview should pressure-test whether Squirreled survives or whether one of the alternatives wins on positioning grounds.
 - **Stack.** Next.js + Vercel is the natural fit and matches the build-defaults pilot's deploy-shell Phase 1. Confirm during PRD.
 - **What "done with V1" looks like.** Personal use only, or share with 2–3 designer friends as a beta?
 
