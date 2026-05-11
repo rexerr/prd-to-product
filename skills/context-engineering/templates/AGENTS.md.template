@@ -118,6 +118,12 @@ Full design rule: `.claude/rules/design-system.md`. The lines below are load-bea
 
 When making a significant technical or product choice, log it in `docs/DECISIONS.md` using the format defined there. <!-- OPTIONAL: active_decisions_line — include if include_decisions_active == true --> If the decision creates a binding constraint not visible from reading code alone, also mirror a one-liner into `docs/DECISIONS_ACTIVE.md`.
 
+<!--
+The per-decision mirror criterion is the load-bearing part. A decision belongs in DECISIONS_ACTIVE.md only if ALL of the following hold: (a) it imposes a rule the agent must follow now, (b) the rule is not enforced or visible by reading the code itself, (c) it has not been superseded by a later decision. Apply the test decision-by-decision; do not bulk-mirror DECISIONS.md. Bulk mirroring degrades the file's signal — when every decision is "active," none of them are, and the agent stops reading.
+
+Working positive example: field-society-demo correctly curates 3 of 9 decisions into DECISIONS_ACTIVE.md (D-006 no-auth, D-007 AI scope, D-008 Claude-interprets-form), each defensible against the three-condition criteria. The five it omitted are visible from data, non-binding, future-scope, executed, or visible from package.json — the criterion ruled each out on first read. The discipline holds without skill enforcement when applied carefully.
+-->
+
 A decision is significant if:
 
 - it would surprise a future session that hadn't seen it made
@@ -170,9 +176,23 @@ Repo-local skills live in `.agents/skills/`. Use them deliberately when the task
 
 ---
 
+<!--
+RECENCY-BLOCK DILUTION GUARD — read before adding items below.
+
+The recency block is intentionally short: two always-on items plus up to two optional items (AI surface, vocabulary lock). Adding more items dilutes the signal at the position the agent reads last and weights most. Both projects audited so far (`the-council` and `field-society-demo`) drifted this block to seven items by promoting the same three from the body:
+
+- "Direct on `main`. No branches." — already in "Primary constraints" at the top and in the body's git-and-deploy rule.
+- "No deploy CLI." — already in "Primary constraints" at the top.
+- "Reproduce before fixing." — already in `session-discipline.md`.
+
+The pattern is consistent across both audits. The temptation is real because the failure modes those three prevent (broken main, parallel deploys, guessed fixes) are catastrophic — but that is exactly the reason they already live at the top of the file and in their own rule files. The recency block is for items the body does not already carry at the same weight; it is not a "second copy of the most important rules." When every item is load-bearing, none of them stand out.
+
+If a project genuinely needs to override this — its failure history makes one of those three worth the dilution cost — document the override as a decision in `docs/DECISIONS.md` and cite the specific incident. Do not silently expand the recency block.
+-->
+
 ## Before you respond — load-bearing constraints
 
-These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules live in the body of this file; do not duplicate them here.
+These are the rules that must not be lost mid-session. Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules (direct-on-main, no deploy CLI, reproduce-before-fixing) live in the body of this file and are not duplicated here — they are already at the top in "Primary constraints" and in their own rule files. Duplication dilutes the signal.
 
 1. **Hard scope limits.** Bug fix or small tweak: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session. File size cap: 500 lines. Detail: `.claude/rules/session-discipline.md`.
 <!-- OPTIONAL: visual_confirmation_recency — include if uses_visual_confirmation_gate == true. Renumber remaining items contiguously when dropped. -->
