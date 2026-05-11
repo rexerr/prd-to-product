@@ -6,7 +6,22 @@ Check off tasks as they are completed. Mark phases done only when all tasks are 
 
 ---
 
-## Phase 1: MVP launch
+## Phase 1: Ship deployable shell to Vercel
+
+**Goal:** Confirm production is reachable and the build pipeline works before any feature work begins. Catches deploy-environment surprises (env loading, build step, framework adapter, CDN config) on day one rather than month six.
+
+- [ ] Push the repo to GitHub.
+- [ ] Connect the repo in the Vercel dashboard; confirm the framework preset is detected.
+- [ ] Push a trivial commit; confirm the auto-deploy fires on push to `main`.
+- [ ] Open the Vercel-assigned URL; confirm the page loads with no build errors.
+- [ ] Add `<h1>simple-form</h1>` to the landing page; push; confirm production shows the change.
+- [ ] Tag the commit `v0.0.1-deployed`.
+
+**Done when:** Production URL serves a page containing the project name in an `<h1>`.
+
+---
+
+## Phase 2: MVP launch
 
 **Goal:** Replace the third-party iframe form with the in-house form on the live portfolio site.
 

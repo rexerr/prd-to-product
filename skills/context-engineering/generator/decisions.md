@@ -39,7 +39,8 @@ The generator should hold answers in a state map with these keys:
 | `canonical_workflow_doc_name` | Q26 | string or null | |
 | `include_product_rules` | Q27 | bool | |
 | `workflows` | Q30 | list of `{name, description}` | |
-| (all content fills) | Q28–Q35 | strings | Used as direct substitutions. |
+| `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` | Q31 | strings | User-defined first phase. Routed into `phase_1_*` or `phase_2_*` template parameters by the Phase 1 derivation below. |
+| (all other content fills) | Q28–Q35 | strings | Used as direct substitutions. |
 
 ## Stack and deploy-target defaults
 
@@ -90,6 +91,69 @@ When `deploy_target_has_cli_conflict == true`, the flat-CLAUDE template's "Code 
 | `react-vite` | `cloudflare` | `React + Vite on Cloudflare Pages` |
 | `node-cli` | `fly` | `Node CLI on Fly.io` |
 | `python` | `manual` | `Python (deployed manually)` |
+
+## Phase 1 derivation (deploy-shell scaffold)
+
+Implements the "Smallest deployable first" opinion from [`docs/build-defaults-brief.md`](../../../docs/build-defaults-brief.md) item 1. When a deploy target exists, the generator scaffolds Phase 1 as "ship a deployable production shell" — feature work begins in Phase 2.
+
+### Routing
+
+`ROADMAP.md.template` carries four template parameters for Phase 1 (`phase_1_name`, `phase_1_goal`, `phase_1_tasks`, `phase_1_done_when`) and four for the optional Phase 2 block (`phase_2_name`, `phase_2_goal`, `phase_2_task_placeholder`, `phase_2_done_when`). Q31's captured `phase_user_*` values are routed based on `deploy_target`:
+
+| `deploy_target` | Phase 1 source | Phase 2 source | `phase_2_section` OPTIONAL gate |
+|---|---|---|---|
+| `none` | `phase_user_*` (wrapped: `phase_1_tasks` = `- [ ] {phase_user_task_placeholder}`) | (suppressed) | false |
+| `vercel`, `netlify`, `cloudflare`, `fly`, `railway`, `manual` | Derived from the table below | `phase_user_*` | true |
+
+Rationale for the override: the brief's meta-problem is that the user cannot evaluate at the code level, so the skill cannot rely on user-observed failures to discover what's missing. Scaffolding a hello-world deploy as Phase 1 catches production-environment surprises (env vars, build step, framework adapter) on day one rather than month six. The user can still edit Phase 1 of the emitted ROADMAP after the fact; the scaffold is the default, not a lock.
+
+### Phase 1 derivation table (when `deploy_target != "none"`)
+
+All derived blocks share the same `phase_1_goal` and `phase_1_done_when` shape; only the task list varies by `deploy_target`.
+
+**`phase_1_name`** — `Ship deployable shell to <deploy_target_name>`.
+
+**`phase_1_goal`** — `Confirm production is reachable and the build pipeline works before any feature work begins. Catches deploy-environment surprises (env loading, build step, framework adapter, CDN config) on day one rather than month six.`
+
+**`phase_1_done_when`** — depends on `stack_has_ui`:
+
+- `stack_has_ui == true`: `Production URL serves a page containing the project name in an <h1>.`
+- `stack_has_ui == false`: `Production endpoint responds with the project name in its response body (e.g., GET / returns 200 with the name).`
+
+**`phase_1_tasks`** — bulleted task list, per `deploy_target`. The penultimate task ("add the project name") varies on `stack_has_ui`: UI projects add `<h1>{project_name}</h1>`; non-UI projects add a root or health route that returns the project name.
+
+| `deploy_target` | Tasks |
+|---|---|
+| `vercel` | `Push the repo to GitHub` → `Connect the repo in the Vercel dashboard; confirm the framework preset is detected` → `Push a trivial commit; confirm the auto-deploy fires on push to main` → `Open the Vercel-assigned URL; confirm the page loads with no build errors` → `Add the project-name marker (see done-when); push; confirm production shows the change` → `Tag the commit v0.0.1-deployed` |
+| `netlify` | Parallel to `vercel`. Substitute "Netlify" for "Vercel"; URL is the Netlify-assigned subdomain. |
+| `cloudflare` | `Push the repo to GitHub` → `Run wrangler login if not already authenticated` → `For Pages: connect the repo in the Cloudflare dashboard, or for Workers: run wrangler deploy` → `Confirm the *.pages.dev or *.workers.dev URL serves the build` → `Add the project-name marker; deploy; confirm production` → `Tag the commit v0.0.1-deployed` |
+| `fly` | `Push the repo to GitHub` → `Run fly launch (accept defaults; do not deploy yet if asked)` → `Run fly deploy` → `Open the *.fly.dev URL; confirm the app responds` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
+| `railway` | `Push the repo to GitHub` → `Connect the repo in Railway, or run railway up from the CLI` → `Confirm Railway provisions and the generated URL responds` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
+| `manual` | `Push the repo to GitHub` → `Document the deploy command in AGENTS.md/CLAUDE.md Commands (if not already)` → `Run the deploy command once; record the production URL or artifact path` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
+
+The generator emits each task as a `- [ ]` checkbox on its own line; the table above lists them inline for brevity.
+
+### Phase 2 routing
+
+When `deploy_target != "none"`:
+
+- `phase_2_name` ← `phase_user_name`
+- `phase_2_goal` ← `phase_user_goal`
+- `phase_2_task_placeholder` ← `phase_user_task_placeholder`
+- `phase_2_done_when` ← `phase_user_done_when`
+- The `<!-- OPTIONAL: phase_2_section -->` gate evaluates to true; the entire Phase 2 section through the next `---` divider is kept.
+
+When `deploy_target == "none"`:
+
+- `phase_1_name` ← `phase_user_name`
+- `phase_1_goal` ← `phase_user_goal`
+- `phase_1_tasks` ← `- [ ] {phase_user_task_placeholder}` (single checkbox bullet, preserving the original single-task scaffold)
+- `phase_1_done_when` ← `phase_user_done_when`
+- The `<!-- OPTIONAL: phase_2_section -->` gate evaluates to false; the entire Phase 2 section through the next `---` divider is dropped.
+
+### OPTIONAL gate convention extension
+
+`phase_2_section` uses the OPTIONAL marker convention, with one extension: when the marker precedes a heading-anchored block (a `##` section), the gate covers the entire section through the next `---` divider on its own line (rather than the next blank line). This is required because the gated content here is a multi-paragraph section with internal blank lines. The general OPTIONAL spec at "OPTIONAL block handling" below permits this under "depending on context"; this row makes the context-specific rule explicit so future template edits do not break the convention.
 
 ## Server-only AI call rule (conditional)
 

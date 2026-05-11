@@ -17,9 +17,20 @@ Check off tasks as they are completed. Mark phases done only when all tasks are 
 
 **Goal:** <!-- PARAMETERIZE: phase_1_goal -->
 
-- [ ] <!-- PARAMETERIZE: phase_1_task_placeholder -->
+<!-- PARAMETERIZE: phase_1_tasks -->
 
 **Done when:** <!-- PARAMETERIZE: phase_1_done_when -->
+
+---
+
+<!-- OPTIONAL: phase_2_section: include if deploy_target != "none". Gates this entire section through the next --- divider. -->
+## Phase 2: <!-- PARAMETERIZE: phase_2_name -->
+
+**Goal:** <!-- PARAMETERIZE: phase_2_goal -->
+
+- [ ] <!-- PARAMETERIZE: phase_2_task_placeholder -->
+
+**Done when:** <!-- PARAMETERIZE: phase_2_done_when -->
 
 ---
 

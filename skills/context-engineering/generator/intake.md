@@ -228,7 +228,11 @@ Free-text fills for the docs templates:
 28. **PRD content.** `product_summary_paragraph`, `target_users_list`, `core_problem_paragraph`, `main_workflow_steps`, `out_of_scope_list`, `deferred_capabilities_list_or_none`.
 29. **Architecture content.** `primary_data_flow_name`, `primary_data_flow_steps`, optional `secondary_flow_name`/`secondary_flow_steps`, `data_persistence_paragraph`, `external_integrations_list_or_none`, `folder_structure_summary`.
 30. **Workflow names.** Up to N. → `workflow_<n>_name`, `workflow_<n>_description`.
-31. **Roadmap Phase 1.** `phase_1_name`, `phase_1_goal`, `phase_1_task_placeholder`, `phase_1_done_when`.
+31. **Roadmap first user-defined phase.** Captured as `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when`. The question framing depends on `deploy_target` (Q5c):
+    - **`deploy_target == "none"`** — ask for **Phase 1**. The user's answers fill Phase 1 directly. No Phase 2 scaffold is emitted.
+    - **`deploy_target != "none"`** — ask for **Phase 2**. The agent must tell the user, in one short sentence: "Phase 1 is the deploy hello-world shell (the scaffolded default — ship a deployable production page before feature work begins). Phase 2 is the first phase you define." Then ask for `phase_user_*`. `decisions.md` builds Phase 1 from the stack-aware table; the user's answers fill Phase 2.
+
+    Rationale: the brief at [docs/build-defaults-brief.md](../../../docs/build-defaults-brief.md) item 1 ("Smallest deployable first") landed as a scaffolded default when a deploy target exists. The user's first user-defined phase becomes Phase 2 in that case. When there is no deploy target, no shell phase is meaningful and Q31 fills Phase 1 as before.
 32. **Stack additions beyond the framework + deploy target captured in cluster 1.5.** Database, jobs runner, AI provider, external integrations. → `additional_stack_summary`.
 33. **Vocabulary lock.** Canonical names and forbidden old values, if any. → `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule`.
 34. **Architecture rules** (only for flat shape). 3–5 numbered architecture rules. → `architecture_rules_numbered_list`.
@@ -374,7 +378,7 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 - `folder_structure_summary` — Q29
 - `workflow_1_name`, `workflow_1_description` — Q30 (per workflow)
 - `workflow_2_name`, `workflow_2_description` — Q30 (per workflow, etc.)
-- `phase_1_name`, `phase_1_goal`, `phase_1_task_placeholder`, `phase_1_done_when` — Q31
+- `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` — Q31 (state map). `decisions.md` routes these into `phase_1_*` or `phase_2_*` template parameters depending on `deploy_target`.
 - `additional_stack_summary` — Q32
 - `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule` — Q33
 - `architecture_rules_numbered_list` — Q34 (only for flat shape)
