@@ -125,7 +125,7 @@ Recommended pilot order:
 
 - The verify-vs-prompt-vs-hook discussion that informed item 5: this conversation's chapter "Session C: act on 4 promoted items" → follow-up on verification gates (2026-05-10).
 - The forcing-function principle that justifies baking opinions in via templates rather than relying on rules-only: [`skills/context-engineering/principles.md`](../skills/context-engineering/principles.md) "Hooks defaults are a forcing function" section.
-- Continuous-mode discipline (acts on evidence; pilot before bundle): [`ROADMAP.md`](../ROADMAP.md) "Continuous mode after Phase 4."
+- Continuous-mode discipline (acts on evidence; pilot before bundle): [`BACKLOG.md`](../BACKLOG.md) "Format" section and [`docs/retros/`](retros/) history.
 - HTML brief as the structural model: [`docs/html-over-markdown-brief.md`](html-over-markdown-brief.md).
 - The two real audits that revealed the meta-problem (skills produce context but not procedure): `/Users/rexc/Sites/the-council/docs/context-audit-2026-05-10.md`, `/Users/rexc/Sites/field-society-demo/docs/context-audit-2026-05-10.md`.
 

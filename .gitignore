@@ -1,8 +1,2 @@
 # macOS
 .DS_Store
-
-# Internal build artifacts (not useful to others)
-findings.md
-phase-0-brief.md
-phase-1-prd.md
-phase-1-review.md

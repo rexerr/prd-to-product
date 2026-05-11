@@ -91,13 +91,7 @@ For the full rationale, read each skill's `principles.md`.
 
 Each skill follows a five-piece architecture: `SKILL.md` (trigger and procedure), `principles.md` (rationale, deferred-loaded), `templates/` (annotated stubs), `generator/` (intake, decisions, output-summary), `examples/` (three runs at small, medium, large scale), `NOTES.md` (regression tests and parked ideas).
 
-Build history and design briefs live in [`docs/`](docs/):
-
-- [`docs/handoff.md`](docs/handoff.md) — state of the work across the three skills.
-- [`docs/prd-creator-brief.md`](docs/prd-creator-brief.md) — the working brief that scoped prd-creator.
-- [`docs/design-system-bootstrap-brief.md`](docs/design-system-bootstrap-brief.md) — same for design-system-bootstrap.
-
-If you want to fork and extend, the briefs are the best starting point.
+Session-by-session build history lives in [`docs/retros/`](docs/retros/). For active investigations that govern the skills' shape, see [`docs/build-defaults-brief.md`](docs/build-defaults-brief.md) and [`docs/html-over-markdown-brief.md`](docs/html-over-markdown-brief.md).
 
 ## License
 

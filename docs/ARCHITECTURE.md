@@ -31,8 +31,8 @@ Editing a file in this repo is immediately live for the next Claude Code / Codex
 ## Repo top-level
 
 - `AGENTS.md`, `CLAUDE.md` — entry-point pair for this repo (scaffolded from `context-engineering`, dog-food run).
-- `ROADMAP.md` — phased plan for skill refinement.
-- `docs/` — PRD, ARCHITECTURE (this file), DECISIONS, DECISIONS_ACTIVE, PARKING_LOT, FUTURE, retros, plus per-skill briefs (`prd-creator-brief.md`, `design-system-bootstrap-brief.md`, `html-over-markdown-brief.md`, `handoff.md`). The `*-brief.md` files (and `handoff.md`) are pre-skill design notes preserved for historical reference; they predate the scaffolded context structure and are not active context. The exception is [`html-over-markdown-brief.md`](html-over-markdown-brief.md), which governs an open investigation and is currently load-bearing — see [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md) D-001.
+- `BACKLOG.md` — single surface for in-progress and backlog work. See [`CLAUDE.md`](../CLAUDE.md) "Where to look".
+- `docs/` — PRD, ARCHITECTURE (this file), DECISIONS, DECISIONS_ACTIVE, retros, plus two active-investigation briefs: [`build-defaults-brief.md`](build-defaults-brief.md) (drives D-004 and the build-defaults pilot in `BACKLOG.md`) and [`html-over-markdown-brief.md`](html-over-markdown-brief.md) (governs D-001).
 - `.claude/` — settings, hooks, slash commands for sessions in this repo (scaffolded from `context-engineering`).
 - `skills/` — the actual product.
 
@@ -43,5 +43,5 @@ None at runtime. The skills consume MCP-provided platforms (Notion, Confluence, 
 ## Cross-references
 
 - Product requirements (canonical for product behavior): [`docs/PRD.md`](PRD.md).
-- Roadmap and current phase: [`ROADMAP.md`](../ROADMAP.md).
+- Open work: [`BACKLOG.md`](../BACKLOG.md).
 - Decisions log: [`docs/DECISIONS.md`](DECISIONS.md).

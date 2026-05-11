@@ -21,7 +21,7 @@ A new AI-assisted coding project starts in a state where the agent re-derives "w
 
 ## Main workflow
 
-The skill-refinement cycle (see `ROADMAP.md` for current phase and prior retros for context):
+The skill-refinement cycle (see [`BACKLOG.md`](../BACKLOG.md) for current work and [`docs/retros/`](retros/) for prior context):
 
 1. **Validate** — dry-run the generator against synthetic project shapes; live-fire emitted hooks in throwaway sessions.
 2. **Refine** — apply changes to templates, decisions logic, principles. Each change traces to a named failure mode.
@@ -38,14 +38,10 @@ After Phase 4, enter continuous mode: edit only on real failures or upstream Cla
 - Generating product code (the generator scaffolds shape; it never writes `app/`, `lib/`, `components/`, design tokens).
 - Hosting or distributing skills as a package — installation is via local symlinks.
 
-## Deferred capabilities
-
-Tracked in [`docs/FUTURE.md`](FUTURE.md) once Phase 3 surfaces real category gaps.
-
 ## Cross-references
 
 - Architecture: [`docs/ARCHITECTURE.md`](ARCHITECTURE.md).
-- Roadmap: [`ROADMAP.md`](../ROADMAP.md).
+- Open work: [`BACKLOG.md`](../BACKLOG.md).
 - Decisions log: [`docs/DECISIONS.md`](DECISIONS.md).
 - Active decisions: [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - HTML-over-Markdown investigation: [`docs/html-over-markdown-brief.md`](html-over-markdown-brief.md).

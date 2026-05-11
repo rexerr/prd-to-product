@@ -40,9 +40,9 @@ Do not log every small implementation detail. Log the calls that matter.
 ### D-002 — Direct-on-main, no branches for skill-refinement phases
 
 **Date:** 2026-05-10
-**Context:** The skill-refinement phases in [`ROADMAP.md`](../ROADMAP.md) are sequential; each phase touches the same template and decisions files. Branching would force serial merges with no parallelism benefit.
-**Decision:** Skill-refinement phases run direct on `main`. Branches only for genuinely parallel work (e.g., the HTML-over-Markdown investigation if it edits skill files that overlap with main-branch refinement).
-**Reason:** Single developer, sequential work, files overlap → branches add friction with no win. Phasing principles in `ROADMAP.md` codify this.
+**Context:** Skill-refinement work is sequential and single-developer; each phase touches the same template and decisions files. Branching would force serial merges with no parallelism benefit.
+**Decision:** Skill-refinement work commits direct on `main`. Branches only for genuinely parallel work (e.g., the HTML-over-Markdown investigation if it edits skill files that overlap with main-branch refinement).
+**Reason:** Single developer, sequential work, files overlap → branches add friction with no win. Continuous-mode discipline (act on evidence, not speculation) applies.
 **Revisit if:** A second contributor joins the repo, or two genuinely-parallel skill changes need to ship together.
 
 ### D-003 — `context-engineering` recency-block item 2 is conditional, not always-on
@@ -65,4 +65,4 @@ Do not log every small implementation detail. Log the calls that matter.
 
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
-- Roadmap and open decisions: [`ROADMAP.md`](../ROADMAP.md).
+- Open work: [`BACKLOG.md`](../BACKLOG.md).

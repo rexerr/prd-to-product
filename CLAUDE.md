@@ -110,7 +110,7 @@ Log significant decisions in `docs/DECISIONS.md` per its own instructions. If th
 
 ## Where to look
 
-Read at start of every session: this file, `AGENTS.md`, `docs/DECISIONS_ACTIVE.md`, the most recent file in `docs/retros/`.
+Read at start of every session: this file, `AGENTS.md`, `BACKLOG.md`, `docs/DECISIONS_ACTIVE.md`, the most recent file in `docs/retros/`.
 
 Then read the doc that governs what you're about to touch. Source of truth on conflict is the right-hand column:
 
@@ -118,7 +118,7 @@ Then read the doc that governs what you're about to touch. Source of truth on co
 |---|---|
 | Product behavior, copy | `docs/PRD.md` |
 | Architecture, data model | `docs/ARCHITECTURE.md` |
-| Status, current phase | `ROADMAP.md` |
+| Open work, in progress, next | `BACKLOG.md` |
 | Recent binding decisions | `docs/DECISIONS_ACTIVE.md` |
 
 If a conflict isn't covered above, surface it as an open question. Don't pick silently.
