@@ -60,3 +60,9 @@ Read `principles.md` only when the user asks why a pattern exists or when you hi
 - Does not migrate an existing token system.
 - Does not generate voice, copy, or product strategy content. Flag any such material and point at prd-creator.
 - Does not scaffold the rules and docs structure around the project. That is the context-engineering skill.
+
+## Gotchas
+
+- **Re-running clobbers hand-edited files.** The emitters overwrite, and this skill writes a token file, three seed components with paired CSS modules, and `DESIGN_SYSTEM.md`, so a second run wipes edits — before replacing anything, check for an existing token file or a `design-system.md` rule with no `<!-- PARAMETERIZE:` markers and ask, the way procedure step 5 gates writing on explicit confirmation.
+- **Never emit raw hex in the semantic layer.** Semantic aliases must reference primitives as `var(--<primitive>)`, never a literal hex value — a hardcoded color in the semantic layer collapses the two-tier architecture and silently kills dark mode and theming.
+- **Design-system files only, never product code.** When a brand book implies a component library, utilities, or page layout, the agent drifts into writing them — flag that material in the output summary and decline, and do not expand past the three seed components even on request.

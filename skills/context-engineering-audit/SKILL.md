@@ -40,9 +40,11 @@ Do not read `procedure.md` up-front on every invocation discussion — read it w
 
 ## Output location
 
-Save the drift report to the audited project's `docs/context-audit-YYYY-MM-DD.md`. If the project has no `docs/` directory, save to the project root with the same filename and flag that the audited project may need a `docs/` set first.
+Save the drift report to the audited project's `docs/context-audit-YYYY-MM-DD.md`, using today's ISO date. Branch on what the project already has:
 
-Filename uses ISO date. If the project already has a `context-audit-YYYY-MM-DD.md` for an earlier date, write a new one with today's date — do not overwrite. The comparison-to-prior-audit section of the new audit replaces the function of overwriting.
+- No `docs/` directory → save to the project root with the same filename and flag that the audited project may need a `docs/` set first.
+- An existing `context-audit-*.md` from an earlier date → write a new one with today's date. Do not overwrite. The comparison-to-prior-audit section of the new audit replaces the function of overwriting.
+- An audit already dated today → suffix `-rerun-N` to the filename per `procedure.md`. Do not overwrite.
 
 ## Read-only contract
 
@@ -56,3 +58,9 @@ If during the audit the user asks to "just fix it while you're in there," declin
 - Does not run programmatic checks (file-existence asserts, frontmatter parsers, drift diffs against templates). The light tier is human-read-driven. The heavy-validator option is logged in `NOTES.md` as future work, gated on third-instance evidence.
 - Does not promote findings to skill changes. That promotion happens in `prd-to-product`'s continuous-mode retros, not in the audited project.
 - Does not write fixes. Read-only contract.
+
+## Gotchas
+
+- **"Just fix it while you're in there" breaks the read-only contract.** The audit writes one file, the drift report, and edits nothing else — if the user asks for an in-line fix, decline and capture it as an open question in section 5, because that separation is what keeps the audit-and-act phases independent.
+- **Running without the standard on disk grades against nothing.** If `prd-to-product`'s `context-engineering` skill is not available to read (files 1–4 in `procedure.md`), halt and ask rather than auditing against an assumed standard — a report measured against a standard you cannot see is worse than no report.
+- **Do not reshape the six canonical sections.** The output structure converged across two independent real audits, so the sub-buckets and table columns are the load-bearing part — reshaping them loses the portability that made the structure worth templating.

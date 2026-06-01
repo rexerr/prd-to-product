@@ -53,3 +53,9 @@ Read `principles.md` only when the user asks why a pattern exists, or when you h
 - Does not manage multi-developer workflows, branch policies, or PR review templates. Future scope.
 - Does not handle build-system-specific rules (Turbo, Nx, monorepo layouts). Future scope.
 - Does not write product content (PRD body, domain vocabulary, voice rules). It scaffolds the shape; the user fills the content.
+
+## Gotchas
+
+- **The generator writes shape, not content.** When source material includes a brand book or design spec, the agent drifts into improvising a `tokens.css` file or filling PRD body prose — that is product content the generator never writes (see `generator/decisions.md` "What the generator never writes"), and it belongs to `design-system-bootstrap` or to the user.
+- **Re-running on a project that already has these files overwrites them.** The emitters are not idempotent, so a second run clobbers hand-edited files — keep the confirm-before-write gate (procedure step 3) and check for existing files first, the way the field-society-demo run caught a `PRD.md` collision and asked before overwriting.
+- **Flipping `enforce_rules_as_hooks` to false removes the only thing that enforces the rules.** Prose rules do not enforce themselves — two audited projects documented their failure modes in prose and still shipped zero hooks, so treat the hook default as load-bearing and require a named replacement before disabling it.
