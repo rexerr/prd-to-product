@@ -270,6 +270,15 @@ Behavior:
 
 Some markers gate inline cells in tables (e.g., `<!-- OPTIONAL: ux_row -->` in the flat CLAUDE "Where to look" table). For those, drop the entire row when the condition is false.
 
+### session-start AGENTS.md read is rule-shape-conditional
+
+`claude-commands/session-start.md.template` carries `<!-- OPTIONAL: agents_read_step -->` on its `AGENTS.md` step. Gate it on `rule_shape`:
+
+- `rule_shape == "modular"`: **keep** the read. AGENTS.md is canonical there (CLAUDE.md is just `@AGENTS.md`), so the explicit orientation read is worthwhile.
+- `rule_shape == "flat"`: **drop** the read. CLAUDE.md auto-loads at session start and carries the rules; AGENTS.md is only a thin pointer to it (per the flat paired-write rule above), so reading AGENTS.md is wasted tokens.
+
+When the step is dropped, renumber the remaining steps so the list stays contiguous (1, 2, 3 — not 2, 3, 4), per the OPTIONAL renumber convention. The failure mode this prevents: a flat-shape session paying to re-open a pointer file whose target is already in context.
+
 ### KEEP AS-IS
 
 `<!-- KEEP AS-IS: <reason> -->` markers do not require substitution and should not be removed. They are documentation for the user that the line they precede is intentionally fixed.

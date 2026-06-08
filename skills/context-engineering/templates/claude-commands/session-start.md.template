@@ -7,6 +7,7 @@ Use this template when: every project. Required.
 
 Read the following files in this order before responding:
 
+<!-- OPTIONAL: agents_read_step — include ONLY if rule_shape == "modular". In flat shape, CLAUDE.md auto-loads at session start and carries the rules, and AGENTS.md is only a thin pointer to it, so reading AGENTS.md is wasted tokens. When this step is dropped, renumber the remaining steps so the list stays contiguous. -->
 1. AGENTS.md
 2. ROADMAP.md
 3. The most recent retro in docs/retros/ — pick it by **git history, not filename sort** (multiple retros can share a date, and alphabetical order then surfaces the wrong one). Run `git log --diff-filter=A --format= --name-only -- 'docs/retros/*.md' | grep -m1 retros` and read that file; if `git status` shows an uncommitted retro newer than that, read it instead. If several retros share that same latest date, skim all of them so you don't miss the newest work.
