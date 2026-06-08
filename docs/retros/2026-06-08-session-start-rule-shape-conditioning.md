@@ -32,7 +32,7 @@ Two things:
 
 **Gated on Rex / open:**
 - The new **skill-injection-by-project-type** BACKLOG item — domain-layer capability for `context-engineering`. Do **not** build until the plugin-vs-vendor promotion mechanic is designed (the §4 flow only solves the vendored case; most candidate skills now arrive as marketplace plugins where active/parked is enable/disable, not a filesystem move). Large (>300-line gate) + new artifact type.
-- Whether to do the **broader Appendix-A session-start rewrite** (see Misses above) — currently un-logged.
-- Standing gap: **no modular-shape example output tree** to regression-test modular template changes against.
+- Whether to do the **broader Appendix-A session-start rewrite** (see Misses above) — now logged in `BACKLOG.md` (easy, low value; promote only if session-start bloat bites).
+- Standing gap: **no modular-shape example output tree** to regression-test modular template changes against — now logged in `BACKLOG.md` (medium effort + maintenance tax; promote when modular work picks up).
 
 **Single next thing to pick up:** none forced. The agent-process/context-harness upgrade item is now fully shipped (groups 1–5). Natural next candidates are the gated prd-creator intake.md fixes (aggregated in BACKLOG) or designing the skill-injection mechanic.
