@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Improving the kit — effectiveness × accuracy</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Improving the kit — effectiveness × accuracy</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>How should &quot;the kit&quot; be improved to maximize effectiveness (idea→shipped throughput) and accuracy (correct, non-hallucinated, non-destructive output), and what ONE thing should be prioritized first? The kit is a SOLO developer&#x27;s (Rex) personal idea→shipped system inside Claude Code: three composable markdown-only skills (prd-creator → context-engineering → design-system-bootstrap) + an agent-process harness. Win = PERSONAL LEVERAGE, not a commercial product. Observed failures: chain doesn&#x27;t auto-compose; skills need explicit @path input; prd-creator leaks internal jargon and once hallucinated provenance; a &quot;qventus near-miss&quot; where a naive auto-orchestrator would have CLOBBERED a hand-authored design system (caught because a human was in the loop); verification has only ONE flat-shape regression baseline, modular shape can only be eyeballed. Candidate brainstorm top-5: (1) /idea-to-product orchestrator, (2) collaborator-feel interview pass, (3) generator self-test harness, (4) stack-aware skill injection, (5) project-type recipes + shared kit-core.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Before building any automation, make the kit non-destructive by default and check output for jargon/provenance — the headline failure (clobbering hand-authored work) is a write-guard problem, not a diff problem.</h3>
+    <p>Build verification, but build it as invariant assertions, not as a golden-tree byte-diff, and sequence it by cost-to-safety ratio: (1) Non-destructive guardrail first (hours): make the generator refuse to write where a hand-authored file already exists — skip-if-exists plus a dirty-tree check, surfacing a diff for human consent rather than overwriting. This is the smallest move that directly closes the qventus headline failure and the precondition that makes the orchestrator safe to build at all; it is the only mechanism that survives removal of the human pause. (2) Invariant/semantic checks second (a day): a small assertion suite on generated output — (a) no-overwrite-of-existing-files, (b) no-jargon-leak (grep the internal-jargon list against emitted copy), (c) provenance-grounded (every cited fact traces to an input the skill was given). These target the accuracy half a structural diff is blind to. (3) Modular structural baseline third, as invariants not byte-diff: assert on structure (files exist, required sections present, cross-refs resolve), not exact bytes, so non-determinism doesn&#x27;t generate false positives. (4) Then orchestrator (#1), then interview polish (#2) — though #2&#x27;s de-jargon/consent work overlaps heavily with step 2 and can ride alongside. Do not commit the qventus tree as a golden baseline.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Add a non-destructive write guard to the generator: refuse to write any file that already exists on disk, emit the proposed content as a diff, and require explicit consent to overwrite. This closes the qventus clobber failure in hours and is the precondition that makes everything else — including the orchestrator — safe to build.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Harness before orchestrator</span></td>
+  <td>The orchestrator&#x27;s skip-if-exists branching is destructive conditional logic that must have a regression test before it touches a real repo.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Verifiability first</span></td>
+  <td>Every failure is a trust failure and speed is downstream of trust, so make every change diff-gated before automating.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Accuracy over throughput</span></td>
+  <td>The cost asymmetry is total — a missed speed gain costs minutes, one destructive run on unwatched trust costs a day plus the whole kit&#x27;s credibility.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Verify then automate</span></td>
+  <td>Effectiveness compounds but accuracy decays unless held in place, so build the safety net before automating the chain that hides regressions.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Harness then orchestrator</span></td>
+  <td>You cannot safely automate what you cannot verify, and &#x27;only costs an afternoon&#x27; is the rationalization that precedes deleting a real design system.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>All five advisors are unanimous on direction: safety and verifiability must come before automation. The orchestrator (#1) is the most dangerous thing to build first because it wraps an unverified chain in one command and removes the human pause that caught the qventus near-miss. Effectiveness is downstream of trust; chaining unverified steps compounds error three skills deep. The forced sequence is verification/safety first, orchestrator second, interview polish third. No advisor dissents from this ordering.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>There is no real clash on direction — the council was largely unanimous. The peer review round is where the recommendation actually got sharpened, and the refinement is significant enough that &#x27;build #3&#x27; as the advisors stated it is now wrong in three specific ways: (1) &#x27;The harness&#x27; is two different mechanisms fused into one label — a regression-diff (catches output drift) and a destructive-write guard (refuses to clobber existing files). The qventus headline failure is the write-guard case, and a diff harness would not have stopped it (qventus was a first-run clobber with no prior baseline to diff against). (2) A naive golden-tree byte-diff is probably incoherent for a non-deterministic LLM generator: re-running the skills yields non-identical-but-valid markdown, so a byte-diff fires constant false positives and trains Rex to ignore it — the opposite of the trust the council claims to protect. (3) The diff is blind to the two named hallucination failures (jargon leak, fabricated provenance) — these are semantic, and a byte-diff against a baseline that itself contains jargon passes clean.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>Mechanism conflation (Reviews 2, 3, 4): the qventus near-miss is a &#x27;never-overwrite-hand-authored-files&#x27; invariant; a one-line refuse-if-exists guard buys most of the safety in minutes, faster than dual baselines. Non-determinism breaks naive diffing (Reviews 4, 5): the harness needs semantic/invariant assertions, not byte comparison. Diff is blind to hallucination (Review 1): the trust-eroding failures the question weights equally slip past a structural baseline. The human pause is what actually saved qventus (Review 5): a regression diff cannot replicate the pause-on-clobber — only a hard write-guard can. #2 interview fixes were never weighed as a parallel quick win (Review 5): cheapest, highest-frequency friction, and it directly targets the jargon/provenance accuracy failures.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>#3 (self-test harness) ranked too low for the wrong reason. Every other item writes more generator surface area — orchestration, branching, de-jargon, injection. You&#x27;re pouring concrete on a foundation you cannot inspect: the modular shape has NO baseline, so you cannot tell whether a change improved output or silently corrupted it. That is the actual accuracy failure — jargon leaks and cold questions are symptoms you happened to catch; the hallucinated provenance is the one you caught, and the terrifying question is how many you didn&#x27;t. The #1 candidate — auto-orchestrator with &quot;skip if exists&quot; branching — is exactly the destructive conditional logic that MUST have a regression test before it touches a real repo. No undo on overwriting your hand-authored design system. Direct-on-main, solo, no review — the harness is the only safety net left. Sequence forced: harness first, then orchestrator. #1 before #3 is shipping the loaded gun before the safety.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Every observed failure is a trust failure. You&#x27;re not optimizing throughput — you&#x27;re optimizing how much output you can ship without re-reading it. Speed is downstream of trust. A meta-orchestrator that runs faster while you still audit every artifact isn&#x27;t leverage; qventus proves auto-composition without trust is destructive. So #1 is the most dangerous move: chaining unverified steps compounds error — a hallucination in PRD.md propagates into CLAUDE.md into tokens.css, blast radius three skills deep with no diff to catch it. Highest-leverage variable is verifiability — #3. Smallest first move that proves it: take the qventus project and one clean project, run the existing skills, commit both output trees as golden baselines. Now every future change is diff-gated. That single afternoon converts &quot;eyeball and hope&quot; into &quot;diff and know&quot; and makes #1 safe to build later. Harness first, orchestrator second.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>#3 is underrated at third. &quot;Effectiveness&quot; and &quot;accuracy&quot; are stated co-equal, but the brainstorm ranks four speed/UX items above the one accuracy item — quietly assuming throughput is the binding constraint. It isn&#x27;t. The qventus near-miss is the tell: an orchestrator that clobbers a hand-authored design system destroyed irreplaceable work. Cost asymmetry is total: a missed speed gain costs minutes; one destructive run costs a day plus trust in the whole kit. The unspoken assumption is that the orchestrator can be built safely without a baseline to verify against — building the dangerous thing on the unmeasured thing. Who&#x27;s affected: Rex six months from now, running /idea-to-product on a project he&#x27;s stopped watching closely BECAUSE the kit earned his trust — exactly when an unverified branch silently overwrites real tokens. Build #3 first; #1 inherits a diff-verifiable guarantee.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>#3, the self-test harness, reframed as the precondition that makes everything else safe to build. Three-year view: effectiveness compounds; accuracy decays unless something holds it in place. Every improvement increases the surface area where a silent regression can hide. One baseline, modular eyeballed — each change raises the probability of wrong/destructive output you won&#x27;t catch until a real project eats the damage. qventus was a coin flip you happened to win. Build the orchestrator first and you&#x27;ve automated the chain before you can verify it — wrapped the clobber failure mode in one command and removed the human pause that caught it. A diff-on-every-change harness makes your future self faster and bolder; you ship #1/#2/#4 in half the time because you stop hand-auditing. Build the harness, then automate fearlessly.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The standard playbook for workflow friction says build the orchestrator — that&#x27;s why #1 is at #1. Resist it. I&#x27;ve watched this a dozen times: wrapping a chain that misbehaves at each link makes the wrapper inherit every defect, harder to debug unattended. You can&#x27;t safely automate what you can&#x27;t verify, so #3 wins. Build flat+modular baselines and the diff gate first. I&#x27;ll concede the case is special: solo tool, no users, a bug only costs an afternoon — the argument for speed on #1. But &quot;only costs an afternoon&quot; is the rationalization that precedes deleting a real design system. Order: harness → orchestrator → interview polish. Do not reorder.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td><td><span class="vote-dot architect"></span></td></tr>
+<tr><td><span class="advisor-name stranger">The Stranger</span></td><td><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td></tr>
+<tr><td><span class="advisor-name veteran">The Veteran</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">All five converge on &#x27;harness first&#x27; but none red-teams whether the harness is even the cheapest accuracy win — golden-tree diffing catches STRUCTURAL regressions but is blind to the two named HALLUCINATION failures (jargon leak, fabricated provenance), which are semantic and would pass a byte-diff against a baseline that itself contains the jargon.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">None asks whether a golden baseline can even be authored before the destructive failure mode is specified — the qventus near-miss is a &#x27;never-overwrite-hand-authored-files&#x27; INVARIANT, and a one-line refuse-if-exists guard buys most of the safety in minutes, independent of and faster than dual baselines.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">All five conflate TWO different safety mechanisms under &#x27;#3 the harness&#x27;: a regression-diff (catches output drift vs golden trees) and a destructive-write guard (prevents clobbering existing files). The qventus near-miss is the latter and a diff harness would NOT have stopped it — so &#x27;harness first&#x27; as stated leaves the headline failure unaddressed.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">None questioned whether LLM-generated markdown is deterministic enough for a diff-based harness to work — re-running the skills produces non-identical-but-valid output, so a naive golden-tree diff fires constant false positives and trains Rex to IGNORE it, the opposite of the trust they claim to protect. The safest first move may be a narrow non-destructive guardrail.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">A &#x27;golden baseline diff&#x27; may be incoherent for a non-deterministic LLM generator — naive diff flags legitimate run-to-run variation as regression and trains Rex to ignore it; the harness needs SEMANTIC/INVARIANT assertions (no-overwrite, no-jargon-leak, provenance-grounded), not byte diffs. Also: qventus was caught by a HUMAN PAUSE a regression diff cannot replicate, and #2&#x27;s interview fixes were never weighed as a PARALLEL quick win.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name stranger">The Stranger</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It alone names the cost asymmetry explicitly (missed speed costs minutes, one destructive run costs a day plus trust) and locates the exact future moment the failure detonates — Rex six months out, trusting the kit enough to stop watching.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It frames the harness purely as a precondition for other features and never confronts the counterargument it raises itself — that on a solo throwaway tool a bug only costs an afternoon.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five converge on &#x27;harness first&#x27; but none red-teams whether the harness is even the cheapest accuracy win — golden-tree diffing catches STRUCTURAL regressions but is blind to the two named HALLUCINATION failures (jargon leak, fabricated provenance), which are semantic and would pass a byte-diff against a baseline that itself contains the jargon.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the whole problem — every failure is a trust failure, speed is downstream of trust — and lands a concrete one-afternoon first move, making it both the most penetrating diagnosis and the most actionable.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It concedes the strongest counterargument (solo, a bug only costs an afternoon) then waves it away with a slogan rather than weighing whether a lighter safeguard than a full harness would suffice.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None asks whether a golden baseline can even be authored before the destructive failure mode is specified — the qventus near-miss is a &#x27;never-overwrite-hand-authored-files&#x27; INVARIANT, and a one-line refuse-if-exists guard buys most of the safety in minutes, independent of and faster than dual baselines.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name stranger">The Stranger</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It names the temporal mechanism that makes the harness urgent — trust earned by the kit causes Rex to stop watching, so the destructive run lands exactly when no human is looking.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It asserts qventus was &#x27;a coin flip you won&#x27; and that the harness makes you &#x27;bolder&#x27; without noticing a golden-baseline diff does nothing to prevent the clobber-a-hand-authored-design-system class, which needs a no-overwrite guard, not a diff.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five conflate TWO different safety mechanisms under &#x27;#3 the harness&#x27;: a regression-diff (catches output drift vs golden trees) and a destructive-write guard (prevents clobbering existing files). The qventus near-miss is the latter and a diff harness would NOT have stopped it — so &#x27;harness first&#x27; as stated leaves the headline failure unaddressed.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It names the root cause uniting all failures (trust) and gives the cheapest concrete first move, tying diagnosis to action.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It rigidly mandates &#x27;do not reorder&#x27; while conceding a bug only costs an afternoon — exactly the case where a lighter guardrail might beat a full harness.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None questioned whether LLM-generated markdown is deterministic enough for a diff-based harness to work — re-running the skills produces non-identical-but-valid output, so a naive golden-tree diff fires constant false positives and trains Rex to IGNORE it, the opposite of the trust they claim to protect. The safest first move may be a narrow non-destructive guardrail.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name stranger">The Stranger</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It attacks the question&#x27;s own framing — co-equal goals but a 4:1 speed-to-accuracy ranking, total cost asymmetry, a concrete six-months-out trust-erosion scenario — rather than just restating &#x27;verify before you automate.&#x27;</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It prescribes committing the qventus tree as a golden baseline, walking into both traps: LLM output is non-deterministic so the diff has no stable signal, and qventus was a first-run clobber with no prior baseline to diff against.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">A &#x27;golden baseline diff&#x27; may be incoherent for a non-deterministic LLM generator — naive diff flags legitimate run-to-run variation as regression and trains Rex to ignore it; the harness needs SEMANTIC/INVARIANT assertions (no-overwrite, no-jargon-leak, provenance-grounded), not byte diffs. Also: qventus was caught by a HUMAN PAUSE a regression diff cannot replicate, and #2&#x27;s interview fixes were never weighed as a PARALLEL quick win.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Improving the kit — effectiveness × accuracy</p>
+  <p>Generated by the LLM Council skill · 2026-06-08T18:03:45</p>
+</footer>
+
+</div>
+</body>
+</html>
