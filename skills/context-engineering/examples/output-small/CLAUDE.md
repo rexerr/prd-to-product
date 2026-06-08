@@ -44,6 +44,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - **Hard limits:** bug fix ≤ 3 files / ≤ 50 lines, feature ≤ 300 lines, file ≤ 500 lines. If a task would exceed, stop and state full scope before writing code.
 - **Read before you write.** Read the file's exports, immediate callers, and obvious shared utilities before adding code. "Looks orthogonal to me" is the most dangerous phrase in this codebase.
 - **Scope check before coding.** State files, intended changes, scope estimate. If > 2 files or scope uncertain, wait for confirmation.
+- **Autonomy — run to done, then report.** The scope check is the outer gate: within the scope limits, run the whole loop (edit → `npm run check` → retro if warranted → commit → push) and report — don't stop to ask "want me to commit?"; over the limits, stop and confirm first. Always gated on Jordan, never self-cleared: UI/visual changes, product/architecture/scope decisions, anything irreversible or outward-facing.
 - **Checkpoint between phases of multi-step work.** Pause between phases and restate what was done / verified / left. Don't continue from a state you can't describe.
 - **Verification before claiming done.** UI: run `npm run dev`, tell Jordan what to look for and on which page, wait for visual confirmation. Logic: run `npm run check`, report results.
 - **Reproduce before fixing.** Failing reproduction first, then fix, then verify.

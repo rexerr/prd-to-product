@@ -63,6 +63,10 @@ Before adding code in a file, read the file's exports, the immediate caller(s), 
 
 Before writing code, state which files you will touch, what you will change and why, and estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
 
+### Autonomy — run to done, then report
+
+Default to finishing the work, not asking permission to finish it — but **the scope check above is the outer gate.** Within the scope limits, run the whole loop (edit → dry-run substitution/diff per "Verification before claiming done" → retro if warranted → commit → push when the task asked for it) and report — don't stop to ask "want me to commit?" on work that was always in scope. If a task would exceed the limits, stop and confirm first. "Run to done" governs only what is inside the scope gate. Always gated on Rex, never self-cleared: product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting work, force-push); and per the existing rules, self-modification of agent config (`.claude/` commands, settings, CLAUDE.md startup behavior).
+
 ### Checkpoint between phases of multi-step work
 
 For any task with more than one distinct phase, pause between phases and restate: what was done, what was verified, what remains. Do not continue from a state you cannot describe. Prevents phase 4 of a 6-step refactor going wrong while phases 5 and 6 pile on top of broken state.

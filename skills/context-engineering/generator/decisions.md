@@ -24,6 +24,7 @@ The generator should hold answers in a state map with these keys:
 | `stack_has_ui` | derived | bool | True for `nextjs`, `react-vite`, false for `node-cli`, `python`. Drives whether visual confirmation gates commits. |
 | `uses_visual_confirmation_gate` | derived | bool | True when `stack_has_ui == true` *and* `visual_confirmer_name` is set. Drives the worktree restriction (worktrees break visual confirmation in single-dev-server workflows). False suppresses worktree-restriction rules and the visual-confirmation recency item. |
 | `enforce_rules_as_hooks` | Q5f | bool | When true, emit `.claude/settings.json` and `.claude/hooks/*.sh` to enforce load-bearing rules as actual blocks rather than prose. Default true; user can opt out. |
+| `autonomy_gate_override` | Q27b | string | Non-default human-gate boundary for the "Autonomy — run to done" section. Usually empty (the section renders from `uses_visual_confirmation_gate` + `visual_confirmer_name`). Set only when the user names an exception to the default gated-surface split. |
 | `deploy_cli_lower` | derived | string | Lowercased deploy CLI name for use in shell command matchers (`vercel`, `netlify`). Empty when `deploy_target_has_cli_conflict == false`. |
 | `install_cmd`, `dev_cmd`, `check_cmd`, `test_cmd`, `build_cmd` | Q5c | string | Commands. Defaults inferred from stack. |
 | `env_pattern` | Q5d | string | E.g., "`.env.local` locally; Vercel project env vars in production". |

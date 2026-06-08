@@ -41,6 +41,19 @@ If you do not understand why existing code is structured the way it is, ask befo
 
 Before writing any code, state the plan: which files, what changes and why, estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.
 
+## Autonomy — run to done, then report
+
+Default to finishing the work, not asking permission to finish it — but **the scope check above is the outer gate.** If a task fits within the scope limits, run the whole loop in one turn and report; if it would exceed them, stop and confirm first. "Run to done" governs only what is inside the scope gate. The failure mode this prevents: stopping mid-task to ask "want me to commit?" on work that was always within scope, *and* its inverse — barreling through a change that quietly blew past the file/line limits.
+
+- **Non-visual work** (logic, docs, tests, config) within scope: run the loop end to end — edit → `<!-- PARAMETERIZE: check_cmd -->` → retro (if warranted, before the commit) → commit → push — then report with the commit URL.
+<!-- OPTIONAL: autonomy_visual_gate — include if uses_visual_confirmation_gate == true -->
+- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** UI/visual changes (visual confirmation); product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off.
+<!-- /OPTIONAL: autonomy_visual_gate -->
+<!-- OPTIONAL: autonomy_no_visual_gate — include if uses_visual_confirmation_gate == false -->
+- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off.
+<!-- /OPTIONAL: autonomy_no_visual_gate -->
+- **Big forks** (new phase, architecture change): propose, get approval, then execute.
+
 ## Surgical changes
 
 When editing existing code, touch only what the task requires:

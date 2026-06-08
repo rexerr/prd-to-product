@@ -208,6 +208,7 @@ Second call:
 27. **`product-rules.md` always-on rule needed?**
    - Yes — project has product invariants the agent must enforce on every feature decision.
    - No — `PRD.md` alone covers it.
+27b. **Human-gate boundary (autonomy charter).** Confirm the default split, or name an exception. Default (recommended): within the scope limits the agent runs to done (logic, docs, tests, config) without stopping to ask "want me to commit?"; it always stops for product / architecture / scope decisions and anything irreversible or outward-facing — plus UI/visual changes when `uses_visual_confirmation_gate == true`. This drives the "Autonomy — run to done" section, which renders from `uses_visual_confirmation_gate` + `visual_confirmer_name`; capture any non-default boundary as `autonomy_gate_override` (free text, usually empty). Most projects take the default — present it for confirmation, don't ask cold.
 
 Third call (only if `codex_usage in ("regular", "occasional")`):
 
