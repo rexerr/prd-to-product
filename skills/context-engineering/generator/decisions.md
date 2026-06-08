@@ -226,6 +226,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `docs/FUTURE.md.template` | `include_future` | `docs/FUTURE.md` (or `FUTURE.md` at root) |
 | `docs/retros/README.md.template` | always | `docs/retros/README.md` |
 | `claude-commands/session-start.md.template` | always | `.claude/commands/session-start.md` |
+| `claude-commands/end-session.md.template` | always | `.claude/commands/end-session.md` |
 | `codex-config.toml.template` | `codex_usage in ("regular", "occasional")` | `.codex/config.toml` |
 | `agents-skills-README.md.template` | `codex_usage == "regular"` | `.agents/skills/README.md` |
 | `claude-settings.json.template` | `enforce_rules_as_hooks == true` | `.claude/settings.json` |

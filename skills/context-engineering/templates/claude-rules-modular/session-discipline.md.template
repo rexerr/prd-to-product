@@ -119,7 +119,7 @@ At the end of every non-trivial session:
 3. Write a retro to `docs/retros/YYYY-MM-DD-topic.md`. Template: `docs/retros/README.md`.
 4. <!-- OPTIONAL: tooling_check_step --> Run `npm run check`, then commit and push including doc updates.
 
-When <!-- PARAMETERIZE: visual_confirmer_name --> says **"end session"**, run the close-out without further prompts. When they say **"commit and push"**, run the same sequence but continue working after pushing.
+When <!-- PARAMETERIZE: visual_confirmer_name --> says **"end session"**, run the close-out without further prompts (the `/end-session` command codifies this exact sequence). When they say **"commit and push"**, run the same sequence but continue working after pushing.
 
 At the start of a new session, read the most recent retro before doing anything else. This replaces asking <!-- PARAMETERIZE: visual_confirmer_name --> to re-explain what was last worked on.
 
