@@ -287,6 +287,15 @@ Hooks emitted:
 
 The hooks coexist with the prose rules in CLAUDE.md/AGENTS.md. The prose explains *why*; the hook guarantees *that*. Removing one without the other breaks either orientation or enforcement. The prose rules are not removed when hooks are emitted.
 
+### Seeded `permissions.allow`
+
+`settings.json` also carries a seeded `permissions.allow` allowlist (read-only inspection commands + the project's `check_cmd`/`build_cmd`). Rationale: cut permission prompts for safe commands the agent runs constantly, without granting write/commit/push (those stay under the Autonomy charter and any commit-blocking hooks). Real-project evidence: qventus grew a hand-written `settings.local.json` allowlist (`git rev-list`, `git ls-remote`) because the scaffold seeded none (post-mortem 2026-06-08).
+
+- The universal read-only core is always emitted: `git status/diff/log/show/branch/rev-parse`, `grep`, `rg`, `find`, `ls`, `cat`, `date`.
+- The two command entries (`Bash(<check_cmd>:*)`, `Bash(<build_cmd>:*)`) are emitted only when those commands exist; **drop any whose value resolved to `none`/`not configured`** (e.g. this repo and other no-build projects get the core only).
+- **Emit even when `enforce_rules_as_hooks == false`:** in that case still write a `settings.json` containing only the `permissions` block (no `hooks`). The allowlist is independent of hook enforcement.
+- Grow the list per project with the `fewer-permission-prompts` skill; the seed is a floor, not a ceiling.
+
 Scripts must be `chmod +x` after writing. The generator handles this as part of file emission; users adding new hooks manually must remember to do it themselves.
 
 ## JSON-aware substitution
