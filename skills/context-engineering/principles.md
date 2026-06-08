@@ -22,6 +22,8 @@ Claude Code (v2.1.59+) has a separate auto-memory system that runs alongside wha
 
 The practical implication: do not put learned-correction-style content into CLAUDE.md. Things like "this codebase uses pnpm not npm" or "the test runner needs a local Redis instance" belong in auto memory — Claude will write them itself when they come up. CLAUDE.md is for instructions the user *decides in advance* the agent should follow; auto memory is for things discovered mid-session. Mixing the two bloats CLAUDE.md and weakens the signal.
 
+For a user who works across more than one agent (Claude Code, Codex, Cursor), the *operative* cut is sharper than agent-discovered vs. user-decided: it is **survives-a-tool-switch vs. doesn't.** Claude's auto-memory is machine-local and Claude-only — Codex and Cursor cannot read it — so anything load-bearing *and any cross-tool working preference* must live in the repo (`AGENTS.md`/docs), not auto-memory. Auto-memory is Claude-local scratch: agent-discovered notes that are acceptable to lose when the tool changes. This is the framing the scaffolded "Where facts live — memory vs. repo" note carries into every project; keep the two definitions in sync.
+
 Auto memory is per-machine and per-git-repo (shared across worktrees of the same repo). It is not in scope for this skill to manage; the user does not need to scaffold or configure anything. See `https://code.claude.com/docs/en/memory` for the upstream reference.
 
 ### Progressive disclosure

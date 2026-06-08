@@ -135,6 +135,16 @@ Do not log every small implementation detail. Log the calls that matter.
 
 ---
 
+## Where facts live — memory vs. repo
+
+The operative cut is **survives a tool switch vs. doesn't.** Claude's auto-memory is machine-local and Claude-only — Codex and Cursor can't read it.
+
+- **Repo** (`AGENTS.md`, `.claude/rules/`, `docs/`): anything load-bearing, *and* any cross-tool working preference — it must bind every agent, not just Claude on this machine. The repo is the source of truth.
+- **Auto-memory:** Claude-local scratch only — agent-discovered notes (build quirks, debugging insights) that are fine to lose on a tool switch. Claude writes these itself.
+- When a rule belongs in the repo, put it here and **delete any duplicate memory.** If a memory ever contradicts the repo on a work rule, the repo wins; reconcile and delete the memory.
+
+---
+
 ## When in doubt
 
 | Touching | Doc → conflict source of truth |

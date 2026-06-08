@@ -68,6 +68,16 @@ Decisions log in `docs/DECISIONS.md`.
 
 ---
 
+## Where facts live — memory vs. repo
+
+The operative cut is **survives a tool switch vs. doesn't.** Claude's auto-memory is machine-local and Claude-only — Codex and Cursor can't read it.
+
+- **Repo** (`CLAUDE.md`, `docs/`): anything load-bearing, *and* any cross-tool working preference — it must bind every agent, not just Claude on this machine. The repo is the source of truth.
+- **Auto-memory:** Claude-local scratch only — agent-discovered notes (build quirks, debugging insights) that are fine to lose on a tool switch. Claude writes these itself.
+- When a rule belongs in the repo, put it here and **delete any duplicate memory.** If a memory ever contradicts this file on a work rule, this file wins; reconcile and delete the memory.
+
+---
+
 ## Before you respond — load-bearing constraints
 
 Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules (direct-on-main, no Vercel CLI, reproduce-before-fixing) live in the body above; do not duplicate them here.
