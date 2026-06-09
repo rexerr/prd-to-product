@@ -98,6 +98,8 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 
 Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. At the start of a new session, read the most recent retro before doing anything else.
 
+Each retro tags the session's dominant failure — bad substitution / scope creep / lost context / goal drift / none (see the template in `docs/retros/README.md`). **Failure it prevents:** accreting tooling and ceremony against failures that never actually occur — the tag turns "should I adopt this guardrail?" into a question the log answers with evidence instead of instinct.
+
 ---
 
 ## Code rules

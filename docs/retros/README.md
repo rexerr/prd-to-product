@@ -17,6 +17,10 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 
 - [List tasks finished this session]
 
+## Failure this session
+
+- [bad substitution / scope creep / lost context / goal drift / none]
+
 ## Files changed
 
 - [path/to/file.js] — [brief description of what changed]
