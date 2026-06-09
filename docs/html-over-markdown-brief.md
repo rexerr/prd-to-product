@@ -80,6 +80,6 @@ Don't make any code changes yet. End with a written recommendation memo I can re
 
 ## Status
 
-- **Not started.** This brief is the entry point.
+- **Investigated 2026-06-09. Recommendation written; decision pending Rex.** Output memo: [`html-over-markdown-recommendation.md`](html-over-markdown-recommendation.md). Bottom line: DSB descriptive-doc HTML *supplement* is ripe and low-risk (canonical stays the CSS token file); `prd-creator` stays markdown canonical; `context-engineering` untouched. Nothing proceeds without a `D-NNN` per D-001.
 - **Parallel-eligible.** Can run in its own session at any time. Independent of skill-refinement phases A–E.
 - **Branch policy:** branch only if the investigation produces edits that overlap with main-branch work in `skills/context-engineering/`. Otherwise commit on `main` from a separate session.
