@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Healing Plan Review Loop — build it, or earn it first?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Self-Healing Plan Review Loop — build it, or earn it first?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should Rex (a solo developer) build a &quot;Self-Healing Plan Review Loop&quot; — a system that captures the feedback he gives when reviewing Claude Code&#x27;s implementation plans, tags it by theme, counts it, and fires a STOP gate when a tag crosses a threshold (default 10) so he runs a human &quot;improvement sprint&quot; that folds the fix back into Claude Code&#x27;s context so the same feedback stops recurring? It would live as a parallel docs/plan-reviews/ subsystem in a repo already meta-system-dense whose core principle is &quot;earn a guardrail with evidence from the log, not instinct.&quot; Claude counter-proposed a lighter path: fold tagged feedback into existing session retros, grep as the counter, build the machinery only after a tag trips by hand. Rex also wants to trial the system on a different live project (his llm-council tooling) before committing it to the home repo. The council was asked: is the mechanism sound; is the volume critique decisive; is fold-into-retros the right call; is the separate-project trial smart de-risking or signal-dilution; what&#x27;s the single highest-leverage first move.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Build nothing — answer &quot;what do I re-correct?&quot; from memory today; only if you genuinely can&#x27;t should you append a tagged line to existing retros for two weeks, because the subsystem (and arguably the trial too) fails your own &quot;evidence not instinct&quot; rule at solo volume.</h3>
+    <p>Skip data collection. Answer from memory first. The peer reviews are right that the two-week trial reproduces the original sin and risks an uninterpretable n. So do the cheapest possible falsifying test, which costs ten minutes and no infrastructure: sit down and list the plan-review corrections you re-give. Be honest about whether each is a stable, promotable pattern (e.g. &quot;always reads the wrong sibling file,&quot; &quot;never checks scope limits before coding&quot;) versus a one-off project-specific correction.</p>
+<p>Three outcomes:</p>
+<p>1. You can name 2-3 stable, recurring, promotable patterns. Then the premise is true and the system is unnecessary — fix them directly. Fold those fixes into CLAUDE.md or, per the Architect&#x27;s genuinely good point, into a single planning-prompt.md / plan-review checklist the drafter reads. Build that artifact (the furnace), because it&#x27;s useful day one regardless of any loop. Build no counter, no ledger, no script, no STOP gate.<br>2. You can&#x27;t name them, or they&#x27;re all one-off. Then the recurring-feedback problem is a phantom at your scale. Build nothing and drop the proposal.<br>3. You&#x27;re genuinely unsure and want the count anyway. Only then append one tagged line to existing retros — never a parallel docs/plan-reviews/ tree — and pre-commit now to the kill/build numbers (e.g. &quot;if no single tag reaches 5 in a month, kill it&quot;). Without a pre-declared threshold the count is theater.</p>
+<p>On the separate-project trial: don&#x27;t. Unanimous and correct — test where the feedback lives or not at all. The llm-council trial dilutes signal and defers the same null result against a different baseline.</p>
+<p>The Architect&#x27;s furnace is the one constructive idea worth keeping — but gated behind the memory check, not ahead of it. Don&#x27;t wire a thermostat into a room you&#x27;re sitting in with your hand already on the heater.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Spend ten minutes writing down the recurring plan-review corrections you give, from memory, and mark each as &quot;stable/promotable&quot; or &quot;one-off.&quot; If you can name 2-3 stable ones, fix them directly (fold into CLAUDE.md or a new planning-prompt.md) and build no machinery. If you can&#x27;t, the system is solving a phantom — drop it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Build nothing, name top-3</span></td>
+  <td>If you truly re-fix the same things you can name them now without any system, and promoting a rule resets the counter so the instrument goes silent exactly when a bad fix needs detecting.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Build the furnace first</span></td>
+  <td>The real missing piece is a durable planning-prompt artifact for fixes to fold into; build that day-one-useful surface, not a capture loop with no target.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Count before infrastructure</span></td>
+  <td>You don&#x27;t install a thermostat in a room you&#x27;re sitting in watching every event; produce one honest count of re-typed feedback before any taxonomy or banner.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Protect the principle</span></td>
+  <td>The compounding asset is evidence the mechanism works at solo throughput, which you don&#x27;t have; building on instinct spends the &#x27;evidence not instinct&#x27; credibility that makes every other rule trustworthy.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Let the log earn it</span></td>
+  <td>Andon cords and Kaizen counters earn their keep at volumes where memory provably fails; at 5-15/week the meta-system outlives its problem, so adopt the lighter retro path and build only when grep trips a tag by hand.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>All five advisors converge, and the peer reviews ratify it (The Skeptic won &quot;strongest&quot; 5/5):</p>
+<p>• Do not build the parallel subsystem now. Unanimous. The entries/ + LEDGER.md + sprints/ + review-pulse machinery is premature.<br>• The volume critique is decisive. At 5-15 events/week across 8 tags, a threshold of 10 trips only after weeks or months — by which point the count measures filing patience, not stable recurrence. This isn&#x27;t Toyota&#x27;s line.<br>• The kill shot is the missing count. You have zero evidence you re-fix the same things. If it&#x27;s true, you can name the top-3 now; if you can&#x27;t, the machinery solves a phantom.<br>• Back-propagation has no target. The &quot;teeth&quot; fold fixes into a planning-prompt artifact that doesn&#x27;t exist. The loop is toothless until that surface exists.<br>• The separate-project (llm-council) trial is signal-dilution, not de-risking — different repo, different failure modes, no shared baseline.<br>• It violates the house rule on move one. &quot;Earn a guardrail with evidence, not instinct&quot; is the repo&#x27;s most expensive asset; building this on instinct spends the credibility that makes every other rule trustworthy.<br>• The taxonomy / WHERE-it-lives tag is the one cheap, real salvage.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>Largely unanimous on the verdict. One genuine fault line on the first constructive move:</p>
+<p>• The Architect (furnace-first): the binding constraint isn&#x27;t capture, it&#x27;s that no durable planning surface exists, so every plan re-earns the same corrections from CLAUDE.md cold. Build the planning-prompt.md / plan-review checklist now — useful day one, independent of any loop, and where 80% of recurring feedback would land.<br>• The other four (count-first / build-nothing): don&#x27;t build any artifact yet; collect the count (or recall it from memory) and let evidence decide. The Architect green-lights infrastructure on the same instinct the repo forbids — it assumes the recurring-feedback problem is real before it&#x27;s counted.</p>
+<p>This is the only real disagreement, and the peer reviews flag the Architect as the chief blind spot precisely here.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>Peer review surfaced gaps that cut underneath the unanimous &quot;just collect a count&quot; prescription — the sharpest contribution of the round:</p>
+<p>• The retro-tagging trial is itself an instinct-adopted guardrail. All five prescribe &quot;tag for two weeks then count,&quot; but none asks whether that mini-loop reproduces the proposal&#x27;s original sin at smaller scale.<br>• The count may be uninterpretable at this volume. n is too small to distinguish recurrence from noise; no one specifies what count justifies building vs. kills the idea. An evidence step that yields an uninterpretable result is false precision dressed as rigor.<br>• The feedback may not be recurrence-shaped at all. Much plan-review feedback is project-specific and one-off — not a CLAUDE.md-promotable pattern. If so, no threshold ever fires legitimately, and even a tripped tag may be unpromotable.<br>• Measuring can manufacture the signal. Tagging every review trains attention onto the friction and can create the recurrence it claims to neutrally observe. And the counter measures throughput of annoyance, not whether the annoyance wasted time.<br>• Tagging adds ceremony to a workflow whose complaint is ceremony. &quot;Append one tagged line&quot; is treated as free; it&#x27;s per-review friction added to the exact process being optimized.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>The mechanism has a flaw the counter-proposal undersells: at 5-15 items/week with 8 tags, you are dividing roughly 10 events across 8 bins. A tag hits 10 only after weeks. By then the &quot;recurrence&quot; you detect is contaminated by every CLAUDE.md edit, skill change, and mood shift in between — you cannot attribute the trip to a stable pattern versus noise. This isn&#x27;t a thermostat; it&#x27;s a thermostat reading a room where someone keeps moving the thermometer. The control-loop framing is doing persuasive work the statistics don&#x27;t support.</p>
+<p>Worse: the system&#x27;s own success destroys its signal. Promote a rule, reset the counter — now that class can&#x27;t re-trip for weeks even if your fix was wrong. You&#x27;ve built an instrument that goes quiet exactly when you&#x27;d want to know the fix failed.</p>
+<p>The central irony is the kill shot and it&#x27;s correct: you have zero count proving &quot;I fix the same things repeatedly.&quot; That claim is the entire load-bearing premise, and it&#x27;s instinct. If it were true, you could name the top-3 recurring problems right now without any system — so name them. If you can&#x27;t, the premise is false and the machinery is solving a phantom.</p>
+<p>The hidden-dependency point compounds this: back-propagation needs a planning-prompt artifact that doesn&#x27;t exist. The &quot;teeth&quot; are vaporware.</p>
+<p>The separate-project trial is signal-dilution, not de-risking — different repo, different failure modes, no baseline; you&#x27;d be testing whether the machine runs, not whether it helps.</p>
+<p>Highest-leverage first move: spend ten minutes listing your actual recurring plan-review failures from memory. If the list is short and obvious, fix those directly and build nothing. That test costs nothing and can kill the whole project.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Build nothing yet. You are optimizing the wrong variable.</p>
+<p>The variable you think you&#x27;re optimizing is &quot;feedback recurrence.&quot; The variable that actually determines whether any of this pays off is &quot;does a planning-prompt artifact exist to fold fixes into?&quot; Back-propagation is the teeth, and the teeth bite into an artifact that doesn&#x27;t exist. You&#x27;re designing a thermostat with no furnace wired to it. The counter, the tags, the STOP banner — all of it actuates through a promotion target that&#x27;s currently vapor.</p>
+<p>So reframe: the problem isn&#x27;t &quot;capture feedback.&quot; It&#x27;s &quot;I have no durable planning surface, so every plan starts from CLAUDE.md cold and re-earns the same corrections.&quot; Build the furnace first. Create a single planning-prompt.md (or a plan-review checklist the drafter reads). That&#x27;s the missing artifact, it&#x27;s useful on day one independent of any loop, and it&#x27;s where 80% of recurring feedback would actually land.</p>
+<p>The simplest first move that actually works: for the next ~15 plan reviews, append one tagged line to your existing retro. No new directory, no script, no banner. Grep it. That costs an hour total and produces the count the whole proposal currently lacks. You either see a tag cluster — which earns the machinery with evidence, exactly your repo&#x27;s principle — or you don&#x27;t, and you&#x27;ve spent an hour instead of a weekend building a thermostat for a room that never gets cold.</p>
+<p>On the trial: testing on llm-council first is signal-dilution, not de-risking. The recurrence pattern is specific to this repo&#x27;s CLAUDE.md. Test it where the feedback actually lives.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>The volume critique is decisive, and here is the angle nobody inside this repo can see: the proposal is a recursion. Rex is using his plan-review loop to design a system that captures lessons from his plan-review loop. The first artifact he should produce is not a taxonomy. It is one honest count of how many times in the last month he actually re-typed the same feedback. He has not produced it. That absence is the whole verdict.</p>
+<p>Words that wouldn&#x27;t survive outside Rex&#x27;s head: &quot;thermostat for context engineering,&quot; &quot;back-propagate,&quot; &quot;actuator,&quot; &quot;STOP banner,&quot; &quot;improvement sprint.&quot; These are control-systems metaphors dressed as a build spec. A thermostat is worth building because a house has thousands of temperature events a day and no human watching. Rex generates 5-15 events a week and is personally watching every one. You do not install a thermostat in a room you are already sitting in with your hand on the heater.</p>
+<p>What Rex assumes the reader already wants: a system. The unstated belief is that a recurring annoyance deserves infrastructure. But the affected party here is one person, and what that person will actually experience is: writing markdown entries, maintaining 8 drifting tags, and glancing at a counter that says &quot;3 of 10&quot; for two months before it ever fires. That is not relief from repetition. That is a second loop of work bolted onto the first.</p>
+<p>Who is affected: only Rex, and future-Rex inherits the maintenance.</p>
+<p>Highest-leverage first move: skip Phase 0&#x27;s machinery. For two weeks, append one tagged line to your existing retro each time you re-give feedback. Then count. If a real number forces your hand, build then. If memory already fixed it, you saved the whole thing.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>The repo&#x27;s principle is &quot;earn a guardrail with evidence not instinct.&quot; The most expensive thing you own here is not the plan-review loop — it&#x27;s that principle&#x27;s credibility. Build this subsystem on instinct and you&#x27;ve spent the one rule that makes every other rule in this dense meta-system trustworthy. Three years out, the question isn&#x27;t &quot;did the thermostat reduce recurrence&quot; — it&#x27;s &quot;is the log still load-bearing, or did it become a place where ceremony goes to look like rigor.&quot; You can&#x27;t measure the second one, and that&#x27;s exactly why it&#x27;s the one that compounds.</p>
+<p>Now the asset that actually compounds: this thing is a product candidate. That reframes everything. An internal tool fails quietly; a scaffolded skill that ships premature ceremony into every future project fails in every clone, and you inherit the maintenance of a taxonomy that drifts under eight tags at a volume where it can&#x27;t earn its keep. The depreciating asset is the markdown subsystem you&#x27;d build now. The compounding asset is the evidence that the mechanism works at solo throughput — and you have zero of that today.</p>
+<p>So the highest-leverage first move is not Phase 0. It&#x27;s the cheapest possible instrument that produces the missing count: add the plan-review feedback line to existing retros, grep weekly, and do nothing else for a month. If a tag genuinely trips by hand, you&#x27;ve earned the subsystem with the exact evidence your own principle demands — and you&#x27;ll have proof it&#x27;s worth productizing. If it doesn&#x27;t trip, you&#x27;ve saved yourself from shipping a guardrail-shaped artifact into every future repo.</p>
+<p>On the separate-project trial: that&#x27;s signal-dilution. Trial it where the workflow actually hurts.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The obvious move here is the standard playbook: when feedback evaporates and you repeat mistakes, build a capture-and-promote loop. I have watched a hundred solo developers build exactly this. The pattern is reliable, and so is its failure mode: the meta-system outlives the problem it was built for. You build the andon cord, honor it twice, and six months later you&#x27;re maintaining scripts/review-pulse and reconciling tag drift against a problem you&#x27;d have solved by just remembering.</p>
+<p>Claude&#x27;s volume critique is the decisive one, and it&#x27;s not close. Andon cords, Kaizen counters, CI-for-prompts — every one of those patterns earns its keep at a volume where human memory provably fails. Toyota&#x27;s line throws thousands of events. You throw 5-15 a week. At that volume the counter isn&#x27;t measuring recurrence, it&#x27;s measuring your patience for filing entries. The machinery is load-bearing at 500 events/week and pure ceremony at 10.</p>
+<p>And this repo already told you the answer. &quot;Earn a guardrail with evidence from the log, not instinct.&quot; The proposal violates the house rule on the first move — it asserts &quot;you fix the same things over and over&quot; with zero count. That&#x27;s not irony, that&#x27;s the rule working. Honor it.</p>
+<p>What&#x27;s genuinely special here, the one thing that survives: the taxonomy and the WHERE-it-lives tag. That&#x27;s real and cheap. Adopt Claude&#x27;s lighter path — a plan-review feedback section in existing retros, one tagged line per item, grep as the counter. Build the parallel subsystem only when grep shows a tag tripping by hand.</p>
+<p>The separate-project trial is signal-dilution. Highest-leverage first move: add the tagged line to retros for two weeks. Let the log earn the system — or kill it.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name skeptic">The Skeptic</span></td><td><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td></tr>
+<tr><td><span class="advisor-name veteran">The Veteran</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">Every response treats the count as free to collect, but none notices that the two-week retro-tagging trial they all prescribe is itself a guardrail adopted on instinct — reproducing the proposal&#x27;s original sin at smaller scale without asking whether Rex can simply answer &#x27;do I re-give the same feedback?&#x27; from memory today and skip data collection entirely. None separates the two real assets being conflated: the WHERE-it-lives taxonomy (cheap, useful now) versus the counter/STOP machinery (the part the volume critique actually kills) — the right move may be to ship the tag and never build the trigger.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">None of the five questions whether plan-review feedback is even the right capture point — much of it is project-specific, not a recurring CLAUDE.md-promotable pattern, so even a tripped tag may be unpromotable; relatedly, all five accept &#x27;fold one tagged line into retros&#x27; as free, but that still adds per-review friction to a workflow whose own complaint is too much ceremony.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">All five say &#x27;append a tagged line to retros for ~2 weeks then count,&#x27; but none asks whether Rex&#x27;s plan-review feedback is even recurrence-shaped versus mostly one-off project-specific corrections — if it&#x27;s the latter, no count threshold will ever justify the machinery and the two-week trial just defers the same null result. None pushes back on the framing that the goal is reducing recurrence at all, rather than improving the baseline planning prompt so fewer corrections are needed in the first place.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">All five treat &#x27;collect a count for two weeks/a month, then decide&#x27; as the safe default, but none reckons with the cost of the measuring act itself: tagging every plan-review during a low-volume trial trains attention onto the friction and can manufacture the very recurrence signal it claims to neutrally observe — and worse, the count measures throughput of annoyance, not whether the annoyance actually wasted time, so even a tag tripping at 10 wouldn&#x27;t settle whether the fix is worth building.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">All five converge on &#x27;append a tagged line to retros and grep for two weeks to two months,&#x27; but none questions whether that instrument itself will yield an interpretable result at Rex&#x27;s volume — a couple months of 10-ish events across 8 tags produces an n too small to distinguish recurrence from noise, so the prescribed evidence-gathering step risks the same false-precision it was meant to cure, and none specifies what count would actually justify building versus killing.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It is the only response that lands the statistical kill shot — that promoting a rule resets the counter and silences the instrument exactly when a bad fix needs detecting — while also giving the cheapest falsifying test (name your top-3 recurring failures from memory now).</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">By insisting the furnace (planning-prompt.md) be built first, it quietly green-lights building infrastructure on the same instinct the repo principle forbids — it never demands the count before committing to the new artifact.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats the count as free to collect, but none notices that the two-week retro-tagging trial they all prescribe is itself a guardrail adopted on instinct — reproducing the proposal&#x27;s original sin at smaller scale without asking whether Rex can simply answer &#x27;do I re-give the same feedback?&#x27; from memory today and skip data collection entirely. None separates the two real assets being conflated: the WHERE-it-lives taxonomy (cheap, useful now) versus the counter/STOP machinery (the part the volume critique actually kills) — the right move may be to ship the tag and never build the trigger.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone shows the mechanism is statistically self-defeating — the counter contaminates with intervening noise and goes silent on success exactly when a failed fix needs detecting — and pairs that with the cheapest kill-test.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It rightly salvages the taxonomy/WHERE-it-lives tag as the one cheap survivor but never notices that tagging itself presupposes a stable category set Rex can&#x27;t yet name, which is the same unproven premise it elsewhere calls out.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None of the five questions whether plan-review feedback is even the right capture point — much of it is project-specific, not a recurring CLAUDE.md-promotable pattern, so even a tripped tag may be unpromotable; relatedly, all five accept &#x27;fold one tagged line into retros&#x27; as free, but that still adds per-review friction to a workflow whose own complaint is too much ceremony.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone names the signal-destruction failure — promoting a fix resets the counter so the instrument goes silent exactly when you&#x27;d need to know the fix was wrong — plus the statistical contamination of 10 events across 8 bins, going beyond the shared volume critique everyone else recycles.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It declares the volume critique decisive &#x27;and it&#x27;s not close&#x27; but never engages the hidden-dependency point that the promotion target doesn&#x27;t exist, which would make the loop toothless even at high volume.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five say &#x27;append a tagged line to retros for ~2 weeks then count,&#x27; but none asks whether Rex&#x27;s plan-review feedback is even recurrence-shaped versus mostly one-off project-specific corrections — if it&#x27;s the latter, no count threshold will ever justify the machinery and the two-week trial just defers the same null result. None pushes back on the framing that the goal is reducing recurrence at all, rather than improving the baseline planning prompt so fewer corrections are needed in the first place.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It lands every decisive blow (premise-is-instinct, signal-dilution, vaporware teeth) and adds the one analytic point no one else gets: promote-then-reset makes the instrument go silent exactly when a bad fix needs detecting — a structural flaw in the mechanism itself, not just its volume.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">By insisting the real fix is building the missing planning-prompt artifact first, it quietly assumes the recurring-feedback problem is real and worth a durable surface — the very premise the others prove is uncounted and possibly phantom.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five treat &#x27;collect a count for two weeks/a month, then decide&#x27; as the safe default, but none reckons with the cost of the measuring act itself: tagging every plan-review during a low-volume trial trains attention onto the friction and can manufacture the very recurrence signal it claims to neutrally observe — and worse, the count measures throughput of annoyance, not whether the annoyance actually wasted time, so even a tag tripping at 10 wouldn&#x27;t settle whether the fix is worth building.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It is the only response that both kills the premise (name your top-3 recurring failures from memory) and adds two original mechanism-level defects the others missed: the 10-events-across-8-bins dilution making any trip unattributable, and the self-erasing signal where promoting a fix resets the counter and hides whether the fix failed.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It leans entirely on the Toyota/andon-volume analogy and the house-rule irony, but never interrogates whether the counter can even produce a valid signal at 8 tags or whether the promotion target exists, so it would still endorse the lighter retro-tag path without noticing that path inherits the same attribution and vaporware problems.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five converge on &#x27;append a tagged line to retros and grep for two weeks to two months,&#x27; but none questions whether that instrument itself will yield an interpretable result at Rex&#x27;s volume — a couple months of 10-ish events across 8 tags produces an n too small to distinguish recurrence from noise, so the prescribed evidence-gathering step risks the same false-precision it was meant to cure, and none specifies what count would actually justify building versus killing.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Self-Healing Plan Review Loop — build it, or earn it first?</p>
+  <p>Generated by the LLM Council skill · 2026-06-09T12:00:00</p>
+</footer>
+
+</div>
+</body>
+</html>
