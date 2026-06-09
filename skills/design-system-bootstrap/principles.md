@@ -135,3 +135,10 @@ The output `DESIGN_SYSTEM.md` follows the same position-aware placement principl
 - **Spacing follows a base unit.** 4px or 8px. Ask in cluster 4. Never mix base units.
 - **Motion tokens come in pairs.** Every duration token has a companion easing token (`--motion-duration-fast: 120ms` plus `--motion-easing-default: cubic-bezier(0.4, 0, 0.2, 1)`). Components reference both.
 - **Shadows use RGBA.** Never named colors in shadow values. `rgba(0, 0, 0, 0.08)` ages better than `rgba(var(--neutral-900-raw), 0.08)` — the latter requires CSS variable tricks that break in some contexts.
+
+## Interview conduct: stay in natural language, stay grounded
+
+Two conduct rules for the cluster interview, shared across all three skills in this family (mirrors `prd-creator` principles; the failures were observed there first — 2026-06-09, D-010).
+
+- **Internal scaffolding stays internal.** Cluster numbers, the `0a`/`0b` sub-question labels, and state-map variable names are the generator's machinery. User-facing copy never names them — speak in natural language about the brand assets, not "cluster 0 source." **Failure it prevents:** naming the machinery reads as form-processing instead of understanding, and erodes trust in the interview.
+- **No temporal or provenance claims about source material.** When you reference a brand book, palette, or other asset, describe what it contains, never speculate about when it was made or how dated it looks. Cite a date only if the asset states one. **Failure it prevents:** a confident but ungrounded claim about provenance is usually wrong and undermines trust in everything else the skill asserts.

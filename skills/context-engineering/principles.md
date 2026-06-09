@@ -160,3 +160,10 @@ The generator asks the user about these. Defaults exist for a few; most must be 
 - Domain vocabulary, if any, for the vocabulary lock pattern.
 
 What it does not ask about: branch policy (direct-on-main, no worktrees), retro location (`docs/retros/`), session-start command location (`.claude/commands/session-start.md`). These are hardcoded.
+
+## Interview conduct: stay in natural language, stay grounded
+
+Two conduct rules for the cluster interview, shared across all three skills in this family (mirrors `prd-creator` principles; the failures were observed there first — 2026-06-09, D-010).
+
+- **Internal scaffolding stays internal.** Cluster numbers, the `0a`/`0b` sub-question labels, and the `Q0a`/state-map variable names are the generator's machinery. User-facing copy never names them — when you point at the source material, say "use it as the source PRD here?", not "use it as cluster 0 source." **Failure it prevents:** naming the machinery reads as form-processing instead of understanding, and erodes trust in the interview.
+- **No temporal or provenance claims about source material.** When you reference a PRD or other source, describe what it contains, never speculate about when it was written or how stale it might be. Cite a date only if the source states one. **Failure it prevents:** a confident but ungrounded claim about provenance ("this PRD is from a while back") is usually wrong and undermines trust in everything else the skill asserts.

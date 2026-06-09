@@ -19,12 +19,12 @@ The user often arrives with a drafted PRD or other source material. This cluster
 
 Ask in one call:
 
-0a. **Existing PRD.** Do you have a drafted PRD for this project? Paste, link, or say "no." (If a PRD is already in context, name it explicitly: "I see a PRD at `<path>` in context — use it as cluster 0 source? Y/N." Wait for an answer. Do not proceed on assumption.)
+0a. **Existing PRD.** Do you have a drafted PRD for this project? Paste, link, or say "no." (If a PRD is already in context, name it explicitly: "I see a PRD at `<path>` in context — use it as the source PRD for this scaffold? Y/N." Wait for an answer. Do not proceed on assumption.)
 0b. **Other source material.** Anything else relevant? (Decisions list, V2/V3 ideas, related global skills, design-system reference, brand book, etc. Optional.)
 
 If a PRD is provided:
 
-- Read it before proceeding.
+- Read it before proceeding. When you reference or summarize it to the user, describe what it contains; do not speculate about when it was written or how recent it is (no "this PRD is a few days old," no "your thinking may have moved on since") unless the PRD itself states a date you can cite.
 - Extract proposed answers for cluster 1 (project name, description), cluster 2 (AI surfaces if the PRD describes them), cluster 6 (PRD content fills, architecture content, workflows, deferred capabilities, vocabulary lock if listed).
 - For each downstream cluster where extraction yielded proposed answers, present them as "I extracted X from your PRD — confirm or correct" rather than asking the question cold.
 - For clusters where the PRD has no relevant content (cluster 3 design system, cluster 4 voice and tone, cluster 5 conditional patterns), ask the user normally — these are workflow questions, not product facts.

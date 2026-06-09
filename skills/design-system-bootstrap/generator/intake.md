@@ -25,7 +25,7 @@ Ask in one call:
 
 If material is provided:
 
-- Read or extract from it before proceeding.
+- Read or extract from it before proceeding. When you reference or summarize it to the user, describe what it contains; do not speculate about when it was made or how dated it looks (no "this brand book looks a bit old") unless the material itself states a date you can cite.
 - Extract proposed answers for cluster 2 (color), cluster 3 (typography), cluster 4 (spacing if specified), cluster 5 (radius/shadow/motion if specified). Most brand books cover color and type; few cover the rest.
 - For each downstream cluster where extraction yielded proposed answers, present them as "I extracted X from your brand book — confirm or correct" rather than asking the question cold.
 - For clusters where the source material has no relevant content, ask the user normally.
