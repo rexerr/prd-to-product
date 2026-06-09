@@ -76,6 +76,11 @@ it as a non-blocking error and *allows* the tool). Wire it globally:
 
 `MultiEdit` is included for forward-compat; it is not a tool in 2.1.138.
 
+**Install gotchas (learned the hard way):**
+- The script must be **executable** — a non-exec hook exits 126, which Claude Code treats as a non-blocking error and **allows** the tool. `chmod +x`.
+- Editing `~/.claude/settings.json` via an **agent Edit tool is reverted** by the harness (it protects agent self-edits to config). Apply the hooks key by a **direct file write** (or have the user edit it), with the user's explicit consent. The desktop app itself does *not* revert a direct write (verified persistent).
+- Verify an install by `permission_denials`, **not** by file state — a file can be "unchanged" for unrelated reasons (the agent didn't attempt it; an Edit-needs-prior-Read block fired first).
+
 ### Honest ceiling
 
 Enforced for the pre-run hand-authored class. Bypassable only by global permission-skip
