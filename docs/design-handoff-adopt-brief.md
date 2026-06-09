@@ -1,5 +1,8 @@
 # Brief — adopting Claude Design handoffs into the design-system flow
 
+> **⚠️ SUPERSEDED by the 2026-06-09 audit — see [D-008](DECISIONS.md) and the [audit council report](council/council-report-2026-06-09-audit.html).**
+> This brief proposed a new sibling skill (`design-handoff-adopt`). That proposal was **rejected** — twice — by the LLM Council. The settled stance: build no adopt-automation (no skill, no DSB mode, no command); Claude Design bundles stay authoritative; tokens reach a real product via a one-time product-side `cp`; revisit only on a 2nd bundle (Rule of Two). The kept knowledge lives in [`design-handoff-adoption.md`](design-handoff-adoption.md). Kept below as the record of the original proposal and the evidence that informed the decision.
+
 **Status:** proposal, pre-decision. Written 2026-06-09 as input to an LLM Council evaluation.
 **Question for the council:** Is a **new sibling skill** the best path for ingesting Claude Design bundles, or is there a better one? If a new skill is right, what are the greatest opportunities and risks?
 

@@ -32,6 +32,10 @@ All three skills must not overwrite an existing file without explicit consent: b
 
 A global PreToolUse hook ([`hooks/write-guard.sh`](../hooks/write-guard.sh), matcher `Write|Edit|MultiEdit`) enforces D-005 while a generator run is armed. Each skill arms at run start / disarms at run end via Bash (`: > ~/.claude/state/write-guard/$CLAUDE_CODE_SESSION_ID.sentinel`). A write to a file that **existed before the run** is gated: interactive → non-forgeable `ask` dialog; headless / `bypassPermissions` → `deny` (default-skip, never clobbers/hangs). Run-created files are auto-tracked (run-owned) and stay editable; a missing owned-set fails safe. **Install is the operator's `~/.claude/settings.json` (manual, gated) and the hook must be `chmod +x`.** Honest ceiling: bypassable by `--dangerously-skip-permissions`; headless runs are *update-incapable* on pre-existing files (greenfield only), which clears the `/idea-to-product` gate for the clobber-safety class only. Full entry + verification: [`DECISIONS.md`](DECISIONS.md) D-006. Reference: [`hooks/README.md`](../hooks/README.md).
 
+### D-008 — No adopt-automation for Claude Design bundles
+
+The kit builds **no** adopt-skill, **no** DSB adopt-mode, and **no** token-adopt command for Claude Design handoff bundles. Bundles stay authoritative (recreate per their own README); to land tokens in a real product, do a one-time manual **`cp`** of token values into *that product's* repo — a product-side action, not a kit change. Knowledge is recorded in [`design-handoff-adoption.md`](design-handoff-adoption.md) (observation log + bundle ledger, not a tool). If an adopt path is ever built it defaults to CSS-vars, never Tailwind. Revisit only on a **2nd real bundle** (Rule of Two). Full entry: [`DECISIONS.md`](DECISIONS.md) D-008.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).
