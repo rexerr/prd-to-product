@@ -31,7 +31,7 @@ A tree of every file written, grouped by location:
     └── ...
 ```
 
-Mark files that are intentionally empty placeholders with `(empty placeholder)` after the filename. Mark files that contain user-supplied content from the intake with no annotation.
+Mark files that are intentionally empty placeholders with `(empty placeholder)` after the filename. Mark files that contain user-supplied content from the intake with no annotation. Mark files skipped because they already existed (per the non-destructive write guard) with `(skipped — already exists; not overwritten)`, and files overwritten after explicit consent with `(overwritten with consent)`.
 
 ### 2. What you should review before starting work
 

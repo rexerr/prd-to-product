@@ -426,6 +426,18 @@ The validation run on `epost-assessment` decided 3 of 5 promotions silently. The
 
 Rationale: the validation run on `the-council` mirrored all four seeded decisions to `DECISIONS_ACTIVE.md` without per-decision check. At least one (D-001 BYOK) clearly qualified, but mirroring all four bypassed the curation logic. The whole point of `DECISIONS_ACTIVE.md` is being a curated subset; bulk-mirror collapses the distinction.
 
+## Non-destructive write guard
+
+Before writing any file in the inclusion table, check whether the target path already exists on disk.
+
+- **Does not exist** → write normally.
+- **Exists and is a recognizable unfilled scaffold** (contains an unresolved `<!-- PARAMETERIZE:` or `<!-- OPTIONAL:` marker) → safe to overwrite after a one-line confirm; don't make the user diff a never-customized scaffold.
+- **Exists and differs** → **do not overwrite.** Show a diff against the existing file, state it already exists, and ask **overwrite / skip**. **Default to skip.** These are whole-file scaffold artifacts (AGENTS.md, CLAUDE.md, rules, docs, commands, settings) with no merge operation — do not offer merge. Never overwrite hand-authored work without explicit consent.
+
+Report skipped/overwritten files in the post-generation summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run sees most prior files as "differs" and prompts (default skip) on each — expected; the guard prioritizes never-clobber over silent re-runs.
+
+This is a *prose* guard the agent must honor; it is **not yet hook-enforced** (the `enforce_rules_as_hooks` mechanism covers other rules, not this one). The field-society-demo run caught a `PRD.md` collision this way — this section makes that behavior systematic rather than ad hoc.
+
 ## What the generator never writes
 
 The skill's scope is context files: rules, docs, slash commands, the AGENTS.md/CLAUDE.md pair, the codex/agents-skills config. **Never product code.** No matter what the user provides as source material (PRD, brand book, design spec, tech doc), the generator does not create files at any of the following paths:

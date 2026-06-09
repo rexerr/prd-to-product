@@ -61,6 +61,17 @@ Default paths, used unless the user named a different path during intake or in t
 
 The skill writes files only at user-confirmed paths. If the project does not have a `docs/` folder yet, ask before creating one.
 
+## Non-destructive write guard
+
+Before writing `PRD.md` or `BRAND.md`, check whether the target path already exists on disk.
+
+- **Does not exist** → write normally.
+- **Exists** → **do not overwrite.** Show a diff against the existing file, state it already exists, and ask **overwrite / skip**. **Default to skip.** These are whole-file artifacts with no merge operation — do not offer merge. Never overwrite a hand-authored or previously generated PRD without explicit consent.
+
+Report skipped/overwritten files in the output summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run on an existing PRD shows as "differs" and prompts (default skip) — expected; the guard prioritizes never-clobber over silent re-runs.
+
+This is a *prose* guard the agent must honor; it is not yet hook-enforced. The field-society-demo run hit exactly this — a `PRD.md` collision between this skill and context-engineering — which is why the guard exists.
+
 ## What never emits
 
 These never appear in the output, even if mentioned during intake:

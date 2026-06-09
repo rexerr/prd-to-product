@@ -32,7 +32,7 @@ A tree of every file written, grouped by location:
         └── design-system.md           (per rule_overwrite_strategy)
 ```
 
-Mark files that were skipped (e.g., `globals.css` already existed) with `(skipped — already present)`. Mark files emitted as merge snippets (`tailwind.config.tokens.ts`, optional rule merge case) with `(snippet — apply by hand)`.
+Mark files skipped because they already existed (per the non-destructive write guard) with `(skipped — already exists; not overwritten)`, and files overwritten after explicit consent with `(overwritten with consent)`. Mark files emitted as merge snippets (`tailwind.config.tokens.ts`, optional rule merge case) with `(snippet — apply by hand)`.
 
 ### 2. The path you took
 

@@ -24,6 +24,10 @@ Skill-refinement work commits direct on `main`. Branches only for genuinely para
 
 In `context-engineering`, the recency-block item "Visual confirmation gates the commit" is gated on `uses_visual_confirmation_gate == true`. Same gate drops body Commit gate, Verification UI bullet, Codex override, and the "No worktrees" suffix. Do not hardcode UI assumptions back into the templates.
 
+### D-005 — Generators are non-destructive by default (prose-mitigated)
+
+All three skills must not overwrite an existing file without explicit consent: before writing, check if the target exists; if it does and is not an unfilled scaffold (no `<!-- PARAMETERIZE:` markers), show a diff and ask overwrite/skip (default skip). Merge only where defined (DSB rule file + tailwind config); whole-file artifacts are overwrite-or-skip. This is a **prose** guard, not yet hook-enforced — it mitigates but does not close the qventus clobber class; the enforcement hook is the follow-up. Full entry: [`DECISIONS.md`](DECISIONS.md) D-005.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).

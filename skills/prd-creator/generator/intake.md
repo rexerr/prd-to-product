@@ -124,4 +124,4 @@ Sweep for open questions. Summarize and confirm.
 
 State the proposed PRD outline. Name every section that will emit and which cluster filled it. Name every section that will be skipped and why. Confirm volume choice for cluster 6 (inline vs sibling).
 
-Wait for explicit user confirmation before writing files. Then run `decisions.md` to determine final emission and write the PRD.
+Wait for explicit user confirmation before writing files. If `docs/PRD.md` or `docs/BRAND.md` already exists, flag it here — it will be shown as a diff for overwrite/skip consent at write time (default skip), never silently replaced (per `decisions.md` "Non-destructive write guard"). Then run `decisions.md` to determine final emission and write the PRD, applying the write guard to every target.

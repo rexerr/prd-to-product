@@ -270,6 +270,8 @@ If dark mode is on, ask for the dark semantic mappings (cluster 7e).
 - **File exists with PARAMETERIZE markers still present** — file was scaffolded by context-engineering but never filled. Generator confirms: "I see a design-system rule with unfilled markers. Safe to overwrite with the generated content? Y/N."
 - **File exists with no PARAMETERIZE markers** — file was filled or hand-written. Generator shows the current content side-by-side with the proposed content and asks "Overwrite, merge into the existing file, or skip the rule update?" Three options. Default: skip if user is unsure.
 
+**Existing token / component / doc files (the non-destructive write guard).** The generator also checks `<token_file_path>`, the seed component files, `docs/DESIGN_SYSTEM.md`, and `<globals_css_path>` before writing. For each that already exists: show a diff against the proposed content and ask **overwrite or skip** (default skip). These are whole-file artifacts — do **not** offer merge for them; merge is defined only for the rule file and `tailwind.config.tokens.ts`. This is the qventus-class guard: a hand-authored `tokens.css` is never overwritten without explicit consent. See `generator/decisions.md` "Non-destructive write guard."
+
 8b. **Final preview.** Before writing, the generator outputs:
 
 - The state map summary (cluster-by-cluster, captured answers).

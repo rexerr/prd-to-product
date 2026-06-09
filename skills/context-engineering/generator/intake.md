@@ -244,9 +244,9 @@ Free-text fills for the docs templates:
 After all clusters are answered:
 
 1. Summarize every captured answer in a structured block.
-2. Show the file list the generator will produce, derived from `decisions.md` rules applied to the answers.
+2. Show the file list the generator will produce, derived from `decisions.md` rules applied to the answers. Mark each path that already exists on disk — those will be guarded, not silently overwritten.
 3. Wait for explicit user confirmation. Phrases that count: "yes", "go", "proceed", "looks good." Anything that asks a clarifying question or proposes a change resets to the relevant cluster.
-4. Only after confirmation: produce files.
+4. Only after confirmation: produce files — applying the non-destructive write guard (`decisions.md`) to every target. Any file that already exists is shown as a diff and requires explicit overwrite/skip consent (default skip); never clobber a hand-authored file.
 
 ## Dry-run mode
 

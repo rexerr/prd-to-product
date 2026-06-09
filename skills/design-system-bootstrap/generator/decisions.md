@@ -30,11 +30,23 @@ Held as a flat map keyed by the names in `intake.md` "Marker map". The keys most
 
 The `tokens.css` file is identical on both paths — it carries the source of truth either way.
 
+## Non-destructive write guard
+
+Before writing any file, check whether the target path already exists on disk. This governs every file in the table below.
+
+- **Does not exist** → write normally.
+- **Exists and is a recognizable unfilled scaffold** (contains `<!-- PARAMETERIZE:` markers) → safe to overwrite after a one-line confirm; don't make the user diff a never-customized file.
+- **Exists and differs** → **do not overwrite.** Show a diff against the existing file, state it already exists, and ask: **overwrite / skip** — and **merge only where this skill defines a merge operation** (the `.claude/rules/design-system.md` snippet and `tailwind.config.tokens.ts`; **never offered for `tokens.css`, the seed components, or `DESIGN_SYSTEM.md`**, which are whole-file artifacts with no merge semantics). **Default to skip.** Never overwrite hand-authored work without explicit consent.
+
+Report skipped/overwritten files in the post-generation summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run sees most prior files as "differs" and prompts (default skip) on each — expected; the guard prioritizes never-clobber over silent re-runs.
+
+The "Triggered when" column below says *whether* a template is emitted; this guard says *whether an existing file is overwritten* — the two are orthogonal. `tokens.css`, the seed components, and `DESIGN_SYSTEM.md` are always in scope but are still overwrite-or-skip when the file already exists (this is the qventus-class failure: a hand-authored `tokens.css` must never be silently clobbered). The rule file's `rule_overwrite_strategy` (below) is the richest instance of this one guard — it alone adds the marker fast-path and a merge branch. **This is a prose guard the agent must honor; it is not yet hook-enforced.**
+
 ## Per-template inclusion table
 
 | Template | Triggered when | Output path |
 |---|---|---|
-| `tokens.css.template` | always | `<token_file_path>` |
+| `tokens.css.template` | always (overwrite-or-skip per write guard) | `<token_file_path>` |
 | `globals.css.template` | always (write only if file does not exist; otherwise emit a merge note) | sibling of `<token_file_path>`, named `globals.css` |
 | `Button.tsx.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Button.tsx` |
 | `Button.module.css.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Button.module.css` |
@@ -46,8 +58,10 @@ The `tokens.css` file is identical on both paths — it carries the source of tr
 | `Input.module.css.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Input.module.css` |
 | `Input.tailwind.tsx.template` | `styling_path == "tailwind_shadcn"` | `<component_dir_path>/Input.tsx` |
 | `tailwind.config.tokens.ts.template` | `styling_path == "tailwind_shadcn"` | `tailwind.config.tokens.ts` (snippet for merge, not full overwrite) |
-| `DESIGN_SYSTEM.md.template` | always | `docs/DESIGN_SYSTEM.md` |
+| `DESIGN_SYSTEM.md.template` | always (overwrite-or-skip per write guard) | `docs/DESIGN_SYSTEM.md` |
 | Design-system rule | per `rule_overwrite_strategy` (see below) | `.claude/rules/design-system.md` |
+
+> All component-file rows above (`Button`/`Card`/`Input`, both styling paths) are governed by the write guard: overwrite-or-skip if the target already exists. The `styling_path` condition selects *which* component template emits; the guard still gates overwriting an existing file. No merge for components.
 
 ## Rule integration: three-state logic
 

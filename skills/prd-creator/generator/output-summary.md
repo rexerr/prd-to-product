@@ -7,6 +7,8 @@ The post-generation report. Print this to the user after the PRD (and optional `
 ```
 PRD generated at <PRD_PATH>.
 
+Write-guard outcome: <"all targets were new" | existing files marked (skipped — already exists; not overwritten) or (overwritten with consent)>.
+
 Sections that emitted:
 - <section name> (from cluster <N>)
 - <section name> (from cluster <N>)
