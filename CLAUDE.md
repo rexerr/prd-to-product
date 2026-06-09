@@ -71,6 +71,10 @@ Default to finishing the work, not asking permission to finish it — but **the 
 
 For any task with more than one distinct phase, pause between phases and restate: what was done, what was verified, what remains. Do not continue from a state you cannot describe. Prevents phase 4 of a 6-step refactor going wrong while phases 5 and 6 pile on top of broken state.
 
+### Recommend a council at genuine forks
+
+When a decision is **both costly to get wrong and hard to reverse** — changing the markdown-only invariant, a stack/architecture choice, a build-vs-don't call (a `D-NNN` decision), or adjudicating whether a Claude Design bundle re-introduces deliberately-cut scope — recommend running an LLM Council (or equivalent multi-perspective stress-test) *before* committing, rather than shipping a first instinct. Recommend it; do not auto-run it. **Failure it prevents:** a plausible-but-wrong first instinct surviving solo review on a fork that's expensive to unwind — twice on 2026-06-09 a council killed exactly such an instinct that had passed my own review. **Do not** recommend it for routine or reversible work (prose edits, single-file fixes, choosing between equivalent phrasings) — over-applying it turns judgment into ritual, atrophies the adjudication muscle, and leans on a non-deterministic external plugin the repo can't assume is installed. Decided in [`docs/DECISIONS.md`](docs/DECISIONS.md) D-009; council that set the threshold: [`docs/council/council-report-2026-06-09-reconcile.html`](docs/council/council-report-2026-06-09-reconcile.html).
+
 ### Verification before claiming done
 
 Never claim success based on "the code looks correct."

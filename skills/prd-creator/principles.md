@@ -92,6 +92,10 @@ These shape what goes in the sections, not just how they look.
 - **Open questions name what would change the build.** A question that does not change a decision belongs in a discussion thread, not the PRD.
 - **Success criteria are concrete.** "10 users complete the workflow without help" beats "users find it intuitive." If the user cannot answer a criterion concretely, capture it as an open question instead.
 
+## Recommend a stress-test before locking high-stakes scope
+
+The interview collects and structures; it does not pressure-test. When the PRD is about to lock a decision that is **costly to get wrong and hard to reverse** — the core differentiator, the V1/V2 cut line, a load-bearing scope decision, or reconciling a conflicting PRD from another source (e.g. a Claude Design bundle) — recommend a structured multi-perspective review (an LLM-council-style pass, if such a skill is available) *before* finalizing, rather than rubber-stamping the interview's first synthesis. Recommend it; do not auto-run it, and do not invoke it for routine wording or reversible edits. The failure mode this prevents: a plausible-but-unexamined scope decision hardening into the PRD because the interview surfaced it but never challenged it. This is a hand-off to a separate critique pass — the skill itself still does not critique the PRD (see below).
+
 ## What this skill does not do
 
 - Does not propose product strategy or invent decisions the user has not made.

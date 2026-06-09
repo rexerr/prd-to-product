@@ -36,6 +36,10 @@ A global PreToolUse hook ([`hooks/write-guard.sh`](../hooks/write-guard.sh), mat
 
 The kit builds **no** adopt-skill, **no** DSB adopt-mode, and **no** token-adopt command for Claude Design handoff bundles. Bundles stay authoritative (recreate per their own README); to land tokens in a real product, do a one-time manual **`cp`** of token values into *that product's* repo — a product-side action, not a kit change. Knowledge is recorded in [`design-handoff-adoption.md`](design-handoff-adoption.md) (observation log + bundle ledger, not a tool). If an adopt path is ever built it defaults to CSS-vars, never Tailwind. Revisit only on a **2nd real bundle** (Rule of Two). Full entry: [`DECISIONS.md`](DECISIONS.md) D-008.
 
+### D-009 — Recommend a council at genuine forks (never auto-run); reconcile bundle vs interview PRD by KIND
+
+The LLM Council is **not** a wired-in primitive. A *recommend-don't-auto-run* note lives in this repo's [`CLAUDE.md`](../CLAUDE.md), in `context-engineering`'s scaffolded session-discipline (flat + modular + example), and as a `prd-creator` principle — firing only when a decision is **both costly to get wrong and hard to reverse**, phrased tool-agnostically in scaffolded output. To reconcile a Claude Design bundle PRD against an interview PRD: build nothing structural (per D-008) — **human diff-and-adjudicate, section-keyed, with deltas routed by KIND**: pure additions are presumptively safe; anything re-expanding a deliberately-cut scope is held as a **scope-gate** ("the bundle re-introduces something you decided to cut"). Full entry + council: [`DECISIONS.md`](DECISIONS.md) D-009, [`council-report-2026-06-09-reconcile.html`](council/council-report-2026-06-09-reconcile.html).
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).

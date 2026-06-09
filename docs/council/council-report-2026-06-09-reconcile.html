@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconciling a Claude Design bundle PRD with an interviewed PRD — and should the council be a primitive?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Reconciling a Claude Design bundle PRD with an interviewed PRD — and should the council be a primitive?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>The prd-to-product skill kit reconciles two prose PRDs from different sources. The operator now prototypes most products in Claude Design first, which exports a &#x27;handoff bundle&#x27; (tokens + PRD + screenshots + stack), becoming his default front door until/unless Anthropic integrates it natively into Claude Code. Prior decision D-008 built NO ingestion automation (N=1 schema-uncertainty); the kit already prevents silent clobbering via a write hook, so the open problem is JUDGMENT, not write-safety. CRUX: the bundle PRD often contains SUPERIOR features/layouts (because prototyping lets the operator SEE them), while the interviewed PRD is stronger on strategy/scope/rationale. Q1: which reconciliation mechanism wins — (a) human diff-and-adjudicate, (b) structured section-by-section merge protocol, (c) an LLM Council pass that drafts a reconciled PRD, (d) feed bundle PRD as source material into prd-creator&#x27;s confirm-or-correct intake, (e) something else? Q2: should the LLM Council be embedded as a REUSABLE primitive wired into the kit&#x27;s decision points, or stay ad hoc? Reflexivity: if the council can&#x27;t earn its keep on THIS question, that&#x27;s evidence against Q2.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Do human diff-and-adjudicate over a section-keyed delta view that routes deltas by KIND — mechanically absorb pure additions, force explicit adjudication on anything that re-expands cut scope — and keep the council ad hoc, not a wired-in primitive.</h3>
+    <p>Side with the Skeptic/Veteran reading of (a), upgraded by the peer round. Do human diff-and-adjudicate, but make the mechanism do two things the raw option doesn&#x27;t. (1) Map both PRDs onto prd-creator&#x27;s section skeleton and surface per-section deltas — so this composes with the existing intake and the (a)/(d) distinction dissolves: you get the intake&#x27;s in-the-loop machinery without building anything new. (2) Route deltas by KIND, not just by source. Pure additions (the bundle has a feature/layout the interview never spoke to) are presumptively safe — present them, let the operator wave them through. Anything that contradicts or re-expands a scope decision the interview made on purpose gets flagged as a scope-gate violation and held for explicit adjudication, framed as &#x27;the bundle re-introduces something you decided to cut&#x27; — NOT &#x27;the bundle has a better idea.&#x27; That reframing is the defense against self-adjudication bias: it makes the operator overrule a prior deliberate decision, which is harder to rubber-stamp than approving a shiny prototype. This protects the one thing the kit exists to protect — scope discipline — against the one threat this situation introduces, prototype enthusiasm laundering cut scope back in. It builds nothing structural, so it survives the front door being temporary. On Q2: no — keep the council ad hoc, hand-invoked at genuine forks where being wrong is expensive AND contested-across-people. This question barely cleared that bar; routine reconciliation won&#x27;t. The reflexivity test is admittedly non-falsifiable as run (the prompt pre-selected a council-worthy question), but the external-plugin dependency and the babysitting requirement are independently sufficient to reject wiring it in. Hold one thing lightly: the screenshots, not the prose, carry the real &#x27;this is superior&#x27; signal — don&#x27;t over-invest in prose-merge tooling when the judgment is visual.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>For this one bundle, by hand: lay the bundle PRD and the interview PRD side by side against prd-creator&#x27;s section skeleton, and tag every divergence as either &#x27;pure addition&#x27; or &#x27;contradicts a deliberate scope cut&#x27; — then adjudicate only the second pile. Whether that tagging step is worth encoding into the kit is a decision you make after doing it three times, not now.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">(a) + no council</span></td>
+  <td>The bundle has no scope discipline, so any flow treating it as co-equal input silently re-imports deliberately-cut scope disguised as a better product — making (d) actively dangerous and only KIND-tagged human adjudication safe.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">(d) + no council</span></td>
+  <td>Reframe as provenance not merge — pre-seed prd-creator&#x27;s intake so bundle owns features/layout and interview owns scope/rationale, stopping only on genuine contradictions; council is below the irreversibility×ambiguity threshold.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">(a)+(d) compose, no council</span></td>
+  <td>Section-key both PRDs onto the existing skeleton, encode the known asymmetry as a prior, and let (a) surface deltas while (d) absorbs them; a tool you must run in full to trust isn&#x27;t a primitive.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">(d) + no council</span></td>
+  <td>The Claude Design front door is explicitly temporary, so build nothing format-specific — invest in the interview muscle you keep regardless, and keep the council rare lest you atrophy the adjudication muscle you most need.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">(a) + no council</span></td>
+  <td>At N=1 build nothing structural; agent pre-labels deltas by presumptive source-strength and the operator confirms per-divergence — and a council you must babysit isn&#x27;t a primitive.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>Strong, near-unanimous convergence on the high-stakes points. (1) Q2 is a clean &#x27;no&#x27; — all five reject wiring the council in as a reusable primitive: it adds ceremony to a single-dev lightweight kit, creates a hard dependency on an external marketplace plugin the kit can&#x27;t assume exists (a portability liability it has defended everywhere else), and a &#x27;primitive&#x27; that overreached twice this week and was saved only by peer review is a procedure you must babysit, not a primitive. (2) No new structural machinery at N=1 — with one bundle you don&#x27;t yet know the shape of the problem, and D-008&#x27;s restraint was correct refusal to capitalize a wasting asset (the Claude Design front door is explicitly temporary). (3) The asymmetry is a known prior, not a fresh discovery — bundle is authoritative on features/layout, interview on strategy/scope/rationale; the agent should pre-label deltas by presumptive source so the operator confirms rather than derives. (4) Section-keyed, not raw diff — map both PRDs onto prd-creator&#x27;s section skeleton before surfacing deltas.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>One real clash, narrowed by the peer round. The surface split is (a) human diff-and-adjudicate (Skeptic, Stranger, Veteran) vs. (d) feed the bundle through prd-creator&#x27;s confirm-or-correct intake (Architect, Long View). But Review 4 nails it: (a) and (d) describe the same loop at different layers — surface deltas (a), absorb them through a section-keyed intake (d). The disagreement is largely illusory. The substantive clash is whether routing the bundle through the intake is SAFE: the Skeptic and Veteran argue (d) is actively dangerous because prd-creator&#x27;s intake is built to TRUST its input, so feeding an un-adjudicated bundle through it launders deliberately-cut scope back in disguised as &#x27;a better product idea.&#x27; The Architect and Long View pick (d) without reckoning with that — and the peer round flagged this against the Long View specifically.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The review round earned its keep — three gaps every advisor missed. (1) Two delta-kinds need different handling and nobody routed them: &#x27;bundle adds a feature the interview missed&#x27; is mechanically safe to absorb, while &#x27;bundle contradicts a scope decision made on purpose&#x27; is the trap and the ONLY kind that needs a human. All five collapsed these into one diff. This is the most actionable insight in the exercise — the judgment-layer analogue of the write-hook the kit already has. (2) The strongest signal may not be in the prose at all: the bundle is tokens + PRD + screenshots + stack, and the operator&#x27;s &#x27;superior&#x27; judgment comes from SEEING it — so the load-bearing evidence lives in the screenshots, and all five assumed prose-vs-prose was the right altitude. (3) Self-adjudication conflict of interest: the operator adjudicating is the same person who prototyped the bundle and felt the features were superior; &#x27;human adjudicates&#x27; means asking the enthusiast to overrule his own fresh prototypes. Review 5 sharpens it — &#x27;superior&#x27; is itself the contested judgment, so the real primitive is a SCOPE-GATE, not a source-of-authority tag.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>Two PRDs each carrying superior content is not a merge problem, it&#x27;s a provenance problem. The bundle PRD&#x27;s strength (features you SAW work) and the interview PRD&#x27;s strength (strategy, scope discipline) live at different altitudes — features vs. rationale. So (a) human diff-and-adjudicate wins, but only if the agent surfaces deltas tagged by KIND: &quot;bundle adds a feature/layout the interview missed&quot; vs. &quot;bundle contradicts a scope decision the interview made on purpose.&quot; The second kind is the trap. The bundle has no scope discipline — Claude Design will happily prototype three features you decided to cut. A naive additive merge silently re-imports cut scope wearing the costume of &quot;superior product idea.&quot; That is the fatal flaw in (b)/(c)/(d): any protocol that treats the bundle as co-equal input lets prototype enthusiasm overwrite deliberate restraint, and you won&#x27;t notice because it LOOKS like a better product. So (d) is actively dangerous — feeding the bundle into prd-creator&#x27;s confirm-or-correct intake launders un-adjudicated scope back through a flow designed to trust its input. On Q2: no. Embedding the council as a wired-in primitive on a single-dev markdown kit is ceremony that fails its own test. You convened a 5-advisor council to decide whether to convene councils — and the honest output is &quot;use the cheap tool.&quot; Its first-pass overreached twice this week; a primitive that needs peer-review to not be confidently wrong is not a primitive, it&#x27;s a liability with a hard dependency on an external marketplace plugin your kit can&#x27;t assume exists. Keep it ad hoc, operator-invoked, for genuine forks. The threshold: council only when a wrong call is expensive AND irreversible. PRD reconciliation is neither — it&#x27;s diff-and-adjudicate.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Reframe first: you are not building &quot;PRD reconciliation.&quot; You have two artifacts that are strong on orthogonal axes — the bundle is strong on what to build (features, layouts, product surface you can see), the interview is strong on why and how much (strategy, scope, rationale). The wrong variable to optimize is &quot;merge them into one canonical PRD.&quot; The right variable is provenance: keep each section tagged by source-of-authority and only adjudicate where they actually collide. Q1: (d) wins, with a twist. Feed the bundle PRD as source material into prd-creator&#x27;s existing confirm-or-correct intake — that machinery already exists, already surfaces deltas, already puts you in the loop. But pre-seed it: bundle owns the Features/Layouts/UX sections by default; interview owns Strategy/Scope/Rationale by default; the intake only stops you on genuine contradictions, not every difference. (a) is what (d) becomes at divergences. (c) council-drafts a PRD is the failure mode — it manufactures a third opinion you now have to reconcile against two. Q2: No. Wire the council in as a primitive and you&#x27;ve built ceremony into a single-dev kit whose entire thesis is lightweightness. The threshold is irreversibility × ambiguity. PRD reconciliation is reversible (it&#x27;s prose, edit it) and the authority-split resolves most of it mechanically — below threshold. Reserve council for genuine forks: stack choice, the markdown-only invariant, &quot;build vs. don&#x27;t&quot; like D-008. Reflexivity check, honestly: this question is exactly at the threshold — high ambiguity, but the decision (a confirm-or-correct intake) is cheap and reversible. It earned a council this once because the framing was contested. It would not earn a standing wire-in. That asymmetry is your answer to Q2.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Reconciliation: (a) human diff-and-adjudicate is the right default, but not in raw form — it must be section-keyed. The bundle PRD and the interview PRD are not isomorphic prose, so a naive line diff produces noise. Map both onto prd-creator&#x27;s existing section skeleton (problem, scope, features, layout, rationale), then surface per-section deltas. The operator decides each divergence. This wins because the crux you stated IS the answer: the two sources have known, predictable asymmetries — bundle wins on features/layout, interview wins on strategy/scope/rationale. That&#x27;s not a judgment you discover fresh each time; it&#x27;s a prior. Encode it. Option (d), feeding the bundle as source material into the intake, is the actual mechanism for HOW the surfaced deltas get absorbed — (a) and (d) compose, they don&#x27;t compete. Failure mode of (a): operator rubber-stamps under fatigue and the interview&#x27;s scope discipline silently erodes, which is the exact thing the kit exists to protect. Words a stranger can&#x27;t parse: &quot;scale-first token template,&quot; &quot;value-lossless but structurally non-isomorphic,&quot; &quot;confirm-or-correct intake,&quot; &quot;N=1 schema-uncertainty.&quot; You&#x27;re assuming the reader already believes the council is valuable — Question 2 asks whether it should be wired in, but the framing treats it as a primitive seeking a home. Council-as-primitive: no. You told me it overreached twice this week, caught only by peer review. A tool you must run in full to trust its first pass is not a primitive — it&#x27;s a procedure. Reserve it for genuine forks where being wrong is expensive and reversible-cost is high. PRD reconciliation is neither; diff-and-adjudicate handles it. The reflexivity test bites: this question warranted a council; routine reconciliation does not.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Two depreciation curves are about to cross, and the kit is being built on the wrong one. The Claude Design front door is the explicit reason this question exists, and the operator himself says it stays the default &quot;until/unless Anthropic integrates Claude Design natively into Claude Code.&quot; That clause is the whole game. The moment native integration ships, any bespoke ingestion machinery — schema parsers, merge protocols, council-wired reconciliation — becomes dead weight you now have to detect, deprecate, and rip out. Software depreciates; the more you build against an external format you don&#x27;t control, the faster. D-008&#x27;s restraint wasn&#x27;t timidity, it was correctly refusing to capitalize a wasting asset. That logic doesn&#x27;t expire just because the bundle PRD turned out to be good. So on Q1: the winner is (d) — feed the bundle PRD as source material into prd-creator&#x27;s existing confirm-or-correct intake. It compounds instead of depreciating, because you&#x27;re investing in the interview muscle you keep regardless of whether the front door is Claude Design, the next tool, or a napkin. The interview is exactly the mechanism that&#x27;s already strong on the things the bundle is weak on — strategy, scope, rationale — and it forces the operator to adjudicate the bundle&#x27;s superior layouts rather than inherit them unexamined. (b) and (c) build format-specific scaffolding you&#x27;ll throw away. On Q2: no. The council&#x27;s value is that it&#x27;s rare. Wire it into routine decision points and you convert judgment into ritual, train yourself to outsource the adjudication muscle you most need to keep sharp, and bolt a single-dev kit to an external marketplace plugin — a portability liability that ages badly. Keep it ad hoc, invoked at genuine forks. The reflexivity test confirms it: this question deserved a council. Reconciling next Tuesday&#x27;s PRD will not.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>Diff-and-adjudicate is the standard playbook here, and the standard playbook is right for the same reason it&#x27;s always right: with N=1 bundle, you don&#x27;t yet know the shape of the problem. Every team I&#x27;ve watched build a &quot;merge protocol&quot; before they had ten real merges built it for the wrong divergences and then maintained the wrong abstraction for a year. You have ONE bundle. Build nothing structural. So for Q1: (d) is the trap dressed as elegance — &quot;feed the bundle PRD into prd-creator&#x27;s intake&quot; sounds clean but it launders judgment into a black box and re-runs an interview optimized for greenfield strategy, which is exactly the dimension the bundle is WORSE at. You&#x27;d dilute the bundle&#x27;s superior layout/feature content through a strategy-first funnel. (a) wins, unconditionally, at N=1. The agent surfaces deltas section-by-section, you adjudicate per-divergence. That IS the structured protocol (b) — you just don&#x27;t write it down as a protocol until the pattern repeats enough to name it. Failure mode of (a): adjudication fatigue on a 40-section diff. Mitigation: agent pre-labels each delta by which source is presumptively stronger (bundle=layout/features, interview=strategy/scope) so you&#x27;re confirming, not deriving. Q2: No. And the tell is in your own reflexivity clause — the council overreached twice this week and only its peer-review caught it. A primitive you must babysit isn&#x27;t a primitive. Hard external-plugin dependency on a single-dev markdown kit also breaks portability, which is the one invariant you&#x27;ve defended everywhere else. Keep the council ad hoc, invoked by hand at genuine forks. The threshold: council when the decision is irreversible AND contested across people; diff-and-adjudicate when it&#x27;s one operator reconciling prose he can re-edit tomorrow. This question barely cleared that bar. Most won&#x27;t.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name skeptic">The Skeptic</span></td><td><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">Every response treats the bundle PRD as a single artifact, but it is really tokens + PRD + screenshots + stack, and the screenshots are the operator&#x27;s actual judgment-bearing evidence (&#x27;superior because he SAW them&#x27;) — none asked whether prose reconciliation is even the right altitude when the strongest signal lives in the visuals. Relatedly, all five collapse &#x27;additive features the interview missed&#x27; and &#x27;features that contradict cut scope&#x27; into the same diff, yet only the second needs a human; the first is mechanically safe to absorb, and no one proposed routing the two delta-kinds to different handling.</span><span class="missed-attribution">flagged by Reviewer 1</span></li>
+<li><span class="missed-text">Every response collapses Q1 to a single winner, but the bundle is a per-product artifact while the kit is permanent — none separates &#x27;what do I do with THIS bundle (cheap, manual, N=1)&#x27; from &#x27;what, if anything, should the kit ENCODE as a reusable prior (the bundle=features / interview=scope authority-split that the Architect, Skeptic, and Stranger all independently rediscovered).&#x27; That recurring authority-split is the only thing that has earned encoding, yet all five conflate encoding-it with wiring-the-council as the same Q2 question.</span><span class="missed-attribution">flagged by Reviewer 2</span></li>
+<li><span class="missed-text">None confront that the operator is the SAME person who prototyped the bundle — so &#x27;human adjudicates&#x27; means asking the enthusiast to overrule his own freshly-seen prototypes, a conflict-of-interest the section-keyed diff papers over but doesn&#x27;t solve. That self-adjudication bias, not fatigue or rubber-stamping, is the real reason the kit&#x27;s scope-protection muscle is at risk here.</span><span class="missed-attribution">flagged by Reviewer 3</span></li>
+<li><span class="missed-text">Three pick (d) and three pick (a) while all five converge on &#x27;no council primitive,&#x27; but none notices that (a) and (d) describe the SAME loop at different layers — surface deltas (a), absorb via a section-keyed intake (d) — so the real disagreement is illusory and the only substantive fork is the Skeptic&#x27;s scope-clobber risk. That risk is the actual decision-relevant question (a judgment analogue of the write-hook the kit already has), and four of five treat it as a tagging nicety rather than the gating constraint.</span><span class="missed-attribution">flagged by Reviewer 4</span></li>
+<li><span class="missed-text">No response questioned the framing&#x27;s own premise that the bundle features are &#x27;SUPERIOR&#x27; — that judgment is precisely what&#x27;s contested; a SEEN feature feels superior whether or not it survives scope, so the real reconciliation primitive is a scope-GATE, not a source-of-authority tag. Relatedly, every response answered Q2 &#x27;no&#x27; but none noticed they were grading the council on a question the prompt pre-selected as council-worthy, making the reflexivity test non-falsifiable as run.</span><span class="missed-attribution">flagged by Reviewer 5</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="reviewer"><summary><span class="label">Reviewer 01</span><span class="name">Reviewer 1</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone names the asymmetric danger the others gloss: the bundle has no scope discipline, so additive merge silently re-imports deliberately-cut scope wearing the costume of a &#x27;better idea.&#x27;</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It bets everything on the depreciation curve but never reckons with the bundle&#x27;s lack of scope discipline, so its endorsed mechanism (d) launders cut scope back through an intake designed to trust its input.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats the bundle PRD as a single artifact, but it is really tokens + PRD + screenshots + stack, and the screenshots are the operator&#x27;s actual judgment-bearing evidence (&#x27;superior because he SAW them&#x27;) — none asked whether prose reconciliation is even the right altitude when the strongest signal lives in the visuals. Relatedly, all five collapse &#x27;additive features the interview missed&#x27; and &#x27;features that contradict cut scope&#x27; into the same diff, yet only the second needs a human; the first is mechanically safe to absorb, and no one proposed routing the two delta-kinds to different handling.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 02</span><span class="name">Reviewer 2</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone names the asymmetric danger that breaks the &#x27;additive merge&#x27; framing: any flow treating the bundle as co-equal input silently re-imports deliberately-cut scope disguised as &#x27;better product.&#x27;</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Its depreciation argument actually argues AGAINST routing the bundle through prd-creator&#x27;s intake too, since (d) still couples reconciliation to the bundle as input — it doesn&#x27;t notice (d) carries the same wasting-asset risk it condemns in (b)/(c).</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response collapses Q1 to a single winner, but the bundle is a per-product artifact while the kit is permanent — none separates &#x27;what do I do with THIS bundle (cheap, manual, N=1)&#x27; from &#x27;what, if anything, should the kit ENCODE as a reusable prior (the bundle=features / interview=scope authority-split that the Architect, Skeptic, and Stranger all independently rediscovered).&#x27; That recurring authority-split is the only thing that has earned encoding, yet all five conflate encoding-it with wiring-the-council as the same Q2 question.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 03</span><span class="name">Reviewer 3</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It identifies the operationally fatal asymmetry — the bundle has no scope discipline, so additive merge silently re-imports cut scope, making (d) actively dangerous rather than merely suboptimal.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It flags depreciation risk but endorses (d) wholesale without noticing that routing un-adjudicated bundle scope through a confirm-or-correct intake is exactly where prototype enthusiasm overwrites restraint.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None confront that the operator is the SAME person who prototyped the bundle — so &#x27;human adjudicates&#x27; means asking the enthusiast to overrule his own freshly-seen prototypes, a conflict-of-interest the section-keyed diff papers over but doesn&#x27;t solve. That self-adjudication bias, not fatigue or rubber-stamping, is the real reason the kit&#x27;s scope-protection muscle is at risk here.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 04</span><span class="name">Reviewer 4</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the problem as provenance (authority-by-section) rather than merge, pre-seeds the intake with that prior, names the (c) failure mode of manufacturing a third opinion, and gives a clean irreversibility×ambiguity threshold with an honest reflexivity verdict.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Its case rests on the front door being temporary, yet (d) feeding a bundle into the interview still requires exactly the section-mapping/ingestion work it calls throwaway scaffolding — it never resolves that contradiction.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Three pick (d) and three pick (a) while all five converge on &#x27;no council primitive,&#x27; but none notices that (a) and (d) describe the SAME loop at different layers — surface deltas (a), absorb via a section-keyed intake (d) — so the real disagreement is illusory and the only substantive fork is the Skeptic&#x27;s scope-clobber risk. That risk is the actual decision-relevant question (a judgment analogue of the write-hook the kit already has), and four of five treat it as a tagging nicety rather than the gating constraint.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 05</span><span class="name">Reviewer 5</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone names the asymmetric danger that makes naive additive merge actively harmful — prototype enthusiasm silently re-imports deliberately-cut scope wearing the costume of a &#x27;better idea.&#x27;</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">By picking (d) on a depreciation argument, it ignores that prd-creator&#x27;s intake trusts its input, so feeding the unadjudicated bundle through it launders re-imported cut scope past the operator.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">No response questioned the framing&#x27;s own premise that the bundle features are &#x27;SUPERIOR&#x27; — that judgment is precisely what&#x27;s contested; a SEEN feature feels superior whether or not it survives scope, so the real reconciliation primitive is a scope-GATE, not a source-of-authority tag. Relatedly, every response answered Q2 &#x27;no&#x27; but none noticed they were grading the council on a question the prompt pre-selected as council-worthy, making the reflexivity test non-falsifiable as run.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Reconciling a Claude Design bundle PRD with an interviewed PRD — and should the council be a primitive?</p>
+  <p>Generated by the LLM Council skill · 2026-06-09T08:55:19</p>
+</footer>
+
+</div>
+</body>
+</html>

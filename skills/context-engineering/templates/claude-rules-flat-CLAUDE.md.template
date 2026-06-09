@@ -112,6 +112,10 @@ Default to finishing the work, not asking permission to finish it — but **the 
 
 For any task with more than one distinct phase, pause between phases and restate: what was done, what was verified, what remains. Do not continue from a state you cannot describe. Prevents phase 4 of a 6-step refactor going wrong while phases 5 and 6 pile on top of broken state.
 
+### Recommend a structured review at genuine forks
+
+When a decision is **both costly to get wrong and hard to reverse** — an architecture or stack choice, a change to a core invariant, a build-vs-don't call (a logged decision), or any fork where reasonable people would disagree — recommend a structured multi-perspective review (an LLM-council-style pass, if such a skill is available) *before* committing, rather than shipping a first instinct. Recommend it; do not auto-run it. **Failure it prevents:** a plausible-but-wrong first instinct surviving solo review on a decision that is expensive to unwind. **Do not** recommend it for routine or reversible work (prose edits, single-file fixes, choosing between equivalent phrasings) — over-applying it turns judgment into ritual and leans on a tool the project can't assume is installed.
+
 ### Verification before claiming done
 
 Never claim success based on "the code looks correct."

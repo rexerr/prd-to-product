@@ -77,6 +77,10 @@ Do not continue from a state you cannot describe. If you lose track of where you
 
 This is not the same as the session retro at the end. Retros capture *what was learned*; checkpoints prevent *compounding broken state*.
 
+## Recommend a structured review at genuine forks
+
+When a decision is **both costly to get wrong and hard to reverse** — an architecture or stack choice, a change to a core invariant, a build-vs-don't call (a logged decision), or any fork where reasonable people would disagree — recommend a structured multi-perspective review (an LLM-council-style pass, if such a skill is available) *before* committing, rather than shipping a first instinct. Recommend it; do not auto-run it. The failure mode this prevents: a plausible-but-wrong first instinct surviving solo review on a decision that is expensive to unwind. Do not recommend it for routine or reversible work (prose edits, single-file fixes, equivalent phrasings) — over-applying it turns judgment into ritual and leans on a tool the project can't assume is installed.
+
 ## Verification before claiming done
 
 <!-- OPTIONAL: verification_ui_bullet — include if uses_visual_confirmation_gate == true -->
