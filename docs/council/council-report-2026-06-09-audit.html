@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final audit: adopt Claude Design tokens — build, defer, or reference?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Final audit: adopt Claude Design tokens — build, defer, or reference?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>FINAL AUDIT, with fidelity evidence in hand. A single-developer kit of single-purpose, markdown-only skills (prd-creator, context-engineering, design-system-bootstrap=DSB) scaffolds AI-coding projects. The user designs in Claude Design, which exports handoff bundles (HTML/CSS/JS prototypes + an existing CSS-custom-property design system + screenshots + a PRD + a README telling agents how to implement). A fidelity test transcribing the real bundle into the kit&#x27;s two-tier tokens.css returned VALUE-LOSSLESS (all 40 tokens copy verbatim) but STRUCTURALLY NON-ISOMORPHIC (DSB&#x27;s scale-first template fabricates shades; 3 vs 6 fonts; no tier for 5 categorical accents / a --crt scalar / a toggle; one dark block vs base+twilight+3 surfaces+N colorways). Theming is mechanical. Refined plan to audit: no 4th skill, no DSB mode; IF anything, a small token-adopt slash command emitting flat-primitives + thin alias layer + N theme blocks; recreation delegated to README. Build now, defer until a 2nd bundle, or don&#x27;t transcribe at all (keep bundle authoritative, reference it)?</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Don&#x27;t build the command — but don&#x27;t pretend &#x27;reference the bundle&#x27; is free either: ship the written fidelity baseline now and copy the tokens into the product repo as a one-time cp, because the prototype is disposable and the app has to build without it.</h3>
+    <p>Hold the unanimous verdict where it&#x27;s earned and override it where the reviews caught it overreaching. KEEP KILLED: the 4th skill and the DSB mode — dead, correctly. DON&#x27;T BUILD THE SLASH COMMAND YET, but for the right reason: not because it&#x27;s a dangerous importer (it isn&#x27;t — it&#x27;s a saved prompt against a static bundle you own), but because at n=1 you can&#x27;t tell a theme from tweak-tool scratch, so you&#x27;d hardcode an N and a schema (--crt, the toggle, 5 categorical accents) you can&#x27;t validate; the command is cheap to write later, which is exactly why deferring it costs nothing. BUT THE PRODUCT STILL NEEDS TOKENS NOW — the gap the council missed and the part that is not deferrable. The 40 lossless values must land in the real app&#x27;s repo to build, so the correct move is the dumbest one: a one-time cp of the bundle&#x27;s tokens into the product repo as its canonical tokens.css. Not a symlink (breaks when the prototype is discarded), not an @import (same), not &#x27;reference in place&#x27; (fiction) — a literal copy. The bundle stays authoritative as the source of record for component recreation (its README does that job); the product repo owns its built tokens outright. Lossless values are what make a one-time copy safe — nothing to transform, nothing to rot. WRITE THE RECIPE NOW as a recorded baseline, not a reusable tool: the fidelity finding plus the manual transcription steps go into one page in the kit&#x27;s docs, framed as &#x27;what this one bundle required and why it didn&#x27;t fit DSB&#x27;s schema&#x27; — an observation log, not a general procedure — which neutralizes the n=1-in-prose risk and gives bundle #2 a recorded diff target. Net: kill two, defer one (cheaply), ship two now (the one-time copy into the product repo, and the recorded fidelity baseline).</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>cp the bundle&#x27;s tokens into the product repo as its own canonical tokens.css (one-time, no symlink/import), and in the same commit drop a one-page fidelity baseline in the kit&#x27;s docs recording what this bundle required and where DSB&#x27;s schema fabricated shades — so the product builds today and bundle #2 has a recorded diff target.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Build nothing</span></td>
+  <td>N is undefined and the bundle already self-transcribes, so a command only saves a copy-paste the agent does anyway — keep the bundle authoritative and reference it.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Defer, Rule of Two</span></td>
+  <td>Hand-do the next bundle and capture a docs checklist; extract a command only when bundle #2 confirms the shape across two real inputs.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Document, don&#x27;t build</span></td>
+  <td>Lossless values mean transcription is cp and a skill&#x27;s value is the structure that doesn&#x27;t fit, so write the recipe and build nothing until the format proves itself twice.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Defer indefinitely</span></td>
+  <td>The bundle-authority convention compounds and survives every upstream change for free, while a transcriber depreciates the instant Claude Design ships a new export schema.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Defer, pressure-test</span></td>
+  <td>Importers die by drift or fabrication — the test caught the fabrication pre-ship — so build on the 2nd bundle and first ask what emitting a file buys over referencing in place.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>Unanimous and correct on the negatives: no 4th skill, no DSB mode, don&#x27;t bend DSB&#x27;s scale-first template to a shape it fabricates. All five also agree the bundle is effectively self-transcribing — lossless values plus a README mean a transcriber buys almost nothing over the agent reading the file directly. And all five land on &#x27;defer / build nothing now,&#x27; with the command (if ever) gated on a second real bundle.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>Two real splits. First, on whether the threat is even live: Long View, Veteran, and the Architect treat the artifact as tracking an upstream you don&#x27;t control (de-sync, depreciation, importer-rot) — but a peer review catches that the bundle is a static one-off the dev OWNS, so the &#x27;moving target&#x27; framing is overstated for this artifact. Second, on what &#x27;defer&#x27; costs: the Skeptic treats undefined N as a reason to build nothing, while a reviewer flips it — resolving N (theme vs tweak-tool scratch) is exactly the human judgment a recipe should capture now, not wave away.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer reviews exposed three things all five advisors collapsed. (1) Kit vs. product: every advisor said &#x27;keep the bundle authoritative, reference it,&#x27; but the bundle is a throwaway prototype export — the real app needs the tokens IN ITS OWN REPO to build. &#x27;Reference in place&#x27; is right for the kit and a fiction for the product; when the prototype is discarded, an in-place reference points at a file that no longer exists, and none of the advisors said where canonical tokens live post-disposal. (2) Command vs. saved prompt: all five inherited the &#x27;importer rots into a maintenance tax&#x27; failure wholesale, but a ~30-line command you re-run on demand against a bundle you&#x27;re holding is a saved prompt, not a trusted generator — near-zero standing maintenance, cheap to write, cheap to delete; &#x27;defer until proven twice&#x27; over-weights a lock-in risk that barely exists for a disposable re-runnable artifact. (3) The fallback isn&#x27;t free and the mechanism is unspecified: the endorsed manual recipe carries the same n=1 schema-fitting risk they condemn in the command, and &#x27;reference, don&#x27;t transcribe&#x27; never names a mechanism (symlink? @import? a pointer in CLAUDE.md?), so the actual deliverable stays unbuilt.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>The plan is correct in its negatives — no 4th skill, no DSB mode. The fight is the residual &quot;build a small command.&quot; N=1 — one bundle, one designer, one tool version; the test names the instability (4 colorways may be tweak-tool scratch, not V1 themes), so the format is undefined at the boundary that matters (theme vs scratch) and a command emitting &quot;N theme blocks&quot; must decide an N you don&#x27;t know. Deeper: you&#x27;re building a transcriber for an artifact that ships its own transcription instructions — a README plus a working var() alias. Values are lossless precisely because they&#x27;re already valid CSS in a file, so the command only saves a copy-paste the agent does anyway. The fidelity test accidentally argues the last option: keep the bundle authoritative, reference it. Failure mode: Claude Design changes its export shape (it will), and your hand-extracted command is silently wrong until a project breaks. Verdict: right on no-skill/no-mode; wrong instinct on the command. Build nothing now.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>DEFER — but not toward &quot;build now.&quot; What are you actually solving? Not &quot;adopt tokens&quot; — getting the bundle implemented in a real project with the designer&#x27;s values intact. The test proved values copy verbatim and the bundle ships its own README; the authoritative artifact already exists and is lossless. A transcription step is net-negative until proven: a second copy that can drift, and you&#x27;d hand-author a NEW schema (flat-primitives + alias + N theme-blocks) off n=1. The real risk is schema lock-in on n=1 — the next bundle might have scales, 2 fonts, or no colorways; codifying now bakes today&#x27;s idiosyncrasies (--crt, --placeholder-tag-display) into a &quot;format.&quot; Simplest move that works: do the next bundle BY HAND, keep the bundle authoritative (reference, don&#x27;t re-home), capture the manual steps as a short docs checklist, and extract a command only when bundle #2 confirms the flat-primitive shape across two real inputs. The Rule of Two applies exactly. Right to kill the 4th skill and the DSB mode; wrong to build the command now.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>&quot;Value-lossless but structurally non-isomorphic&quot; assumes lossless-values is the win — but you proved the opposite. If all 40 tokens copy verbatim, transcription is cp. The value of a skill is the structure it imposes — and the structure is exactly what doesn&#x27;t fit. You ran a test that confirmed the mechanical part is trivial and the judgment part is hard, then proposed building a tool for the mechanical part. That&#x27;s backwards. &quot;IF anything is built&quot; — notice the author already wants to build something. A single developer, by the time a second bundle exists, will have forgotten the command&#x27;s assumptions and re-derive the shape by hand anyway — faster than debugging a stale generator against a format that &quot;N colorways&quot; already says is unstable. The bundle ships its own README — the authoritative artifact already exists; a command competes with it and drifts. Keep the bundle authoritative; reference it. The --crt scalar and --placeholder-tag-display toggle are the tell — bespoke escape hatches mean the next bundle has different ones. Write the transcription as a documented manual recipe now; build nothing until the format proves itself twice.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>The fidelity test didn&#x27;t just measure fit. It told you the bundle&#x27;s shape is the UPSTREAM&#x27;s, and the upstream is a moving target — the load-bearing three-year fact, arguing harder than the plan admits toward &quot;don&#x27;t transcribe.&quot; What compounds is not a token file — that depreciates the instant Claude Design ships a new export schema (and it will; it&#x27;s a young product iterating fast). What compounds is the CONVENTION that the bundle stays authoritative and your kit references it — that survives every upstream format change for free. A transcribe command does not: each schema revision silently de-syncs your emitted file from the source of truth, a maintenance liability that tracks a release cadence you don&#x27;t control. Building a command to a shape you&#x27;ve seen once is fitting a schema to n=1. DEFER is correct, but be honest that &quot;defer until a 2nd bundle&quot; is likely &quot;defer indefinitely&quot; — and that&#x27;s the right outcome, not a delay. A 4th surface, even a small command, dilutes the kit&#x27;s strongest asset (single-purpose legibility) and is the first one whose correctness you don&#x27;t own. Three-year failure mode: Claude Design adds an importable tokens.css and your transcriber is strictly worse than a symlink. Defer the command; ship a one-page reference convention now.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The pattern: &quot;ingest an external format&quot; tools die one of two ways — either the upstream format drifts and your importer rots into a maintenance tax, or the importer subtly lies, fabricating what the source didn&#x27;t specify. Your fidelity test already caught the second failure mode in the act: DSB&#x27;s scale tier fabricates shades. That&#x27;s the canonical importer sin, found before shipping. So the refined plan is mostly right, for the standard reason: don&#x27;t build the 4th skill, don&#x27;t bend DSB. Two corrections. First, the open sub-question answers itself — N=1; every importer built against a single sample encodes that sample&#x27;s accidents as the format (the --crt scalar, the 5 categorical accents, the twilight-plus-3-surfaces shape). Defer; build it on the 2nd bundle, not the 1st — that&#x27;s the only way you learn which fields are the format. Second, this case may be special: if the bundle ships its own README and recreation already delegates there, the bundle is already authoritative; transcription buys you a tokens.css the agent could read directly. Ask what emitting a file gets you that referencing the bundle in-place doesn&#x27;t — if &quot;a write-guarded canonical location,&quot; that&#x27;s a thin win for a new surface to maintain. Verdict: defer, and pressure-test &quot;reference, don&#x27;t transcribe&quot; first.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name skeptic">The Skeptic</span></td><td><span class="vote-dot skeptic"></span></td><td><span class="vote-dot skeptic"></span></td></tr>
+<tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td><td><span class="vote-dot longview"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">All five treat &#x27;reference the bundle, do nothing&#x27; as a clean resting state, but &#x27;defer indefinitely&#x27; quietly leaves the originating problem (consistent, low-friction adoption across projects) permanently unsolved rather than solved-by-convention; and the proposed manual-recipe fallback has the same n=1 schema-fitting failure they condemn in the command — a written recipe encodes the same sample&#x27;s accidents in prose nobody dry-runs.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">All five say &#x27;keep the bundle authoritative, reference it&#x27; but the bundle is a throwaway prototype export — the real app needs the tokens copied into its own repo to build, so a one-time transcription into the project IS required and &#x27;reference in place&#x27; is the actual fiction; none specify where canonical tokens live once the prototype is discarded, so the &#x27;one-page reference convention&#x27; is itself the unbuilt thing and it has to answer the copy-into-repo question.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">All five evaluate the kit&#x27;s interest and unanimously defer, but none asks what the USER must ship next week: a prototype bundle is disposable scaffolding, yet the real app it becomes needs tokens living in its own repo, not referenced from an export that will be deleted — so &#x27;reference, don&#x27;t transcribe&#x27; is right for the kit and wrong for the product, a distinction every advisor collapsed. The council also over-rotates against a 30-minute artifact: the manual-recipe step they all endorse IS most of the command, so the real choice is documentation format, not build-versus-wait.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">All five collapse &#x27;a ~30-line slash command&#x27; into &#x27;a maintained importer/schema&#x27; and inherit the importer-rots failure mode wholesale — but a command you re-run on demand against a bundle you&#x27;re holding is closer to a saved prompt than a trusted generator, with near-zero standing maintenance cost; the command is cheap to write and cheap to delete if bundle #2 doesn&#x27;t fit, so &#x27;defer until proven twice&#x27; over-weights a lock-in risk that barely exists for a disposable, re-runnable artifact.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">All five wave at &#x27;reference, don&#x27;t transcribe&#x27; as a convention but none specifies the mechanism — symlink, @import, or a one-line pointer in CLAUDE.md telling the agent to read the bundle&#x27;s tokens.css in place — so the actual deliverable stays unbuilt; and none commits the one thing clearly worth shipping now regardless of the tool question: the fidelity finding plus a one-page manual recipe, written so bundle #2 is re-derived against a recorded baseline instead of from memory.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It alone reframes the deliverable as a durable convention (bundle-stays-authoritative) rather than an artifact, and correctly names that &#x27;defer until 2nd bundle&#x27; is really &#x27;defer indefinitely&#x27; and embraces that as the right outcome.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It proposes &#x27;capture manual steps as a docs checklist&#x27; as if costless, but a hand-authored checklist tracking an unstable upstream format rots exactly like the command it rejects — it never asks who maintains the checklist against schema drift.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five treat &#x27;reference the bundle, do nothing&#x27; as a clean resting state, but &#x27;defer indefinitely&#x27; quietly leaves the originating problem (consistent, low-friction adoption across projects) permanently unsolved rather than solved-by-convention; and the proposed manual-recipe fallback has the same n=1 schema-fitting failure they condemn in the command — a written recipe encodes the same sample&#x27;s accidents in prose nobody dry-runs.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It alone names what compounds — the convention that the bundle stays authoritative — and shows the transcriber is a depreciating liability tracking an upstream cadence you don&#x27;t control.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It invokes Rule of Two and a &#x27;docs checklist&#x27; but never asks whether the bundle&#x27;s tokens survive prototype disposal, so its &#x27;reference, don&#x27;t re-home&#x27; could point at a file that ceases to exist.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five say &#x27;keep the bundle authoritative, reference it&#x27; but the bundle is a throwaway prototype export — the real app needs the tokens copied into its own repo to build, so a one-time transcription into the project IS required and &#x27;reference in place&#x27; is the actual fiction; none specify where canonical tokens live once the prototype is discarded, so the &#x27;one-page reference convention&#x27; is itself the unbuilt thing and it has to answer the copy-into-repo question.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name skeptic">The Skeptic</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It is the only response that names what actually compounds — the convention of bundle-authority — and identifies the precise long-run failure (Claude Design ships its own importable tokens.css, making any transcriber worse than a symlink).</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It correctly nails that N is undefined (theme vs scratch colorways) but treats that as a reason to build nothing, missing that resolving N is exactly the human judgment a documented recipe should capture now.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five evaluate the kit&#x27;s interest and unanimously defer, but none asks what the USER must ship next week: a prototype bundle is disposable scaffolding, yet the real app it becomes needs tokens living in its own repo, not referenced from an export that will be deleted — so &#x27;reference, don&#x27;t transcribe&#x27; is right for the kit and wrong for the product, a distinction every advisor collapsed. The council also over-rotates against a 30-minute artifact: the manual-recipe step they all endorse IS most of the command, so the real choice is documentation format, not build-versus-wait.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">It alone isolates the operative question — &#x27;what does the command save over the agent reading the bundle directly?&#x27; — and answers it: a copy-paste the agent already does, making the command a second source of truth that drifts.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It frames the artifact as tracking an external &#x27;Claude Design export schema&#x27; on a &#x27;cadence you don&#x27;t control,&#x27; but the bundle is a static one-off handoff the dev owns, not a live upstream feed, so the de-sync-on-every-revision threat is overstated.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five collapse &#x27;a ~30-line slash command&#x27; into &#x27;a maintained importer/schema&#x27; and inherit the importer-rots failure mode wholesale — but a command you re-run on demand against a bundle you&#x27;re holding is closer to a saved prompt than a trusted generator, with near-zero standing maintenance cost; the command is cheap to write and cheap to delete if bundle #2 doesn&#x27;t fit, so &#x27;defer until proven twice&#x27; over-weights a lock-in risk that barely exists for a disposable, re-runnable artifact.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name architect">The Architect</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It names the real load-bearing asset — the convention that the bundle stays authoritative — and the three-year failure (an importable tokens.css makes your transcriber worse than a symlink) sharpest of the five.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It invokes the Rule of Two as if n=2 alone unlocks the command, ignoring that two bundles from the same upstream still teach you nothing about a schema you don&#x27;t control.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five wave at &#x27;reference, don&#x27;t transcribe&#x27; as a convention but none specifies the mechanism — symlink, @import, or a one-line pointer in CLAUDE.md telling the agent to read the bundle&#x27;s tokens.css in place — so the actual deliverable stays unbuilt; and none commits the one thing clearly worth shipping now regardless of the tool question: the fidelity finding plus a one-page manual recipe, written so bundle #2 is re-derived against a recorded baseline instead of from memory.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Final audit: adopt Claude Design tokens — build, defer, or reference?</p>
+  <p>Generated by the LLM Council skill · 2026-06-09T08:10:00</p>
+</footer>
+
+</div>
+</body>
+</html>
