@@ -436,7 +436,20 @@ Before writing any file in the inclusion table, check whether the target path al
 
 Report skipped/overwritten files in the post-generation summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run sees most prior files as "differs" and prompts (default skip) on each — expected; the guard prioritizes never-clobber over silent re-runs.
 
-This is a *prose* guard the agent must honor; it is **not yet hook-enforced** (the `enforce_rules_as_hooks` mechanism covers other rules, not this one). The field-society-demo run caught a `PRD.md` collision this way — this section makes that behavior systematic rather than ad hoc.
+**Enforced (D-005).** This guard is now backed by the global `write-guard.sh` PreToolUse hook ([`hooks/README.md`](../../../hooks/README.md)) when installed and this run is armed. (`enforce_rules_as_hooks` emits hooks *into the scaffolded project*; this is a separate hook that guards the **generator's own writes**.) A write to a file that **existed before this run** is gated — interactive → a non-forgeable permission dialog (`ask`), headless → auto-skip (`deny`, never clobbers/hangs). Files this run *creates* are auto-tracked as run-owned and stay editable. Still honor the prose: the hook may be absent or bypassed, and does nothing unless this run armed it. The field-society-demo run caught a `PRD.md` collision this way — this section makes that behavior systematic rather than ad hoc.
+
+**Arm at run start (before writing any file), disarm at run end** — via Bash, so it bypasses the guard's own `Write|Edit` matcher:
+
+```bash
+# run start
+mkdir -p ~/.claude/state/write-guard
+: > ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel
+# run end
+rm -f ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel \
+      ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".owned
+```
+
+Where the hook isn't installed this is a harmless no-op. A forgotten arm = no enforcement for that run (the prose is the backstop); a forgotten disarm is harmless.
 
 ## What the generator never writes
 

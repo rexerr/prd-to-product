@@ -70,7 +70,20 @@ Before writing `PRD.md` or `BRAND.md`, check whether the target path already exi
 
 Report skipped/overwritten files in the output summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run on an existing PRD shows as "differs" and prompts (default skip) — expected; the guard prioritizes never-clobber over silent re-runs.
 
-This is a *prose* guard the agent must honor; it is not yet hook-enforced. The field-society-demo run hit exactly this — a `PRD.md` collision between this skill and context-engineering — which is why the guard exists.
+**Enforced (D-005).** This guard is now backed by the global `write-guard.sh` PreToolUse hook ([`hooks/README.md`](../../../hooks/README.md)) when installed and this run is armed: a write to a file that **existed before this run** (`PRD.md`/`BRAND.md`) is gated — interactive → a non-forgeable permission dialog (`ask`), headless → auto-skip (`deny`, never clobbers/hangs). A `PRD.md` this run *creates* is auto-tracked as run-owned and stays editable. Still honor the prose: the hook may be absent or bypassed, and does nothing unless this run armed it. The field-society-demo run hit exactly this — a `PRD.md` collision between this skill and context-engineering — which is why the guard exists.
+
+**Arm at run start (before writing `PRD.md`/`BRAND.md`), disarm at run end** — via Bash, so it bypasses the guard's own `Write|Edit` matcher:
+
+```bash
+# run start
+mkdir -p ~/.claude/state/write-guard
+: > ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel
+# run end
+rm -f ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel \
+      ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".owned
+```
+
+Where the hook isn't installed this is a harmless no-op. A forgotten arm = no enforcement for that run (the prose is the backstop); a forgotten disarm is harmless.
 
 ## What never emits
 

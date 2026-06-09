@@ -40,7 +40,22 @@ Before writing any file, check whether the target path already exists on disk. T
 
 Report skipped/overwritten files in the post-generation summary with the standard markers `(skipped — already exists; not overwritten)` and `(overwritten with consent)`. Because generation is non-deterministic, a re-run sees most prior files as "differs" and prompts (default skip) on each — expected; the guard prioritizes never-clobber over silent re-runs.
 
-The "Triggered when" column below says *whether* a template is emitted; this guard says *whether an existing file is overwritten* — the two are orthogonal. `tokens.css`, the seed components, and `DESIGN_SYSTEM.md` are always in scope but are still overwrite-or-skip when the file already exists (this is the qventus-class failure: a hand-authored `tokens.css` must never be silently clobbered). The rule file's `rule_overwrite_strategy` (below) is the richest instance of this one guard — it alone adds the marker fast-path and a merge branch. **This is a prose guard the agent must honor; it is not yet hook-enforced.**
+The "Triggered when" column below says *whether* a template is emitted; this guard says *whether an existing file is overwritten* — the two are orthogonal. `tokens.css`, the seed components, and `DESIGN_SYSTEM.md` are always in scope but are still overwrite-or-skip when the file already exists (this is the qventus-class failure: a hand-authored `tokens.css` must never be silently clobbered). The rule file's `rule_overwrite_strategy` (below) is the richest instance of this one guard — it alone adds the marker fast-path and a merge branch.
+
+**Enforced (D-005).** This guard is now backed by the global `write-guard.sh` PreToolUse hook ([`hooks/README.md`](../../../hooks/README.md)) when it is installed and this run is armed: a write to a file that **existed before this run** is gated — interactive runs get a non-forgeable permission dialog (`ask`), headless runs are auto-skipped (`deny`, so an unattended run never clobbers and never hangs). Files this run *creates* are auto-tracked as run-owned and stay freely editable. Still honor the prose above: the hook may be absent (not installed on this machine / not yet distributed) or bypassed (`--dangerously-skip-permissions`), and it does nothing unless this run armed it.
+
+**Arm at run start (before writing any file), disarm at run end** — via Bash, so it bypasses the guard's own `Write|Edit` matcher:
+
+```bash
+# run start
+mkdir -p ~/.claude/state/write-guard
+: > ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel
+# run end
+rm -f ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel \
+      ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".owned
+```
+
+Where the hook isn't installed this is a harmless no-op (a sentinel nobody reads). A forgotten arm = no enforcement for that run (the prose is the backstop); a forgotten disarm is harmless.
 
 ## Per-template inclusion table
 

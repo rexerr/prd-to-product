@@ -24,9 +24,13 @@ Skill-refinement work commits direct on `main`. Branches only for genuinely para
 
 In `context-engineering`, the recency-block item "Visual confirmation gates the commit" is gated on `uses_visual_confirmation_gate == true`. Same gate drops body Commit gate, Verification UI bullet, Codex override, and the "No worktrees" suffix. Do not hardcode UI assumptions back into the templates.
 
-### D-005 — Generators are non-destructive by default (prose-mitigated)
+### D-005 — Generators are non-destructive by default
 
-All three skills must not overwrite an existing file without explicit consent: before writing, check if the target exists; if it does and is not an unfilled scaffold (no `<!-- PARAMETERIZE:` markers), show a diff and ask overwrite/skip (default skip). Merge only where defined (DSB rule file + tailwind config); whole-file artifacts are overwrite-or-skip. This is a **prose** guard, not yet hook-enforced — it mitigates but does not close the qventus clobber class; the enforcement hook is the follow-up. Full entry: [`DECISIONS.md`](DECISIONS.md) D-005.
+All three skills must not overwrite an existing file without explicit consent: before writing, check if the target exists; if it does and is not an unfilled scaffold (no `<!-- PARAMETERIZE:` markers), show a diff and ask overwrite/skip (default skip). Merge only where defined (DSB rule file + tailwind config); whole-file artifacts are overwrite-or-skip. The prose remains the backstop; **enforcement is now provided by the write-guard hook — see D-006.** Full entry: [`DECISIONS.md`](DECISIONS.md) D-005.
+
+### D-006 — Write guard is hook-enforced (interactive-`ask` / headless-`deny`)
+
+A global PreToolUse hook ([`hooks/write-guard.sh`](../hooks/write-guard.sh), matcher `Write|Edit|MultiEdit`) enforces D-005 while a generator run is armed. Each skill arms at run start / disarms at run end via Bash (`: > ~/.claude/state/write-guard/$CLAUDE_CODE_SESSION_ID.sentinel`). A write to a file that **existed before the run** is gated: interactive → non-forgeable `ask` dialog; headless / `bypassPermissions` → `deny` (default-skip, never clobbers/hangs). Run-created files are auto-tracked (run-owned) and stay editable; a missing owned-set fails safe. **Install is the operator's `~/.claude/settings.json` (manual, gated) and the hook must be `chmod +x`.** Honest ceiling: bypassable by `--dangerously-skip-permissions`; headless runs are *update-incapable* on pre-existing files (greenfield only), which clears the `/idea-to-product` gate for the clobber-safety class only. Full entry + verification: [`DECISIONS.md`](DECISIONS.md) D-006. Reference: [`hooks/README.md`](../hooks/README.md).
 
 ## Cross-references
 
