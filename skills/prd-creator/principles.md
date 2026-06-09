@@ -31,9 +31,16 @@ Carried from context-engineering. Holds for every cluster in `generator/intake.m
 - One cluster at a time. Do not dump every question at once.
 - Up to three questions per call within a cluster. Free-text fills ask one at a time.
 - Branching questions offer two to four options, never more. If the answer space is genuinely larger, ask free-text instead.
-- Cluster 0 always asks for source material first, even when material appears to be in conversation context. Do not silently absorb pasted text or named files.
+- Cluster 0 always asks for source material first, even when material appears to be in conversation context. Do not silently absorb pasted text or named files. When material is present, the sanctioned behavior is draft-and-present: draft each covered cluster's answer from the material and show it for the user to confirm or edit, rather than asking cold (which makes the user re-state what they already wrote) or absorbing silently (which produces a shallow PRD). See `generator/intake.md` cluster 0 for the full three-way distinction.
 - After every cluster, summarize what was captured in two or three sentences. The user corrects before the next cluster starts.
 - Confirm the proposed PRD outline before writing the file. Name every section and its source cluster.
+
+## Interview conduct: stay in natural language, stay grounded
+
+Two conduct rules for the interview itself, distinct from the output PRD's style.
+
+- **Internal scaffolding stays internal.** The cluster numbers, the sub-question structure, and the draft `D-NNN` IDs are the skill's machinery. User-facing copy never names them. Speak in natural language: "the quick pitch," not "cluster 1"; present a drafted decision for confirmation without narrating its draft ID. Confirmed `D-NNN` IDs surface to the user only at the cluster 5 read-back and in the written PRD, where they are part of the deliverable. **Failure it prevents:** exposing the machinery reads as the skill processing a form rather than understanding the user, which erodes trust in the interview.
+- **No temporal or provenance claims about source material.** When summarizing a brief or notes, describe what the material contains, never speculate about when it was written or how stale it might be ("written a while ago," "your thinking may have sharpened since"). Cite a date only if the material itself states one. **Failure it prevents:** a confident but ungrounded claim about provenance ("the brief is from days ago") is often wrong and undermines trust in everything else the skill asserts.
 
 ## The hand-off contract with context-engineering
 

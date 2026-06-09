@@ -10,8 +10,8 @@ PRD generated at <PRD_PATH>.
 Write-guard outcome: <"all targets were new" | existing files marked (skipped — already exists; not overwritten) or (overwritten with consent)>.
 
 Sections that emitted:
-- <section name> (from cluster <N>)
-- <section name> (from cluster <N>)
+- <section name>
+- <section name>
 ...
 
 Sections that were skipped:
@@ -35,13 +35,13 @@ Files written:
 - <BRAND_PATH if emitted>
 
 Next step:
-Run the context-engineering skill against this PRD to scaffold AGENTS.md, CLAUDE.md, .claude/rules/, and docs/. The PRD's decisions and architecture sections become cluster 0 input; you will not be asked to restate them.
+Run the context-engineering skill against this PRD to scaffold AGENTS.md, CLAUDE.md, .claude/rules/, and docs/. The PRD's decisions and architecture sections feed that skill directly; you will not be asked to restate them.
 ```
 
 ## Rules for filling each section
 
-- **Sections that emitted.** List in PRD order, not capture order. The user reads top-down so this matches.
-- **Sections that were skipped.** Include only optional sections that were not emitted. Do not list always-on sections. Reasons should be terse and traceable: "cluster 6 not run, no user-facing copy" or "no V2 items captured, deferred capabilities omitted."
+- **Sections that emitted.** List in PRD order, not capture order. The user reads top-down so this matches. Name the sections only, never which cluster filled them (per "What never goes in the summary" below, internal scaffolding stays internal).
+- **Sections that were skipped.** Include only optional sections that were not emitted. Do not list always-on sections. Reasons should be terse and traceable, and named by section not cluster number: "brand and voice not run, no user-facing copy" or "no V2 items captured, deferred capabilities omitted."
 - **Decisions captured.** Show all if five or fewer. Show top three plus a "+N more" line if six or more. Top is by criticality, same heuristic as in `decisions.md`.
 - **Open questions.** Show all if three or fewer. Show top three plus a "+N more" line if four or more. Top means V1-blocking.
 - **Brand and voice placement.** Use the literal phrase from the table: "inline appendix," "sibling file at <path>," or "not run."

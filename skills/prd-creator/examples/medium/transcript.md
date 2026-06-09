@@ -6,53 +6,53 @@ Abbreviated transcript. A SaaS-style tool with a real AI surface and a small but
 
 **User:** Build me a PRD for "Standup Digest." It reads my Slack channels overnight and writes my morning standup update for me.
 
-**Skill:** Running the PRD interview. Cluster 0 first.
+**Skill:** Running the PRD interview. First, let me check whether you have anything for me to read.
 
-> Source material question.
+> Source-material question.
 
 **User:** I have a notes doc. [Pastes 200-word note covering: target user is engineering managers, bored writing standups, want a draft they can ship in 30 seconds, monetization is later.]
 
-**Skill:** Read it. Note covers user, problem, and monetization stance. Does not cover workflow, stack, or success criteria. Asking those clusters anyway, not pre-filling.
+**Skill:** Read it. The note covers the user, the problem, and a monetization stance. It does not cover the workflow, the stack, or success criteria. For the parts it covers I'll show you a draft to correct rather than ask from scratch; for the rest I'll ask.
 
-> Cluster 1 questions.
+Here's the pitch drawn from your note: Standup Digest reads engineering managers' Slack channels overnight and drafts a morning standup they can ship in about 30 seconds. The user is engineering managers, the problem is the daily writing tax, and monetization is deferred. Edit anything that's off, especially the user and the problem.
 
-**User:** Engineering managers and senior engineers on teams that run async standup. They're tired of the writing tax and they currently either skip days or paste yesterday's update with the date changed.
+**User:** Close. Widen the user to engineering managers and senior engineers on teams that run async standup. Today they either skip days or paste yesterday's update with the date changed. Monetization stance is right.
 
-**Skill:** Cluster 1 summary captured. Moving to workflow.
+**Skill:** Updated. The workflow, the stack, and success criteria aren't in the note, so I'll ask those.
 
-> Cluster 2.
+> Workflow questions.
 
 **User:** [Five-step workflow: nightly Slack scrape → AI summarizes activity per user → user opens app at 9am → reviews and edits the draft → posts back to standup channel with one click.]
 
 **Skill:** Captured. Open question swept: "What's the cutoff time for 'overnight' if a user is in a different timezone." Captured.
 
-> Cluster 3.
+> Scope.
 
 **User:** V1: one Slack workspace per user, AI draft generation, edit-and-post flow, basic auth. Cuts: multi-workspace, team analytics, custom prompt tuning, integrations beyond Slack. Deferred: GitHub PR activity in the digest, Linear issue activity, weekly retrospective rollup.
 
-**Skill:** Captured. D-001 candidate, "V1 supports one Slack workspace per user."
+**Skill:** Captured, noted as a decision to confirm later: V1 supports one Slack workspace per user.
 
-> Cluster 4.
+> Architecture.
 
 **User:** Next.js on Vercel. Supabase for auth and Postgres. Slack OAuth. Anthropic API for the summarization. Inngest for the overnight job.
 
-**Skill:** Captured as D-002. Open question: "Whether Inngest scales to per-user nightly jobs at the cost we want." Asked about AI surface specifics.
+**Skill:** Captured, noted as a decision to confirm later. Open question: "Whether Inngest scales to per-user nightly jobs at the cost we want." Asked about AI surface specifics.
 
 **User:** One AI call per user per night. Server-side. Claude Haiku for cost. Prompt is templated.
 
-**Skill:** Captured as D-003 and D-004. Open question: "Whether Haiku's quality on summarization-of-Slack is sufficient." Captured.
+**Skill:** Captured, noted as two more decisions to confirm later. Open question: "Whether Haiku's quality on summarization-of-Slack is sufficient." Captured.
 
-> Cluster 5 read-back.
+> Decisions read-back.
 
 [Six decisions confirmed: workspace-per-user, full stack, AI server-only, Haiku for cost, no custom prompts in V1, free tier with usage cap.]
 
-> Cluster 6, brand and voice.
+> Brand and voice.
 
 **User:** Audience is engineering managers, terse and time-pressed. Three tone attributes: terse, useful, never cute. Vocabulary lock: it's a "digest," not a "summary," not a "report." That's it for brand.
 
 **Skill:** Three items captured (audience plus three tone attributes counts as one tone-attributes block plus one audience plus one vocabulary item, total three). Inline appendix per the placement rule.
 
-> Cluster 7.
+> Success criteria.
 
 **User:** Hundred users post a digest within their first three days. Drafts are accepted (posted with no edits) at least 30% of the time. Mean edit time under 60 seconds. No support tickets about "the AI hallucinated activity that didn't happen."
 

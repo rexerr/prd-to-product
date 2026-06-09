@@ -29,10 +29,10 @@ Do not activate on:
 When triggered:
 
 1. Run the generator flow at `generator/intake.md`. Ask the questions cluster by cluster, in order. Do not dump every question at once.
-2. Cluster 0 always asks for source material first, even if material appears to be in conversation context already. Do not silently absorb context.
+2. Cluster 0 always asks for source material first, even if material appears to be in conversation context already. Do not silently absorb context. When material is present, draft each covered cluster's answer from it and present the draft for the user to confirm or edit, rather than asking cold or absorbing silently (see `generator/intake.md` cluster 0).
 3. After every cluster, summarize what was captured in two or three sentences before moving on. The user can correct before the next cluster.
 4. After all clusters are complete, run the logic at `generator/decisions.md` to determine which optional sections (brand and voice appendix, sibling `BRAND.md` file, etc.) emit.
-5. State the proposed PRD outline and confirm before writing. The summary should name every section and its source cluster. Wait for explicit confirmation.
+5. State the proposed PRD outline and confirm before writing. The outline names every section in natural language, not cluster numbers. Wait for explicit confirmation.
 6. Write `PRD.md` at the user-named path (default `docs/PRD.md`). Use the template at `templates/PRD.md.template` and fill the parameterized fields from the captured answers.
 7. If the brand-and-voice cluster produced sibling-file material, also write `templates/BRAND.md.template` to the user-named path (default `docs/BRAND.md`).
 8. Output the post-generation summary at `generator/output-summary.md`. Name every section that emitted, every section that was skipped and why, and the next step (typically "run the context-engineering skill against this PRD").
@@ -61,3 +61,9 @@ Read `principles.md` only when the user asks why a pattern exists, or when you h
 - Does not generate code, design tokens, or implementation specs.
 - Does not scaffold the rules or docs structure around the PRD. That is the context-engineering skill.
 - Does not review or critique an existing PRD.
+
+## Gotchas
+
+- **Asking cold for what the brief already answers reads as not having read it.** The anti-silent-absorption rule (cluster 0) correctly bans absorbing a brief without confirmation, but the fix is draft-and-present, not re-interrogating the user from scratch. A thorough brief that gets asked cold makes the user push back ("doesn't my brief tell you this?") and is the overcorrection a Squirreled validation run surfaced. Draft from the brief, present for edit; ask cold only where the brief is thin.
+- **Internal scaffolding leaks into the conversation.** "Cluster 0," draft "D-001 candidate" narration, and "(from cluster 3)" provenance tags are the skill's machinery, not the user's vocabulary. Naming them mid-interview reads as form-processing instead of understanding. Keep user-facing copy in natural language; confirmed `D-NNN` IDs surface only at the cluster 5 read-back and in the written PRD, where they are part of the deliverable.
+- **Speculating about source-material age invents provenance.** Claiming a brief was "written days ago" or that "your framing may have sharpened since" when nothing states a date is an ungrounded factual claim that undermines trust in everything else the skill asserts. Describe what the material contains, not how old it is, unless the material itself carries a date you can cite.

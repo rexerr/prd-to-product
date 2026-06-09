@@ -6,11 +6,13 @@ The interview that produces a PRD. Run the clusters in order. Do not dump every 
 
 Every cluster follows the same shape. Do not skip steps.
 
-1. Ask the cluster's questions. Up to three per call. Free-text fills ask one at a time. Branching questions offer two to four options, never more.
+1. Ask the cluster's questions. Up to three per call. Free-text fills ask one at a time. Branching questions offer two to four options, never more. When the cluster 0 source material already covers a question, do not ask it cold. Present a draft answer drawn from that material for the user to confirm or edit (the full rule is in cluster 0). Ask cold only where the material is thin or silent.
 2. Capture the answers verbatim into a running scratch buffer the user does not see. Do not paraphrase prematurely.
 3. Sweep for open questions before closing the cluster. Ask the user "anything you do not yet know about <cluster topic> that would change the build." Capture each into the running open-questions list.
-4. Sweep for decisions before closing the cluster. If the user stated something that locks a future choice ("we are using Vercel," "single-user no auth"), assign a draft `D-NNN` ID and append to the running decisions list. Do not ask permission to capture; just capture and review in cluster 5.
+4. Sweep for decisions before closing the cluster. If the user stated something that locks a future choice ("we are using Vercel," "single-user no auth"), assign a draft `D-NNN` ID and append to the running decisions list. Do not ask permission to capture, and do not narrate the draft ID to the user (no "that's D-002"). Just capture, and review the numbered list in cluster 5.
 5. Summarize what was captured in two or three sentences. Wait for the user to correct or confirm before moving to the next cluster.
+
+**User-facing copy is natural language.** Never name internal scaffolding in what you say to the user. No "cluster 0" or "cluster 3", no "as source material", no draft decision-ID narration while capturing. The cluster numbers and draft `D-NNN` IDs are yours, not the user's. Confirmed decision IDs appear to the user only at the cluster 5 read-back and in the written PRD, where they are part of the deliverable. **Failure it prevents:** the user sees how the sausage is made instead of a conversation, which reads as the skill not having understood them.
 
 ## Cluster 0: source material
 
@@ -22,11 +24,11 @@ Ask:
 
 Three branches:
 
-- **User has source material.** Read it. State a one-paragraph summary of what you found in it back to the user. Note which clusters the material likely fills. Do not pre-fill any cluster's answer. Ask the cluster questions anyway.
+- **User has source material.** Read it. State a one-paragraph summary of what you found, describing what the material contains. Do not speculate about when it was written or how recent it is (no "this was written a while ago," no "your thinking may have moved on since") unless the material itself states a date you can cite. Then, for each later cluster the material covers, draft that cluster's answer from the material and present the draft for the user to confirm, edit, or correct, rather than asking the user to state it cold. Where the material is thin or silent on a cluster, ask that cluster's questions cold. This is the line between three behaviors, and only the third is right: silently absorbing the material and moving on without showing the user is wrong (it produces shallow PRDs, the context-engineering Pass 1.7 lesson); asking cold for things the material already answers is also wrong (it makes the user re-state work they already did, and reads as if you did not read it); drafting from the material and presenting every draft for explicit edit is right, because nothing is absorbed without the user seeing it and signing off.
 - **User has none.** Acknowledge. Move on.
 - **User wants to skip the interview entirely and let you draft from material alone.** Decline. Explain that this skill's value is the interview; if they want a one-shot draft from material, they should write it themselves. Then offer to run the interview anyway.
 
-Close cluster 0 with: "Ready to start cluster 1, the elevator pitch. Confirm to proceed."
+Close cluster 0 with a natural-language hand-off, not a cluster label. For example: "Ready to start. First, the quick pitch, who it is for, and why it exists. Confirm to proceed."
 
 ## Cluster 1: elevator pitch
 
@@ -122,6 +124,6 @@ Sweep for open questions. Summarize and confirm.
 
 ## After all clusters
 
-State the proposed PRD outline. Name every section that will emit and which cluster filled it. Name every section that will be skipped and why. Confirm volume choice for cluster 6 (inline vs sibling).
+State the proposed PRD outline. In the outline you show the user, name the sections, not the cluster numbers (track which cluster filled which section for yourself). Name every section that will be skipped and why. Confirm the placement choice for the brand and voice content (inline appendix vs sibling file).
 
 Wait for explicit user confirmation before writing files. If `docs/PRD.md` or `docs/BRAND.md` already exists, flag it here — it will be shown as a diff for overwrite/skip consent at write time (default skip), never silently replaced (per `decisions.md` "Non-destructive write guard"). Then run `decisions.md` to determine final emission and write the PRD, applying the write guard to every target.

@@ -40,6 +40,10 @@ The kit builds **no** adopt-skill, **no** DSB adopt-mode, and **no** token-adopt
 
 The LLM Council is **not** a wired-in primitive. A *recommend-don't-auto-run* note lives in this repo's [`CLAUDE.md`](../CLAUDE.md), in `context-engineering`'s scaffolded session-discipline (flat + modular + example), and as a `prd-creator` principle — firing only when a decision is **both costly to get wrong and hard to reverse**, phrased tool-agnostically in scaffolded output. To reconcile a Claude Design bundle PRD against an interview PRD: build nothing structural (per D-008) — **human diff-and-adjudicate, section-keyed, with deltas routed by KIND**: pure additions are presumptively safe; anything re-expanding a deliberately-cut scope is held as a **scope-gate** ("the bundle re-introduces something you decided to cut"). Full entry + council: [`DECISIONS.md`](DECISIONS.md) D-009, [`council-report-2026-06-09-reconcile.html`](council/council-report-2026-06-09-reconcile.html).
 
+### D-010 — prd-creator drafts-and-presents from source material, never asks cold for what a brief covers
+
+When cluster-0 source material substantively covers a later cluster, prd-creator **drafts that cluster's answer from the material and presents it for confirm/edit** (draft-and-present), and asks cold only where the material is thin. Silent absorption stays banned; this is the third behavior between it and ask-cold. Cluster 0 still runs first and still asks the source-material question. User-facing copy carries **no internal scaffolding**: no "cluster N", no mid-capture "D-NNN candidate" narration, no "(from cluster N)" provenance tags (`D-NNN` is legitimate only at the cluster-5 read-back and in the written PRD); and the skill makes **no temporal/provenance claims** about source material. Full entry: [`DECISIONS.md`](DECISIONS.md) D-010.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).
