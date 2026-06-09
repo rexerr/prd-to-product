@@ -26,7 +26,7 @@ In `context-engineering`, the recency-block item "Visual confirmation gates the 
 
 ### D-005 — Generators are non-destructive by default
 
-All three skills must not overwrite an existing file without explicit consent: before writing, check if the target exists; if it does and is not an unfilled scaffold (no `<!-- PARAMETERIZE:` markers), show a diff and ask overwrite/skip (default skip). Merge only where defined (DSB rule file + tailwind config); whole-file artifacts are overwrite-or-skip. The prose remains the backstop; **enforcement is now provided by the write-guard hook — see D-006.** Full entry: [`DECISIONS.md`](DECISIONS.md) D-005.
+All three skills must not overwrite an existing file without explicit consent: before writing, check if the target exists; if it does and is not an unfilled scaffold (no `<!-- PARAMETERIZE:` markers), show a diff and ask overwrite/skip (default skip). Merge only where defined (DSB rule file + tailwind config + `globals.css`), and **the agent performs those merges itself with a diff-confirm — never a snippet for the user to apply** (interactive-only; headless skips per the D-006 ceiling — see D-007); whole-file artifacts are overwrite-or-skip. The prose remains the backstop; **enforcement is now provided by the write-guard hook — see D-006.** Full entry: [`DECISIONS.md`](DECISIONS.md) D-005; merge mechanism: D-007.
 
 ### D-006 — Write guard is hook-enforced (interactive-`ask` / headless-`deny`)
 

@@ -62,7 +62,7 @@ Where the hook isn't installed this is a harmless no-op (a sentinel nobody reads
 | Template | Triggered when | Output path |
 |---|---|---|
 | `tokens.css.template` | always (overwrite-or-skip per write guard) | `<token_file_path>` |
-| `globals.css.template` | always (write only if file does not exist; otherwise emit a merge note) | sibling of `<token_file_path>`, named `globals.css` |
+| `globals.css.template` | always (write fresh if absent; if it exists, the agent merges the missing pieces — see below) | sibling of `<token_file_path>`, named `globals.css` |
 | `Button.tsx.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Button.tsx` |
 | `Button.module.css.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Button.module.css` |
 | `Button.tailwind.tsx.template` | `styling_path == "tailwind_shadcn"` | `<component_dir_path>/Button.tsx` |
@@ -72,11 +72,21 @@ Where the hook isn't installed this is a harmless no-op (a sentinel nobody reads
 | `Input.tsx.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Input.tsx` |
 | `Input.module.css.template` | `styling_path == "vanilla_css_modules"` | `<component_dir_path>/Input.module.css` |
 | `Input.tailwind.tsx.template` | `styling_path == "tailwind_shadcn"` | `<component_dir_path>/Input.tsx` |
-| `tailwind.config.tokens.ts.template` | `styling_path == "tailwind_shadcn"` | `tailwind.config.tokens.ts` (snippet for merge, not full overwrite) |
+| `tailwind.config.tokens.ts.template` | `styling_path == "tailwind_shadcn"` | `tailwind.config.tokens.ts` (agent merges into `theme.extend` additively + diff confirm, not full overwrite) |
 | `DESIGN_SYSTEM.md.template` | always (overwrite-or-skip per write guard) | `docs/DESIGN_SYSTEM.md` |
 | Design-system rule | per `rule_overwrite_strategy` (see below) | `.claude/rules/design-system.md` |
 
 > All component-file rows above (`Button`/`Card`/`Input`, both styling paths) are governed by the write guard: overwrite-or-skip if the target already exists. The `styling_path` condition selects *which* component template emits; the guard still gates overwriting an existing file. No merge for components.
+
+### globals.css merge (when the file already exists)
+
+If `globals.css` is absent, write it fresh. **If it already exists, the agent merges in the missing pieces itself — it never emits a merge note for the user to apply.** Three additive pieces, each written only if not already present, **all inserted at the top of the file, above existing rules** (CSS silently drops any `@import` that follows another rule, so position is not optional — prepend, never insert mid-file):
+
+1. `@import "./tokens.css";`
+2. The font `@import url(...)` lines — only when `has_font_imports` (the `font_import_urls` block).
+3. `@tailwind base; @tailwind components; @tailwind utilities;` — Tailwind path only.
+
+**Interactive:** show the diff and ask for confirm before writing (the Edit rides the write-guard hook — `ask` on this pre-run file, D-006). **Headless:** skip — the hook `deny`s edits to pre-run files unattended (D-006 ceiling); report as skipped. Same merge mechanics apply to `tailwind.config.tokens.ts`: add only to `theme.extend.*`, never replace existing `extend` keys, surface any key collision in the diff.
 
 ## Rule integration: three-state logic
 
@@ -84,7 +94,7 @@ When `rule_overwrite_strategy` resolves, behavior:
 
 - `write_fresh` — `.claude/rules/design-system.md` does not exist. Generator writes a new fully-parameterized rule. Source: this skill carries a small inline rule template in `decisions.md` "Inline rule template" below (no separate file in `templates/` because the existing context-engineering template covers it).
 - `overwrite_safe` — file exists with PARAMETERIZE markers. User confirmed overwrite. Generator overwrites with the fully-parameterized rule.
-- `merge` — file exists, no markers. User chose merge. Generator emits a `design-system.md.merge-snippet` to standard out and asks the user to apply it manually. Does NOT overwrite the file.
+- `merge` — file exists, no markers (filled or hand-written). User chose merge. **The agent performs the merge itself; it never hands the user a snippet to apply.** Insert the generated rule as a single HTML-comment-fenced block — `<!-- design-system-bootstrap:start -->` … `<!-- design-system-bootstrap:end -->`. **Position is deterministic:** if no prior fence exists, append the block at end-of-file; if a fence already exists, replace only the content *within* it, never touching lines outside the fence. This is *positionally additive*, not a semantic reconcile — if the user already has inline design-system rules the fenced block lands alongside them, and the diff surfaces the overlap for the user to resolve. **Interactive:** show the diff and ask for confirm before writing (the Edit also rides the global write-guard hook, which `ask`s on this pre-run file — D-006). **Headless:** skip — the hook `deny`s edits to pre-run files unattended (D-006 ceiling); report as skipped, never silently apply.
 - `skip` — user chose to leave the rule alone. No file written. Output summary flags this as "rule update skipped — your design-system.md may reference the wrong token paths."
 
 ### PARAMETERIZE marker detection
@@ -188,9 +198,9 @@ Per-size usage strings come from the picked scale shape's defaults (compact / co
 This skill writes only files at these paths:
 
 - `<token_file_path>` (default `app/styles/tokens.css`)
-- `<globals_css_path>` (default `app/styles/globals.css`) — and only if the file does not exist
+- `<globals_css_path>` (default `app/styles/globals.css`) — written fresh if absent, else agent-merged additively (top-of-file `@import`/`@tailwind` pieces) with diff confirm
 - `<component_dir_path>/Button.tsx`, `Card.tsx`, `Input.tsx` (and the paired `.module.css` files on vanilla path)
-- `tailwind.config.tokens.ts` (Tailwind path only, as a snippet for manual merge)
+- `tailwind.config.tokens.ts` (Tailwind path only, agent-merged additively into `theme.extend` with diff confirm)
 - `docs/DESIGN_SYSTEM.md`
 - `.claude/rules/design-system.md` (per `rule_overwrite_strategy`)
 

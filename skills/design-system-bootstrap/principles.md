@@ -97,7 +97,7 @@ Three-state rule integration logic:
 
 Same detection logic used when the prd-creator and context-engineering hand-off collided on `docs/PRD.md` during the field-society-demo validation run. Detect, surface, ask. Do not decide silently.
 
-**This non-destructive principle now governs every file the skill writes, not only the rule.** `tokens.css`, the seed components, and `DESIGN_SYSTEM.md` are overwrite-or-skip when they already exist (merge is defined only for the rule file and the Tailwind config) — see `generator/decisions.md` "Non-destructive write guard." The three-state rule logic above is the richest instance of that one guard. Note it is a *prose* guard the agent must honor; it is not yet enforced by a hook.
+**This non-destructive principle now governs every file the skill writes, not only the rule.** `tokens.css`, the seed components, and `DESIGN_SYSTEM.md` are overwrite-or-skip when they already exist (merge is defined for the rule file, the Tailwind config, and `globals.css` — where the agent performs the merge itself and shows the diff, never handing the user a snippet) — see `generator/decisions.md` "Non-destructive write guard." The three-state rule logic above is the richest instance of that one guard. It is a *prose* guard the agent must honor **and is now enforced by the global `write-guard.sh` hook** ([`hooks/README.md`](../../hooks/README.md), D-006) when installed and the run is armed.
 
 ## Routed-elsewhere content
 
