@@ -39,6 +39,7 @@ a:hover {
   text-decoration: none;
 }
 
+/* Reduced motion — disable strategy (Q7c) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

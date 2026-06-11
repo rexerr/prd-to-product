@@ -54,7 +54,7 @@ Project: **Threadcount** — a writing-focused journaling app. Single user, Next
 > 5a — Default radius.
 > 5b — Soft shadows.
 > 5c — No inset.
-> 5d — Mellow motion (180ms / 280ms / 440ms). User wants the journaling app to feel less snappy, more deliberate.
+> 5d — Mellow motion (150ms / 250ms / 300ms). User wants the journaling app to feel less snappy, more deliberate.
 > 5e — Standard easing.
 
 ## Cluster 6 — component personality

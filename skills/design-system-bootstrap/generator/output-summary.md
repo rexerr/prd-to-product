@@ -83,6 +83,7 @@ If any of these are true, add a "things to address before starting work" sub-sec
 - The vanilla path emitted a `.module.css` that references a CSS variable not defined in `tokens.css`. Surface the variable name.
 - The Tailwind path emitted a `tailwind.config.tokens.ts` that references a Tailwind utility name not present in any seed component (unused token wiring is fine; the inverse — utility used but not configured — is a bug).
 - The dark mode block was emitted but the dark-token mappings are still primitives without semantic role names. Surface the line numbers.
+- Q7c answered "ignore the preference": no reduced-motion block was emitted into `globals.css`. Repeat the intake warning — the system ships with an accessibility gap until a `prefers-reduced-motion` rule exists.
 
 ## Tone
 

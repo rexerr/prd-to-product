@@ -110,7 +110,7 @@ Marker → state-map mapping for context-engineering's design-system.md.template
 - `token_file_path` — Q1b
 - `token_linter_command` — empty (no linter scaffolded by V1 of this skill); OPTIONAL `linter_line` block omits
 - `typography_rules` — derived: `<font_family_body> for body, <font_family_display> for display`
-- `motion_tokens` — derived: `--motion-duration-fast / --motion-easing-default for micro-interactions, longer durations for panels`
+- `motion_tokens` — derived: `--motion-easing-hover for hover/color transitions, --motion-duration-fast + --motion-easing-default for other micro-interactions, longer durations for panels and modals. Keyboard-initiated and high-frequency (100+/day) actions use --motion-duration-instant. Spring is an accent for drag/playful moments only.`
 - `icon_set` — empty (not scaffolded by this skill); the line is omitted
 - `layout_rules` — derived: `Use --space-* tokens for all spacing. Maximum content width 1200px (override per-route).`
 - `indicator_vocabulary_table`, `forbidden_indicator_terms` — empty (not scaffolded by this skill); these PARAMETERIZE markers are replaced with a TODO line: "Define indicator vocabulary when chip/badge/alert components ship."
@@ -143,6 +143,7 @@ OPTIONAL keys used in this skill's templates:
 - `has_inset_shadow` — gates the `--shadow-inset` line
 - `has_dark_mode` — gates the entire dark-mode block at the bottom of `tokens.css.template`
 - `has_font_imports` — gates `font_import_urls` in `globals.css.template`
+- `reduced_motion_disable`, `reduced_motion_reduce` — gate the two mutually exclusive `@media (prefers-reduced-motion: reduce)` blocks in `globals.css.template`. Derived from Q7c `reduced_motion_strategy`: `disable` → first key true; `reduce_dont_eliminate` → second key true; `ignore` → both false, no block emits, and the output summary repeats the intake warning ("reduced-motion preference ignored — accessibility risk"). Exactly one key may be true; never both.
 - `tailwind_path` — gates the "A note on the Tailwind path" section in `DESIGN_SYSTEM.md.template`. Derived: `styling_path == "tailwind_shadcn"`.
 - `has_design_heuristics_rule`, `has_brand_doc`, `linter_present` — gate cross-reference lines in `DESIGN_SYSTEM.md.template`. Derived from working-directory inspection.
 

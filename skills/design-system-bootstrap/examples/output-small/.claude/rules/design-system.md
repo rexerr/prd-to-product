@@ -17,7 +17,7 @@ This rule has two layers. **Tokens are normative.** `app/styles/tokens.css` is t
 ## Foundations
 
 - **Typography:** Inter for body, Inter for display.
-- **Motion:** --motion-duration-fast / --motion-easing-default for micro-interactions, longer durations for panels. No bounce, no spring.
+- **Motion:** --motion-easing-hover for hover/color transitions, --motion-duration-fast + --motion-easing-default for other micro-interactions, longer durations for panels and modals. Keyboard-initiated and high-frequency (100+/day) actions use --motion-duration-instant. Spring is an accent for drag/playful moments only.
 - **No Tailwind. No shadcn.** Style everything via the design system CSS.
 - **Icons:** _TODO: define when icon component ships._
 

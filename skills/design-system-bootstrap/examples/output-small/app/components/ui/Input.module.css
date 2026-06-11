@@ -35,8 +35,8 @@
   height: var(--space-10);
   width: 100%;
   transition:
-    border-color var(--motion-duration-fast) var(--motion-easing-default),
-    box-shadow   var(--motion-duration-fast) var(--motion-easing-default);
+    border-color var(--motion-duration-fast) var(--motion-easing-hover),
+    box-shadow   var(--motion-duration-fast) var(--motion-easing-hover);
 }
 
 .input::placeholder {

@@ -133,7 +133,7 @@ The output `DESIGN_SYSTEM.md` follows the same position-aware placement principl
 - **No magic numbers.** Every value in `tokens.css` has a comment explaining its role. Short is fine: `/* primary CTA, AA contrast on white */`.
 - **Scales are complete.** A color scale has at least five stops (50, 100–900 in 100-step increments is conventional). A partial scale signals a future extension that never happens.
 - **Spacing follows a base unit.** 4px or 8px. Ask in cluster 4. Never mix base units.
-- **Motion tokens come in pairs.** Every duration token has a companion easing token (`--motion-duration-fast: 120ms` plus `--motion-easing-default: cubic-bezier(0.4, 0, 0.2, 1)`). Components reference both.
+- **Motion tokens come in pairs.** Every duration token has a companion easing token (`--motion-duration-fast: 120ms` plus `--motion-easing-default: cubic-bezier(0.645, 0.045, 0.355, 1)`). Components reference both. The semantic `--motion-easing-*` tokens resolve to curves from the fixed `--ease-*` bank; components never reference the bank directly — that keeps a tempo change a token-file edit, not a component sweep.
 - **Shadows use RGBA.** Never named colors in shadow values. `rgba(0, 0, 0, 0.08)` ages better than `rgba(var(--neutral-900-raw), 0.08)` — the latter requires CSS variable tricks that break in some contexts.
 
 ## Interview conduct: stay in natural language, stay grounded

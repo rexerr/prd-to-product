@@ -50,7 +50,8 @@ a:hover {
   text-decoration: none;
 }
 
-/* Reduced motion */
+<!-- OPTIONAL: reduced_motion_disable -->
+/* Reduced motion — disable strategy (Q7c) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -59,5 +60,18 @@ a:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+<!-- OPTIONAL: reduced_motion_reduce -->
+/* Reduced motion — reduce-don't-eliminate strategy (Q7c): every tier drops
+   to the fast duration and overshoot is neutralized. Motion stays as
+   feedback, stops being spectacle. Works because components only ever
+   reference the semantic tokens. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-normal: var(--motion-duration-fast);
+    --motion-duration-slow: var(--motion-duration-fast);
+    --motion-easing-spring: var(--motion-easing-default);
   }
 }

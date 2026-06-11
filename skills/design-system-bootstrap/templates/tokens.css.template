@@ -193,17 +193,43 @@ Hard rule: no hardcoded hex values in product UI. Every color, size, and spacing
   /* ============================================================
      MOTION
      Every duration token pairs with an easing token.
+     Product UI stays ≤300ms; exits run ~20% faster than entrances
+     (leaving needs less ceremony than arriving). Anything used 100+
+     times a day — and every keyboard-initiated action (arrow-key
+     nav, shortcuts, focus moves) — gets --motion-duration-instant:
+     repetition turns delight into drag.
      ============================================================ */
 
-  --motion-duration-instant: 0ms;    /* KEEP AS-IS: no animation */
-  --motion-duration-fast:    <!-- PARAMETERIZE: motion_duration_fast -->;   /* micro-interactions (button press, chip) */
-  --motion-duration-normal:  <!-- PARAMETERIZE: motion_duration_normal -->; /* standard transitions (panel, dropdown) */
-  --motion-duration-slow:    <!-- PARAMETERIZE: motion_duration_slow -->;   /* page-level transitions */
+  --motion-duration-instant: 0ms;    /* KEEP AS-IS: keyboard-initiated + high-frequency actions */
+  --motion-duration-fast:    <!-- PARAMETERIZE: motion_duration_fast -->;   /* micro-interactions: button press, chips (100–150ms) */
+  --motion-duration-normal:  <!-- PARAMETERIZE: motion_duration_normal -->; /* dropdowns, tooltips, panels (150–250ms) */
+  --motion-duration-slow:    <!-- PARAMETERIZE: motion_duration_slow -->;   /* modals, drawers (200–300ms) */
 
-  --motion-easing-default:   <!-- PARAMETERIZE: motion_easing_default -->;  /* ease-in-out for most transitions */
-  --motion-easing-enter:     <!-- PARAMETERIZE: motion_easing_enter -->;    /* ease-out for entering elements */
-  --motion-easing-exit:      <!-- PARAMETERIZE: motion_easing_exit -->;     /* ease-in for exiting elements */
-  --motion-easing-spring:    <!-- PARAMETERIZE: motion_easing_spring -->;   /* optional: use sparingly */
+  /* Easing bank — KEEP AS-IS. Built-in CSS keywords are too weak to feel
+     intentional; these are the standard named curves (weak → strong).
+     The semantic tokens below pick from this bank. */
+  --ease-out-quad:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic:    cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart:    cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo:     cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-quad:  cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-expo:  cubic-bezier(1, 0, 0, 1);
+
+  /* Semantic easing — components reference only these.
+     Enter AND exit use the ease-out family: the fast start gives instant
+     feedback, while ease-in's slow start delays it (the same duration
+     reads slower). Exits differ from entrances by DURATION (~20% faster),
+     not by curve. ease-in-out is for elements already on screen that
+     move or morph. */
+  --motion-easing-default:   <!-- PARAMETERIZE: motion_easing_default -->;  /* on-screen movement/morphing (ease-in-out family) */
+  --motion-easing-enter:     <!-- PARAMETERIZE: motion_easing_enter -->;    /* entering elements (ease-out family) */
+  --motion-easing-exit:      <!-- PARAMETERIZE: motion_easing_exit -->;     /* exiting elements (ease-out family, pair with faster duration) */
+  --motion-easing-spring:    <!-- PARAMETERIZE: motion_easing_spring -->;   /* overshoot accent: drag, playful moments only */
+  --motion-easing-hover:     ease;    /* KEEP AS-IS: hover and color transitions */
+  --motion-easing-linear:    linear;  /* KEEP AS-IS: marquees, tickers, progress — never interactive UI */
 
   /* ============================================================
      Z-INDEX

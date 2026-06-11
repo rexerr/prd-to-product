@@ -186,15 +186,16 @@ The generator derives `space_1` through `space_16` from the base unit via the ru
    - **Yes** — fill `shadow_inset`. Sets `has_inset_shadow = true`.
    - **No** — skip.
 
-5d. **Motion durations.** Pick a tempo:
-   - **Snappy (default).** fast 120ms / normal 200ms / slow 320ms.
-   - **Mellow.** fast 180ms / normal 280ms / slow 440ms.
-   - **Custom.** Free text per token.
+5d. **Motion durations.** Pick a tempo. (Product UI stays ≤300ms — a 180ms dropdown feels more responsive than a 400ms one with identical content. Exits should pair with the `fast`/`normal` tokens so they run ~20% quicker than entrances.)
+   - **Snappy (default).** fast 120ms / normal 200ms / slow 280ms.
+   - **Mellow.** fast 150ms / normal 250ms / slow 300ms.
+   - **Custom.** Free text per token. Flag any value >300ms — durations beyond that belong on marketing surfaces, not in product UI.
 
 → `motion_duration_fast`, `motion_duration_normal`, `motion_duration_slow`.
 
-5e. **Easing curves.** Pick a set:
-   - **Standard (default).** default `cubic-bezier(0.4, 0, 0.2, 1)`, enter `cubic-bezier(0, 0, 0.2, 1)`, exit `cubic-bezier(0.4, 0, 1, 1)`, spring `cubic-bezier(0.34, 1.56, 0.64, 1)`.
+5e. **Easing curves.** Pick a set. (Enter AND exit stay in the ease-out family — ease-in's slow start delays visual feedback, so the same duration feels slower. Exits differ from entrances by duration, not curve. The named curves below also exist as a `--ease-*` bank in tokens.css.)
+   - **Standard (default).** default `cubic-bezier(0.645, 0.045, 0.355, 1)` (ease-in-out-cubic, on-screen movement), enter `cubic-bezier(0.215, 0.61, 0.355, 1)` (ease-out-cubic), exit `cubic-bezier(0.215, 0.61, 0.355, 1)` (ease-out-cubic, pair with a faster duration), spring `cubic-bezier(0.34, 1.56, 0.64, 1)`.
+   - **Expressive.** default `cubic-bezier(0.77, 0, 0.175, 1)` (ease-in-out-quart), enter/exit `cubic-bezier(0.23, 1, 0.32, 1)` (ease-out-quint), spring unchanged. For brands whose energy justifies stronger curves.
    - **Custom.** Free text per token.
 
 → `motion_easing_default`, `motion_easing_enter`, `motion_easing_exit`, `motion_easing_spring`.

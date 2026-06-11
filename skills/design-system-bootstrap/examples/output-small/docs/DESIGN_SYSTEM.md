@@ -127,7 +127,7 @@ Soft scale. `--shadow-xs` for hairline lift through `--shadow-xl` for full overl
 
 ### Motion
 
-Snappy tempo. fast 120ms, normal 200ms, slow 320ms. Standard easing curves. All transitions respect `prefers-reduced-motion` via the global rule in `globals.css`.
+Snappy tempo. fast 120ms, normal 200ms, slow 280ms; instant (0ms) for keyboard-initiated and high-frequency actions. Standard easing: the semantic `--motion-easing-*` tokens (default / enter / exit / spring / hover / linear) pick from the fixed `--ease-*` bank in `tokens.css`. Exits run ~20% faster than entrances; paired elements share one easing and one duration. All transitions respect `prefers-reduced-motion` via the global rule in `globals.css`.
 
 ---
 

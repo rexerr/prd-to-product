@@ -12,10 +12,10 @@
   text-decoration: none;
   white-space: nowrap;
   transition:
-    background-color var(--motion-duration-fast) var(--motion-easing-default),
-    color           var(--motion-duration-fast) var(--motion-easing-default),
-    border-color    var(--motion-duration-fast) var(--motion-easing-default),
-    box-shadow      var(--motion-duration-fast) var(--motion-easing-default);
+    background-color var(--motion-duration-fast) var(--motion-easing-hover),
+    color           var(--motion-duration-fast) var(--motion-easing-hover),
+    border-color    var(--motion-duration-fast) var(--motion-easing-hover),
+    box-shadow      var(--motion-duration-fast) var(--motion-easing-hover);
 }
 
 .sm {

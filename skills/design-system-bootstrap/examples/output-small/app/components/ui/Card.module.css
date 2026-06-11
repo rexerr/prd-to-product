@@ -25,8 +25,8 @@
 .clickable {
   cursor: pointer;
   transition:
-    box-shadow var(--motion-duration-fast) var(--motion-easing-default),
-    transform  var(--motion-duration-fast) var(--motion-easing-default);
+    box-shadow var(--motion-duration-fast) var(--motion-easing-hover),
+    transform  var(--motion-duration-fast) var(--motion-easing-hover);
 }
 
 .clickable:hover {

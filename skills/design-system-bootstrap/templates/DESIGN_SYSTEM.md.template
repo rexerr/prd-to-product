@@ -153,19 +153,25 @@ Base unit: <!-- PARAMETERIZE: spacing_base_unit -->px. Every spacing token is a 
 
 ### Motion
 
-Every duration token pairs with an easing token. Reference both when writing transitions.
+Every duration token pairs with an easing token. Reference both when writing transitions. Product UI stays at or under 300ms.
 
 | Duration | Value | Use |
 |---|---|---|
-| `--motion-duration-fast` | <!-- PARAMETERIZE: motion_duration_fast --> | Micro-interactions (button press, chip) |
-| `--motion-duration-normal` | <!-- PARAMETERIZE: motion_duration_normal --> | Standard transitions (panel, dropdown) |
-| `--motion-duration-slow` | <!-- PARAMETERIZE: motion_duration_slow --> | Page-level transitions |
+| `--motion-duration-instant` | 0ms | Keyboard-initiated actions (arrow-key nav, shortcuts, focus moves) and anything used 100+ times a day — repetition turns delight into drag |
+| `--motion-duration-fast` | <!-- PARAMETERIZE: motion_duration_fast --> | Micro-interactions: button press, chips (100–150ms band) |
+| `--motion-duration-normal` | <!-- PARAMETERIZE: motion_duration_normal --> | Dropdowns, tooltips, panels (150–250ms band) |
+| `--motion-duration-slow` | <!-- PARAMETERIZE: motion_duration_slow --> | Modals, drawers (200–300ms band) |
 
 | Easing | Use |
 |---|---|
-| `--motion-easing-default` | Most transitions |
-| `--motion-easing-enter` | Elements entering the view |
-| `--motion-easing-exit` | Elements leaving the view |
+| `--motion-easing-default` | On-screen elements moving or morphing (ease-in-out family) |
+| `--motion-easing-enter` | Elements entering the view (ease-out family — fast start gives instant feedback) |
+| `--motion-easing-exit` | Elements leaving the view (same ease-out family; exits differ by duration, not curve) |
+| `--motion-easing-spring` | Overshoot accent — drag and playful moments only |
+| `--motion-easing-hover` | Hover and color transitions |
+| `--motion-easing-linear` | Constant motion: marquees, tickers, progress — never interactive UI |
+
+The semantic tokens pick from the fixed `--ease-*` bank in `tokens.css`; components reference only the semantic tokens. Two rules that aren't in any token value: exits run ~20% faster than entrances (pair `--motion-easing-exit` with a shorter duration), and paired elements (modal + overlay, tooltip + arrow, drawer + backdrop) share one easing and one duration.
 
 All transitions respect `prefers-reduced-motion` via the global rule in `globals.css`.
 
