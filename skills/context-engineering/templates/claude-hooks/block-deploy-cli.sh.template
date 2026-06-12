@@ -5,6 +5,40 @@
 # obscures which version is "current."
 # Enforcement note: prose in CLAUDE.md is a request; this hook is a guarantee.
 # Only emitted when deploy_target_has_cli_conflict == true.
+#
+# Scoping lives HERE, in the script. The settings.json matcher is a bare
+# "Bash", so this script runs on EVERY Bash call and its exit-0 path is the
+# common path. The documented `if` filter is deliberately not used: it was
+# observed misfiring on complex compound commands (2026-06-08, 2026-06-12),
+# so the script must scope itself anyway — and a stale `if` after a pattern
+# change here would silently disarm the guard.
+#
+# Mechanism: extract the command with jq when available; fall back to the raw
+# payload otherwise (coarser matching, but a blocking guard must never disarm
+# because jq is missing). Matching is anchored at command-word position (line
+# start or after | & ;) so prose merely *mentioning* the CLI name — e.g.
+# `git commit -m "migrate off <!-- PARAMETERIZE: deploy_cli_lower -->"` — does
+# not block.
+#
+# Catches `<!-- PARAMETERIZE: deploy_cli_lower --> …` and
+# `npx <!-- PARAMETERIZE: deploy_cli_lower --> …` at command-word position.
+# Known limitations: subshell-wrapped or exotic runner invocations (pnpm dlx,
+# bunx) are not caught — extend the pattern if the project uses one.
 
-echo "BLOCKED: Do not use the <!-- PARAMETERIZE: deploy_cli_name --> CLI. This project deploys via GitHub integration on push to main. Push to main and wait for the deploy." >&2
-exit 2
+payload=$(cat)
+blocked=0
+if command -v jq >/dev/null 2>&1; then
+  cmd=$(printf '%s' "$payload" | jq -r '.tool_input.command // empty' 2>/dev/null)
+  printf '%s' "$cmd" | grep -Eq '(^|[|&;])[[:space:]]*(npx[[:space:]]+)?<!-- PARAMETERIZE: deploy_cli_lower -->([[:space:]]|$)' && blocked=1
+else
+  # No jq: coarser unanchored match on the raw payload — may false-positive
+  # on embedded mentions (anchoring is impossible inside the JSON string);
+  # never disarms.
+  printf '%s' "$payload" | grep -Eq '(^|[^[:alnum:]_-])<!-- PARAMETERIZE: deploy_cli_lower -->([^[:alnum:]_-]|$)' && blocked=1
+fi
+
+if [ "$blocked" -eq 1 ]; then
+  echo "BLOCKED: Do not use the <!-- PARAMETERIZE: deploy_cli_name --> CLI. This project deploys via GitHub integration on push to main. Push to main and wait for the deploy." >&2
+  exit 2
+fi
+exit 0

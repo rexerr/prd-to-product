@@ -113,7 +113,7 @@ The cut: **survives a tool switch vs. doesn't.** Repo (`CLAUDE.md`, `AGENTS.md`,
 
 ## Where to look
 
-Read at session start: this file, `AGENTS.md`, `BACKLOG.md`, `docs/DECISIONS_ACTIVE.md`, the most recent file in `docs/retros/`. Then the doc governing what you're touching — right-hand column is source of truth on conflict:
+Read at session start: this file, `BACKLOG.md`, `docs/DECISIONS_ACTIVE.md`, the most recent file in `docs/retros/`. Then the doc governing what you're touching — right-hand column is source of truth on conflict:
 
 | Touching | Doc |
 |---|---|

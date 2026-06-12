@@ -24,40 +24,37 @@
   "hooks": {
     "PreToolUse": [
       {
-        "//": "Hook: block-env-commit. Blocks 'git add .env*'. Always emitted.",
+        "//": "Hook: block-env-commit. matcher=Bash; the script reads the stdin payload and blocks only staging of .env files. No 'if' filter — scoping lives in the script (see .claude/hooks/README.md). Always emitted.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh",
-            "if": "Bash(git add .env*)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh"
           }
         ]
       },
       {
-        "//OPTIONAL": "deploy_cli_hook — emit only if deploy_target_has_cli_conflict == true",
+        "//OPTIONAL": "deploy_cli_hook — emit only if deploy_target_has_cli_conflict == true. matcher=Bash; the script scopes itself to deploy-CLI invocations.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-deploy-cli.sh",
-            "if": "Bash(<!-- PARAMETERIZE: deploy_cli_lower --> *)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-deploy-cli.sh"
           }
         ]
       },
       {
-        "//OPTIONAL": "worktree_hook_bash — emit only if uses_visual_confirmation_gate == true",
+        "//OPTIONAL": "worktree_hook_bash — emit only if uses_visual_confirmation_gate == true. matcher=Bash; the script scopes itself to 'git worktree' commands.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-worktree.sh",
-            "if": "Bash(git worktree *)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-worktree.sh"
           }
         ]
       },
       {
-        "//OPTIONAL": "worktree_hook_tool — emit only if uses_visual_confirmation_gate == true. Catches Claude Code's EnterWorktree tool and Agent isolation:worktree.",
+        "//OPTIONAL": "worktree_hook_tool — emit only if uses_visual_confirmation_gate == true. Catches Claude Code's EnterWorktree tool. (Whether Agent isolation:worktree surfaces a PreToolUse event is undocumented — do not assume coverage.)",
         "matcher": "EnterWorktree",
         "hooks": [
           {

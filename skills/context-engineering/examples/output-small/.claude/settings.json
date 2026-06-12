@@ -23,40 +23,37 @@
   "hooks": {
     "PreToolUse": [
       {
-        "//": "Hook: block-env-commit. Blocks 'git add .env*'. Always emitted.",
+        "//": "Hook: block-env-commit. matcher=Bash; the script reads the stdin payload and blocks only staging of .env files. No 'if' filter — scoping lives in the script (see .claude/hooks/README.md). Always emitted.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh",
-            "if": "Bash(git add .env*)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh"
           }
         ]
       },
       {
-        "//": "Hook: block-deploy-cli. Blocks 'vercel *'. Emitted because deploy_target_has_cli_conflict == true.",
+        "//": "Hook: block-deploy-cli. matcher=Bash; the script scopes itself to Vercel CLI invocations ('vercel …', 'npx vercel …'). Emitted because deploy_target_has_cli_conflict == true.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-deploy-cli.sh",
-            "if": "Bash(vercel *)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-deploy-cli.sh"
           }
         ]
       },
       {
-        "//": "Hook: block-worktree. Blocks 'git worktree *'. Emitted because uses_visual_confirmation_gate == true.",
+        "//": "Hook: block-worktree. matcher=Bash; the script scopes itself to 'git worktree' commands. Emitted because uses_visual_confirmation_gate == true.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-worktree.sh",
-            "if": "Bash(git worktree *)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-worktree.sh"
           }
         ]
       },
       {
-        "//": "Hook: block-worktree. Catches Claude Code's EnterWorktree tool and Agent isolation:worktree. Emitted because uses_visual_confirmation_gate == true.",
+        "//": "Hook: block-worktree. Catches Claude Code's EnterWorktree tool. (Whether Agent isolation:worktree surfaces a PreToolUse event is undocumented — do not assume coverage.) Emitted because uses_visual_confirmation_gate == true.",
         "matcher": "EnterWorktree",
         "hooks": [
           {

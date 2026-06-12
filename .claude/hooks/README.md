@@ -10,9 +10,13 @@ This directory holds the hooks that the context-engineering skill emitted for th
 
 ## Hooks in this project
 
-| Hook | Fires on | What it blocks |
+| Hook | Matcher | What the script blocks |
 |---|---|---|
-| `block-env-commit.sh` | `Bash(git add .env*)` | Staging env files (always emitted). |
+| `block-env-commit.sh` | `Bash` | Staging env files — the script inspects the command and blocks only `git add/stage … .env*` (always emitted). |
+
+### Scoping: the matcher selects the tool, the script decides
+
+The `settings.json` entry uses a bare `"Bash"` matcher; the script reads the JSON payload on stdin and exits 2 only when the actual command stages an env file. **Do not scope hooks with the inner `if` filter**: it was observed misfiring on complex compound commands (2026-06-08, 2026-06-12) — so the script must scope itself regardless — and a stale `if` after a script-pattern change silently disarms the guard. Consequence of the bare matcher: the script runs on every Bash call, so its exit-0 path is the common path.
 
 Two hooks the skill normally emits are **not** emitted here:
 
@@ -34,8 +38,9 @@ Each hook is a plain shell script. To disable one without removing it, comment o
 To add a new hook:
 
 1. Write the script in `.claude/hooks/<name>.sh`. Make it executable: `chmod +x`.
-2. Read tool input from stdin as JSON. Use `jq` to parse (e.g., `jq -r '.tool_input.command'`).
-3. To block, exit 2 and write the reason to stderr. To allow with no action, exit 0.
-4. Register the hook in `.claude/settings.json` under `hooks.PreToolUse` (or the relevant event).
+2. Read tool input from stdin as JSON. Use `jq` to parse (e.g., `jq -r '.tool_input.command // empty'`), and fall back to matching the raw payload when jq is unavailable — a blocking guard must never silently disarm because of a missing dependency (see `block-env-commit.sh` for the pattern).
+3. Anchor command matching at command-word position (line start or after `|` `&` `;`) so prose or data mentioning the pattern doesn't block.
+4. To block, exit 2 and write the reason to stderr — including what to do instead. To allow with no action, exit 0.
+5. Register the hook in `.claude/settings.json` under `hooks.PreToolUse` (or the relevant event) with a bare tool matcher; no `if` filter.
 
 Reference: <https://code.claude.com/docs/en/hooks>.

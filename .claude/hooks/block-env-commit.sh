@@ -4,17 +4,38 @@
 # version control, which is irreversible once pushed. This is a guarantee, not
 # a guideline.
 #
-# PreToolUse hooks receive the tool-call payload as JSON on stdin. This script
-# inspects the actual command and exits 2 ONLY when it stages a .env file, so it
-# never false-positives and blocks unrelated Bash commands. The real scoping
-# lives HERE, in the script — not in a settings.json matcher. (A bare matcher
-# fires on every Bash call; an unconditional script would then block everything.)
+# Scoping lives HERE, in the script. The settings.json matcher is a bare
+# "Bash", so this script runs on EVERY Bash call and its exit-0 path is the
+# common path. The documented `if` filter is deliberately not used: it was
+# observed misfiring on complex compound commands (2026-06-08, 2026-06-12),
+# so the script must scope itself anyway — and a stale `if` after a pattern
+# change here would silently disarm the guard.
 #
-# Known limitation: this catches an explicit `git add .env*`, not a bulk
-# `git add .` / `git add -A` that sweeps in an untracked .env.
+# Mechanism: extract the command with jq when available; fall back to the raw
+# payload otherwise (coarser matching, but a blocking guard must never disarm
+# because jq is missing). Matching is anchored at command-word position (line
+# start or after | & ;) so prose or data merely *mentioning* the pattern does
+# not block — the false-positive class observed live on 2026-06-12.
+#
+# Known limitations: a heredoc/data line that *begins* with the guarded
+# command still matches (fails toward blocking); subshell-wrapped staging
+# `(git add .env)` is not caught; bulk `git add .` / `git add -A` sweeping in
+# an untracked .env is not caught. The .gitignore is the backstop for all of
+# these; this hook guards the explicit path.
 
 payload=$(cat)
-if printf '%s' "$payload" | grep -Eq 'git[[:space:]]+(add|stage)[^|;&]*\.env'; then
+blocked=0
+if command -v jq >/dev/null 2>&1; then
+  cmd=$(printf '%s' "$payload" | jq -r '.tool_input.command // empty' 2>/dev/null)
+  printf '%s' "$cmd" | grep -Eq '(^|[|&;])[[:space:]]*git[[:space:]]+(add|stage)[[:space:]][^|&;]*\.env' && blocked=1
+else
+  # No jq: coarser unanchored match on the raw payload — may false-positive
+  # on embedded mentions (anchoring is impossible inside the JSON string);
+  # never disarms.
+  printf '%s' "$payload" | grep -Eq 'git[[:space:]]+(add|stage)[^|&;]*\.env' && blocked=1
+fi
+
+if [ "$blocked" -eq 1 ]; then
   echo "BLOCKED: Do not stage env files. This repo has no env files; .env* in any form should not be committed." >&2
   exit 2
 fi

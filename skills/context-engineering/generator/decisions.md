@@ -289,13 +289,20 @@ When `enforce_rules_as_hooks == true`, the generator emits `.claude/settings.jso
 
 Hooks emitted:
 
-| Hook script | Always or conditional | Blocks |
+| Hook script | Always or conditional | The script blocks |
 |---|---|---|
-| `block-env-commit.sh` | Always (when `enforce_rules_as_hooks == true`) | `Bash(git add .env*)` — prevents staging env files. |
-| `block-deploy-cli.sh` | When `deploy_target_has_cli_conflict == true` | `Bash(<deploy_cli_lower> *)` — prevents deploy-CLI usage that conflicts with auto-deploy. |
-| `block-worktree.sh` | When `uses_visual_confirmation_gate == true` | `Bash(git worktree *)` and `EnterWorktree` tool — prevents worktree creation that would break visual confirmation. |
+| `block-env-commit.sh` | Always (when `enforce_rules_as_hooks == true`) | `git add/stage … .env*` at command-word position — prevents staging env files. |
+| `block-deploy-cli.sh` | When `deploy_target_has_cli_conflict == true` | `<deploy_cli_lower> …` / `npx <deploy_cli_lower> …` at command-word position — prevents deploy-CLI usage that conflicts with auto-deploy. |
+| `block-worktree.sh` | When `uses_visual_confirmation_gate == true` | `git worktree …` commands (Bash matcher) and the `EnterWorktree` tool (own matcher) — prevents worktree creation that would break visual confirmation. |
 
 The hooks coexist with the prose rules in CLAUDE.md/AGENTS.md. The prose explains *why*; the hook guarantees *that*. Removing one without the other breaks either orientation or enforcement. The prose rules are not removed when hooks are emitted.
+
+### Scoping is script-side; the `if` filter is not used (decided 2026-06-12)
+
+Every hook entry uses a bare tool matcher (`"Bash"`, `"EnterWorktree"`); the script reads the stdin JSON payload and decides. Two decisions recorded here:
+
+1. **The documented inner `if` filter is dropped.** The original templates scoped unconditional `exit 2` scripts with `if` (e.g. `"if": "Bash(git add .env*)"`). The field is officially documented and usually works (verified by negative-case live-fire, 2026-06-12), but it was twice observed letting the hook run on non-matching complex compound commands (2026-06-08: `git rev-list … && ls …`; 2026-06-12: a multi-heredoc fixture command). The 2026-05-10 validation missed this because it tested positive cases only. Since the script must therefore scope itself anyway, keeping `if` adds only a drift hazard: a stale `if` after a script-pattern change **silently disarms the guard** (fail-open) — the worst failure mode for a blocking hook. With unconditional scripts the original defect's true severity was total-Bash-blockage in any project emitting the conditional hooks (observed: the-council).
+2. **Command matching is jq-extraction with raw-payload fallback, anchored at command-word position.** `jq -r '.tool_input.command // empty'` when jq exists; raw payload otherwise (coarser, but a blocking guard must never disarm because a dependency is missing). Matching anchors at line start or after `|` `&` `;` so prose/data merely *mentioning* a pattern doesn't block — chosen over raw-payload word-boundary grep after a live false positive (2026-06-12: a command embedding `git add .env*` as JSON data was blocked). Deliberate trade-offs, documented in each script: subshell-wrapped invocations `(git add .env)` are not caught (`(` is not an anchor, to let embedded `Bash(git add .env*)` strings pass); a heredoc/data line *beginning* with a guarded command still matches (fails toward blocking).
 
 ### Seeded `permissions.allow`
 

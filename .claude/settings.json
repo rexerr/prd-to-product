@@ -22,13 +22,12 @@
   "hooks": {
     "PreToolUse": [
       {
-        "//": "Hook: block-env-commit. Blocks 'git add .env*'. Always emitted.",
+        "//": "Hook: block-env-commit. matcher=Bash; the script reads the stdin payload and blocks only staging of .env files. No 'if' filter — scoping lives in the script (see .claude/hooks/README.md). Always emitted.",
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh",
-            "if": "Bash(git add .env*)"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh"
           }
         ]
       }

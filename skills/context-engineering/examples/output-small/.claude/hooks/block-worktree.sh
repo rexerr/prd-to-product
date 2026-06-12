@@ -5,6 +5,54 @@
 # not what `npm run dev` is rendering. Visual confirmation breaks silently.
 # Worktrees are not bad in general — they are incompatible with this project's
 # specific commit gate. Only emitted when uses_visual_confirmation_gate == true.
+#
+# Registered under TWO matchers: "Bash" (blocks `git worktree …`) and
+# "EnterWorktree" (Claude Code's worktree tool). For the EnterWorktree path,
+# blocking on tool name alone is correct — the matcher already scopes to the
+# exact tool. Whether Agent/Task `isolation: "worktree"` surfaces a PreToolUse
+# event is undocumented; do not assume this hook covers it.
+#
+# Scoping lives HERE, in the script. The settings.json "Bash" matcher is bare,
+# so this script runs on EVERY Bash call and its exit-0 path is the common
+# path. The documented `if` filter is deliberately not used: it was observed
+# misfiring on complex compound commands (2026-06-08, 2026-06-12), so the
+# script must scope itself anyway — and a stale `if` after a pattern change
+# here would silently disarm the guard.
+#
+# Mechanism: extract tool name and command with jq when available; fall back
+# to raw-payload matching otherwise (coarser, but a blocking guard must never
+# disarm because jq is missing). Command matching is anchored at command-word
+# position (line start or after | & ;) so prose merely *mentioning* worktrees
+# does not block.
 
-echo "BLOCKED: Worktrees break the visual-confirmation commit gate in this project. The dev server points at the main checkout. Work directly in /Users/jordan/Sites/simple-form." >&2
-exit 2
+payload=$(cat)
+tool=""
+have_jq=0
+command -v jq >/dev/null 2>&1 && have_jq=1
+if [ "$have_jq" -eq 1 ]; then
+  tool=$(printf '%s' "$payload" | jq -r '.tool_name // empty' 2>/dev/null)
+elif printf '%s' "$payload" | grep -Eq '"tool_name"[[:space:]]*:[[:space:]]*"EnterWorktree"'; then
+  tool="EnterWorktree"
+fi
+
+if [ "$tool" = "EnterWorktree" ]; then
+  echo "BLOCKED: Worktrees break the visual-confirmation commit gate in this project. The dev server points at the main checkout. Work directly in /Users/jordan/Sites/simple-form." >&2
+  exit 2
+fi
+
+blocked=0
+if [ "$have_jq" -eq 1 ]; then
+  cmd=$(printf '%s' "$payload" | jq -r '.tool_input.command // empty' 2>/dev/null)
+  printf '%s' "$cmd" | grep -Eq '(^|[|&;])[[:space:]]*git[[:space:]]+worktree([[:space:]]|$)' && blocked=1
+else
+  # No jq: coarser unanchored match on the raw payload — may false-positive
+  # on embedded mentions (anchoring is impossible inside the JSON string);
+  # never disarms.
+  printf '%s' "$payload" | grep -Eq 'git[[:space:]]+worktree' && blocked=1
+fi
+
+if [ "$blocked" -eq 1 ]; then
+  echo "BLOCKED: Worktrees break the visual-confirmation commit gate in this project. The dev server points at the main checkout. Work directly in /Users/jordan/Sites/simple-form." >&2
+  exit 2
+fi
+exit 0
