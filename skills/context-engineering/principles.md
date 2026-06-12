@@ -140,6 +140,7 @@ Rules in `.claude/rules/` and in `AGENTS.md` should follow these conventions.
 - **Imperatives, not principles.** "Never use Sonnet in background jobs" is a rule. "Be thoughtful about model choice" is not. If the rule cannot be checked, rewrite it until it can.
 - **Specific, not generic.** "≤ 3 files, ≤ 50 lines for bug fixes" beats "keep changes small."
 - **Cite the failure mode.** Every rule should be defensible against "why does this exist." Carry the answer in the file or in a separate why-block.
+- **Classify with the agent-failure taxonomy; never substitute it for the concrete failure.** Three named classes recur across agent work (source: Anthropic, *A harness for every task*, 2026): **agentic laziness** (stops at 20 of 50 items and declares done), **self-preferential bias** (the model grading its own output favorably), and **goal drift** (fidelity to the objective decays across turns, especially after compaction). Use them as a lens above the cited failure — "prevents lost context after autocompact (goal drift)" — so rules targeting the same class can be found together. A rule citing only the class ("prevents goal drift") without the concrete failure does not meet the bar above.
 - **Cross-reference at the bottom.** Every rule and canonical doc ends with a list of related files. Without this, the rule graph fragments silently as the project grows.
 - **One rule per concern.** Do not write a rule that does two things. Split.
 

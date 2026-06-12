@@ -19,7 +19,6 @@ Skill-development workspace for the `context-engineering` skill (and sibling ski
 The full set is at the bottom of this file in "Before you respond." Read this block first if attention is short.
 
 1. **Hard scope limits.** Bug fix: ≤ 3 files, ≤ 50 lines. Feature: ≤ 300 lines per session.
-2. **Direct on `main`. No branches.**
 
 ---
 
@@ -67,6 +66,10 @@ Before writing code, state which files you will touch, what you will change and 
 
 Default to finishing the work, not asking permission to finish it — but **the scope check above is the outer gate.** Within the scope limits, run the whole loop (edit → dry-run substitution/diff per "Verification before claiming done" → retro if warranted → commit → push when the task asked for it) and report — don't stop to ask "want me to commit?" on work that was always in scope. If a task would exceed the limits, stop and confirm first. "Run to done" governs only what is inside the scope gate. Always gated on Rex, never self-cleared: product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting work, force-push); and per the existing rules, self-modification of agent config (`.claude/` commands, settings, CLAUDE.md startup behavior).
 
+### Non–Claude-Code agents are read-only here
+
+Distinct from the self-modification gate above (which governs Claude Code editing its own agent config): any other agent surface (Cowork, claude.ai, etc.) does not write to this repo without explicit per-task permission from Rex — propose the change and wait. **Failure it prevents:** out-of-band edits from a tool whose context and discipline rules differ from a Claude Code session; silent divergence from the direct-on-main, scope-gated workflow.
+
 ### Checkpoint between phases of multi-step work
 
 For any task with more than one distinct phase, pause between phases and restate: what was done, what was verified, what remains. Do not continue from a state you cannot describe. Prevents phase 4 of a 6-step refactor going wrong while phases 5 and 6 pile on top of broken state.
@@ -92,7 +95,8 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 
 - **Prefer `/rewind` to re-prompting when an approach fails.** Re-prompting "that didn't work, try X" leaves the failed attempt in the prefix; `/rewind` reverts both conversation and working tree to a clean state.
 - **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is a single retro read.
-- **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one, which often fires when the model is at peak context-rot.
+- **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one, which often fires when the model is at peak context-rot — its least intelligent moment. The cut: `/compact` is lossy and the model picks what survives (steer it with the hint); `/clear` plus a fresh session means you write the brief and control exactly what carries forward. **Failure it prevents:** losing edge-case context to a bad autocompact — a concrete instance of goal drift.
+- **Delegate to a subagent when you need the conclusion, not the artifact.** Broad searches, doc sweeps, and verification runs produce verbose intermediates; a subagent returns the conclusion and the noise stays out of the main context. Verification especially: a fresh subagent checking the work is not the model grading its own output. **Failure it prevents:** intermediate tool output bloating the conversation prefix; self-preferential review.
 
 ### Session retros
 
