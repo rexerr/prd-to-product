@@ -1,6 +1,6 @@
 ---
 name: prd-creator
-description: Run an interview-driven question flow that turns a rough idea, working brief, or research dump into a structured PRD.md. Use when the user says "draft a PRD", "build a PRD", "run the PRD interview", "use the prd-creator skill", or hands you a project idea and asks for a product requirements document. Do not use for editing an existing PRD section, writing implementation specs, or scaffolding context files (that is the context-engineering skill).
+description: Turn a rough idea, working brief, or research dump into a structured PRD.md. Use when the user says "draft a PRD", "build a PRD", "run the PRD interview", "use the prd-creator skill", or hands you a project idea and asks for a product requirements document. Do not use for editing an existing PRD section, writing implementation specs, or scaffolding context files (that is the context-engineering skill).
 ---
 
 # PRD-creator skill

@@ -1,6 +1,6 @@
 ---
 name: design-system-bootstrap
-description: Bootstrap a token-based design system from brand assets or direct input. Produces a token CSS file, three seed React components, and a design-system doc. Use when the user says "bootstrap design system", "generate tokens from brand assets", "set up my token file", "use the design-system-bootstrap skill", or hands you a brand book and asks you to set up the design system. Do not use for migrating an existing token system, generating Figma files or illustrations, building feature components, or voice and tone work (use prd-creator for that).
+description: Bootstrap a token-based design system from brand assets or direct input. Use when the user says "bootstrap design system", "generate tokens from brand assets", "set up my token file", "use the design-system-bootstrap skill", or hands you a brand book and asks you to set up the design system. Do not use for migrating an existing token system, generating Figma files or illustrations, building feature components, or voice and tone work (use prd-creator for that).
 ---
 
 # Design-system-bootstrap skill
