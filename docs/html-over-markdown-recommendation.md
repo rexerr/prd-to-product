@@ -1,6 +1,6 @@
 # HTML over Markdown — recommendation memo
 
-**Status: investigated, recommendation pending Rex's decision. No code/template work authorized.**
+**Status: DECIDED 2026-06-11 — deferred indefinitely, see [D-012](DECISIONS.md). No build. Markdown-only invariant stands unmodified.** A devils-advocate pass returned *Reconsider* (the load-bearing assumption — that any human uses DSB output — is unobserved; DSB has never completed a real from-scratch run), and Rex went further: gut call is it's not necessary and may never be looked at. Sole promotion trigger lives in `BACKLOG.md`. The analysis below is preserved as the record of the investigation.
 Companion to [`html-over-markdown-brief.md`](html-over-markdown-brief.md) (the entry point). This is the brief's requested "written recommendation memo to review before we touch anything." Date of investigation: 2026-06-09.
 
 ---
