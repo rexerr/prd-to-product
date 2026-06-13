@@ -1,0 +1,920 @@
+[
+ {
+  "project": "Sites",
+  "theme": "plan under-specified, vague criteria",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "decisions",
+  "promotable": "maybe",
+  "normalized": "The plan omitted several concrete items: an unparameterized hardcoded path in a template, a flat-vs-modular criterion too vague to be operational (needed the exact token-file-plus-linter predicate), hardcoded doc names in a flat template, marker enumeration treated as a post-check instead of a build step, and an undocumented paired-write rule.",
+  "verbatim": "The plan as written is correct on the cross-reference list... What's missing or under-specified follows. Things missing from the plan: ai-surface-stub.md.template has a hardcoded path..."
+ },
+ {
+  "project": "Sites",
+  "theme": "doc consistency, missing inclusion logic",
+  "tag": "other",
+  "where_fix_lives": "decisions",
+  "promotable": "maybe",
+  "normalized": "The revised plan left an ambiguous PRD phrase that conflicted with the newly sharpened criterion, lacked an explicit per-template inclusion table in decisions.md, and slightly misstated the worked-examples structure in SKILL.md.",
+  "verbatim": "Plan is solid. Three small things to flag, none of them blockers. 1. The medium-case description in the PRD does not match the sharpened criterion."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "implicit policy judgment call",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan embedded a substantive scoring-policy judgment call (pure-marketplace sellers scoring 0 under max-of) without surfacing it for explicit sign-off, and its eval re-baselining step was ambiguous enough to risk tautological expected values derived from engine output instead of policy.",
+  "verbatim": "Ship it, with one policy confirmation first... Confirm the scoring direction for pure-marketplace sellers. This is the one substantive judgment call, and it feeds Salesforce lead routing."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "missed available tooling",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan assumed a manual copy-paste workflow into Google Docs without checking whether the connected Google Drive MCP could create the Doc directly.",
+  "verbatim": "can you write to google doc directly via mcp or a connector?"
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "unverified workflow, missing provenance",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan committed to an unverified HTML-to-Doc import workflow without a pilot step, left the commit-snapshot provenance out of the visible document body, and omitted noting that the prompt-review goal was deferred to phase 2.",
+  "verbatim": "Three small things to flag, none blocking: 1. HTML-to-Doc import is worth piloting once before committing to it as the workflow."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "simpler external alternative preferred",
+  "tag": "over-engineering",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan was more involved than needed; Rex brought in a simpler external alternative and cut the token-auth mechanism in favor of a plain /scoring-guide route on the test deployment.",
+  "verbatim": "i actually discussed a different direction with claude, less involved i would like you to review. curious your thoughts, if it loses any viability and if it is worth pursuing"
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "overcorrected tone directive",
+  "tag": "other",
+  "where_fix_lives": "code",
+  "promotable": "no",
+  "normalized": "The plan's prompt-tone directive over-rotated toward positivity, risking whitewashed risk copy that contradicts severity labels, and its example was weaker than the tester's action-oriented original.",
+  "verbatim": "The tone block has a credibility risk. \"Frame constraints as opportunities, not deficits\" pushes too hard in one direction... The example weakens the instruction."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "example assumes wrong persona",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The plan's example reframe assumed a multi-carrier brand, which doesn't fit the low-volume single-carrier personas most likely to trigger it, inviting the model to invent unsupported capabilities.",
+  "verbatim": "The example in the tone block has a quiet persona-fit issue... presumes the brand has multiple carriers to consolidate."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "missing verification check",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan lacked an explicit verification check for the salesy-phrasing risk flagged in the previous round.",
+  "verbatim": "do you need to add any checks to the plan for that?"
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "example encodes false assumption",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The plan's prompt instruction gave the model a vibe (be optimistic) instead of a structure, and its example assumed growth the brand may not have, inviting whitewashed or invented copy.",
+  "verbatim": "The tone block has a credibility risk. \"Frame constraints as opportunities, not deficits\" pushes too hard in one direction... The current phrasing invites the model to whitewash."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "example fails persona fit",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The rewritten in-prompt example assumed a multi-carrier brand, which doesn't fit the single-carrier personas most likely to trigger it, risking the model recommending capabilities the brand lacks.",
+  "verbatim": "The example in the tone block has a quiet persona-fit issue. ... presumes the brand has multiple carriers to consolidate."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "flagged risk needs check",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan lacked an explicit verification check for the risk just flagged in review; Rex had to prompt for one rather than the plan absorbing the watch-item itself.",
+  "verbatim": "do you need to add any checks to the plan for that?"
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "missed state-invalidation edge case",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The plan assumed hiding a question was sufficient and missed clearing its stale stored answer on back-navigation, and its verification baseline understated which persona scores would move (P-02 and P-07, not just P-05).",
+  "verbatim": "Real issues \u2014 fix in the plan before handoff 1. Stale current_carriers data when Q4 is skipped retroactively. The plan skips Q4 via visibleQuestions, but doesn't clear answers.current_carriers."
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "stale line after revision",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The revised plan fixed \u00a74 but left a stale verification-gate line contradicting it, so the revision was not propagated consistently through the whole document.",
+  "verbatim": "One leftover inconsistency, then it's ready to ship... Verification gate #2 still reads: \"expect P-05; confirm others hold\" That contradicts \u00a74, which correctly expects P-02, P-05, and P-07 all to mov"
+ },
+ {
+  "project": "epost-assessment",
+  "theme": "doc phrasing ambiguity",
+  "tag": "other",
+  "where_fix_lives": "code",
+  "promotable": "no",
+  "normalized": "The plan's doc wording risked the fast-path reading as extra mandatory steps and a conditional list reading as exhaustive, so phrasing needed a verification pass before shipping.",
+  "verbatim": "The fast-path placement above the universal section reads as an option, not as additional steps... Step 11's conditional wording (\"for engine, UI, or lead-route changes\") is exhaustive... worth a sani"
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "cross-tool compatibility requirement",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "The plan left open questions unresolved; Rex answered them and added a requirement that AGENTS.md remain a pointer usable by Codex and other IDEs.",
+  "verbatim": "1. can agents.md have @claude.md in it? just a pointer. i need it for when i use codex or IDEs that use agents.md. 2. ok proceed with this ... update plan"
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "plan contradicts file contents",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan proposed collapsing AGENTS.md without verifying its actual contents, which would delete Codex-specific material, used import syntax Codex can't read, had a wrong step number, and lacked canonical-first sequencing within sub-steps.",
+  "verbatim": "Step 7 \u2014 replacing AGENTS.md with @CLAUDE.md loses content. AGENTS.md isn't a pure pointer today. Lines 36\u201358 contain Codex-specific material that doesn't exist in CLAUDE.md"
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "mirroring instead of pointing",
+  "tag": "bad-substitution",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "The plan mirrored content across two files instead of pointing (re-introducing the duplication the plan exists to remove), would silently drop three non-overlapping open questions in a merge, and left two rules without named canonical homes.",
+  "verbatim": "Step 7 mirrors AGENTS.md's reading order from CLAUDE.md, which builds in drift risk... The cleaner answer is to point, not mirror"
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "canonicalizing stale content",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan would consolidate already-resolved decisions without pruning them, and two sub-steps risked exceeding the 300-line per-commit scope ceiling without a pre-commit diff-size check.",
+  "verbatim": "Step 4 should not just merge new questions into ROADMAP.md but also prune resolved ones... Otherwise we're canonicalizing stale content."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "stale derived numbers",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "Derived numeric targets in the plan were not recomputed after a new step was added, leaving the token-target math internally inconsistent.",
+  "verbatim": "The token target math doesn't reflect step 0's contribution. Step 1's after-target says \"~720 lines\"... After step 0 prunes PARKING_LOT.md to ~55 lines, step 1's after-target becomes ~690, not 720."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "missing plan scaffolding sections",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "Rex pasted an external review with four structural additions the plan lacked: an umbrella decision-log entry, session-based framing for high-risk sub-steps, an explicit out-of-scope section, and a close-out step.",
+  "verbatim": "what do you think of these recommendations? Here are the four additions, ready to paste into the plan."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "unverified load-bearing assumption",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's entire premise (paths: frontmatter auto-loading) was unverified and only checked at the final step, it silently overturned a locked prior decision on STATCARD_SPEC.md, and omitted a load-bearing doc (CONTENT_SYSTEM.md) and the Codex/AGENTS.md fork from its kill/keep decisions.",
+  "verbatim": "Critical: verify paths: empirically before step 1, not at step 8. The entire plan rests on paths: frontmatter auto-loading rules when matching files are touched."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "design reintroduces target problem",
+  "tag": "goal-drift",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's AGENTS.md mapping table reintroduced the duplication-drift problem the restructure was meant to eliminate, and step 3's absorb-then-delete semantics were ambiguous about progressive versus wholesale draining of the source file.",
+  "verbatim": "The path \u2192 rule mapping table is exactly the kind of duplicated structure this whole effort is trying to eliminate. Every time a rule's paths: changes, AGENTS.md must be updated in lockstep."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "stale references after revision",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "After the prior revision swapped the mapping table for an algorithm, two sections of the plan still referenced the removed table, and a pre-flight ls was needed because the plan cited a file (lib/ai/assistant.js) that may not exist.",
+  "verbatim": "Two small internal inconsistencies left over from the table-to-algorithm change \u2014 fix in-place, no new step needed"
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "stale codebase assumptions",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan claimed ARIA attributes were missing that already existed in the code, mis-scoped the real gaps, and lacked the constraint that a title attribute does not substitute for aria-label.",
+  "verbatim": "The ARIA gaps are partially already fixed \u2014 the plan doesn't know this. ... The real gaps are narrower and different from what the plan assumes. ... Missing constraint: title is not aria-label."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "theme": "padded rule list",
+  "tag": "other",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "One heuristic entry was a footnote-level clarification inflated into a standalone top-level rule, padding the list, and the parking-lot entry was slotted into the wrong section of the file.",
+  "verbatim": "Heuristic #10 is not a heuristic \u2014 it should be folded into #8. ... That's a footnote, not a law. Giving it a top-level slot makes the list look padded"
+ },
+ {
+  "project": "epost-intelligence-feed-wt2",
+  "theme": "plan claims not verified against files",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan was built on unverified codebase facts: the hex-literal count was wrong (1 in-scope, not 51), the section it proposed to reorder had no content to reorder, and the preamble it proposed to add already partly existed.",
+  "verbatim": "Things the plan gets wrong: The \"51 hex literals\" number is misleading and changes the framing... The Foundations reorder has nothing to reorder. The two-layer preamble is already partly there."
+ },
+ {
+  "project": "epost-intelligence-feed-wt2",
+  "theme": "fragile mechanism, mislabeled tests",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's allowlist schema keyed on line numbers, which drift under reformatting; its verification tests also conflated which defense layer each test proved, and the multiline style={{}} case needed a brace-balance walk rather than a regex.",
+  "verbatim": "Allowlist by content, not line number. Line numbers are fragile \u2014 if app/layout.jsx gets reformatted by Prettier... the allowed line drifts and the linter starts flagging the same allowlisted hex as a"
+ },
+ {
+  "project": "epost-intelligence-feed-wt2",
+  "theme": "unchecked exclusion, edge cases",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan assumed globals.css was a token source file and excluded it from linting without checking; it also did not specify handling of markdown fenced code blocks or document the JS-variable indirection limitation.",
+  "verbatim": "Verify the styles/globals.css exclusion before excluding it... That's a consumer of tokens (using var()), not a definer of them. If it has any hex literals, those are actual drift the linter should ca"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "self-circumventable enforcement mechanism",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's consent mechanism could be written by the agent itself, so the hook enforced deliberateness rather than actual human consent, failing to deliver the claimed guarantee.",
+  "verbatim": "The consent ledger is agent-writable \u2014 so this enforces deliberateness, not consent ... The agent \u2014 the exact entity 'under context pressure' that the hook exists to discipline \u2014 can self-issue consen"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "unverified platform mechanics",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan relied on permissionDecision 'ask' behavior that, per official docs and known bugs, hangs in headless mode, so the guard would deadlock the orchestrator it was built to enable; a mode branch was required.",
+  "verbatim": "Headline: ask hangs in headless mode \u2014 so it deadlocks the very orchestrator it's meant to unblock"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "probe-gated implementation corrections",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "A pasted corrections doc required verifying that permissionDecision deny is actually honored for Edit/MultiEdit (a documented bug), removing session-sweep logic that corrupts concurrent sessions, refreshing the sentinel timestamp, and gating all script-writing behind the Step-1 probe.",
+  "verbatim": "Do not write any script logic until the Step-1 probe below has run and its results are recorded. One probe finding (1A) can fork the whole design. Building before the probe is the failure mode."
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "final probe and rationale refinements",
+  "tag": "other",
+  "where_fix_lives": "none",
+  "promotable": "no",
+  "normalized": "Near-final review asked for two probe additions and a corrected rationale for the acceptEdits-to-deny mapping (deny is right because ask is unreliable in that mode, not because no human is present), plus naming the resulting UX cost.",
+  "verbatim": "The architecture is now sound \u2014 what's left is two additions to the probe and one rationale fix, not a redesign. This is build-ready once these land."
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "understated safety-model shift",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan did not explicitly state that the new merge path now directly edits pre-existing hand-authored files and rides the D-006 write-guard hook, and it underspecified the merge behavior itself.",
+  "verbatim": "the mechanism change has a safety-model shift the plan understates, the hard part of the new behavior is underspecified, and there are two consistency/scope items"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "incomplete merge spec",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "skill",
+  "promotable": "maybe",
+  "normalized": "The plan's globals.css merge semantics covered only @tailwind directives and omitted font @import lines, and the fenced block lacked a deterministic insert position.",
+  "verbatim": "The globals.css merge spec is incomplete \u2014 it covers only @tailwind directives, but globals.css also carries font imports"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "spec precision on CSS ordering",
+  "tag": "other",
+  "where_fix_lives": "skill",
+  "promotable": "no",
+  "normalized": "The plan's merge wording risked inserting @import lines mid-file where CSS silently ignores them, and the output-summary enumeration omitted globals.css.",
+  "verbatim": "globals.css @import/@tailwind must be prepended at the top, not just \"added if absent.\""
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "misbucketed work into wrong phase",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan bucketed two parking-lot items into Phase 4 whose documented scope (example regeneration) does not cover them, relying on a speculative assumption instead of deferring them as wait-for-second-instance items, and failed to note FUTURE.md is intentionally a thin pre-allocated bucket.",
+  "verbatim": "Two nits to flag back: stack_summary_one_line parking-lot disposition is in the wrong bucket. Plan says \"(a) Phase 4 task\" but Phase 4 per ROADMAP.md:118-138 is \"Regenerate medium and large...\""
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "fix misses named failure",
+  "tag": "goal-drift",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan added the write guard to the two skills that cannot write a design system while leaving design-system-bootstrap's always-overwritten tokens.css and seed components unguarded, so the headline failure it claimed to close (clobbering a hand-authored design system) remained open.",
+  "verbatim": "Net: you'd ship a guard for ce+prd (good hygiene, real PRD.md-collision value) while the file class the council actually named stays unprotected."
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "offering undefined operations",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "skill",
+  "promotable": "maybe",
+  "normalized": "The plan extended an overwrite/skip/merge prompt to file types with no defined merge operation, and had smaller precision gaps: seed-component rows keyed on styling_path not the string 'always', an unverified next D-number, and inconsistent skip-marker wording across skills.",
+  "verbatim": "merge is only well-defined for the rule file (append/snippet semantics) and tailwind.config.tokens.ts (merge snippet). There's no merge mechanism for a hand-authored tokens.css or a .tsx component"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "unvalidated signal definition",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's extraction method swept in scattered build-time corrections without validating that the actual target signal \u2014 plan-revision review cycles \u2014 was capturable and isolated in the data.",
+  "verbatim": "are you sure that you can see my revision feedback and the plans? this doesnt sound valid. the key is when i get a plan and then ask for a revision and then i do that back and forth multiple times."
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "change set missed root-cause file",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's change set omitted the spec file (generator/output-summary.md) that actually prescribes the worst vocabulary leak, so scrubbing the examples without fixing the spec would let the leak regenerate on the next real run.",
+  "verbatim": "Must fix 1. You're missing generator/output-summary.md \u2014 it's the actual source of the biggest vocab leak. The plan lists 8 files and explicitly marks only decisions.md and small/PRD.md as \"not change"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "false exhaustiveness, verification blind spots",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's hand-enumerated line list of leak sites was framed as exhaustive but missed lines and a synonym phrasing of the same leak, and the verification grep used the same narrow patterns so the misses would survive verification.",
+  "verbatim": "One substantive issue remains, plus two small notes. The enumeration is presented as exhaustive but isn't \u2014 and the verification grep inherits its blind spots"
+ },
+ {
+  "project": "prd-to-product",
+  "theme": "validate before dog-fooding",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The roadmap scaffolded the repo with the skill before validating the skill, bundled an artificially small warm-up phase, left the skill-version dependency implicit, and defined no per-phase abort criteria.",
+  "verbatim": "i have some feedback on the plan i would like to discuss: A few substantive concerns worth thinking through before you start Phase A. Phase B before Phase C is risky."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "under-deleted superseded source doc",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "decisions",
+  "promotable": "maybe",
+  "normalized": "The plan retained a docs/feedback file whose content was being promoted into the roadmap, contradicting the cleanup goal of leaving no superseded docs that could confuse future agents or readers.",
+  "verbatim": "i dont think we need docs/feedback. the whole point is to get that into the roadmap and clean up our docs and not have anything in there to potentially confuse claude or people."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "decision divergence and staging gaps",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan diverged from a binding decision (D-027) without securing approval before coding, staged the work so a demo-visible broken intermediate state would exist, and would bake fake patient PII into exported files.",
+  "verbatim": "Four things to settle, two of them before coding starts: 1. The stepper change reverses D-027 \u2014 get Rex to bless it up front, not just at close-out."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "non-walkable phase checkpoint",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "The plan's mid-phase checkpoint was not walkable \u2014 the routing resolver landed in phase 2, leaving the new screen's Continue button a dead no-op at checkpoint time.",
+  "verbatim": "Two small execution notes, neither blocking: Sequence the sentinel resolver into the first phase, not the second."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "plan dropped agreed content",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan presented for approval omitted the housekeeping/documentation section that had been agreed during the preceding discussion.",
+  "verbatim": "that is not the full plan. where is the bit about housekeeping? are you documenting all of this?"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "unsafe edit anchoring",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "claude-md",
+  "promotable": "yes",
+  "normalized": "The plan specified a blind replace_all on markup that is byte-identical across screens (risking edits to non-target sections) and included an inert labeled link that would read as broken in a live demo.",
+  "verbatim": "The insertion can't be a blind replace_all \u2014 anchor per screen... \"Back to main site \u2192\" inert link is a live-demo trap. This is the one item I'd actually reconsider, not just flag."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "simpler alternative missed",
+  "tag": "other",
+  "where_fix_lives": "unclear",
+  "promotable": "no",
+  "normalized": "The plan dropped the back-navigation affordance entirely instead of offering the simpler alternative of making the nav logo link to the index page; Rex asked to fold that in.",
+  "verbatim": "could we add making the logo in the nav take you back to the index page?not the splash page. that solves for this easier. fold it into this plan."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "wrong fidelity bar, incomplete coverage",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The plan assumed a clinical-audit fidelity bar instead of demo-believable copy, and covered only one of two occurrences of the time-estimate phrase; after the rejection Claude began executing the rejected plan anyway, forcing an interrupt.",
+  "verbatim": "Calibration for this whole pass: I want copy that's believable for a demo, not clinically airtight. ... \u00a75B: you only changed the hero. Also fix the intake block (~line 702)"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "pattern adherence polish",
+  "tag": "other",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The planned copy violated the project's established header-as-headline, body-as-elaboration pattern by having a card header and a bullet repeat the same phrase.",
+  "verbatim": "Two small polish notes on commit 2 \u2014 neither is a blocker: The card 2 header \"You're being treated for a rotator cuff tear\" now restates the body's \"Working diagnosis\" almost verbatim."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "asset paths break at new root",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan assumed kit-relative logo paths would still resolve once the host page moved to repo root, so the live preview and the exported standalone file would both embed broken logo paths.",
+  "verbatim": "i have some feedback on the plan ... One real bug the plan doesn't account for \u2014 worth fixing before Stage A and E. Logo paths break when the host moves to repo root."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "stale reference after revision",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "After revising the plan to a single-field state model, one section still referenced the old two-field name, an internal inconsistency that would have broken the export's data-URI check.",
+  "verbatim": "the state model collapsed to a single brandState.logo field ... but the Stage B row still says upload writes \u2192 brandState.logoDataUri. That's stale naming from the prior model."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "missed in-repo reference design",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "The plan was drafted without accounting for an alternate design already sitting in references/alt-2.html whose CTA, onboarding first page, and MyChart autofill Rex wanted to inform the work.",
+  "verbatim": "I continued work on an alternate design (references/alt-2.html)and i like some of the ideas it has on the CTA on the landing page and then the first page of the onboarding flow"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "shallow adoption of reference design",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "unclear",
+  "promotable": "no",
+  "normalized": "The plan bolted borrowed elements (phone field) onto the existing landing block, but Rex wanted the flow restructured so alt-2's About-you card becomes a real first step, with landing-page data collection removed.",
+  "verbatim": "just add this too our flow and then rework accordingly."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "unmined alternate design",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan was drafted from the roadmap item without accounting for an alternate design Rex had extended in references/alt-2.html, which he wanted reviewed and mined for ideas before any implementation.",
+  "verbatim": "I continued work on an alternate design (references/alt-2.html)and i like some of the ideas it has on the CTA on the landing page and then the first page of the onboarding flow and how it uses the myc"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "restructure not bolt-on",
+  "tag": "other",
+  "where_fix_lives": "none",
+  "promotable": "no",
+  "normalized": "The plan bolted alt-2 ideas (phone field, callouts) onto the existing landing/screen structure, but Rex wanted alt-2's About-you page adopted as a true first flow step with the landing form removed entirely, requiring a flow restructure rather than a light borrow.",
+  "verbatim": "just add this too our flow and then rework accordingly. [with screenshot] ... we are removing data collection from our landing page like the alt 2. we are adding the user info collection as the first "
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "no failure path designed",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan designed only the happy path for a multi-fetch export assembly, with no failure handling or visible error state, and left key load-bearing assumptions (inline-JSX requirement, classic-scope kit) undocumented.",
+  "verbatim": "The one real gap: failure handling. exportHtml is a chain of fetch()es. ... Wrap the assembly in try/catch and surface a visible error instead of downloading."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "default-state path untested",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's verification steps only exercised the changed-font path, never the default (unchanged) font path, which relies on the more fragile inlined-CSS mechanism.",
+  "verbatim": "Add a one-line check: export once with the font left at default and confirm the headline font still renders in the downloaded file."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "justify cuts, verify transitions",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's out-of-scope cut was justified only by 'not in the master plan' instead of explaining why skipping was safe and cheap to add later, and the verification steps checked only the end state rather than the placeholder-to-real-logo transition that proves the upload worked.",
+  "verbatim": "Two things I'd tighten in the plan, though: The out-of-scope bullet should say why it's safe to skip \u2014 \"replace-on-upload already handles wrong-file correction...\" \u2014 rather than just \"not in the maste"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "plan missed recorded constraints",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan failed to account for two floating UI elements over the splash image (one violating recorded decision D-017's legibility requirement), mischaracterized net-new load behavior as a modification of existing behavior, and left an edit underspecified in a way that risked a conflicting parallel implementation.",
+  "verbatim": "A few corrections and gaps, in priority order. 1. The splash screen leaves two floating elements unaddressed \u2014 one is a hard rule."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "second-opinion simplicity challenge",
+  "tag": "over-engineering",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "Rex questioned whether the plan's JavaScript approach was the simplest option, cross-checking it against an external Claude conversation, which led to restructuring the plan to fold a slimmer foundation into the next pass.",
+  "verbatim": "how does that compare to this conversation i was just having with claude? is this the easiest way to do this? why do we need javascript? aren't they all just pages to link to?"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "kept stale intermediate doc",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "The plan retained a docs/feedback artifact that became redundant once its content was promoted into the roadmap, contradicting the cleanup goal of the task itself.",
+  "verbatim": "i dont think we need docs/feedback. the whole point is to get that into the roadmap and clean up our docs and not have anything in there to potentially confuse claude or people."
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "over-built toggle mechanism",
+  "tag": "over-engineering",
+  "where_fix_lives": "claude-md",
+  "promotable": "yes",
+  "normalized": "The plan proposed a JS content model and render bridge where inline data-attribute tagging plus a 2-3 rule CSS gate was sufficient for the actual scope.",
+  "verbatim": "do NOT build the SPECIALTIES JS model / renderSpecialty / QVSpecialty bridge from your earlier plan. Use a much lighter mechanism (Option A)"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "flip reset behavior unspecified",
+  "tag": "other",
+  "where_fix_lives": "unclear",
+  "promotable": "no",
+  "normalized": "The plan preserved mid-flow state when flipping specialties; Rex wanted the flip to reset to the landing page (keeping style settings), a requirement the plan had worked around instead of asking about.",
+  "verbatim": "is it possible that flipping the dropdown does reset? could it take them to the landing page and reset everything? except color, typeface and logo upload?"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "unverified claims, missing estimate",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan asserted source copy mirrored existing wording without having read the source file to confirm, and omitted a line estimate for the heaviest stage relative to the 300-line session cap.",
+  "verbatim": "the plan asserts they mirror each other but I never saw you confirm the ortho wording, so just pin it. No line estimate for Stage 1, and it's the heavy one"
+ },
+ {
+  "project": "seance",
+  "theme": "over-scoped session defeats test gate",
+  "tag": "scope-creep",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan bundled the highest-risk container swap with four behavior-changing fixes in one session, exceeding scope limits and making the characterization-test gate unable to prove that only the container changed.",
+  "verbatim": "But Session B is over-scoped in a way that quietly defeats the D-021 gate, and there are two concrete things that will break or invalidate Session A's tests if not caught first."
+ },
+ {
+  "project": "seance",
+  "theme": "overstated test coverage",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan overstated what passing tests would prove for the B1 container swap; coverage claims needed rewording so the gate's protection was not over-trusted.",
+  "verbatim": "One residual nuance worth naming so the green checkmark isn't over-trusted: the Session-A tests barely protect B1."
+ },
+ {
+  "project": "seance",
+  "theme": "verification gap plus access-level oversight",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The on-device verification checklist omitted the one flow that justified a plan deviation, and the plan assumed reuse of private types and helpers that would not compile without extraction.",
+  "verbatim": "B1 doesn't verify the case item: exists for. You added item: to handle A\u2192B (open-while-pushed), but B1's on-device matrix is all single-open-then-back flows \u2014 nothing exercises the rebuild path."
+ },
+ {
+  "project": "seance",
+  "theme": "unsurfaced tradeoff in plan",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan implicitly chose a custom glass back chip without naming that it sacrifices swipe-back, and aimed its device spike at an assumed white inset strip when the inset color is actually page-background-driven.",
+  "verbatim": "review this feedback, what is your keep/kill/combine on it?"
+ },
+ {
+  "project": "seance",
+  "theme": "asserted instead of measured",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "claude-md",
+  "promotable": "yes",
+  "normalized": "The plan asserted the performance win instead of specifying an on-device measurement, ported browser pixel-space shader constants without adjusting for point space, threaded a parameter that was never consumed, and understated a build-phase risk that would block compile.",
+  "verbatim": "Six things before you code: ... The function: String plumbing is a no-op. ... Measure the perf win, don't assert it. ... Reconcile \"no pbxproj edits needed\" with your build risk."
+ },
+ {
+  "project": "seance",
+  "theme": "scope defeats test gate",
+  "tag": "scope-creep",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's Session B bundled extra file changes that would invalidate the very test gate it was supposed to be protected by, defeating the gate's only-the-container-changed promise.",
+  "verbatim": "Session B is over-scoped in a way that quietly defeats the D-021 gate, and there are two concrete things that will break or invalidate Session A's tests if not caught first."
+ },
+ {
+  "project": "seance",
+  "theme": "vacuous green-test claim",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan over-trusted a green test suite as proof of safety when none of those tests exercised the code B1 actually changes, making the verification claim nearly vacuous.",
+  "verbatim": "the Session-A tests barely protect B1. They characterize MarkdownRenderer, PortalRegistry, RecentsStore \u2014 none of which B1 touches"
+ },
+ {
+  "project": "seance",
+  "theme": "untested path, unchecked reuse",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan added a code path whose justification was never exercised by its own verification checklist, and claimed reuse of private members that would not compile as written.",
+  "verbatim": "B1 doesn't verify the case item: exists for. You added item: to handle A\u2192B (open-while-pushed), but B1's on-device matrix is all single-open-then-back flows \u2014 nothing exercises the rebuild path."
+ },
+ {
+  "project": "seance",
+  "theme": "missing source asset",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan approximated the portal arch geometry instead of incorporating the real source SVG asset Rex could provide.",
+  "verbatim": "do you need my portal .svg?"
+ },
+ {
+  "project": "seance",
+  "theme": "legacy cleanup omitted",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The rebuild plan omitted cleanup and removal of superseded legacy design files and assets (the old red theme).",
+  "verbatim": "are there old designs files you ened to clean up and get rid of? are they in the plan? all the old red and stuff?"
+ },
+ {
+  "project": "seance",
+  "theme": "unresolved load-bearing review items",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "A pasted external review found unresolved technical gaps: light-only mode not forced, ShareLink broken for markdown, the riskiest transition (portal morph) sequenced last instead of spiked first, and undefined recents presentation.",
+  "verbatim": "Good update \u2014 it meaningfully improves three things and adds solid hygiene, but it does not resolve the three load-bearing items from my last review."
+ },
+ {
+  "project": "seance",
+  "theme": "platform idiom gaps",
+  "tag": "other",
+  "where_fix_lives": "skill",
+  "promotable": "maybe",
+  "normalized": "A second pasted external review flagged platform-idiom gaps the plan was silent on: @Observable state management, Swift 6 strict concurrency, and AVPlayerLooper retention.",
+  "verbatim": "Best-practice gaps worth specifying before coding 1. State management \u2014 adopt @Observable, don't grow @State in ContentView."
+ },
+ {
+  "project": "seance",
+  "theme": "docs-only scope cut",
+  "tag": "scope-creep",
+  "where_fix_lives": "claude-md",
+  "promotable": "maybe",
+  "normalized": "Rex cut the session scope from executing the build to ratifying the plan into repo decision and roadmap docs only, with a diff review gate before commit.",
+  "verbatim": "Ratify the Native SwiftUI Rebuild + Portal plan into the repo docs only \u2014 no code this session. ... Then stop and show me the diffs before committing."
+ },
+ {
+  "project": "seance",
+  "theme": "plan ignored recorded decision",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan failed to specify actor isolation for the haptics engine and its CoreHaptics background-queue handlers despite the project's recorded MainActor-default decision (D-022), and its cold-launch prepare wiring relied on onChange which does not fire for the initial value.",
+  "verbatim": "The one real technical gap: MainActor isolation + handler threading (D-022). The plan never addresses concurrency, and this project runs SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor (D-022)"
+ },
+ {
+  "project": "seance",
+  "theme": "mitigation assumed, not verified",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "An external review found the plan's flash-mitigation relied on a static fallback that renders a hardcoded gradient rather than a frozen frame of the live WebGL scene, so the supposedly seamless beat had a visible pop baked in.",
+  "verbatim": "stop. i have some feedback for the plan ... from claude: The two real holes 1. The \"frozen still\" is not a still of what's on screen."
+ },
+ {
+  "project": "the-council",
+  "theme": "pure/impure split violated",
+  "tag": "lost-context",
+  "where_fix_lives": "context-file",
+  "promotable": "yes",
+  "normalized": "The plan co-located a pure stream function with an impure import that constructs the API client at module load, which would crash the keyless test on import \u2014 violating the established pure/impure file-split pattern the plan itself cited as precedent.",
+  "verbatim": "Must-fix \u2014 deliberate.ts re-commits the exact import-crash the last two splits exist to avoid. The plan puts the pure conveneDeliberationStream and the impure sealVerdict in the same file."
+ },
+ {
+  "project": "the-council",
+  "theme": "stale pointer after decision",
+  "tag": "lost-context",
+  "where_fix_lives": "context-file",
+  "promotable": "yes",
+  "normalized": "The plan's docs pass failed to propagate a recorded decision (D-024 folding the reviewers route into the chairman route), leaving a path-scoped rule pointing at a file decided never to exist.",
+  "verbatim": "One small doc-hygiene addition, in the same pass that touches the rules: ai-reviewer.md's paths: now lists a phantom file."
+ },
+ {
+  "project": "the-council",
+  "theme": "unverified scope claim",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan understated its scope by claiming no existing files would be modified, when the token system had no light-surface colors and the lint rules forced new tokens into tokens.css, raising file count and risk.",
+  "verbatim": "Major \u2014 the light printout has no colors to render with, and fixing that means editing tokens.css, which breaks the plan's \"3 files, none modified\" framing and re-rates the session's risk."
+ },
+ {
+  "project": "the-council",
+  "theme": "verify load-bearing claims",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's load-bearing claim that token values were copied verbatim from the mockup was unverified, and two precision caveats (calc padding still trips the px-spacing lint; derive lens from record) were missing.",
+  "verbatim": "The one claim worth verifying is the new load-bearing one: that those eight --read-* hex values are lifted verbatim from the locked mockup, not plausible-looking inventions."
+ },
+ {
+  "project": "the-council",
+  "theme": "missed decision conflict",
+  "tag": "lost-context",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan missed one conflict between the mockup and recorded decision D-020 (small text colored with a decoration-only token) and left an unwired button looking live instead of disabled.",
+  "verbatim": "The rail's index numbers are the one spot where copying the mockup violates D-020 ... make the inert \"Download verdict\" button honestly disabled."
+ },
+ {
+  "project": "the-council",
+  "theme": "scope claim contradicted by token system",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan claimed no existing files would be modified, but the light printout required new color tokens that only tokens.css can hold (the hex linter forbids them elsewhere), making it a 4-file change including the highest-risk file, with token values needing to come from the locked mockup rather than be invented.",
+  "verbatim": "Major \u2014 the light printout has no colors to render with, and fixing that means editing tokens.css, which breaks the plan's \"3 files, none modified\" framing and re-rates the session's risk."
+ },
+ {
+  "project": "the-council",
+  "theme": "verify load-bearing claims",
+  "tag": "other",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's load-bearing claim that the new token hex values were copied verbatim from the locked mockup was unverified at presentation time; review verified it held, then added two precision requirements: calc spacing composition must be token-only, and lens order must derive from the verdict record instead of importing LENSES from advisor.ts.",
+  "verbatim": "The one claim worth verifying is the new load-bearing one: that those eight --read-* hex values are lifted verbatim from the locked mockup, not plausible-looking inventions."
+ },
+ {
+  "project": "the-council",
+  "theme": "mockup fidelity vs token tiers",
+  "tag": "other",
+  "where_fix_lives": "decisions",
+  "promotable": "maybe",
+  "normalized": "Faithfully copying the mockup would color the rail's small index-number text with a decoration-only token, violating the D-020 text-tier rule, and the inert Download button should render as honestly disabled rather than looking live.",
+  "verbatim": "did i give you this feedback yet? ... The rail's index numbers are the one spot where copying the mockup violates D-020."
+ },
+ {
+  "project": "the-council",
+  "theme": "incomplete decision-mirror sweep",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "decisions",
+  "promotable": "yes",
+  "normalized": "The plan's doc-edit list missed several binding documents that mirror the KV decision, omitted the async requirement on the storage interface, included a speculative single-use provider abstraction, and bundled separable work into one commit and one over-cap session.",
+  "verbatim": "Six things to fix before you build, roughly in priority order. 1. The D-016 edit list is incomplete \u2014 it misses the binding KV mirrors."
+ },
+ {
+  "project": "the-council",
+  "theme": "edit list still incomplete",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The revised plan's edit list still missed KV references in ARCHITECTURE and stranded Phase-1 roadmap tasks that contradicted the new completion bar, and its grep-sweep verification criterion was not a self-sufficient pass/fail check.",
+  "verbatim": "ARCHITECTURE edits read too narrowly. You name the \"Data persistence\" section... but KV also appears in the primary-flow orchestration (step 5)... the deferred-extension flow... and the error-handling"
+ },
+ {
+  "project": "the-council",
+  "theme": "incomplete stale-reference sweep",
+  "tag": "missing-read-before-write",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "yes",
+  "normalized": "The plan's edit list missed binding KV-storage mirrors in other docs, failed to state the storage interface must be async, prematurely stubbed a single-use provider abstraction, bundled commits, and risked exceeding the session scope cap.",
+  "verbatim": "Six things to fix before you build, roughly in priority order. 1. The D-016 edit list is incomplete \u2014 it misses the binding KV mirrors. You name ARCHITECTURE and ROADMAP, but the KV-as-V1-store claim"
+ },
+ {
+  "project": "the-council",
+  "theme": "edit list still incomplete",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The revised edit list still under-enumerated KV references in ARCHITECTURE and ROADMAP, and the grep-sweep pass criterion (expecting zero hits) was unworkable and needed explicit scoping.",
+  "verbatim": "ARCHITECTURE edits read too narrowly. You name the \"Data persistence\" section, folder structure, External integrations, and the timeout line \u2014 but KV also appears in the primary-flow orchestration"
+ },
+ {
+  "project": "the-council",
+  "theme": "verification cannot reach path",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "claude-md",
+  "promotable": "yes",
+  "normalized": "The plan's verification step used a failure mode (bad API key) that structurally cannot reach the timeout path it claims to verify, dropped an all-fail dedupe test case, retried on abort errors, and bundled a risky refactor with the correctness fix without a checkpoint.",
+  "verbatim": "Must fix: The live \"abort path\" test doesn't test the abort path \u2014 same sin as last time. ... A bad key is an auth failure that rejects instantly; it never arms the deadline timer."
+ },
+ {
+  "project": "the-council",
+  "theme": "assumed SDK error semantics",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's new abort guard keyed on err.name === \"AbortError\", but the installed SDK's abort error class never sets that name, so the guard would silently fall through to the retry it was meant to prevent.",
+  "verbatim": "The abort-error identifier is wrong against this SDK. I checked the installed 0.102.0 \u2014 its user-abort error is APIUserAbortError ... never sets .name = \"AbortError\"."
+ },
+ {
+  "project": "the-council",
+  "theme": "verification gaps, premature route",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan's verify step could pass with zero tests discovered, an unused destructured binding would fail lint with certainty, route validation did not protect the five-distinct-lenses invariant, two stale ARCHITECTURE.md lines contradicted the design, and the standalone reviewers route was premature before any consumer existed.",
+  "verbatim": "The test script may run zero tests and report green \u2014 the exact false-pass this whole plan exists to kill."
+ },
+ {
+  "project": "the-council",
+  "theme": "tighten test assertions",
+  "tag": "weak-acceptance-criteria",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "Verification specifics were still loose: one invariant test checked the input rather than the function under test, the expected test count was unstated, the rejection-sampling bound needed documenting, and a deferred validation requirement was not attached to the ROADMAP line where it would be picked up.",
+  "verbatim": "Name the expected test count in the Session 2 verify, not just \"count-asserted.\" ... Since count-assertion is the entire reason the harness exists, write the expected # tests N explicitly"
+ },
+ {
+  "project": "qventus-prototyper",
+  "theme": "ordering ignored business context",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "no",
+  "normalized": "The plan ordered start-screen work first, but Rex's billing-hours and resell context made the recipe deliverable the higher priority, and he questioned or merged two other proposed approaches.",
+  "verbatim": "2. i dont agree. recipe first. im almost at hours and i could sell the additional work to do more versions or he could. with the recipe."
+ },
+ {
+  "project": "seance",
+  "theme": "stale workstream in plan",
+  "tag": "lost-context",
+  "where_fix_lives": "context-file",
+  "promotable": "maybe",
+  "normalized": "The proposed next-steps plan recommended building an exporter workstream carried over from stale memory notes, when Rex's actual intent was solely an app that opens HTML files.",
+  "verbatim": "i dont want to work on an exporter. i want an app the opens html files. thats it. not a skill to build html files."
+ },
+ {
+  "project": "seance",
+  "theme": "explored before asking for references",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The assistant launched into generating eight of its own design directions without checking whether Rex had reference examples to anchor the exploration, which he did.",
+  "verbatim": "stop ... i have examples to review."
+ },
+ {
+  "project": "seance",
+  "theme": "stale scope assumption",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "context-file",
+  "promotable": "no",
+  "normalized": "The plan placed a self-contained HTML exporter on the critical path, but the intended product was only an iOS app that opens HTML files; the exporter assumption came from stale project notes.",
+  "verbatim": "i dont want to work on an exporter. i want an app the opens html files. thats it. not a skill to build html files."
+ },
+ {
+  "project": "the-council",
+  "theme": "validate design before hardening",
+  "tag": "unstated-assumption",
+  "where_fix_lives": "planning-prompt",
+  "promotable": "maybe",
+  "normalized": "The plan jumped to scaffolding code and hardening the design into a token system before the visual design had been validated in a disposable mockup.",
+  "verbatim": "before we do that. show me a mockup html file. i want to nail the design before we move into writing the design system and everything."
+ }
+]

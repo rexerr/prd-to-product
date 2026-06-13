@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan-Review Furnace: Build Now or Validate First?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Plan-Review Furnace: Build Now or Validate First?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should Rex build a plan-time &quot;furnace&quot; prompt NOW (a markdown planning prompt seeded with rules R1–R4 targeting plans that assert things they never verified), or run ONE MORE VALIDATION BATCH first to confirm the patterns are stable? Evidence: an 83-session audit of his Claude Code history found ≥57% of plan-review rounds (102 of 178) drew a revision, dominated by a preventable &quot;asserts-what-it-never-verified&quot; class (~40–50 rounds). Known weaknesses: a large share of revisions are external reviews Rex pasted in (not his own catches); the preventable/healthy-friction split is his single unverified judgment call; counts are a floor, not a point estimate. The repo&#x27;s own philosophy: &quot;earn a guardrail with evidence from the log, not instinct.&quot; The furnace is a cheap, deletable markdown prompt.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Write the narrow furnace now — scoped to only the R1–R4 verification-citation core — and let the next cold batch grade it, because a deletable markdown file is the hypothesis, not the irreversible bet your evidence bar is built to guard.</h3>
+    <p>Build the narrow furnace now — siding with the Architect and Veteran — but adopt the peer round&#x27;s cheaper precursor first. The deciding logic is the cost-structure exception the Veteran named and all five reviewers ratified: your evidence bar exists to stop you embedding expensive, hard-to-remove machinery on a noisy signal. A markdown prompt you can toggle off per session is none of those things. Applying the wait-rule here over-applies judgment until it becomes ritual — exactly the failure mode your own CLAUDE.md warns against. The irreversible fork would be freezing the [P]/[H] boundary and promoting R5–R7, which you should NOT do. Scope the furnace to ONLY the verification-citation discipline: a plan must cite what it read before asserting codebase facts or platform mechanics. That core is contamination-proof — true regardless of which reviewer flagged it — so it clears your evidence bar today on its own merits, independent of the ±5 counts and the unverified split. Drop R5–R7 and the [P]/[H] judgment calls from the prompt entirely. Then build and validation become a single act: run the next ~10 real sessions with the narrow furnace on, count T1/T2/T6 recurrence. The furnace is the falsifiable hypothesis; the cold batch is the test that earns — or kills — the rest.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Re-tag the existing 102 rounds by who-caught-it — Rex vs. pasted reviewer — for the T1/T2/T6 &quot;never-verified&quot; class only. Free, no new sessions, and it directly sizes the contamination on the exact core you&#x27;d build the furnace from. If those rounds are mostly Rex&#x27;s own catches (as Reviewer 4 predicts), the contamination objection collapses and you build the narrow furnace immediately; if mostly pasted-in, you&#x27;ve learned the furnace targets a stranger&#x27;s profile before writing a line of it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Validate first</span></td>
+  <td>R1–R4 are fitted to a blended external-reviewer signal and the [P]/[H] split is motivated reasoning, so isolate Rex&#x27;s own catch profile before building anything.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Build narrow now</span></td>
+  <td>The verification-citation core is uncontaminated and free to A/B test live, so ship a R1–R4-only furnace and let the next sessions grade it.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Build nothing yet</span></td>
+  <td>The audit measures the wrong unit; run the cold-session probe to separate Rex&#x27;s catch profile from the pasted reviewers&#x27; before seeding any prompt.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Wait, protect baseline</span></td>
+  <td>Building installs a filter before calibrating the lens; a clean uncontaminated Rex baseline compounds forever while noise-tuned rules depreciate.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Build narrow, then test</span></td>
+  <td>The wait-playbook guards against irreversible bets, but a deletable markdown prompt escapes it — build the R1–R4 core as the hypothesis the cold batch falsifies.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>Four of five advisors converge on a sharp factual split: the pasted-review contamination poisons the judgment-call rules (R5–R7, the [P]/[H] boundary) but NOT the mechanical verification-citation core (T1/T2/T6). A plan that asserts a file&#x27;s contents without reading the file is wrong regardless of who caught it — the single most load-bearing point in the deliberation, and it dissolves much of the apparent conflict. There is also broad agreement that the [P]/[H] split is the weakest link, that R5–R7 should not be promoted until cleaner data clears them, and that the cold-session batch is the right experiment to run regardless. Every advisor treats the repo&#x27;s &quot;earn a guardrail with evidence&quot; rule as genuinely binding.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>The real clash is build-narrow-now (Architect, Veteran) vs. wait-and-isolate-first (Skeptic, Stranger, Long View). The wait camp&#x27;s strongest claim is the Long View&#x27;s: building installs a filter before you&#x27;ve calibrated the lens, permanently contaminating your future signal. The build camp&#x27;s rebuttal — delivered by the Veteran and ratified by all five peer reviewers — is that this overstates a markdown file you can toggle off in thirty seconds. That near-unanimous verdict effectively settles the clash: the wait camp&#x27;s central asymmetry (cheap to write, expensive to trust) holds for embedded pipeline guardrails, not for a per-session-toggleable prompt. Reasonable advisors disagreed because they priced different costs — the wait camp the epistemic cost of trusting a tuned-to-noise guardrail, the build camp the reversibility.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer round surfaced gaps every advisor missed. (1) The cold batch has no ground-truth oracle for false-negatives — it measures the precision of Rex&#x27;s catch profile, never recall: the lies that ship unchallenged because nobody caught them stay invisible. (2) A cheaper discriminating test exists that no advisor proposed: re-tag the existing 102 rounds by who-caught-it (Rex vs. pasted reviewer) before spending any new session — free, and the ~40–50 &#x27;never-verified&#x27; rounds are most likely the ones Rex caught himself, which would collapse the contamination objection. (3) No one asked whether a plan-time PROMPT can even fix this — the failure is the model not reading files before asserting, an agentic-execution gap a planning prompt may not reach; the batch must instrument whether the furnace changes behavior at all. (4) &#x27;Contamination&#x27; may be the wrong frame — pasted reviews catch real defects regardless of source; the question is which catches a plan-time prompt can preempt, not whose catch it was.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>The data isn&#x27;t measuring what the furnace is supposed to fix. You audited a blended stream where a large share of &quot;revisions&quot; are external reviews Rex pasted in — councils, other Claude sessions. R1–R4 are therefore fitted to what an external reviewer flags, not to what Rex&#x27;s own plans reliably miss. Build the furnace on that, and you&#x27;ve hardcoded a stranger&#x27;s review profile into your plan-authoring prompt. That&#x27;s not a guardrail; it&#x27;s cargo-culting someone else&#x27;s instincts. Worse, the one number that decides the whole thing — the [P]/[H] split — is a single unverified judgment call by the person who most wants the furnace to exist. Motivated reasoning lives exactly there. If even a third of your &quot;preventable&quot; rounds are actually healthy human-in-loop friction, the furnace&#x27;s job becomes suppressing the questions Rex needs his plans to raise. That failure is invisible: a furnace that quietly stops surfacing judgment calls produces confident, wrong-but-unchallenged plans, and you won&#x27;t see the revisions you no longer get. And the repo&#x27;s own law convicts you: &quot;earn a guardrail with evidence from the log, not instinct.&quot; 32 confidently-promotable rounds out of 102, counts at ±5, a known under-captured channel — that is instinct wearing a spreadsheet&#x27;s clothes. The 83-session audit produced a floor, not a finding. The asymmetry Rex is underweighting: the furnace is cheap to write but expensive to trust. Once it&#x27;s in the plan loop, every future plan inherits its blind spots silently. The validation batch — cold sessions, no pasted review — is the cheaper experiment precisely because it tests the load-bearing assumption before it&#x27;s load-bearing. Validate first. Don&#x27;t build a guardrail against a signal you haven&#x27;t isolated.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Plan-review revisions are not your problem. The waste is real but it&#x27;s a downstream symptom, and you&#x27;re about to spend your evidence-quality anxiety on the wrong axis entirely. Strip it down: what are you actually trying to learn? You think the question is &quot;are R1–R4 stable or are they pasted-review noise?&quot; But the furnace doesn&#x27;t need R1–R4 to be stable. The furnace needs ONE thing to be true: that a plan which is forced to cite what it verified produces fewer &quot;asserts-what-it-never-checked&quot; rounds. That&#x27;s T1+T2+T6 — and you already named it as a single mechanical class, ~40–50 rounds, independent of which external reviewer flagged it. A plan that reads the file before asserting the file&#x27;s contents is correct whether Rex, a council, or a random Claude caught the lie. The pasted-review contamination poisons R5–R7 (the judgment-call rules). It does NOT poison the verification-citation core. So you&#x27;re optimizing the wrong variable. &quot;Confirm patterns are stable&quot; is a research instinct; the furnace is a cheap, reversible markdown file. You don&#x27;t validate a hypothesis you can A/B test for free. Smallest move that actually works: write the furnace NOW, but scope it to ONLY the verification-citation discipline (R1–R4&#x27;s epistemics, drop the [P]/[H] judgment calls entirely). Then your &quot;validation batch&quot; and your &quot;build&quot; become the same act — run the next 10 real sessions with the furnace on, count T1/T2/T6 recurrence. That&#x27;s the cold-session experiment you wanted, except it also ships the fix. Waiting buys you a cleaner number about a thing you can just measure live. Build the narrow furnace. Let the next batch grade it.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>The data isn&#x27;t measuring what the furnace would fix. The audit mines &quot;plan-review rounds,&quot; but a large share of those rounds are external reviews Rex pasted in — councils, other Claude conversations. So R1–R4 aren&#x27;t a profile of &quot;my plans miss X&quot;; they&#x27;re a profile of &quot;things some reviewer somewhere flagged.&quot; A plan-time prompt seeded with that signal is trained on a population it will never face at plan-authoring time. That&#x27;s not noise you can average out with more sub-agents — it&#x27;s the wrong unit of analysis. Three buried assumptions an outsider would stop on. &quot;Furnace&quot; is doing heavy lifting — it&#x27;s never defined as a mechanism, only as &quot;a markdown planning prompt seeded with rules.&quot; If the artifact is genuinely that cheap, the entire build-vs-wait framing is suspicious: you don&#x27;t convene a deliberation over writing one prompt file you can rewrite tomorrow. Either it&#x27;s cheap (then just build it and let reality grade it) or it&#x27;s not (then say what the real cost is). Second, the [P]/[H] split is described as load-bearing and &quot;his judgment call, made once, unverified&quot; — the whole furnace targets a category boundary nobody has tested. Who&#x27;s affected: one developer, future-Rex, in cold planning sessions. He&#x27;s the entire population. So the cleanest validation isn&#x27;t &quot;re-mine a fresh batch&quot; — that just re-reads the contaminated log. It&#x27;s the cold-session probe he already named: run plans without external review and watch what HE actually misses. That directly tests the contamination hypothesis instead of laundering it. Verdict: run the cold-session batch — not to confirm patterns, but to separate his catch profile from the pasted reviewers&#x27;. Build nothing until that separation exists.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Building now is the cheaper-looking mistake. The furnace is &quot;cheap to write,&quot; yes — but its real cost isn&#x27;t the markdown, it&#x27;s what it does to your signal for the next three years. Once a furnace exists, every future session runs through it, and you stop seeing the raw revision stream cleanly. You&#x27;ve installed a filter before you&#x27;ve calibrated the lens. From then on, you can&#x27;t easily tell whether revisions dropped because the furnace works or because it&#x27;s suppressing the [H] friction you explicitly said you want to keep. The instrument contaminates the measurement it was built from. That&#x27;s the second-order effect you&#x27;re not pricing. Run the cold-session batch first — but understand what compounds there. The asset that appreciates isn&#x27;t R1–R4. It&#x27;s a clean Rex baseline: a measurement of your own plan-authoring catch profile, uncontaminated by pasted external reviewers. That baseline is reusable forever. It tells you which guardrails are yours versus which are council-shaped. Every future furnace, rule, and skill you build gets validated against it. R1–R4 tuned to a blended signal depreciate the moment your reviewer mix changes (different council, different model). The baseline doesn&#x27;t. Your own repo philosophy — &quot;earn a guardrail with evidence from the log&quot; — is the reputation asset here. 32 confidently-promotable rounds against a stated evidence bar is you about to violate your own constitution on instinct. Do that once and the bar means less every subsequent time you invoke it. Protect the principle; it compounds harder than any single furnace. Wait. Run the batch. Build the furnace from clean Rex.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The obvious move here is the standard playbook, and it says wait. &quot;Earn a guardrail with evidence from the log, not instinct&quot; is Rex&#x27;s own rule, and 32 confidently-promotable rounds out of 102 doesn&#x27;t clear it. I&#x27;ve watched a dozen people build the controller before the measurement was stable and then spend three cycles untangling whether the tool or the noise moved the metric. That&#x27;s the pattern, and it usually wins. But this case is genuinely different, and the difference is the cost structure. The furnace is a markdown prompt. Building it is not the irreversible bet the playbook is built to protect against — tuning a guardrail to noise only hurts when the guardrail is expensive to write, expensive to rip out, or silently embedded in a pipeline. None of that is true here. You can delete it in thirty seconds. So the real question isn&#x27;t build-vs-wait. It&#x27;s: what&#x27;s the cheapest thing that produces a clean signal? And Rex already named it — cold sessions without pasted external review isolate his own catch profile. That&#x27;s the actual experiment. The mistake would be running the validation batch as a substitute for building, then having nothing to test against. Do both, in the right order: write a thin furnace seeded with only R1–R4 — the T1/T2/T6 &quot;asserts what it never verified&quot; core, which is the one finding that doesn&#x27;t depend on the [P]/[H] split being right. Then run the cold batch as the test of that artifact. The furnace becomes the hypothesis the batch falsifies. Don&#x27;t promote R5–R7 or freeze the [P]/[H] boundary until the cold data clears them. Build narrow now; let the batch earn the rest.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td></tr>
+<tr><td><span class="advisor-name veteran">The Veteran</span></td><td><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span></td><td><span class="vote-empty">—</span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">Every response treats the cold-session batch as a clean isolation of Rex&#x27;s catch profile, but none flags that the batch is graded BY Rex — the same motivated reasoner who owns the [P]/[H] split — so it measures precision of his catch profile while leaving recall (the lies that ship because nobody caught them) unmeasurable.</span><span class="missed-attribution">flagged by Reviewer 1</span></li>
+<li><span class="missed-text">None questioned whether the cold batch can produce a clean signal: n=1 developer, the [P]/[H] split contaminates grading any new batch, and observation changes behavior — so the validation inherits the same single-judge subjectivity. A cheaper option no one stated: passively instrument the current loop to log verification-citation recurrence, without building the furnace OR running a separate batch.</span><span class="missed-attribution">flagged by Reviewer 2</span></li>
+<li><span class="missed-text">Every response accepts the audit&#x27;s failure class but none asks whether a plan-time PROMPT can even fix it — the failure is the model not reading files before asserting, an agentic-execution gap a planning prompt may not reach. Relatedly, pasted reviews catch real defects regardless of source, so &#x27;contamination&#x27; may be the wrong frame: the question is which catches a plan-time prompt can preempt, not whose catch it was.</span><span class="missed-attribution">flagged by Reviewer 3</span></li>
+<li><span class="missed-text">The strongest measured signal (~40–50 &#x27;never-verified&#x27; rounds) is exactly the mechanical class MOST likely caught by Rex himself, not pasted reviewers — so the contamination argument and the build-now argument may point at the same uncontaminated core, and no one tests whether the two classes overlap. The cheapest move is to re-segment the EXISTING log by catch-source first (free, no new batch) before building or running cold sessions.</span><span class="missed-attribution">flagged by Reviewer 4</span></li>
+<li><span class="missed-text">A no-external-review batch measures what Rex catches UNAIDED, yet the lived workflow he wants to improve INCLUDES pasting external reviews — so isolating his solo catch profile may answer a question about a counterfactual workflow he doesn&#x27;t actually run. None proposes the cheaper discriminating test: re-tag the existing 102 rounds by who-caught-it before spending any new sessions.</span><span class="missed-attribution">flagged by Reviewer 5</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="reviewer"><summary><span class="label">Reviewer 01</span><span class="name">Reviewer 1</span><span class="picks">Strongest: <span class="advisor-name veteran">The Veteran</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It alone reframes the wait-playbook against the actual cost structure — a deletable markdown file isn&#x27;t the irreversible bet the rule protects against — then fuses build-and-validate into one act with a clean scope cut.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It claims a furnace permanently contaminates the raw signal, but a markdown prompt can be toggled off to recover a clean baseline — overstating an artifact you can disable in thirty seconds.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats the cold-session batch as a clean isolation of Rex&#x27;s catch profile, but none flags that the batch is graded BY Rex — the same motivated reasoner who owns the [P]/[H] split — so it measures precision of his catch profile while leaving recall (the lies that ship because nobody caught them) unmeasurable.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 02</span><span class="name">Reviewer 2</span><span class="picks">Strongest: <span class="advisor-name veteran">The Veteran</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It names the playbook, identifies the precise reason this case escapes it (cost structure), and sequences build-narrow-then-cold-batch so the furnace becomes a falsifiable hypothesis.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the furnace as a permanent measurement filter you can never see past, ignoring that a markdown prompt can be toggled off per-session.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None questioned whether the cold batch can produce a clean signal: n=1 developer, the [P]/[H] split contaminates grading any new batch, and observation changes behavior — so the validation inherits the same single-judge subjectivity. A cheaper option no one stated: passively instrument the current loop to log verification-citation recurrence, without building the furnace OR running a separate batch.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 03</span><span class="name">Reviewer 3</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It alone dissolves the false binary by showing the validation batch and the build are the same act — ship a narrow verification-only furnace, then let live sessions grade it — strictly cheaper than either pole while respecting the evidence bar.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the furnace as a permanent filter you can never remove, but it&#x27;s a deletable markdown file you can toggle off to recover the raw stream.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response accepts the audit&#x27;s failure class but none asks whether a plan-time PROMPT can even fix it — the failure is the model not reading files before asserting, an agentic-execution gap a planning prompt may not reach. Relatedly, pasted reviews catch real defects regardless of source, so &#x27;contamination&#x27; may be the wrong frame: the question is which catches a plan-time prompt can preempt, not whose catch it was.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 04</span><span class="name">Reviewer 4</span><span class="picks">Strongest: <span class="advisor-name veteran">The Veteran</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It names the playbook&#x27;s default (wait), identifies precisely why this case breaks it (reversibility/cost), and resolves into sequenced build-narrow-then-test-cold without false-dichotomizing.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the furnace as a permanent measurement-contaminating filter, missing that a markdown prompt is trivially toggled off — run cold and furnace-on batches alternately.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">The strongest measured signal (~40–50 &#x27;never-verified&#x27; rounds) is exactly the mechanical class MOST likely caught by Rex himself, not pasted reviewers — so the contamination argument and the build-now argument may point at the same uncontaminated core, and no one tests whether the two classes overlap. The cheapest move is to re-segment the EXISTING log by catch-source first (free, no new batch) before building or running cold sessions.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 05</span><span class="name">Reviewer 5</span><span class="picks">Strongest: <span class="advisor-name veteran">The Veteran</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It states the playbook (wait, per Rex&#x27;s own bar), names the precise cost-structure exception that overrides it, and lands the synthesis — build a narrow R1–R4-only furnace AS the hypothesis the cold batch falsifies — without overclaiming on the contaminated rules.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the furnace as a permanent contaminating filter, missing that a markdown prompt can be toggled off for any clean-baseline run.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">A no-external-review batch measures what Rex catches UNAIDED, yet the lived workflow he wants to improve INCLUDES pasting external reviews — so isolating his solo catch profile may answer a question about a counterfactual workflow he doesn&#x27;t actually run. None proposes the cheaper discriminating test: re-tag the existing 102 rounds by who-caught-it before spending any new sessions.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Plan-Review Furnace: Build Now or Validate First?</p>
+  <p>Generated by the LLM Council skill · 2026-06-12T23:52:32</p>
+</footer>
+
+</div>
+</body>
+</html>

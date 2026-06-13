@@ -1,0 +1,124 @@
+{
+ "stats": {
+  "sessions_processed": 83,
+  "total_plan_presentations": 177,
+  "total_rounds_classified": 178,
+  "closings": {
+   "revise": 93,
+   "approve": 73,
+   "interrupt": 9,
+   "abandoned": 2,
+   "unclear": 1
+  },
+  "revise_rounds_confirmed": 102,
+  "refuted_by_verifier": 10,
+  "missed_revises_flagged": 3,
+  "per_session_revision_distribution": {
+   "0": 32,
+   "1": 20,
+   "2": 17,
+   "3+": 14
+  },
+  "tag_fit": {
+   "weak-acceptance-criteria": 24,
+   "other": 19,
+   "unstated-assumption": 31,
+   "over-engineering": 3,
+   "lost-context": 10,
+   "missing-read-before-write": 9,
+   "bad-substitution": 1,
+   "goal-drift": 2,
+   "scope-creep": 3
+  },
+  "where_fix_lives": {
+   "decisions": 5,
+   "planning-prompt": 64,
+   "code": 2,
+   "context-file": 11,
+   "claude-md": 11,
+   "none": 2,
+   "skill": 4,
+   "unclear": 3
+  },
+  "promotable": {
+   "maybe": 60,
+   "yes": 32,
+   "no": 10
+  }
+ },
+ "refuted": [
+  {
+   "project": "epost-assessment",
+   "verbatim": "One minor thing to keep an eye on during visual confirm, not worth changing the plan for: \"strategic partner\" in the ton",
+   "reason": "Mechanically a rejection, but the text explicitly says 'not worth changing the plan for' \u2014 it is a watch-item to observe during visual confirm. Claude replied 'Noted' and re-presented the plan byte-identical (v3 and v4 both 9983 chars, no edit). This is an approval-with-side-note delivered through the rejection mechanism; it redirects nothing."
+  },
+  {
+   "project": "epost-assessment",
+   "verbatim": "One minor thing to keep an eye on during visual confirm, not worth changing the plan for: \"strategic partner\" in the ton",
+   "reason": "Mechanically an ExitPlanMode rejection (line 64), but Rex explicitly says 'not worth changing the plan for' \u2014 a watch item for the visual-confirm pass. The assistant replied 'Not changing the plan for it' and re-presented the identical plan (v3 and v4 both 9983 chars, no Edit between them). Substantively an approval-with-a-side-note that does not redirect approach, scope, or requirements."
+  },
+  {
+   "project": "epost-intelligence-feed",
+   "verbatim": "Step count drift: \"11 steps\" should be \"12 steps\" in two places... \"Confirmed corrections from review\" section is stale.",
+   "reason": "Plan v7 rejection (line 154), but Rex explicitly labels it 'Two small cleanup items, neither blocking ... this is just bookkeeping': fix '11 steps' -> '12 steps' string drift in two places and refresh/annotate a stale 'Confirmed corrections from review' section. No change to approach, scope, or requirements \u2014 the active targets are stated to be correct. Functionally a conditional approval with copy-edit notes; counting it inflates the revision count, which is exactly the documented overcount risk."
+  },
+  {
+   "project": "epost-intelligence-feed",
+   "verbatim": "PARKING_LOT.md entry is missing the - [ ] prefix. Every item in that file follows the format - [ ] **Description** \u2014 rea",
+   "reason": "Mechanically an ExitPlanMode rejection (line 66), but substantively a conditional approval with a formatting nitpick: 'One small thing, then it's approved... That's the only issue. Everything else is clean.' The v3-to-v4 diff is exactly one line \u2014 adding a '- [ ]' checkbox prefix to the PARKING_LOT entry (8963 to 8967 chars). No approach, scope, or requirement is redirected; this is the approval-with-a-side-note pattern the overcount warning targets."
+  },
+  {
+   "project": "prd-to-product",
+   "verbatim": "what knowledge can we take from this to improve our prd to product skill now? should we sub out roadmap instructions for",
+   "reason": "The plan was approved via plan-mode (line 115: 'User has approved your plan. You can now start coding.') and fully executed (lines 118-196: BACKLOG.md created, 8 files patched, 6 tracked files deleted, verification grep, final git status). Rex's quoted turn (line 200) comes AFTER execution completed and asks what lessons from the finished work should be applied to the prd-to-product skill \u2014 a new follow-on discussion, not a redirect of the presented plan. Classic post-execution iteration misread as a revision."
+  },
+  {
+   "project": "qventus-prototyper",
+   "verbatim": "i dont trust you. you keep showing me the old plan in the approval panel.",
+   "reason": "'i dont trust you. you keep showing me the old plan in the approval panel.' contains no feedback on plan content \u2014 it is a complaint about a stale-cache UI bug in the approval panel, which the assistant verified by filesystem inspection (panel was rendering the previous session's plan file 'before-we-build-i-indexed-brooks.md' instead of 'lets-not-remove-the-magical-gray.md'). Approach, scope, and requirements were never redirected; the plan survived intact and Rex copied it from Finder to execute next session."
+  },
+  {
+   "project": "qventus-prototyper",
+   "verbatim": "ok, so i think we didnt get on the same page as the implementation. this should should allow you to select states, or li",
+   "reason": "Rex's first substantive response to PLAN v1 was an approval: line 91 tool_result reads 'User has approved your plan... ## Approved Plan (edited by user)'. The agent then fully implemented and verified Stage D (lines 93-176, ending 'All five verification points pass. Stage D is wired and working'). The quoted turn (line 180) comes after that completion report and critiques 'the implementation', not the plan \u2014 it is execution-stage rework feedback on shipped work (later logged as D-020 superseding D-016), not a plan revision. The digest hid the approval because it lives in a tool_result rather than a text turn."
+  },
+  {
+   "project": "qventus-prototyper",
+   "verbatim": "making \"You're almost done!\" the <h2> is slightly off-pattern (every other heading is a task question or statement, not ",
+   "reason": "The turn is an approval with an optional side note, not a redirect. Rex's full rejection-message text (jsonl line 62) says 'The plan is sound \u2014 approve it as written' and frames the quoted h2 comment as 'One optional copy nit, not a blocker... Your call.' The only v1\u2192v2 delta is a single heading copy choice ('You're almost done!' vs 'Anything else we should know?'), resolved via an AskUserQuestion \u2014 a copy tweak, not a change to approach, scope, or requirements. The extractor was fooled by the mechanical ExitPlanMode rejection wrapper around an approving message."
+  },
+  {
+   "project": "seance",
+   "verbatim": "can you just document this plan. i dont want to do any coding yet but save this for later in the roadmap",
+   "reason": "Rex's first substantive response to the plan was an approval via the plan-mode UI (line 83: 'User has approved your plan. You can now start coding.'). The quoted turn (line 123) came after the plan was fully implemented and the build succeeded (lines 88-117) \u2014 it is execution-stage feedback that defers/parks the already-approved, already-built work ('document this plan... save this for later in the roadmap'), accepting the plan's content unchanged. The assistant reverted the code and wrote the plan into ROADMAP.md. Not a redirect of approach, scope, or requirements at plan-review time."
+  },
+  {
+   "project": "the-council",
+   "verbatim": "Two small things that are execution-time watch-items, not plan defects \u2014 no revision needed:",
+   "reason": "ExitPlanMode rejection of plan v3 (line 125) explicitly states 'execution-time watch-items, not plan defects \u2014 no revision needed.' Plan v4 is byte-identical to v3 (verified programmatically) and was approved at line 129. The rejection was mechanical; the content is an approval with execution-stage spot-check guidance."
+  }
+ ],
+ "missed_flags": [
+  {
+   "project": "epost-assessment",
+   "session": "49e5183e-7824-402c-8d7c-efb9a4364dab",
+   "evidence": [
+    "PLAN v1's first substantive human response was a revision hidden in the ExitPlanMode rejection tool_result (raw line 79, 21:48:04), which the digest does not show as a REX turn: 'The prompt pane is sc"
+   ]
+  },
+  {
+   "project": "seance",
+   "session": "fe629dc8-72ab-40c1-a63c-6f0c4477bad8",
+   "evidence": [
+    "Line 312 (after round 1, mid-session): assistant presents a pre-code plan playback \u2014 'Corrected nav model ... so we're aligned before I touch code' proposing a Claude-Code-style swipeable left drawer "
+   ]
+  },
+  {
+   "project": "the-council",
+   "session": "ea205f68-3561-4b21-be8f-74ede1c4c496",
+   "evidence": [
+    "Human turn at jsonl line 153 is the first substantive response to the plan presented at line 149 ('## Proposed next step ... go straight to Phase 1, task 1 \u2014 the Next.js + Vercel scaffold ... Want me "
+   ]
+  }
+ ]
+}

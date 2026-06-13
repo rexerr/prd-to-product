@@ -1,0 +1,583 @@
+[
+ {
+  "project": "Sites",
+  "session": "3b8022b2-443e-4d21-b15e-d05cc216797e",
+  "plans": 4,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: two substantive rejection rounds with detailed expert-grade typed feedback (delivered via the plan-rejection UI, invisible to the keyword digest) before approval; the later re-presented plan with Pass 1.6 was approved first-pass."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "1878debf-338d-4fc6-93fc-e5086c4f7d64",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round: Rex rejected the first plan via ExitPlanMode with a pasted external review (feedback lives in the tool_result, invisible to the digest's human-turn scan), then approved the revised plan; everything after was build iteration, not plan review."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "49ed5ca2-a036-486d-b1d8-888b61af53e4",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine two-round revision pattern: both early plans were rejected with substantive feedback embedded in the rejection tool_results (which the digest's human-turn scan missed), then the third presentation was approved."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "49e5183e-7824-402c-8d7c-efb9a4364dab",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One real revision round (an interrupt importing a simpler external plan); the second presentation got no verdict \u2014 Rex parked it for a new session and the work shipped via another path, so no in-session approval ever happened."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "c486c53b-e48d-466a-a156-f8c6f7152d4f",
+  "plans": 5,
+  "revise_rounds": 3,
+  "honest_note": "Real revision pattern: four rejection rounds through the ExitPlanMode dialog (two reading like pasted external review of prompt-tone content) before a fifth-round approval; the digest missed them because the feedback lived in tool_result rejections, not standalone user turns."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "7b355ac0-e611-4bfc-aafc-724b5b6ac354",
+  "plans": 5,
+  "revise_rounds": 3,
+  "honest_note": "Genuine multi-round plan review: one plan went through 4 rejection-feedback rounds (structured, external-review-style critiques delivered via the ExitPlanMode rejection channel, invisible to the digest's human-turn scan) before approval on v5; the long post-approval design back-and-forth was build iteration and excluded."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "0ffde370-4025-4a3d-8152-8eeac36110a4",
+  "plans": 5,
+  "revise_rounds": 3,
+  "honest_note": "Real revision pattern: 3 of 5 presentations were rejected with pasted detailed reviews delivered via plan-mode rejection tool_results (invisible to the digest's human-turn view), so the back-to-back plans were genuine review rounds, not self-edits \u2014 do not collapse them."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "session": "9055a5de-e5ab-43b4-b0a8-65a6d942e450",
+  "plans": 8,
+  "revise_rounds": 6,
+  "honest_note": "Genuine heavy-revision session: 7 substantive rejection rounds before approval, but the pre-scan's collapse heuristic would have hidden them \u2014 Rex's feedback arrived inside ExitPlanMode rejection tool_results (likely pasted external reviews), not free-text turns, so strictly applying the no-human-turn collapse rule would have wrongly reduced 8 reviewed presentations to 2."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "session": "465399a6-ac83-4b3b-bad1-8ec3614f9714",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Genuine revision pattern: three substantive rejection rounds (delivered as plan-mode rejections, invisible to the digest's [REX] lines) before a user-edited approval; the feedback reads like a pasted external review, polished and structured, converging from critical flaws to nitpicks."
+ },
+ {
+  "project": "epost-intelligence-feed",
+  "session": "dfcb5046-3471-4904-a5a8-ccf9793e079b",
+  "plans": 4,
+  "revise_rounds": 2,
+  "honest_note": "Genuine revision pattern: three substantive rejection rounds (Rex pasting detailed external plan reviews into ExitPlanMode rejections) before fourth-round approval \u2014 the digest script under-reported because the feedback lived in tool_result rejections, not standalone user turns."
+ },
+ {
+  "project": "epost-intelligence-feed-wt1",
+  "session": "4a82a99b-ef34-4038-a677-4665cbb74d88",
+  "plans": 2,
+  "revise_rounds": 0,
+  "honest_note": "Zero revision rounds here: both plans were approved on first pass (\"you do it\" and \"commit and push\"), with all later human turns being post-resume work direction, not plan feedback."
+ },
+ {
+  "project": "epost-intelligence-feed-wt2",
+  "session": "4b9a537f-d255-4c37-80ee-635913bd3267",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Real revision pattern: three substantive rejections via the plan dialog (each with detailed, verified technical feedback that reads like an externally-prepared Claude-assisted review) before a fourth, user-edited plan was approved; the digest's \"no human turns\" view was an artifact of rejections arriving as tool_results."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "4b9c7ed9-01b7-4603-830f-7b25b8cd856b",
+  "plans": 5,
+  "revise_rounds": 4,
+  "honest_note": "Genuine heavyweight revision pattern: four substantive rejection rounds (each carrying a pasted external technical review delivered through plan-rejection feedback, invisible to the digest as standalone turns) before v5 was approved \u2014 the deterministic pre-scan's 0-interrupt count masked this."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "dadecf3f-a945-4f23-8482-6c7c830aa7c8",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Genuine multi-round revision pattern: three consecutive plan rejections with detailed, apparently externally-sourced review feedback (Rex pasting a reviewer's findings) before v4 was approved \u2014 though the feedback is deep domain spec-review, not generic planning lapses."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "a9b58567-7212-412e-b949-c2ec8c655717",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "Zero revision rounds: the single plan was approved first-pass via the plan tool, and all later human turns were hook live-fire test iteration after work resumed, not plan feedback."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "e061202c-53b1-4993-81bb-c658f3d358b8",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round here, delivered via the ExitPlanMode rejection channel rather than a chat turn (the digest's text-only view made it look like a no-feedback collapse); second presentation approved, and the session's lone interrupt was a mispaste retraction, not plan feedback."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "11f3f60f-9d89-4d86-8c88-827fa13bd801",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: two substantive rejection rounds (Rex pasted detailed external-review-style critiques into the plan rejections) before v3 was approved; the digest's collapse heuristic would have wrongly merged these because the feedback lived in tool_results, not standalone human turns."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "020b349a-9d10-45aa-98a7-a00fec5a527d",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round: Rex rejected plan v1 because its extraction targeted the wrong signal, the model re-validated against real data, and v2 (re-scoped to a handoff doc at Rex's request) was approved with a minor user edit."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "5e610f31-c092-498a-83e9-fb6be6584f92",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "Single plan approved first-pass with no revision rounds \u2014 Rex just added a closing instruction (retro, backlog note, commit) and let it run."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "06d9dd73-c737-4477-97ff-f57a85cdde92",
+  "plans": 4,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: the first plan took two substantive rejection rounds (detailed pasted-review feedback inside the plan-rejection dialog, invisible to the digest's human-turn view) before approval; the second, smaller plan was approved first-pass."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "e9a36ff5-34f7-4a6a-81df-665d9755c702",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "One real revision round: Rex redirected the only plan to generalize the repo-local docs fix into the skill templates before approving; the lone interrupt happened later during idea brainstorming, not plan review."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "01c39bd1-ed98-48e1-96e2-a1240841f0cf",
+  "plans": 3,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round in the whole session \u2014 Rex pasted an external review that restructured the roadmap right after approving it; the other rejection was a plan-mode mechanics misunderstanding (identical plan re-approved) and plan v1 was a first-pass approval."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "3c825a79-6b81-47e2-aa66-a286ffd5aeee",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "Single plan approved on first pass with zero revision rounds; the one interrupt and the \"why not do our work here?\" turn came after work resumed and were session-management/new-topic turns (Rex pasting his own Phase 3 doc for review), not plan revisions."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "2c8684c8-3f57-45dc-abc5-a85cc9d9e44a",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One real revision round: Rex rejected plan v1 inside the plan-approval dialog (feedback lives in the tool_result, not a visible human turn) to delete a superseded feedback doc the plan kept; v2 approved. The trailing interrupt is post-resume build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "def59062-885f-4404-ad4e-0fc3e7f812ed",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: two substantive rejection rounds (feedback delivered as pasted external-review text via plan-mode rejection, not typed chat turns) before a third, user-edited plan was approved."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "90126ede-c88d-474b-b451-3a729a0c7cbf",
+  "plans": 2,
+  "revise_rounds": 0,
+  "honest_note": "Zero revision rounds: both plans were approved first-pass via the plan UI; all of Rex's substantive redirects (missing upload/imaging screens, MyChart skip path, cutting the review page, pixel-effect rejection) landed as post-build iteration against the running prototype, and v2 only exists because Rex toggled plan mode back on after the model started editing unplanned."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "d8d855b5-db77-4a2e-b5a2-f08a54732df1",
+  "plans": 4,
+  "revise_rounds": 1,
+  "honest_note": "Real revision pattern: the first plan was approved first-pass, but the second plan hit one substantive revise (dropped agreed housekeeping content) and then a stale-approval-panel trust spiral that ended with Rex abandoning the session after the fourth presentation."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "cd630c2e-2b0f-40cf-aad4-fd77d27ec69e",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: two substantive plan rejections (one a detailed edit-safety/demo-behavior review, one a folded-in simpler requirement) before third-presentation approval; the rejections were hidden in ExitPlanMode tool_results, not visible as [REX] turns in the digest, and all later feedback was post-approval build iteration, excluded."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "dd5f6d73-508a-476f-8dda-c1bfba8c9277",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine revision pattern: two substantive ExitPlanMode rejections with concrete plan feedback before approval \u2014 invisible in the human-turn digest because they arrived as tool_results \u2014 plus one real interrupt when Claude executed a rejected plan as if approved."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "08d12c6a-2d9d-4d20-8fe0-1e105218df24",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "Single first-pass approval with zero revision rounds; the heavy back-and-forth all happened before the plan was drafted (debugging and design discussion), and the one user interrupt cut off a post-ship retrospective critique, not a plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "2fbbe1c6-9849-469d-8deb-1276988bceff",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine two-round revision pattern: Rex pasted an external code-verified review that caught a real path-resolution bug, then rejected v2 over a stale field name the revision itself introduced, approving v3; the deterministic digest under-detected because the v2 rejection lived in a tool_result, not a freestanding turn."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "cdfb4944-fc38-4485-961a-858479b9779b",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "One plan, one genuine revision round on the interaction model; Rex's earlier chips/badges instruction did not survive into the plan, and the trailing interrupt was a session-end cutoff, not plan feedback."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "9c390667-cdbf-498d-a092-631850c872b2",
+  "plans": 2,
+  "revise_rounds": 2,
+  "honest_note": "Genuine revision pattern: both plan presentations were interrupted mid-ExitPlanMode and substantively redirected, and the session ends with plan v2 still unapproved \u2014 zero first-pass approvals here."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "7bdf2dd5-c46a-4254-b5b2-2e87eb58dee8",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine two-round revision pattern, but both rejections were Rex injecting new input (his alt-2 design, then a screenshot deepening the restructure) rather than Claude plan defects; the third plan was approved first-pass and the later email complaint was build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "c97ad9df-82c2-45b0-8b7a-ba2ae36f4299",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine revision pattern: two substantive rejection rounds (detailed review feedback delivered via plan-rejection text, not standalone turns) before third-pass approval; the deterministic pre-scan's \"0 interrupts, back-to-back plans\" masked real review activity hidden in tool_results."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "5ad880dd-034e-4c4d-bd2e-150bd3b17997",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "A genuine single revision round: Rex rejected plan v1 via ExitPlanMode with substantive tightening feedback, then approved v2 \u2014 a real but light revision pattern, not rubber-stamping."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "4a601053-c109-4944-b852-93d4a78e0fd6",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round: plan v1 was rejected with a detailed prioritized review (apparently sourced from a Claude Cowork plan review Rex relayed), and the revised v2 was approved via the plan UI with user edits; everything after that is build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "83b5009a-24ec-44d4-b6cc-7132821638a5",
+  "plans": 2,
+  "revise_rounds": 0,
+  "honest_note": "One genuine but mild revision round \u2014 Rex rejected v1 by pasting an external review that actually said \"the plan is sound, approve as written\" plus one copy nit; the amended v2 was approved, and all later feedback was post-approval build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "2cad82af-2d1d-4bd4-9801-87bb77992693",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round (a simplicity challenge backed by an external Claude review that restructured Pass B into Pass C) followed by a clean UI approval; the post-approval footer feedback was build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "5b2e47f2-480f-4aea-ab00-630855c48c32",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round: the v1 plan was rejected via the plan UI with substantive feedback (delete the redundant feedback doc), the revised v2 plan was approved; everything after is build iteration, not plan review."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "2d293af4-e5b0-4e0f-b169-2c1b045b4c72",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Genuine revision pattern: three substantive rejection rounds through the plan UI (scope-cutting an over-engineered mechanism, a missed reset requirement, unverified source claims plus a missing line estimate) before a fourth version was approved with user edits."
+ },
+ {
+  "project": "seance",
+  "session": "b44873cd-2eea-41f6-a64a-045d426ceb69",
+  "plans": 5,
+  "revise_rounds": 3,
+  "honest_note": "Genuine revision pattern: three of five presentations were rejected with long, line-number-specific review feedback (likely pasted external reviews) before approval; the digest's [REX] turns missed all three because the feedback arrived inside ExitPlanMode rejection tool_results, and the lone interrupt was Rex cutting off his own message at session end, not plan feedback."
+ },
+ {
+  "project": "seance",
+  "session": "9a48a1af-a601-40c1-99a5-1e1eca22e547",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "Zero revision rounds: the one plan was approved on first pass (Rex made minor inline edits in the plan editor rather than chat feedback), and all later redirects \u2014 gifs, waveform animation, no-microphone \u2014 were build iteration after approval, not plan review; the lone interrupt was a git tangent."
+ },
+ {
+  "project": "seance",
+  "session": "15212134-27b6-40a2-9a2c-5b79190f3f41",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round driven by an external review Rex pasted into the plan rejection; the rewritten plan was approved first-pass, and all later feedback was post-approval build iteration, not plan review."
+ },
+ {
+  "project": "seance",
+  "session": "ea75b4a6-feb4-42d3-8a3f-ee861c459bfc",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "Genuine one-round revision pattern: v1 was rejected with a pasted six-point technical review, v2 approved with user edits; the many later turns are build/design iteration against running code, not plan review, and Rex promoted the \"measure, don't assert perf\" lesson to a memory file in this same session."
+ },
+ {
+  "project": "seance",
+  "session": "7dce07ba-04aa-47ad-a504-99fe8a8c3249",
+  "plans": 2,
+  "revise_rounds": 0,
+  "honest_note": "Zero revision rounds: both plans got first-pass approvals (\"confirmed all\" / \"confirmed\"); the only quibble attached to an approval was a pre-existing .txt rendering bug, not plan feedback."
+ },
+ {
+  "project": "seance",
+  "session": "46858f7d-2190-4bce-8f13-50a6bda0f4cb",
+  "plans": 1,
+  "revise_rounds": 0,
+  "honest_note": "One plan, one redirect: Rex never critiqued the plan's content, he just deferred execution to the roadmap \u2014 a timing/intent mismatch, not an iterative revision pattern."
+ },
+ {
+  "project": "seance",
+  "session": "7e22a3d5-8f91-41d0-882d-322ea189c641",
+  "plans": 5,
+  "revise_rounds": 3,
+  "honest_note": "Real revision pattern: 3 of 5 presentations were rejected with detailed technical review delivered via plan-rejection messages (invisible to the digest's human-turn view), each followed by a revised plan; the pre-scan's 0-interrupt count masked this."
+ },
+ {
+  "project": "seance",
+  "session": "2364027e-86c5-4eba-925b-0c165b45d855",
+  "plans": 6,
+  "revise_rounds": 5,
+  "honest_note": "Genuine heavy revision session: five consecutive plan rejections (two carrying long pasted external reviews) before approval on the sixth presentation; the digest's collapse heuristic hid these because the feedback lived in ExitPlanMode rejection tool_results, not plain user turns."
+ },
+ {
+  "project": "seance",
+  "session": "a64dcb88-f148-46e0-937a-054c54964031",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round: plan v1 was rejected with a detailed technical review (delivered inside the ExitPlanMode rejection tool_result, invisible to the digest's human-turn scan), then v2 approved; everything after was build iteration, not plan review."
+ },
+ {
+  "project": "seance",
+  "session": "ae2ae299-7a09-4b9c-b273-32a88610b2a7",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "One genuine revision round (Rex interrupted plan v1's approval to paste an external Claude review of two technical holes); plan v2 was approved outright, and the many later turns are post-resume build/design iteration, not plan review."
+ },
+ {
+  "project": "the-council",
+  "session": "42e0fa26-9f86-4c3c-9708-b0d855f3d4c7",
+  "plans": 4,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: the second plan took two substantive plan-dialog rejections (an import-crash architecture must-fix, then a stale-doc-pointer sweep) before approval; the rejections were invisible to the pre-scan because they arrived as ExitPlanMode tool_result feedback, not chat turns."
+ },
+ {
+  "project": "the-council",
+  "session": "5f3030d5-e3e9-4750-b65d-8e8c673adb5c",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Genuine multi-round revision: three substantive rejections (Rex pasting detailed external-review-style critiques into the plan-rejection flow) before fourth-pass approval; the later mid-implementation interrupt was build iteration, not plan review, and was excluded."
+ },
+ {
+  "project": "the-council",
+  "session": "b8297189-9be5-4f9a-ac0c-7f8b1e54666d",
+  "plans": 4,
+  "revise_rounds": 3,
+  "honest_note": "Genuine revision pattern: three substantive rejection rounds (Rex pasting what reads like an external reviewer's verification-driven critique into each plan rejection) before a fourth, user-edited plan was approved; the lone interrupt came after implementation resumed and is build iteration, not plan review."
+ },
+ {
+  "project": "the-council",
+  "session": "c9e5a66f-8b8e-4ac6-9cf9-dd66909b1d9f",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine revision pattern: two substantive rejection rounds (each a detailed, apparently externally-reviewed critique pasted as plan feedback) before the third version was approved \u2014 not first-pass approval."
+ },
+ {
+  "project": "the-council",
+  "session": "c5d68e34-46e2-4e47-b8e2-7ad48c9792ef",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Real revision pattern: the digest hid it because Rex's feedback arrived inside ExitPlanMode rejection tool_results (not separate user turns) \u2014 two dense, structured rejection reviews (reading like pasted external plan-review output) before third-pass approval."
+ },
+ {
+  "project": "the-council",
+  "session": "1b490c0b-5962-4eff-8823-1a2e14f4fe84",
+  "plans": 3,
+  "revise_rounds": 2,
+  "honest_note": "Genuine two-round revision pattern: Rex rejected the plan twice via ExitPlanMode with detailed, externally-informed technical critique (including checking the installed SDK source) before approving an edited v3 \u2014 the rejections lived in tool_results, not plain human turns, so the digest alone would have undercounted this as zero rounds."
+ },
+ {
+  "project": "the-council",
+  "session": "93201ab1-88f2-471c-92c4-e1380e64feb6",
+  "plans": 4,
+  "revise_rounds": 2,
+  "honest_note": "Real multi-round pattern: three consecutive plan-dialog rejections with detailed (likely externally-drafted) review of decreasing severity \u2014 blockers, minor one-liners, then explicitly non-substantive watch-items \u2014 before approving an edited v4; round 3 is a rejection in mechanism only, and the digest tool missed all three rejections because they arrive as tool_results, not human turns."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "ff1ebf65-11fd-406f-b783-9b457b258f8f",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no plan was ever presented; the single interrupt was Rex rejecting an Edit tool call to ROADMAP.md during execution, with no plan feedback before or after, and the session ended immediately."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "1e62b2cd-9102-464b-b4aa-ed45213304cc",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no ExitPlanMode calls; the lone interrupt carried no feedback and simply ended the session moments after Rex approved a textually-proposed option #3 for a future fix \u2014 all other turns were build/verification iteration, not plan review."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "020ea57c-072d-404c-8c1b-cbe8c5429c4f",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode and no text-proposed plan; the lone interrupt cut off the assistant mid-execution (saving a memory note after Rex's \"no dev server\" feedback), and the session ended there with no plan verdict involved."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "45618fc6-f3f4-4044-bf52-9ce022502e86",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode and no in-text plan by the assistant (Rex's prompt was the spec); the lone interrupt rejected the final npm-run-check tool call after edits were done, with no feedback, so it targeted execution, not a plan."
+ },
+ {
+  "project": "epost-assessment",
+  "session": "34c24017-cad5-435b-8c36-e4a02fc7f708",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no plan was ever presented; the single interrupt corrected the assistant's mid-execution verification assumption (that a local dev environment existed), not a proposed plan."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "28f0d0fd-8c9e-406b-887d-448eb6d11c8d",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "No ExitPlanMode plan exists; the assistant gave a text recommendation menu which Rex approved (\"lets go with your rec\"), then the interrupt carried zero feedback text and the session simply ended -- the interrupt was a session stop, not plan review, so zero rounds."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "69638d44-b35c-4cc1-9e0f-fa3b648ebd31",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no plan was ever presented; the lone interrupt cut off the assistant mid-execution (reading SKILL.md files for an audit) and the session ended immediately with no plan feedback at all."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "6d896c09-cc4b-4c4a-98bb-1f6323223fc5",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode calls, and the lone interrupt was a bare session cutoff with no feedback text, arriving right after Rex approved (\"yes\") a text-proposed backlog cleanup \u2014 it targeted nothing reviewable."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "3cbecde9-0dae-42c5-8cc1-5c13f1eb5183",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no plan was ever presented \u2014 the session was Rex asking for a critique of his own design idea, then requesting a test prompt; the lone interrupt cut off that in-progress response with no feedback text and the session ended there."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "6fc2b9ff-1a13-431b-a10b-f8a96ad7e811",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode calls, and the lone interrupt was Rex interrupting to re-send his own identical message (a queue artifact between lines 85-92), not feedback on any proposed plan \u2014 the session was discussion, a council run, and direct edits."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "2822f68e-7cee-4e14-a063-2e8b28552ae7",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no ExitPlanMode plans; the single interrupt is the final transcript event with no follow-up feedback \u2014 it cut off a post-commit discussion about reconciling Claude Design PRDs, not a proposed plan."
+ },
+ {
+  "project": "prd-to-product",
+  "session": "a04495bf-c788-493f-9d30-357601e64565",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode calls, and the single interrupt was Rex cutting off the assistant before it responded to re-send his own message with an extra sentence appended \u2014 a self-amendment, not plan feedback."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "be864727-ed29-453a-a88a-1bc148d6c3f7",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode calls, and the single interrupt cut off a code-investigation answer about state icons at session end with no plan feedback following it."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "2f0f79a6-2f0b-411e-ab75-1e325012e479",
+  "plans": 1,
+  "revise_rounds": 1,
+  "honest_note": "No ExitPlanMode in this session; the one round is a solicited critique of a text task-ordering Rex explicitly asked to discuss, and the trailing interrupt carried no feedback \u2014 it just cut off the assistant's reply before the session ended, so the discussion never resolved."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "74e33250-0f29-494b-bb81-fdd2425af975",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: this 33-line session is only a /session-start orientation plus \"start e please\"; the user interrupt cut off the assistant before any plan or work was produced, with no feedback after it, and the session ended there."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "7eb0f867-f7fe-46fe-8ef0-42ea854ddc40",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero plan-review rounds: no ExitPlanMode calls, and the single interrupt came right after Rex asked \"create a plan to review firest\" \u2014 it cut off the assistant mid-response with no feedback after it (session simply ended), so it targeted neither a presented plan nor carried any revision; the mid-session critiques (e.g. \"recipe first\") were an explicitly requested discuss-and-critique flow, not plan reviews."
+ },
+ {
+  "project": "qventus-prototyper",
+  "session": "9906a5b5-305b-42eb-b004-9e93f1360ee8",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: the session contains one user idea prompt and an immediate interrupt before the assistant emitted any text, tool call, or plan \u2014 the interrupt aborted a not-yet-started response, not a proposed plan."
+ },
+ {
+  "project": "seance",
+  "session": "b2913ff2-c315-459d-a78a-1678b33eeace",
+  "plans": 1,
+  "revise_rounds": 1,
+  "honest_note": "No ExitPlanMode anywhere; one real text-plan redirect at session start (exporter cut), then the rest is a PRD interview whose answers and final interrupt are not plan-review rounds."
+ },
+ {
+  "project": "seance",
+  "session": "fe629dc8-72ab-40c1-a63c-6f0c4477bad8",
+  "plans": 0,
+  "revise_rounds": 1,
+  "honest_note": "Zero ExitPlanMode plans; the single counted round is the one interrupt of an informally announced concept-board approach (caught before the deliverable existed) \u2014 the rest of the session is straight design-build iteration with no plan-review activity."
+ },
+ {
+  "project": "seance",
+  "session": "5c826ac9-d02f-4232-abf3-14c90209ad0d",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no plan was ever presented; the lone interrupt cut off the assistant's reply to a post-build design question (\"should we use sheets?\") at session end, not feedback on a proposed plan."
+ },
+ {
+  "project": "seance",
+  "session": "bc0d6785-a2c2-4844-87f0-194397436e00",
+  "plans": 2,
+  "revise_rounds": 1,
+  "honest_note": "The flagged interrupt was NOT a revision \u2014 Rex interrupted his own \"go\" only to add \"i agree with your recommendations\", completing the approval the plan had asked for; the single real revision was an early scope redirect on a text-only plan, and the dozens of intervening turns were PRD/context-engineering interview answers, not plan reviews."
+ },
+ {
+  "project": "seance",
+  "session": "ce3dbee5-bbc4-4b6d-8f9c-c2a36b73ea45",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no ExitPlanMode calls and the lone interrupt cut off the assistant's just-starting response to Rex's own new design proposal at the session's end \u2014 it targeted no plan, and the session terminated immediately after with no feedback."
+ },
+ {
+  "project": "seance",
+  "session": "1048f104-c1f3-44d3-8d4a-f089fd2d24cf",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no ExitPlanMode calls and no text-mode plan was ever under review; both interrupts were a message-resend and an end-of-session cutoff during build/design iteration, not plan feedback."
+ },
+ {
+  "project": "the-council",
+  "session": "97133892-1d37-4378-861c-394769e49efc",
+  "plans": 0,
+  "revise_rounds": 0,
+  "honest_note": "Zero rounds: no plan was ever presented; the lone interrupt came immediately after Rex said \"push\" with no follow-up feedback (session simply ended mid-push), and the only mid-session \"wait, no\" turn was a process clarification during execution, not plan feedback."
+ },
+ {
+  "project": "the-council",
+  "session": "ea205f68-3561-4b21-be8f-74ede1c4c496",
+  "plans": 1,
+  "revise_rounds": 1,
+  "honest_note": "One real revision round: the lone interrupt was genuine pre-execution feedback on a text-presented scaffold plan (mockup-first redirect); the dozen later turns are mockup build iteration, correctly excluded, and the session ended in a goal pivot with no further plan presented."
+ }
+]
