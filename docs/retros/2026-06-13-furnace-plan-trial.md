@@ -33,10 +33,10 @@ Work spanned late 2026-06-12 into 2026-06-13; council/evidence artifacts are dat
 
 ## Open items
 
-- **Rex applies the Cowork `plan-review` adjustment** in Cowork (drafted in chat; can't write the Cowork surface from here). Until then the furnace runs without its sharpened backstop.
+- ~~Rex applies the Cowork `plan-review` adjustment~~ **DONE 2026-06-13** — applied in Cowork. Full loop (furnace ledger → Cowork attacks it) is wired.
 - **Trial grading** rides the existing Cowork round-trip over the next several real sessions: watch mechanical Must-fix count + hollow-ledger catches. Promote/kill triggers in the BACKLOG entry.
 - `research/feedback-extracts/` is staging per HANDOFF; deletable once the trial concludes and any furnace lesson is folded in. `furnace-draft.md` + `HANDOFF.md` are the records to keep.
 
 ## Next session
 
-- First: confirm whether the Cowork adjustment was applied. Then use `/furnace-plan that` on real work and start accumulating the Cowork-graded signal. Do not promote to a hook until the catch-rate drop is real.
+- Cowork adjustment is applied — the loop is wired. Just use `/furnace-plan that` on real work and start accumulating the Cowork-graded signal. Do not promote to a hook until the catch-rate drop is real.
