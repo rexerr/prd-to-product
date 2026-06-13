@@ -79,9 +79,8 @@ Derived:
 
 ## Cluster 5: conditional patterns
 
-- `include_parking_lot`: yes
 - `include_decisions_active`: yes
-- `include_future`: no (V2 items live in `ROADMAP.md` for now)
+- `backlog_include_v2`: no (V2 items arrive as `BACKLOG.md` Backlog entries when they become real)
 - `codex_usage`: occasional → emit `.codex/config.toml`, skip `.agents/skills/`
 - `canonical_workflow_doc_name`: none
 - `include_product_rules`: no
@@ -120,7 +119,7 @@ Applying the criterion at [`decisions.md`](../generator/decisions.md) "Rule shap
 > **Files to write:**
 > - `AGENTS.md` (canonical, modular)
 > - `CLAUDE.md` (one line: `@AGENTS.md`)
-> - `ROADMAP.md`
+> - `BACKLOG.md`
 > - `.claude/commands/session-start.md`
 > - `.claude/settings.json`
 > - `.claude/hooks/block-env-commit.sh` + `block-worktree.sh` + `README.md`
@@ -134,7 +133,6 @@ Applying the criterion at [`decisions.md`](../generator/decisions.md) "Rule shap
 > - `docs/ARCHITECTURE.md`
 > - `docs/DECISIONS.md`
 > - `docs/DECISIONS_ACTIVE.md` (empty, awaiting first promotion)
-> - `docs/PARKING_LOT.md`
 > - `docs/retros/README.md`
 >
 > Proceed?

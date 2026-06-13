@@ -42,4 +42,4 @@ Do not log every small implementation detail. Log the calls that matter.
 
 - Currently-binding subset (curated): `docs/DECISIONS_ACTIVE.md`.
 - Decisions-log discipline (what counts as significant): `AGENTS.md` "Decisions log".
-- Roadmap and open decisions: `ROADMAP.md`.
+- Build plan and open decisions: `BACKLOG.md`.

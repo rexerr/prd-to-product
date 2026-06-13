@@ -194,7 +194,7 @@ Then read the doc that governs what you're about to touch. Source of truth on co
 | Architecture, data model | `docs/ARCHITECTURE.md` |
 <!-- OPTIONAL: ux_row — include only if the project has UX or styling docs. Generator parameterizes the doc names from the project's actual docs/ contents. Omit the row entirely if neither applies. -->
 | UX or visual changes | <!-- PARAMETERIZE: ux_row_doc_names --> |
-| Status, current phase | `docs/ROADMAP.md` |
+| Status, current phase, open/deferred work | `BACKLOG.md` |
 <!-- OPTIONAL: decisions_active_row -->
 | Recent binding decisions | `docs/DECISIONS_ACTIVE.md` |
 

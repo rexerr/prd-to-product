@@ -68,10 +68,8 @@ Workflows:
 Mandatory at session start:
 
 1. `AGENTS.md` — this file (loaded automatically; Claude Code loads it via `@AGENTS.md` in root `CLAUDE.md`).
-2. `ROADMAP.md` — current phase, completed work, open items.
+2. `BACKLOG.md` — build plan, in-progress, backlog, open decisions.
 3. Most recent file in `docs/retros/` — resume from last session.
-<!-- OPTIONAL: parking_lot_line — include if include_parking_lot == true -->
-4. `docs/PARKING_LOT.md` — active deferred items.
 
 Read when relevant:
 
@@ -155,9 +153,7 @@ The operative cut is **survives a tool switch vs. doesn't.** Claude's auto-memor
 | Workflow behavior | `docs/<!-- PARAMETERIZE: canonical_workflow_doc_name -->.md` (canonical) |
 <!-- OPTIONAL: ux_row -->
 | UX or visual changes | `.claude/rules/design-system.md` |
-| Status, current phase | `ROADMAP.md` |
-<!-- OPTIONAL: parking_lot_row -->
-| Mid-session deferred items | `docs/PARKING_LOT.md` |
+| Status, current phase, open/deferred work | `BACKLOG.md` |
 | Recent binding decisions | `docs/DECISIONS_ACTIVE.md` |
 
 If a conflict isn't covered above, surface it as an open question. Don't pick silently.

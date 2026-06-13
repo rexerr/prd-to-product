@@ -34,4 +34,4 @@ Do not log every small implementation detail. Log the calls that matter.
 ## Cross-references
 
 - Decisions-log discipline (what counts as significant): `AGENTS.md` "Decisions log".
-- Roadmap and open decisions: `ROADMAP.md`.
+- Build plan and open decisions: `BACKLOG.md`.

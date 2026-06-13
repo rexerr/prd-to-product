@@ -28,7 +28,7 @@ Auto memory is per-machine and per-git-repo (shared across worktrees of the same
 
 ### Progressive disclosure
 
-The skill, the templates, and the projects scaffolded from them all follow the same loading discipline. At session start, only the smallest set of orientation files load: `AGENTS.md`, `ROADMAP.md`, the most recent retro, and (if present) `PARKING_LOT.md`. Path-scoped rules under `.claude/rules/` load only when matching files are touched. Reference docs (`PRD.md`, `ARCHITECTURE.md`, canonical workflow docs) load when the agent is about to act in their domain. This skill's `principles.md` follows the same rule: `SKILL.md` defers it to "when asked why a pattern exists or you hit an edge case." Up-front context stays small. Detail loads on demand.
+The skill, the templates, and the projects scaffolded from them all follow the same loading discipline. At session start, only the smallest set of orientation files load: `AGENTS.md`, `BACKLOG.md`, and the most recent retro. Path-scoped rules under `.claude/rules/` load only when matching files are touched. Reference docs (`PRD.md`, `ARCHITECTURE.md`, canonical workflow docs) load when the agent is about to act in their domain. This skill's `principles.md` follows the same rule: `SKILL.md` defers it to "when asked why a pattern exists or you hit an edge case." Up-front context stays small. Detail loads on demand.
 
 ### Position-aware placement
 
@@ -79,7 +79,7 @@ Each pattern below has a short rule. The corresponding template carries the full
 - **Reproduce before fixing.** For any bug, write the failing reproduction first. Then the fix. Then verify.
 - **Server-only AI calls.** Never call the AI layer from a client component. Always route through an API route. Why: keeps API keys server-side and centralizes prompt logic. Only emitted for stacks with a client/server split.
 - **Session retros.** End every non-trivial session with `docs/retros/YYYY-MM-DD-topic.md`. Read the most recent retro before starting a new session.
-- **Session-start command.** A `.claude/commands/session-start.md` slash command that reads the entry-point file, the roadmap, and the most recent retro and reports orientation. Replaces re-explaining context every session.
+- **Session-start command.** A `.claude/commands/session-start.md` slash command that reads the entry-point file, the backlog, and the most recent retro and reports orientation. Replaces re-explaining context every session.
 - **End-session command.** A matching `.claude/commands/end-session.md` slash command that codifies the close-out: restate + verify, update the docs the work changed, write the retro *before* the commit, bundle everything into one push, hand off. Why: a ritual the agent has to *remember* gets fumbled (retro pushed as a second commit; commit gate skipped). Making the close-out a command — the closing bookend to session-start — turns the prose hope into a runnable sequence.
 - **Direct-on-main, no branches.** Single-developer pre-launch projects do not benefit from branch overhead.
 - **No worktrees when visual confirmation gates commits.** Conditional. `git worktree` is a legitimate Git feature — Claude Code itself uses it for parallel agent work. The constraint only applies when the workflow ties commits to visual confirmation in a single dev server: the dev server points at the main checkout, the worktree has its own working copy, and changes "made" in the worktree are not what `npm run dev` is rendering. For projects without a UI (CLI tools, backend services, Python projects) or with separate dev servers per worktree, this rule does not apply and is not emitted.
@@ -110,13 +110,12 @@ The 1M-context model degrades before it hits the wall. Empirical reports place t
 Use these when the project's shape calls for them.
 
 - **Modular `.claude/rules/`.** Use when the rule set is large enough that a flat `CLAUDE.md` is hard to scan, or when path-scoped loading would meaningfully reduce always-loaded context.
-- **`docs/PARKING_LOT.md`.** A place for items deferred mid-session. Read at session start alongside the most recent retro.
 - **`docs/DECISIONS_ACTIVE.md`.** A curated subset of `docs/DECISIONS.md` listing only currently-binding constraints not visible from reading code alone. Promotion criteria stated at the top of the file.
 - **Voice-and-tone rule.** Use when the project produces user-facing copy, especially AI-generated copy. Path-scoped to AI generation files and UI files.
 - **Design system rule.** Use when the project has a token file (CSS custom properties or equivalent) and a "no hardcoded values" enforcement target.
 - **Design heuristics rule.** Use when the project applies named UX laws (Fitts, Hick, Miller, Nielsen) to specific in-app decisions.
 - **`.codex/config.toml` and `.agents/skills/`.** Use when Codex sessions are part of the workflow and per-repo skills are worth maintaining.
-- **`FUTURE.md`.** Use for V2-and-beyond items that would otherwise pollute `ROADMAP.md`.
+- **`BACKLOG.md` `Later / V2` section.** Optional (gated on `backlog_include_v2`). Use for V2-and-beyond items worth a standing section; otherwise V2 ideas arrive as ordinary Backlog entries when they become real.
 
 ## The recency safeguard
 
@@ -157,7 +156,7 @@ The generator asks the user about these. Defaults exist for a few; most must be 
 - Whether the project has a design system with a token file.
 - Whether the project produces user-facing copy that needs a voice-and-tone rule.
 - Whether Codex sessions are part of the workflow.
-- Whether `PARKING_LOT.md`, `DECISIONS_ACTIVE.md`, and `FUTURE.md` should be included.
+- Whether `DECISIONS_ACTIVE.md` should be included, and whether `BACKLOG.md` carries an optional `Later / V2` section.
 - Domain vocabulary, if any, for the vocabulary lock pattern.
 
 What it does not ask about: branch policy (direct-on-main, no worktrees), retro location (`docs/retros/`), session-start command location (`.claude/commands/session-start.md`). These are hardcoded.

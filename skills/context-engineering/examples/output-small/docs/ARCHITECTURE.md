@@ -26,5 +26,5 @@ Standard App Router. `app/contact/page.jsx`, `app/api/contact/route.js`, `lib/em
 ## Cross-references
 
 - Product requirements (canonical for product behavior): `docs/PRD.md`.
-- Roadmap and current phase: `ROADMAP.md`.
+- Build plan and current phase: `BACKLOG.md`.
 - Decisions log: `docs/DECISIONS.md`.

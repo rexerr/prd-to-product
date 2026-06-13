@@ -8,7 +8,7 @@ Companion to [`transcript-medium.md`](transcript-medium.md). The medium case lan
 /Users/maya/Sites/craft-letters/
 ├── AGENTS.md                          # canonical, modular shape
 ├── CLAUDE.md                          # one line: @AGENTS.md
-├── ROADMAP.md
+├── BACKLOG.md
 ├── .codex/
 │   └── config.toml                    # codex_usage == "occasional"
 ├── .claude/
@@ -30,12 +30,11 @@ Companion to [`transcript-medium.md`](transcript-medium.md). The medium case lan
     ├── ARCHITECTURE.md
     ├── DECISIONS.md
     ├── DECISIONS_ACTIVE.md            # empty, awaiting first promotion
-    ├── PARKING_LOT.md
     └── retros/
         └── README.md
 ```
 
-No `.agents/skills/` (codex_usage is `occasional`, not `regular`). No `product-rules.md` (`include_product_rules == false`). No `design-system.md` or `design-heuristics.md` (`design_shape == "basic_styling"`). No `FUTURE.md`. No surface-specific frontmatter pollution.
+No `.agents/skills/` (codex_usage is `occasional`, not `regular`). No `product-rules.md` (`include_product_rules == false`). No `design-system.md` or `design-heuristics.md` (`design_shape == "basic_styling"`). No `Later / V2` section in `BACKLOG.md` (`backlog_include_v2 == false`). No surface-specific frontmatter pollution.
 
 ## Stack parameterization (visible in output)
 
@@ -112,7 +111,7 @@ Always-on rules: `git-and-deploy.md`, `session-discipline.md`.
 - `.agents/skills/README.md` (codex_usage occasional, not regular).
 - `product-rules.md` (`include_product_rules == false`).
 - `design-system.md`, `design-heuristics.md` (`design_shape == "basic_styling"`).
-- `FUTURE.md` (`include_future == false`).
+- `Later / V2` section in `BACKLOG.md` (`backlog_include_v2 == false`).
 - `block-deploy-cli.sh` and its `settings.json` entry (`deploy_target_has_cli_conflict == false`).
 - Vocabulary lock section in AGENTS.md (no canonical/forbidden lists).
 

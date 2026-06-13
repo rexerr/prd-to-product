@@ -15,7 +15,7 @@ The PRD requires the generator to produce usable output for three project shapes
 
 - Modular `.claude/rules/` directory: keep as-is for Large.
 - Multiple AI surface rules: keep as-is for Large (Large case has 3 AI surfaces).
-- `PARKING_LOT.md`, `FUTURE.md`: keep as-is for Large.
+- `BACKLOG.md` with a `Later / V2` section: keep as-is for Large (`backlog_include_v2 == true`).
 - `.codex/config.toml` and `.agents/skills/`: include for Large since Codex is in active use.
 
 **On flat-vs-modular for assessment-shaped projects:** earlier framing said "assessment is canonical flat shape." Removed after the `epost-assessment` retrospective validation revealed assessment's own PRD describes a token-system-with-linter design, which crosses the modular threshold. The criterion in `decisions.md` correctly reads from the PRD's claims, so a project whose PRD describes a token system will land modular even if the current code doesn't have one yet. That's the right behavior — the PRD is forward-looking, the rules describe the target state.
@@ -31,12 +31,11 @@ Considered during Pass 1, pulled back. The PRD names `session-start` only. The c
 ```
 Run the close-out for this session in order:
 
-1. Check off completed items in ROADMAP.md.
-2. Check off resolved items in docs/PARKING_LOT.md (if present).
-3. Write a retro to docs/retros/YYYY-MM-DD-topic.md following the template in docs/retros/README.md.
-4. Run `npm run check`. Fix any errors before committing.
-5. Stage doc updates explicitly. Commit with a clear message.
-6. Do not push unless I asked you to push earlier in the session.
+1. Check off completed Build-plan tasks in BACKLOG.md; update its In progress / Backlog lists (resolved items move to a retro).
+2. Write a retro to docs/retros/YYYY-MM-DD-topic.md following the template in docs/retros/README.md.
+3. Run `npm run check`. Fix any errors before committing.
+4. Stage doc updates explicitly. Commit with a clear message.
+5. Do not push unless I asked you to push earlier in the session.
 
 When done, paste the commit SHA and summarize what was completed and what is next.
 ```
@@ -113,11 +112,9 @@ templates/
 ├── docs/
 │   ├── PRD.md.template                   Required
 │   ├── ARCHITECTURE.md.template          Required
-│   ├── ROADMAP.md.template               Required
+│   ├── BACKLOG.md.template               Required (build plan + in-progress + backlog + open decisions; optional Later/V2 section)
 │   ├── DECISIONS.md.template             Required
 │   ├── DECISIONS_ACTIVE.md.template      Optional (recommended)
-│   ├── PARKING_LOT.md.template           Optional (recommended)
-│   ├── FUTURE.md.template                Optional, for V2-and-beyond list
 │   └── retros/README.md.template         Required
 └── claude-commands/
     └── session-start.md.template         Required

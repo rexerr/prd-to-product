@@ -130,11 +130,9 @@ Claude is responsible for starting and running the dev server. <!-- PARAMETERIZE
 
 At the end of every non-trivial session:
 
-1. Check off completed items in `ROADMAP.md`.
-<!-- OPTIONAL: parking_lot_step — include if include_parking_lot == true -->
-2. Check off resolved items in `docs/PARKING_LOT.md`.
-3. Write a retro to `docs/retros/YYYY-MM-DD-topic.md`. Template: `docs/retros/README.md`.
-4. <!-- OPTIONAL: tooling_check_step --> Run `npm run check`, then commit and push including doc updates.
+1. Check off completed Build-plan tasks and update `BACKLOG.md` (move resolved items out to a retro, not back into the file).
+2. Write a retro to `docs/retros/YYYY-MM-DD-topic.md`. Template: `docs/retros/README.md`.
+3. <!-- OPTIONAL: tooling_check_step --> Run `npm run check`, then commit and push including doc updates.
 
 When <!-- PARAMETERIZE: visual_confirmer_name --> says **"end session"**, run the close-out without further prompts (the `/end-session` command codifies this exact sequence). When they say **"commit and push"**, run the same sequence but continue working after pushing.
 
@@ -156,5 +154,4 @@ Experience-derived failure modes. Each is a real failure that has happened more 
 - Product invariants the agent must enforce on feature decisions: `.claude/rules/product-rules.md`.
 - Retro template: `docs/retros/README.md`.
 - Session orientation slash command: `.claude/commands/session-start.md`.
-<!-- OPTIONAL: parking_lot_xref -->
-- Mid-session deferred items: `docs/PARKING_LOT.md`.
+- Build plan, in-progress, backlog, open decisions: `BACKLOG.md`.

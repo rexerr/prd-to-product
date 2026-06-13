@@ -97,9 +97,8 @@ This combination is the structural parameterization demo. Four derived flags res
 
 ## Cluster 5: conditional patterns
 
-- `include_parking_lot`: yes
 - `include_decisions_active`: yes
-- `include_future`: yes (V2 list: switch from API LLM to fine-tuned classifier for high-volume topics; add streaming summary for real-time agent UI; per-team confidence thresholds)
+- `backlog_include_v2`: yes → `BACKLOG.md` carries a `Later / V2` section (switch from API LLM to fine-tuned classifier for high-volume topics; add streaming summary for real-time agent UI; per-team confidence thresholds)
 - `codex_usage`: regular → emit both `.codex/config.toml` and `.agents/skills/README.md`
 - `canonical_workflow_doc_name`: none
 - `include_product_rules`: no (PRD plus per-surface AI rules carry the load)
@@ -150,8 +149,7 @@ The combination `stack=python + deploy_target=fly + design_shape=none + voice_an
 > **Files to write:**
 > - `AGENTS.md` (canonical, modular, minimal recency)
 > - `CLAUDE.md` (one line: `@AGENTS.md`)
-> - `ROADMAP.md`
-> - `FUTURE.md` (V2 list)
+> - `BACKLOG.md` (incl. `Later / V2` section — `backlog_include_v2 == true`)
 > - `.claude/commands/session-start.md`
 > - `.claude/settings.json` (one hook only)
 > - `.claude/hooks/block-env-commit.sh` + `README.md`
@@ -166,7 +164,6 @@ The combination `stack=python + deploy_target=fly + design_shape=none + voice_an
 > - `docs/ARCHITECTURE.md`
 > - `docs/DECISIONS.md`
 > - `docs/DECISIONS_ACTIVE.md`
-> - `docs/PARKING_LOT.md`
 > - `docs/retros/README.md`
 >
 > **Not written:** `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `product-rules.md`, `ai-shared.md`, `block-deploy-cli.sh`, `block-worktree.sh`. Each absence traces to a specific suppression flag, not to a forgotten template.

@@ -35,7 +35,8 @@ The generator should hold answers in a state map with these keys:
 | `design_shape` | Q19 | enum | `tokens_with_linter`, `basic_styling`, `none`. |
 | `apply_design_heuristics` | Q20 | bool | |
 | `voice_and_tone` | Q21 | bool | |
-| `include_parking_lot`, `include_decisions_active`, `include_future` | Q22–Q24 | bool | |
+| `include_decisions_active` | Q23 | bool | |
+| `backlog_include_v2` | Q24 | bool | Default false. Gates the optional `Later / V2` section in `BACKLOG.md`. Mid-session deferrals are not gated — they always have a home in BACKLOG's In progress / Backlog sections. |
 | `codex_usage` | Q25 | enum | `regular`, `occasional`, `none`. |
 | `canonical_workflow_doc_name` | Q26 | string or null | |
 | `include_product_rules` | Q27 | bool | |
@@ -99,14 +100,14 @@ Implements the "Smallest deployable first" opinion from [`docs/build-defaults-br
 
 ### Routing
 
-`ROADMAP.md.template` carries four template parameters for Phase 1 (`phase_1_name`, `phase_1_goal`, `phase_1_tasks`, `phase_1_done_when`) and four for the optional Phase 2 block (`phase_2_name`, `phase_2_goal`, `phase_2_task_placeholder`, `phase_2_done_when`). Q31's captured `phase_user_*` values are routed based on `deploy_target`:
+`BACKLOG.md.template`'s Build-plan section carries four template parameters for Phase 1 (`phase_1_name`, `phase_1_goal`, `phase_1_tasks`, `phase_1_done_when`) and four for the optional Phase 2 block (`phase_2_name`, `phase_2_goal`, `phase_2_task_placeholder`, `phase_2_done_when`). Q31's captured `phase_user_*` values are routed based on `deploy_target`:
 
 | `deploy_target` | Phase 1 source | Phase 2 source | `phase_2_section` OPTIONAL gate |
 |---|---|---|---|
 | `none` | `phase_user_*` (wrapped: `phase_1_tasks` = `- [ ] {phase_user_task_placeholder}`) | (suppressed) | false |
 | `vercel`, `netlify`, `cloudflare`, `fly`, `railway`, `manual` | Derived from the table below | `phase_user_*` | true |
 
-Rationale for the override: the brief's meta-problem is that the user cannot evaluate at the code level, so the skill cannot rely on user-observed failures to discover what's missing. Scaffolding a hello-world deploy as Phase 1 catches production-environment surprises (env vars, build step, framework adapter) on day one rather than month six. The user can still edit Phase 1 of the emitted ROADMAP after the fact; the scaffold is the default, not a lock.
+Rationale for the override: the brief's meta-problem is that the user cannot evaluate at the code level, so the skill cannot rely on user-observed failures to discover what's missing. Scaffolding a hello-world deploy as Phase 1 catches production-environment surprises (env vars, build step, framework adapter) on day one rather than month six. The user can still edit Phase 1 of the emitted `BACKLOG.md` Build plan after the fact; the scaffold is the default, not a lock.
 
 ### Phase 1 derivation table (when `deploy_target != "none"`)
 
@@ -220,11 +221,9 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `claude-rules-modular/ai-surface-stub.md.template` | `rule_shape == "modular" and ai_surface_count >= 1`. Instantiated **once per surface**. | `.claude/rules/ai-<surface_kebab_name>.md` |
 | `docs/PRD.md.template` | always | `docs/PRD.md` |
 | `docs/ARCHITECTURE.md.template` | always | `docs/ARCHITECTURE.md` |
-| `docs/ROADMAP.md.template` | always | `ROADMAP.md` (root, default) or `docs/ROADMAP.md` if user prefers |
+| `docs/BACKLOG.md.template` | always | `BACKLOG.md` (root) — the single work-tracking surface (build plan + in-progress + backlog + open decisions + done). Optional `Later / V2` section gated on `backlog_include_v2`. |
 | `docs/DECISIONS.md.template` | always | `docs/DECISIONS.md` |
 | `docs/DECISIONS_ACTIVE.md.template` | `include_decisions_active` | `docs/DECISIONS_ACTIVE.md` |
-| `docs/PARKING_LOT.md.template` | `include_parking_lot` | `docs/PARKING_LOT.md` |
-| `docs/FUTURE.md.template` | `include_future` | `docs/FUTURE.md` (or `FUTURE.md` at root) |
 | `docs/retros/README.md.template` | always | `docs/retros/README.md` |
 | `claude-commands/session-start.md.template` | always | `.claude/commands/session-start.md` |
 | `claude-commands/end-session.md.template` | always | `.claude/commands/end-session.md` |
@@ -261,7 +260,7 @@ Substitution must run before the file is written. If the YAML frontmatter contai
 
 ### OPTIONAL block handling
 
-`<!-- OPTIONAL: <key> -->` markers gate the line or block immediately following. Each marker has a condition expressed in the comment (e.g., `include if include_parking_lot == true`).
+`<!-- OPTIONAL: <key> -->` markers gate the line or block immediately following. Each marker has a condition expressed in the comment (e.g., `include if backlog_include_v2 == true`).
 
 Behavior:
 
@@ -385,11 +384,11 @@ If `canonical_workflow_doc_name` is null and `source_prd_present == true`, mark 
 
 If a `canonical_workflow_doc_name` is named, it owns the tiebreaker role and the PRD does not.
 
-### V2/V3 extraction from PRD into FUTURE.md
+### V2/V3 extraction from PRD into the BACKLOG `Later / V2` section
 
-If `source_prd_present == true` and `include_future == true`, scan the PRD for sections named `## V2`, `## V3`, `## Future`, `## Deferred capabilities`, `## Roadmap V2`, or similar. Lift the items into `FUTURE.md` under the appropriate "V2" or "V3" subsection.
+If `source_prd_present == true` and `backlog_include_v2 == true`, scan the PRD for sections named `## V2`, `## V3`, `## Future`, `## Deferred capabilities`, `## Roadmap V2`, or similar. Lift the items as one-line entries into the `Later / V2` section of `BACKLOG.md` (the optional section gated on `backlog_include_v2`).
 
-If `include_future == false` but the PRD has a deferred-capabilities section, leave the items in the PRD's "Deferred capabilities" subsection (which `PRD.md.template` already provides for via `deferred_capabilities_list_or_none`).
+If `backlog_include_v2 == false` but the PRD has a deferred-capabilities section, leave the items in the PRD's "Deferred capabilities" subsection (which `PRD.md.template` already provides for via `deferred_capabilities_list_or_none`); they reach the backlog only as a Backlog entry if and when one becomes real.
 
 ### Decisions seeding from PRD
 
@@ -470,7 +469,7 @@ The skill's scope is context files: rules, docs, slash commands, the AGENTS.md/C
 - `styles/**/*` — global styles.
 - `public/**/*` — static assets.
 - `design-system/**/*.{css,js,jsx,ts,tsx}` — token files, even if the project's design system rule references them.
-- Any file outside `.claude/`, `.codex/`, `.agents/`, `docs/`, `AGENTS.md`, `CLAUDE.md`, `ROADMAP.md`, `FUTURE.md`.
+- Any file outside `.claude/`, `.codex/`, `.agents/`, `docs/`, `AGENTS.md`, `CLAUDE.md`, `BACKLOG.md`.
 
 **Templates may reference paths to product files** — `design-system.md` rule references the token file path via `<!-- PARAMETERIZE: token_file_path -->`, `ai-shared.md` references the AI client and prompts paths, etc. These references are targets, not commands to create. The path being unresolved at scaffold time is fine; the user creates the file when they are ready.
 

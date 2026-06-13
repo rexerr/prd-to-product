@@ -8,8 +8,7 @@ Companion to [`transcript-large.md`](transcript-large.md). The large case is the
 /Users/devon/Sites/triage-classifier/
 ├── AGENTS.md                          # canonical, modular shape, minimal recency
 ├── CLAUDE.md                          # one line: @AGENTS.md
-├── ROADMAP.md
-├── FUTURE.md                          # V2 list
+├── BACKLOG.md                         # incl. Later / V2 section (backlog_include_v2 == true)
 ├── .codex/
 │   └── config.toml
 ├── .agents/
@@ -33,7 +32,6 @@ Companion to [`transcript-large.md`](transcript-large.md). The large case is the
     ├── ARCHITECTURE.md
     ├── DECISIONS.md
     ├── DECISIONS_ACTIVE.md
-    ├── PARKING_LOT.md
     └── retros/
         └── README.md
 ```

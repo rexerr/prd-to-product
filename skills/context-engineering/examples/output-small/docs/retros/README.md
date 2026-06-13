@@ -27,7 +27,7 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 
 ## Open items
 
-- [Anything left unfinished or deferred — mirror to PARKING_LOT.md or ROADMAP.md as appropriate]
+- [Anything left unfinished or deferred — mirror to BACKLOG.md (In progress / Backlog) as appropriate]
 
 ## Next session
 

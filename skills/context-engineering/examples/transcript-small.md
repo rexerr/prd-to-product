@@ -54,9 +54,9 @@ The full output tree this transcript produces lives in `output-small/`.
 
 ## Cluster 5: conditional patterns
 
-> **Skill:** Three at once: include `PARKING_LOT.md`? Include `DECISIONS_ACTIVE.md`? Include `FUTURE.md`?
+> **Skill:** Two at once: include `DECISIONS_ACTIVE.md`? Add a `Later / V2` section to `BACKLOG.md`? (Mid-session deferrals always have a home in `BACKLOG.md` — no separate file.)
 
-**User:** PARKING_LOT yes, DECISIONS_ACTIVE no, FUTURE no.
+**User:** DECISIONS_ACTIVE no, no V2 section.
 
 > **Skill:** Three more: Codex used in workflow (regular / occasional / no)? Tiebreaker doc name (or none)? `product-rules.md` always-on rule needed?
 
@@ -64,7 +64,7 @@ The full output tree this transcript produces lives in `output-small/`.
 
 ## Cluster 6: content fills
 
-(The skill walks through the PRD, ARCHITECTURE, ROADMAP, and stack content fills. Captured answers below.)
+(The skill walks through the PRD, ARCHITECTURE, BACKLOG build plan, and stack content fills. Captured answers below.)
 
 - `product_summary_paragraph`: A one-paragraph contact form on a portfolio site. Posts to an API route that emails Jordan via Resend.
 - `target_users_list`: Visitors to the portfolio site who want to contact the designer. Mostly potential clients.
@@ -96,12 +96,11 @@ The full output tree this transcript produces lives in `output-small/`.
 > **Files to write:**
 > - `AGENTS.md` (thin pointer + Codex override)
 > - `CLAUDE.md` (canonical, all rules inline)
-> - `ROADMAP.md`
+> - `BACKLOG.md`
 > - `.claude/commands/session-start.md`
 > - `docs/PRD.md`
 > - `docs/ARCHITECTURE.md`
 > - `docs/DECISIONS.md`
-> - `docs/PARKING_LOT.md`
 > - `docs/retros/README.md`
 >
 > Proceed?

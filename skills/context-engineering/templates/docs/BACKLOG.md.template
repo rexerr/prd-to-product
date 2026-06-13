@@ -1,0 +1,71 @@
+<!--
+Template: BACKLOG.md (root)
+Purpose: The single work-tracking surface — build plan, in-progress, backlog, open decisions, done. Read at session start alongside the most recent retro.
+Replaces the old ROADMAP.md + docs/PARKING_LOT.md + docs/FUTURE.md trio: one lean file the agent loads every session.
+Lean by contract: this file is loaded at session start, so entries stay one line + a pointer. Detail lives in the linked retro/decision, never inline here. Keep the structural prose minimal — that is the point of the consolidation.
+-->
+
+# Backlog — <!-- PARAMETERIZE: project_name -->
+
+What's left, in priority order. Read at session start with the most recent retro. Entries are one line + a pointer — detail lives in the linked retro/decision, never inline. As the Build-plan phases get checked off, this file becomes a flat backlog.
+
+---
+
+## Build plan
+
+### Phase 1: <!-- PARAMETERIZE: phase_1_name -->
+
+**Goal:** <!-- PARAMETERIZE: phase_1_goal -->
+
+<!-- PARAMETERIZE: phase_1_tasks -->
+
+**Done when:** <!-- PARAMETERIZE: phase_1_done_when -->
+
+<!-- OPTIONAL: phase_2_section: include if deploy_target != "none". Gates this entire section through the next --- divider. -->
+---
+
+### Phase 2: <!-- PARAMETERIZE: phase_2_name -->
+
+**Goal:** <!-- PARAMETERIZE: phase_2_goal -->
+
+- [ ] <!-- PARAMETERIZE: phase_2_task_placeholder -->
+
+**Done when:** <!-- PARAMETERIZE: phase_2_done_when -->
+
+---
+
+## In progress
+
+(none yet)
+
+## Backlog
+
+(none yet)
+
+## Open decisions
+
+Move into `docs/DECISIONS.md` when resolved.
+
+<!-- PARAMETERIZE: open_decisions_list_or_none -->
+
+<!-- OPTIONAL: later_v2_section — include if backlog_include_v2 == true. Gates this section through the next --- divider. -->
+## Later / V2
+
+Out-of-MVP-scope ideas. Move into the Build plan or In progress when one becomes real.
+
+(none yet)
+
+---
+
+## Done
+
+See `docs/retros/` for the session-by-session record.
+
+## Conventions
+
+- One line + a pointer per entry; never paste reasoning inline (this file loads every session).
+- In progress names a "done when"; Backlog names a promotion trigger; resolved items move to a retro, not back here.
+
+## Cross-references
+
+- Product: `docs/PRD.md`. Architecture: `docs/ARCHITECTURE.md`. Decisions: `docs/DECISIONS.md`.<!-- OPTIONAL: decisions_active_xref — include if include_decisions_active == true --> Binding subset: `docs/DECISIONS_ACTIVE.md`.<!-- /OPTIONAL: decisions_active_xref --> Retros: `docs/retros/`.

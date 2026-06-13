@@ -1,6 +1,6 @@
 <!--
 Template: .claude/commands/session-start.md
-Purpose: Slash command that orients the agent at the start of a session. Reads the entry-point file, the roadmap, the most recent retro, and (optionally) the parking lot.
+Purpose: Slash command that orients the agent at the start of a session. Reads the entry-point file, the backlog, and the most recent retro.
 Related principles: "Always-on patterns" (session-start command).
 Use this template when: every project. Required.
 -->
@@ -9,16 +9,12 @@ Read the following files in this order before responding:
 
 <!-- OPTIONAL: agents_read_step — include ONLY if rule_shape == "modular". In flat shape, CLAUDE.md auto-loads at session start and carries the rules, and AGENTS.md is only a thin pointer to it, so reading AGENTS.md is wasted tokens. When this step is dropped, renumber the remaining steps so the list stays contiguous. -->
 1. AGENTS.md
-2. ROADMAP.md
+2. BACKLOG.md
 3. The most recent retro in docs/retros/ — pick it by **git history, not filename sort** (multiple retros can share a date, and alphabetical order then surfaces the wrong one). Run `git log --diff-filter=A --format= --name-only -- 'docs/retros/*.md' | grep -m1 retros` and read that file; if `git status` shows an uncommitted retro newer than that, read it instead. If several retros share that same latest date, skim all of them so you don't miss the newest work.
-<!-- OPTIONAL: parking_lot_step — include if include_parking_lot == true -->
-4. docs/PARKING_LOT.md
 
 When done, give me:
 
 - One sentence on where we left off based on the retro
-- The next uncompleted item on the ROADMAP
-<!-- OPTIONAL: parking_lot_report -->
-- Any parking lot items that are now blocking progress
+- The next item from BACKLOG.md (top of In progress, or top of Backlog if In progress is empty)
 
 Do not write any code. Do not propose solutions yet. Just orient us.

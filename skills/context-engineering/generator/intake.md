@@ -182,19 +182,16 @@ If no, skip the voice-and-tone template.
 
 ## Cluster 5: Conditional patterns
 
-Six branching questions. Group three per call.
+Five branching questions. Group three per call.
 
 First call:
 
-22. **Include `PARKING_LOT.md`?**
-   - Yes (recommended) — surface for mid-session deferrals.
-   - No — small project, deferrals fit in retros.
 23. **Include `DECISIONS_ACTIVE.md`?**
    - Yes (recommended) — curated subset of binding decisions.
    - No — project is small enough that `DECISIONS.md` alone is fine.
-24. **Include `FUTURE.md`?**
-   - Yes — project has a clear V2-and-beyond list.
-   - No — V2 items live in `ROADMAP.md` for now.
+24. **Add a `Later / V2` section to `BACKLOG.md`?** (Mid-session deferrals and parked work always have a home in `BACKLOG.md`'s In progress / Backlog sections — no separate file. This question is only about a dedicated V2-and-beyond section.)
+   - Yes — project has a clear V2-and-beyond list worth a standing section.
+   - No (default) — V2 ideas, when they arise, live as a Backlog entry; no empty section.
 
 Second call:
 
@@ -220,7 +217,7 @@ Third call (only if `codex_usage in ("regular", "occasional")`):
 
 **If the PRD has a `## Decisions` or `## Decisions made` section:** extract decisions as candidates for `DECISIONS.md` seeding. See `decisions.md` "Decisions seeding from PRD" for the per-decision criteria check before any are mirrored to `DECISIONS_ACTIVE.md`.
 
-**If the PRD has a `## V2`, `## Future`, or `## Deferred capabilities` section:** extract for `FUTURE.md` if `include_future == true`.
+**If the PRD has a `## V2`, `## Future`, or `## Deferred capabilities` section:** extract into the `BACKLOG.md` `Later / V2` section if `backlog_include_v2 == true`; otherwise leave the items in the PRD's "Deferred capabilities" subsection.
 
 **If no PRD:** ask all questions cold.
 
@@ -229,7 +226,7 @@ Free-text fills for the docs templates:
 28. **PRD content.** `product_summary_paragraph`, `target_users_list`, `core_problem_paragraph`, `main_workflow_steps`, `out_of_scope_list`, `deferred_capabilities_list_or_none`.
 29. **Architecture content.** `primary_data_flow_name`, `primary_data_flow_steps`, optional `secondary_flow_name`/`secondary_flow_steps`, `data_persistence_paragraph`, `external_integrations_list_or_none`, `folder_structure_summary`.
 30. **Workflow names.** Up to N. → `workflow_<n>_name`, `workflow_<n>_description`.
-31. **Roadmap first user-defined phase.** Captured as `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when`. The question framing depends on `deploy_target` (Q5c):
+31. **Build-plan first user-defined phase.** Captured as `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when`. The question framing depends on `deploy_target` (Q5c):
     - **`deploy_target == "none"`** — ask for **Phase 1**. The user's answers fill Phase 1 directly. No Phase 2 scaffold is emitted.
     - **`deploy_target != "none"`** — ask for **Phase 2**. The agent must tell the user, in one short sentence: "Phase 1 is the deploy hello-world shell (the scaffolded default — ship a deployable production page before feature work begins). Phase 2 is the first phase you define." Then ask for `phase_user_*`. `decisions.md` builds Phase 1 from the stack-aware table; the user's answers fill Phase 2.
 
@@ -255,7 +252,7 @@ If the user invokes the skill with a "dry run" flag (e.g., "use the context-engi
 ## Notes
 
 - Every PARAMETERIZE marker across templates must trace to a question or to a derivation in `decisions.md`. The marker map below is the audit trail.
-- Branching questions write the answer into a generator-state map (e.g., `rule_shape`, `include_parking_lot`). `decisions.md` reads from that map to drive template inclusion.
+- Branching questions write the answer into a generator-state map (e.g., `rule_shape`, `include_decisions_active`). `decisions.md` reads from that map to drive template inclusion.
 
 ## Marker map
 
@@ -353,9 +350,8 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 
 ### Cluster 5: conditional patterns
 
-- `include_parking_lot` — Q22 (state map)
 - `include_decisions_active` — Q23 (state map)
-- `include_future` — Q24 (state map)
+- `backlog_include_v2` — Q24 (state map)
 - `codex_usage` — Q25 (state map)
 - `canonical_workflow_doc_name` — Q26 (only if user named one)
 - `include_product_rules` — Q27 (state map)
@@ -385,6 +381,6 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 - `architecture_rules_numbered_list` — Q34 (only for flat shape)
 - `product_ux_rules_list`, `critical_invariants` — Q35 (only for flat shape, if applicable)
 - `numbered_product_rules_list` — only if `include_product_rules == true`. Free-text 3–10 rules.
-- `open_decisions_list_or_none` — Q31 sub-fill (open decisions for the roadmap, free text)
+- `open_decisions_list_or_none` — Q31 sub-fill (open decisions for the build plan, free text)
 - `ux_row_doc_names` — only for flat shape. Either drop the row (handled in decisions.md) or fill from project's UX docs.
 - `path_scoped_rule_list` — derived (built from the per-template inclusion table in decisions.md)

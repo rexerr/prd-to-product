@@ -37,4 +37,4 @@ Capabilities considered and deferred for V2 or later. Recorded here so they don'
 ## Cross-references
 
 - Architecture: `docs/ARCHITECTURE.md`.
-- Roadmap: `ROADMAP.md`.
+- Build plan and backlog: `BACKLOG.md`.
