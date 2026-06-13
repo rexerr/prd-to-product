@@ -39,4 +39,5 @@ Work spanned late 2026-06-12 into 2026-06-13; council/evidence artifacts are dat
 
 ## Next session
 
-- Cowork adjustment is applied — the loop is wired. Just use `/furnace-plan that` on real work and start accumulating the Cowork-graded signal. Do not promote to a hook until the catch-rate drop is real.
+- **Active next-session work: the brownfield context-drift audit pilot** (BACKLOG top of Backlog). Run a one-off, read-only audit of the most-outdated real project (qventus / seance / epost — scan and pick the most drifted) against a current-standard checklist derived from context-engineering; produce a drift report; then decide what to fix + whether `/audit-context` earns building. Do NOT build the skill first — same furnace lesson (pilot by hand, earn the build).
+- Background, passive: the furnace trial keeps running — use `/furnace-plan that` on real work and watch the Cowork-graded signal accumulate. Do not promote to a hook until the catch-rate drop is real.
