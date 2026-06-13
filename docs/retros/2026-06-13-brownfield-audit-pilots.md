@@ -21,6 +21,7 @@ Picks up the brownfield-audit backlog item the furnace-plan session (1st session
 - **Fix nothing in any of the three yet.** Tier-A backports captured in each report's "Open decisions" for later promotion. All three projects untouched (read-only).
 - **Don't build `/audit-context` yet — hold for a real drift-fix need (Rule of Three / wait for the pain).** The shape is now fully *designable* (gated 4-step: gate → profile → diff → classify) but demand isn't proven. Same furnace lesson: earn the build. Promotion trigger: "a real project's drift causes actual friction."
 - **Three pilots, not two.** #1/#2 surfaced the 5-field profile; **#3 surfaced the field-0 gate** that makes the difference between a useful and a harmful tool. Stopping at two would have shipped a design that mis-fires on every hand-rolled repo.
+- **Post-close-out: build DECLINED, not held ([D-013](../DECISIONS.md)).** After the formal close-out, Rex called it: the skill automates a *one-time* catch-up across a few old projects, so it never pays back — fix them by hand from the audit docs instead. Sharpening logged in D-013: the recurring "sweep as AI evolves" need he anticipates is *targeted propagation of a known delta*, a different problem than diffuse drift-auditing, so even that bridge wouldn't resurrect this design reflexively. Narrowed the BACKLOG's prior "build held" trigger so a future session can't rebuild it on a weak signal.
 
 ## Files changed
 

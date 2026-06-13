@@ -44,6 +44,10 @@ The LLM Council is **not** a wired-in primitive. A *recommend-don't-auto-run* no
 
 When cluster-0 source material substantively covers a later cluster, prd-creator **drafts that cluster's answer from the material and presents it for confirm/edit** (draft-and-present), and asks cold only where the material is thin. Silent absorption stays banned; this is the third behavior between it and ask-cold. Cluster 0 still runs first and still asks the source-material question. User-facing copy carries **no internal scaffolding**: no "cluster N", no mid-capture "D-NNN candidate" narration, no "(from cluster N)" provenance tags (`D-NNN` is legitimate only at the cluster-5 read-back and in the written PRD); and the skill makes **no temporal/provenance claims** about source material. Full entry: [`DECISIONS.md`](DECISIONS.md) D-010.
 
+### D-013 — `/audit-context` skill declined; fix brownfield drift by hand
+
+Do **not** build an `/audit-context` (drift-audit) skill. Brownfield context drift is handled by hand from the three pilot audit docs ([`docs/audits/`](audits/)); once a project is brought current, it's current. **Revisit only if** a change must sweep across *all* current projects at once *and* by-hand propagation becomes impractical — and even then scope a *targeted-propagation* tool to that need, not this drift auditor. Full entry: [`DECISIONS.md`](DECISIONS.md) D-013.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).
