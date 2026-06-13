@@ -32,7 +32,7 @@
 
 ## Open items
 
-- **the-council fix chip spawned** (background task): replace its two unconditional hooks + drop its `if` fields, using this repo's templates as source.
+- ~~**the-council fix chip spawned** (background task): replace its two unconditional hooks + drop its `if` fields, using this repo's templates as source.~~ **CLOSED 2026-06-12** — done directly in-session (not via the chip), committed + pushed as the-council `a8e830c`: all three of its hooks rewritten (its env hook was *also* unconditional), `if` fields dropped, 15/15 mock payloads, its parking-lot item closed. (This line read "open" because this retro was written before that work; reconciled per Rex's catch.)
 - `Agent isolation:worktree` PreToolUse coverage remains an open unknown (undocumented upstream); revisit if a scaffolded project relies on the worktree gate against subagent isolation.
 - Standing gated items unchanged: plan-review mining run (Workflow opt-in); BACKLOG-scaffolding consolidation decision (ship on dog-food evidence vs. wait).
 
