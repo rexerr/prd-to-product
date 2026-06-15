@@ -45,7 +45,7 @@ Run the context-engineering skill against this PRD to scaffold AGENTS.md, CLAUDE
 - **Decisions captured.** Show all if five or fewer. Show top three plus a "+N more" line if six or more. Top is by criticality, same heuristic as in `decisions.md`.
 - **Open questions.** Show all if three or fewer. Show top three plus a "+N more" line if four or more. Top means V1-blocking.
 - **Brand and voice placement.** Use the literal phrase from the table: "inline appendix," "sibling file at <path>," or "not run."
-- **Next step.** Always points to the context-engineering skill. Do not invent other next steps. If the user is not planning to run context-engineering next, they will say so.
+- **Next step.** Two steps at most: an *optional* pressure-test pass (only when the condition in "When to recommend a pressure-test pass" below is met) followed by the context-engineering pointer, which is always present. Beyond those two, invent no other next steps. If the user is not planning to run context-engineering next, they will say so.
 
 ## When to write a longer summary
 
@@ -54,6 +54,18 @@ Default to terse. Three cases warrant more detail. The first is mandatory whenev
 1. **Routed-elsewhere material was mentioned during intake.** Mandatory flag. Per `decisions.md` "Routed-elsewhere content," any visual-aesthetic, design-token, rule-file, or rich tech-spec content the user mentioned during cluster 0 or any cluster gets named in the summary so the user knows it was not silently dropped. Phrase as: "<Type of content> you mentioned (<one-line paraphrase>) was not captured in the PRD or BRAND.md. It belongs in <target skill>." Do not skip this even when the rest of the summary is terse. Silent dropping is a regression.
 2. **The user overrode the brand placement rule.** Note the override and the user's stated reason. Useful when re-reading the PRD later and wondering why a one-item BRAND.md exists.
 3. **The user delegated content authoring to the skill mid-cluster.** When the user says "come up with some and I'll approve" (or equivalent) in clusters 6 or 7, the skill correctly proposes options for the user to accept, edit, or reject. The summary should note this with one line: "Success criteria were proposed by the skill at your request and pruned to <N> items based on your edits." This is not invention because the user delegated and reviewed; the note exists so the provenance is traceable.
+
+## When to recommend a pressure-test pass
+
+The interview structures decisions; it does not challenge them. When the PRD locks a bet that is **identity-defining** (the product's value rests on it) **and in tension with a V1 cut**, emit one extra line in "Next step," *before* the context-engineering pointer, recommending an outside critique pass. Omit it otherwise — routine scope, a low-stakes or personal-utility tool, or a conventional pattern do not warrant it. Default to omitting; a recommendation that fires on every PRD gets tuned out.
+
+The trigger keys on the stakes and centrality of the bet, not on whether the user sounded unsure. A confident-but-unexamined differentiator is precisely the trap: the failure this prevents is a load-bearing stance the interview surfaced but never tested hardening into the PRD unchallenged. The signal to look for is the bet the product's identity rests on sitting against something the user deliberately cut — e.g. a strong, opinionated stance on a core surface while an adjacent capability was ruled out of V1.
+
+The emitted line is user-facing, so it carries no internal scaffolding (no "cluster N," no "D-NNN," no claim about how old the source material is) and names no specific tool as required — recommend tool-agnostically, "if such a skill is available." Fill the bracketed slot with the concrete bet, the same way template fields are parameterized; never emit literal brackets.
+
+> Before scaffolding, consider a pressure-test pass on [name the specific bet, e.g. "your opinionated, pushes-back advice stance"]: a devil's-advocate, red-team, or multi-perspective critique skill, if one is available. The interview structured this decision; it did not challenge it.
+
+This is the cheap, general-tier handoff. The separate council recommendation in `principles.md` ("Recommend a stress-test before locking high-stakes scope") is the escalation for a bet that is both costly to get wrong and hard to reverse; the two are tiers of one ladder, not competing recommendations.
 
 ## What never goes in the summary
 

@@ -89,4 +89,6 @@ Files written:
 - docs/BRAND.md
 
 Next step:
-Run the context-engineering skill against this PRD. The PRD's decisions and architecture sections feed that skill directly. The BRAND.md will trigger context-engineering's voice-and-tone rule pattern, which scaffolds a path-scoped rule under .claude/rules/.
+Before scaffolding, consider a pressure-test pass on your opinionated advice-tone stance — the differentiator the product rests on, which sits against cutting AI advice and recommendations from V1: a devil's-advocate, red-team, or multi-perspective critique skill, if one is available. The interview structured this decision; it did not challenge it.
+
+Then run the context-engineering skill against this PRD. The PRD's decisions and architecture sections feed that skill directly. The BRAND.md will trigger context-engineering's voice-and-tone rule pattern, which scaffolds a path-scoped rule under .claude/rules/.
