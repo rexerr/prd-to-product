@@ -19,7 +19,8 @@ Activate on any of these phrasings:
 
 Do not activate on:
 
-- "migrate my existing tokens" — out of scope for V1.
+- "migrate my existing tokens" — out of scope for V1. This is a request to *port* an existing system.
+- a complete design system is already present even though you were asked to bootstrap one — decline rather than clobber it. Distinct from the migrate line above: that is a *request* to port; this is an *unrequested collision* with a system already on disk (the qventus case). See the write-guard gotcha below.
 - "add a new component" — this skill writes seed components only; feature components belong to the build.
 - "set up voice and tone" — that is prd-creator's BRAND.md.
 - "scaffold context for a new project" — that is the context-engineering skill, which runs before this one.

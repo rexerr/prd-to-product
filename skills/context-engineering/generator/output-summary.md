@@ -55,6 +55,7 @@ A suggested next-step sequence:
 3. Run the `/session-start` slash command to confirm the orientation flow works before doing any code work.
 4. Make the first decision and log it in `docs/DECISIONS.md` to validate the format. Promote it to `DECISIONS_ACTIVE.md` if it imposes a binding constraint.
 5. Start the first session. Write a retro at the end.
+6. If the product has a UI or design-system surface, run `design-system-bootstrap` next. It owns the design and token surfaces the generator does not write: the token file, seed components and `DESIGN_SYSTEM.md`. Skip it when there is no UI surface, or when a complete design system already exists, since it bootstraps from nothing and does not migrate.
 
 ## Flags to surface in the summary
 
