@@ -32,6 +32,12 @@ Triggered by a discussion of Addy Osmani's "loop engineering" piece, which route
 - **Fix-candidate C** remains a live Rex decision: rename-at-all, operative-vs-historical boundary, GitHub redirect (UNVERIFIED). Held in BACKLOG.
 - Stale `ROADMAP.md` cross-ref in the audit skill (Cowork confirmed it absent) — unrelated to D, left for a future incidental edit.
 
+## Part 2 — auto-detect input at cluster 0 (D-015)
+
+Same session, second furnace → Cowork loop. Shipped the BACKLOG "skills should auto-detect input" item: prd-creator and context-engineering cluster 0 now scan the working directory (`docs/` + root) for source material and *offer* it for confirmation before asking (detect → offer → confirm). Reused DSB's existing working-dir scan pattern (its intake.md:45/268/367) and its "default to asking, not detecting" principle (intake.md:13); framed as extending D-010, never silent-absorbing. context-engineering scans the exact `docs/PRD.md` path prd-creator emits, so the chain auto-composes on the input side — the complement to Part 1's D-014 handoff fix. DSB deferred (already scans; its source is images/Figma). Logged **D-015**, no DECISIONS_ACTIVE mirror.
+
+**Furnace data, round 2 — notably no bucket-1 or bucket-2.** Cowork's catches this round were all bucket-3 refinements: `notes.md` was a filename I added that BACKLOG never specified (cut); the chain-composition path-match wanted explicit naming in D-015; a temporal-claim check was missing from verification. The bucket-1 class from Part 1 (asserting a `D-NNN` without reading the log) did **not** recur — I explicitly verified D-014 was the latest header before claiming D-015, applying Part 1's lesson. That is the "tighten execution, don't change the skill" path working: the forcing function was honored this time without any edit to the furnace. Cowork also *upgraded* my self-flagged "examples/output-small unaffected" claim from asserted to verified. One self-caught issue in verification (a `per D-015` token leaking into the intake flow — D-010 class — stripped before commit).
+
 ## Next session
 
 - Keep using `/furnace-plan` on real planning work to grow the Cowork-graded signal. If bucket-1 misses recur (asserting facts without the forcing-function read), tighten the furnace preflight's read-enforcement before considering the hook promotion.

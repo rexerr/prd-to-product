@@ -19,7 +19,7 @@ The user often arrives with a drafted PRD or other source material. This cluster
 
 Ask in one call:
 
-0a. **Existing PRD.** Do you have a drafted PRD for this project? Paste, link, or say "no." (If a PRD is already in context, name it explicitly: "I see a PRD at `<path>` in context — use it as the source PRD for this scaffold? Y/N." Wait for an answer. Do not proceed on assumption.)
+0a. **Existing PRD.** First, the generator checks the working directory for a PRD at the path prd-creator emits: `docs/PRD.md`, then `PRD.md` at root. If one is found, offer it without absorbing it: "I see `docs/PRD.md` in this project, use it as the source PRD for this scaffold? Y/N." (`docs/PRD.md` is the path prd-creator writes its PRD to; that match is what makes the two skills compose, so keep them in sync if either path changes.) If instead a PRD is already pasted in conversation context, name it the same way ("I see a PRD at `<path>` in context, use it? Y/N"). If neither, ask: "Do you have a drafted PRD for this project? Paste, link, or say no." Wait for an answer. Do not proceed on assumption, and make no claim about the PRD's age or recency.
 0b. **Other source material.** Anything else relevant? (Decisions list, V2/V3 ideas, related global skills, design-system reference, brand book, etc. Optional.)
 
 If a PRD is provided:

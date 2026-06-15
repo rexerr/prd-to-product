@@ -18,7 +18,11 @@ Every cluster follows the same shape. Do not skip steps.
 
 **Always run first.** Do not skip even when the user pasted a brief earlier in the conversation. The lesson from context-engineering Pass 1.7 is that silently absorbing pasted context produces worse PRDs than asking anyway.
 
-Ask:
+**Check the working directory first.** Before asking, the generator checks the working directory and `docs/` for candidate source files: `BRIEF.md`, `brief.md`, `*-brief.md`, `IDEA.md`. This is a detection aid, not silent absorption: offer what you find, never read it before the user confirms, and make no claim about a found file's age or recency.
+
+- **One candidate found.** Offer it without reading it yet: "I see `docs/brief.md` in this project, read it as your source material? (yes / point me at another file / none)." On yes, treat it as the "User has source material" branch below. The offer *is* the source-material question; do not also ask the generic question.
+- **Multiple candidates.** List them and ask which to use, or none.
+- **None found.** Ask the generic question:
 
 > Before we start, do you have a working brief, research dump, transcript, message thread, or notes you want me to read first. Paste, link, or tell me there's none.
 
