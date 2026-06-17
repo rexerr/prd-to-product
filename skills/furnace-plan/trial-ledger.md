@@ -1,0 +1,41 @@
+# Furnace-plan trial ledger
+
+The scorecard for the `/furnace-plan` skill. Each row is one thing **Cowork's `/plan-review` caught** in a furnace-authored plan, classified into a bucket. The trial exists to decide whether the furnace's verification preflight has earned promotion from an invoke-skill to an `ExitPlanMode` hook — graded on the *distribution* of buckets over time, not a raw catch count.
+
+**Writer:** Cowork's `/plan-review` skill appends rows here as it reviews — one or more per round, regardless of which project the plan was for. Claude Code (the furnace) never writes here. The header below is static; only the table grows.
+
+**Subject vs. writer:** this file lives under the `furnace-plan` skill because the furnace is what it measures, even though `/plan-review` is what writes it.
+
+---
+
+## Buckets (the classification)
+
+- **Bucket 1 — no-read-behind-it.** A count or "X is missing / X is named" asserted from memory or a filename that the furnace's preflight Check 1 ("every codebase claim traces to a read *this session*") *should* have forced a read to catch. → **Forcing function underperforming. Tighten the preflight; do not kill.**
+- **Bucket 2 — read-but-wrong / unfalsifiable inference.** A claim the furnace believed verified — it read the source and still misread it, or made an inference no codebase read could establish. Self-review structurally cannot reach this. → **The distinct-verifier (Cowork) is load-bearing; not a kill.**
+- **Bucket 3 — genuine judgment / scope / design call.** Neither the preflight nor self-review's job — correctly Cowork + Rex's. **Note: bucket 3 spans severity** — it can be a low-stakes refinement *or* a must-fix design flaw (see 06-15 R1, the over-broad trigger). That is why severity is its own column.
+
+## How to read it for the promotion / kill decision
+
+- **Promote (earn the hook):** catches collapse to **mostly bucket-3 *refinements*** — few/no must-fixes of any bucket. A hook that automates the preflight only helps bucket 1, so the furnace earns it once bucket 1 is gone and what's left is the judgment tier the hook was never going to touch.
+- **Tighten the preflight:** **bucket 1 recurs.** The forcing function isn't being executed; a hook would just automate a half-working layer.
+- **Distinct verifier stays load-bearing:** **bucket 2 persists.** The blind spot is real and a planning prompt can't reach it — the fix is a fresh-context verifier fed the ledger, not a kill, and not a hook.
+- **Watch severity, not just bucket.** Mostly bucket-3 *must-fixes* means the furnace is still shipping flawed plans of a kind no mechanical layer could catch — that argues *against* the hook, not for it.
+
+When the furnace preflight is ever changed (e.g. read-enforcement tightened), add a dated `### --- preflight tightened YYYY-MM-DD ---` divider row so before/after trend is visible without a version column.
+
+Full rationale and triggers: `~/Sites/prd-to-product/BACKLOG.md` (furnace-plan trial, In progress) and `docs/DECISIONS.md`.
+
+---
+
+## Ledger
+
+| Date | Project | Plan | Round | Bucket | Severity | What Cowork caught |
+|---|---|---|---|---|---|---|
+| 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 1 | 1 | must-fix | claimed new decision = D-013; already taken (skipped the read-the-log step) |
+| 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 1 | 2 | must-fix | "DSB never named in either file" — false; context-engineering/SKILL.md:59 names it (read but misread) |
+| 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 2 | 3 | refinement | `notes.md` — invented filename BACKLOG never specified |
+| 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 2 | 3 | refinement | chain-composition path-match should be named explicitly in D-015 |
+| 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 2 | 3 | refinement | temporal-claim check missing from verification |
+| 2026-06-15 ~11:30 CDT | prd-to-product | red-team Rung 1 handoff | 1 | 2 | must-fix | conditional critique copy in always-printed Format block while claiming examples stay valid *because* it's conditional — internal contradiction |
+| 2026-06-15 ~11:30 CDT | prd-to-product | red-team Rung 1 handoff | 1 | 3 | must-fix | over-broad trigger ("any V1/V2 cut") fired on every PRD — collapsed conditional into mandatory |
+| 2026-06-15 ~11:30 CDT | prd-to-product | red-team Rung 1 handoff | 2 | 3 | refinement | fill-slot instantiation / sharper identity-defining cue / verification-scope clarification |
