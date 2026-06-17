@@ -37,9 +37,13 @@ Commit `b66a331` (migration + housekeeping):
 
 This plan was authored via `/furnace-plan` and reviewed by Cowork across two rounds. Cowork caught four real things — the stale D-018→D-020 id (bucket-2), a README/D-019 contradiction (bucket-3 must-fix), an asymmetric string-swap that would've left incoherent text (bucket-3 refinement), and the ledger-commit-path gap (bucket-3 refinement). **These are exactly the rows the trial ledger exists to capture** — but at author time neither writer could reach the file (Cowork couldn't see `~/.claude`; the furnace can't write the ledger). Now that the ledger is in-repo, a future Cowork review can append them.
 
+## Follow-up (same session): ledger backfill
+
+After the migration landed, backfilled the rows Cowork couldn't write while the ledger lived in `~/.claude` (outside its sandbox). Added **10 rows** (now 18 total), all marked `[backfilled]`: 6 for this migration plan (all bucket-3 — the `mv`-on-only-copy catch logged bucket-3 per the reviewer's lean, overriding the plan's self-tagged bucket-2) and 4 for the **D-017 validation-hook** plan (the genuine gap Task 2 found — R1: 3 bucket-2 mechanical bugs, R2: 1 bucket-3 refinement, transcribed from the cribs retro). Verified: `git diff` showed 10 pure additions, header + bucket legend byte-identical to HEAD (lines 1–33 diff-clean), counts 8+10=18. Committed `d1d3a38`, pushed. **Caveat:** this was a *manual* backfill by Claude Code — it does **not** verify the live Cowork-write path; that remains the real end-to-end test on the next `/furnace-plan` → Cowork run.
+
 ## Open items
 
-- **Pending ledger row for this plan.** Cowork's suggested classifications above are not yet written to `skills/furnace-plan/trial-ledger.md`. Append on the next Cowork review now that the file is reachable in-repo.
+- ~~Pending ledger row for this plan~~ — **resolved** (hand-backfilled this session, commit `d1d3a38`). The *live* Cowork-write path is still unverified (see caveat above).
 - **README-loop-vs-D-019 tension** — filed in BACKLOG (low priority): the generic `for skill in skills/*/` install loop would symlink `context-engineering-audit` for a fresh cloner, contradicting D-019. Doesn't affect Rex's machine.
 - **Possible retro gap** — the D-018 + migration-brief commits (`89d88b1`, `a5f0b7d`) may not have their own retro; today's earlier retro covers cribs/C-27 (D-017). Not reconciled here; flagging only.
 
