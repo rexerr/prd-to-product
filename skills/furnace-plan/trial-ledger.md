@@ -1,6 +1,6 @@
-# Furnace-plan trial ledger
+# Furnace-plan learning ledger
 
-The scorecard for the `/furnace-plan` skill. Each row is one thing **Cowork's `/plan-review` caught** in a furnace-authored plan, classified into a bucket. The trial exists to decide whether the furnace's verification preflight has earned promotion from an invoke-skill to an `ExitPlanMode` hook — graded on the *distribution* of buckets over time, not a raw catch count.
+A **durable, cross-project record** of what Cowork's `/plan-review` (and, in future, other distinct reviewers) catches in `/furnace-plan`-authored plans — each row one finding, classified into a bucket — kept versioned so the furnace+reviewer loop accumulates learning across *every* project rather than scattering it across per-session retros. It serves two purposes: (1) **ongoing improvement** of the furnace's verification preflight, by surfacing which bucket-1 / bucket-2 catches recur; and (2) one specific **open sub-question** — whether the preflight has earned promotion from an invoke-skill to an `ExitPlanMode` hook, graded on the *distribution* of buckets over time, not a raw catch count. The bucket legend and promote/kill/tighten triggers below answer (2); the growing row history serves (1).
 
 **Writer:** Cowork's `/plan-review` skill appends rows here as it reviews — one or more per round, regardless of which project the plan was for. Claude Code (the furnace) never writes here. The header below is static; only the table grows.
 

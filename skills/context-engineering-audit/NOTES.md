@@ -18,7 +18,7 @@ The heavy tier would be a programmatic validator: read the project's `.claude/` 
 - A `.claude/settings.json` with a malformed hook matcher (silent miss — the hook never fires). A schema check catches it.
 - A cross-reference in one rule file to another rule file that doesn't exist (broken link). A link-checker catches it.
 
-None of these have appeared in the two audits so far. Wait for the third instance, per the same continuous-mode discipline `prd-to-product`'s ROADMAP uses.
+None of these have appeared in the two audits so far. Wait for the third instance, per the same continuous-mode discipline `prd-to-product`'s BACKLOG uses.
 
 ## Design observations from the two reference audits
 
@@ -32,9 +32,14 @@ A few patterns that emerged from `the-council` and `field-society-demo` audits w
 
 Sibling-suffix pattern (`context-engineering-audit`) matches `prd-creator` / `design-system-bootstrap`'s trigger-shaped naming. Considered alternatives: `audit-context` (too generic — "audit" alone could mean code review, security audit, accessibility audit) and `context-drift-report` (action-shaped, but "drift report" describes the output, not the trigger). Stuck with the suffix form.
 
-## Symlinking
+## Symlinking / promotion status — intentionally NOT global (decided 2026-06-17)
 
-Like the other skills in this repo, this one will need a symlink at `~/.claude/skills/context-engineering-audit/` for Claude Code to load it. That's a deploy step, not a session-D concern. If a user clones this repo and wants the skill available, they need to symlink it the same way they symlink `context-engineering`.
+Unlike the other skills in this repo, this one is **deliberately not symlinked** into `~/.claude/skills/`. Two reasons:
+
+1. **[D-013](../../docs/DECISIONS.md) declined an audit *tool*.** The 2026-06-13 brownfield pilots specced a richer `/audit-context` and Rex declined building it — brownfield drift is low-stakes and one-time, handled **by hand** from the audit docs. On 2026-06-17 the question of promoting *this* pre-D-013 light-tier skill to global was raised and declined for the same reason: keep it a design record, don't make it an always-available skill.
+2. **It lacks the field-0 gate the pilots proved was non-optional.** The pilots found that an audit must first gate on *"was this project ever scaffolded by / opted into the standard?"* — without it, a run against a never-scaffolded project produces a false-positive cascade the BACKLOG calls *"actively harmful, not just noisy."* This skill has no such gate; it starts auditing immediately.
+
+The skill stays in-repo as the **design record** of the light-tier audit method. **Do not symlink / promote it without first porting the field-0 opted-in gate** (see [`docs/audits/2026-06-13-*-context-drift.md`](../../docs/audits/) and [D-013](../../docs/DECISIONS.md)).
 
 ## What lives in this file vs `procedure.md`
 

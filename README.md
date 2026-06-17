@@ -50,10 +50,10 @@ cp -r skills/* ~/.claude/skills/
 Verify the install:
 
 ```bash
-ls -la ~/.claude/skills/ | grep -E "prd-creator|context-engineering|design-system-bootstrap"
+ls -la ~/.claude/skills/ | grep -E "prd-creator|context-engineering|design-system-bootstrap|furnace-plan"
 ```
 
-You should see all three.
+You should see the three chain skills plus `furnace-plan`. The repo also hosts **`furnace-plan`**, an explicit-invoke plan-authoring discipline that is *not* part of the idea→product chain; the symlink loop above installs it alongside the three.
 
 ## How to use
 

@@ -6,7 +6,7 @@ Read automatically at the start of every Claude Code session; follow these rules
 
 ## What this project is
 
-Skill-development workspace for the `context-engineering` skill (and siblings `prd-creator`, `design-system-bootstrap`). The "product" is installable Claude Code / Codex skills consumed via symlinks in `~/.claude/skills/`. No deployed application. Single developer.
+Skill-development workspace for the `context-engineering` skill (and siblings `prd-creator`, `design-system-bootstrap`). The "product" is installable Claude Code / Codex skills consumed via symlinks in `~/.claude/skills/`. No deployed application. Single developer. The repo also hosts two **non-chain** skills: `furnace-plan` (an explicit-invoke plan-authoring discipline, symlinked like the chain skills) and `context-engineering-audit` (a design record, deliberately **not** symlinked per [D-019](docs/DECISIONS.md)).
 
 ---
 
@@ -55,7 +55,7 @@ The scope check is the outer gate; inside it, run the whole loop (edit → verif
 
 ### Non–Claude-Code agents: no product writes (one measurement-data carve-out)
 
-Outside agent surfaces (Cowork, claude.ai, Codex, etc.) may not author or edit **product** — skills, code, docs, decisions — which must go through the Claude-Code scope-gated workflow; they propose and wait for per-task permission instead. **Exception:** a designated, append-only **measurement artifact** an outside agent owns may be written by that agent — currently only the furnace trial ledger (Cowork's `/plan-review` writes it; see [D-018](docs/DECISIONS.md)). The test: *product, or the agent's own measurement output?* Product is banned; own-measurement-data is permitted. **Failure it prevents:** out-of-band edits from tools whose discipline rules differ, and silent divergence from the scope-gated workflow — without forcing a reviewer's own findings out of the repo where they inform improvement.
+Outside agent surfaces (Cowork, claude.ai, Codex, etc.) may not author or edit **product** — skills, code, docs, decisions — which must go through the Claude-Code scope-gated workflow; they propose and wait for per-task permission instead. **Exception:** a designated, append-only **measurement artifact** an outside agent owns may be written by that agent — currently only the furnace trial ledger (Cowork's `/plan-review` writes it; see [D-018](docs/DECISIONS.md)). The test: *product, or the agent's own measurement output?* Product is banned; own-measurement-data is permitted. **Failure it prevents:** out-of-band edits from tools whose discipline rules differ, and silent divergence from the scope-gated workflow — without forcing a reviewer's own findings out of the repo where they inform improvement. **Committing the carve-out's writes:** the outside agent appends to the working tree but cannot commit, so a Claude-Code session that finds an unstaged change to **`skills/furnace-plan/trial-ledger.md`** it did not make should sweep it into a dedicated commit (e.g. "Sweep Cowork ledger append"). Scope this strictly to that one file — never generalize it to "commit any working-tree change you didn't make."
 
 ### Checkpoint between phases of multi-step work
 

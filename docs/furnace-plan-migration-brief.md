@@ -1,5 +1,7 @@
 # Furnace-plan migration brief
 
+> **SUPERSEDED — executed 2026-06-17 via [D-020](DECISIONS.md).** The migration is done: `furnace-plan` + its ledger now live at `skills/furnace-plan/`, symlinked into `~/.claude/skills/`. This brief is kept only as the cold-start record of the review that preceded the move. *(Note: its "other four skills … correctly symlinked" claim was wrong — three are; `context-engineering-audit` is deliberately un-symlinked per [D-019](DECISIONS.md). Left uncorrected since the brief is historical.)*
+
 <!-- Written 2026-06-17 as a cold-start handoff. Self-contained: assumes no memory of the authoring conversation. Purpose: context for reviewing Rex's plan to move the furnace-plan skill (and its trial ledger) into version control. -->
 
 **Read this to review Rex's migration plan against decided constraints and open questions.** Rex has his own plan for the move; this brief is the context to evaluate it, not a plan itself.

@@ -56,6 +56,14 @@ Do **not** build an `/audit-context` (drift-audit) skill. Brownfield context dri
 
 Outside agent surfaces (Cowork, claude.ai, Codex, etc.) may not author or edit **product** — skills, code, docs, decisions — which go through the Claude-Code scope-gated workflow. **Exception:** a designated, append-only **measurement artifact** the agent owns may be written by that agent — currently only the furnace trial ledger (Cowork's `/plan-review` writes it). Category test: *product, or the agent's own measurement output?* Product banned, own-measurement-data permitted. Replaces the former blanket "agents are read-only here"; reverses the 2026-06-16 no-carve-out call. Full entry: [`DECISIONS.md`](DECISIONS.md) D-018.
 
+### D-019 — `context-engineering-audit` not promoted to global; stays a design record
+
+Do **not** symlink / promote the `context-engineering-audit` skill into `~/.claude/skills/`. It stays in-repo as the design record of the light-tier audit method (consistent with D-013's by-hand verdict) and lacks the pilots' field-0 "opted-into-the-standard?" gate. **If ever promoted, port that gate first** — without it an audit on a never-scaffolded project produces a harmful false-positive cascade. Full entry: [`DECISIONS.md`](DECISIONS.md) D-019.
+
+### D-020 — `furnace-plan` hosted + versioned in this repo
+
+`furnace-plan` lives at `skills/furnace-plan/`, symlinked into `~/.claude/skills/` like the chain skills (no longer a bare unbacked dir). Its `trial-ledger.md` is the durable cross-project furnace-learning ledger. D-018's category test partitions the two files: **`SKILL.md` = product** (edit only via the Claude-Code scope-gated workflow), **`trial-ledger.md` = measurement output** (the distinct reviewer may append; see D-018 for that write permission — not restated here). `SKILL.md` forces plan mode (`EnterPlanMode`) as its first action on invocation. Full entry: [`DECISIONS.md`](DECISIONS.md) D-020.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).

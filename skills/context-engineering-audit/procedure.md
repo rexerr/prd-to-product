@@ -68,5 +68,5 @@ The procedure ends at "report saved." Anything after — discussion of findings,
 - The skill this audit checks against: [`/Users/rexc/Sites/prd-to-product/skills/context-engineering/`](../context-engineering/).
 - Output skeleton: [`templates/output-skeleton.md`](templates/output-skeleton.md).
 - Reference audits that shaped this procedure: `/Users/rexc/Sites/the-council/docs/context-audit-2026-05-10.md`, `/Users/rexc/Sites/field-society-demo/docs/context-audit-2026-05-10.md` (external repos).
-- Where audit findings drive skill changes: continuous-mode discipline in [`/Users/rexc/Sites/prd-to-product/ROADMAP.md`](../../ROADMAP.md) "Continuous mode after Phase 4."
+- Where audit findings drive skill changes: the continuous-mode discipline tracked in [`/Users/rexc/Sites/prd-to-product/BACKLOG.md`](../../BACKLOG.md) and the `docs/retros/` continuous-mode sessions (`ROADMAP.md` was consolidated into `BACKLOG.md`, 2026-06-12).
 - Heavy-validator option as future work: [`NOTES.md`](NOTES.md).
