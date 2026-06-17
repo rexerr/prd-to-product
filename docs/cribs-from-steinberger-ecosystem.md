@@ -1,4 +1,4 @@
-<!-- Last mined: 2026-06-17 (Round 3) · Sources current as of that date · Update this header on every re-mine -->
+<!-- Last mined: 2026-06-17 (Round 3 + completeness pass; C-01–C-41) · Update this header on every re-mine -->
 
 # Cribs from the Steinberger / mvanhorn ecosystem
 
@@ -156,6 +156,20 @@ family-org = the structure the solutions library (#3) and a growing family need.
 | C-37 | **4-layer token contract with a promotion path** — classify every token: identity / required-structure / defaulted / slot-alias / brand-extension; explicit C→B→A promotion when a default emerges | "Is this token required?" ambiguity → over-specified or dangling-`var()` token files. Biggest design-system steal | Medium | Proposed |
 | C-38 | **Emit a complete, self-resolving `:root`** — every token resolves with no external defaults sheet, because agents paste one brand's block into a single artifact `<style>` | Token files that break the moment they're pasted into a self-contained artifact — exactly our markdown-only delivery | Small | Proposed |
 | C-39 | **Pair compiled `tokens.css` with a fixed-section `DESIGN.md` prose companion** — CSS is the machine contract; prose tells the agent *when* to use each token | A token dump with no rationale, or prose with no enforceable values | Small | Proposed |
+
+---
+
+### Round 1 completeness pass (recovered 2026-06-17)
+
+Back-filled after a sweep found these were surfaced in conversation (from direct reads of the
+printing-press `SKILL.md`) but never written into the doc during the original curation.
+
+| ID | Crib | Failure it prevents | Effort | Status |
+|---|---|---|---|---|
+| C-40 | **Never quote human-time estimates** ("an afternoon", "~15–30 min", "quick fix") — describe scope instead: files touched, lines, relative size, or token/session cost | Estimates that are both wrong and trust-eroding. The *agent* does the work, so a wall-clock figure is fabricated — and "an afternoon to build" trains the user to distrust the output. The carve-out is genuinely time-bound external things (a CI run, an install) | Small | Proposed |
+| C-41 | **Optimize for time-to-ship, not time-to-document; don't split one idea across multiple mandatory artifacts** — the printing-press v2 rewrite *deleted* mandatory research docs because they surfaced failures late | Over-scaffolding: ceremony artifacts that delay shipping and fragment one idea across files nobody reconciles | Small | Proposed |
+
+**Reviewed and deliberately left as context, not cribs** (framing/principle, not actionable to-dos — pull in if wanted): the *agent-native dual-surface* principle (you cut dual-surface scope), the *emboss/polish/reprint + retro-vs-polish* vocabulary, and the *"secret identity / creativity ladder / absorb-and-transcend"* philosophy (it already informs the Divergence audit's spirit).
 
 ---
 
