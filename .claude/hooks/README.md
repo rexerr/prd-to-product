@@ -13,6 +13,7 @@ This directory holds the hooks that the context-engineering skill emitted for th
 | Hook | Matcher | What the script blocks |
 |---|---|---|
 | `block-env-commit.sh` | `Bash` | Staging env files — the script inspects the command and blocks only `git add/stage … .env*` (always emitted). |
+| `validate-skills.sh` | `Bash` | A `git commit` when any `skills/*/SKILL.md` has malformed frontmatter (missing/empty `name`/`description`, no opening/closing `---` fence, leading tabs, `key:value` with no space) or a duplicate `name`. Structural + cheap-syntactic (not full YAML); **fails open** if no `SKILL.md` is found. Crib C-27 / D-017. |
 
 ### Scoping: the matcher selects the tool, the script decides
 

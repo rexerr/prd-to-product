@@ -28,6 +28,11 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-commit.sh"
+          },
+          {
+            "//": "Hook: validate-skills. Blocks `git commit` when any skills/*/SKILL.md has malformed frontmatter or a duplicate name. Bare Bash matcher; scoping lives in the script. Fails open when no SKILL.md is found. Crib C-27 / D-017.",
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/validate-skills.sh"
           }
         ]
       }

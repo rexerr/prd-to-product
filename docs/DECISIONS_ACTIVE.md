@@ -48,6 +48,10 @@ When cluster-0 source material substantively covers a later cluster, prd-creator
 
 Do **not** build an `/audit-context` (drift-audit) skill. Brownfield context drift is handled by hand from the three pilot audit docs ([`docs/audits/`](audits/)); once a project is brought current, it's current. **Revisit only if** a change must sweep across *all* current projects at once *and* by-hand propagation becomes impractical — and even then scope a *targeted-propagation* tool to that need, not this drift auditor. Full entry: [`DECISIONS.md`](DECISIONS.md) D-013.
 
+### D-017 — skill-frontmatter validation hook (commit-time gate)
+
+`.claude/hooks/validate-skills.sh` — a PreToolUse `Bash` hook in `.claude/settings.json`, sibling to `block-env-commit` — blocks `git commit` when any `skills/*/SKILL.md` has malformed frontmatter (missing/empty `name`/`description`, no opening/closing `---` fence, leading tabs, `key:value` with no space) or a duplicate `name`. v1 is structural + cheap-syntactic (not a full YAML parse), **fails open** when no `SKILL.md` is found, validates the working tree, and gates the agent's commits only. First adopted crib of the hooks-as-gates direction. Full entry: [`DECISIONS.md`](DECISIONS.md) D-017.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).
