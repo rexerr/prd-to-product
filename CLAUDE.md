@@ -53,9 +53,9 @@ State files to touch, the change and why, and estimated scope (small / medium / 
 
 The scope check is the outer gate; inside it, run the whole loop (edit → verify → retro if warranted → commit → push when asked) without stopping to ask permission. Always gated on Rex, never self-cleared: product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting work, force-push); self-modification of agent config (`.claude/` commands, settings, CLAUDE.md startup behavior). Rationale: [`docs/agent-process-brief.md`](docs/agent-process-brief.md).
 
-### Non–Claude-Code agents are read-only here
+### Non–Claude-Code agents: no product writes (one measurement-data carve-out)
 
-Other agent surfaces (Cowork, claude.ai, etc.) propose changes and wait for per-task permission — never write. **Failure it prevents:** out-of-band edits from tools whose discipline rules differ; silent divergence from the scope-gated workflow.
+Outside agent surfaces (Cowork, claude.ai, Codex, etc.) may not author or edit **product** — skills, code, docs, decisions — which must go through the Claude-Code scope-gated workflow; they propose and wait for per-task permission instead. **Exception:** a designated, append-only **measurement artifact** an outside agent owns may be written by that agent — currently only the furnace trial ledger (Cowork's `/plan-review` writes it; see [D-018](docs/DECISIONS.md)). The test: *product, or the agent's own measurement output?* Product is banned; own-measurement-data is permitted. **Failure it prevents:** out-of-band edits from tools whose discipline rules differ, and silent divergence from the scope-gated workflow — without forcing a reviewer's own findings out of the repo where they inform improvement.
 
 ### Checkpoint between phases of multi-step work
 

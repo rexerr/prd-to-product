@@ -52,6 +52,10 @@ Do **not** build an `/audit-context` (drift-audit) skill. Brownfield context dri
 
 `.claude/hooks/validate-skills.sh` — a PreToolUse `Bash` hook in `.claude/settings.json`, sibling to `block-env-commit` — blocks `git commit` when any `skills/*/SKILL.md` has malformed frontmatter (missing/empty `name`/`description`, no opening/closing `---` fence, leading tabs, `key:value` with no space) or a duplicate `name`. v1 is structural + cheap-syntactic (not a full YAML parse), **fails open** when no `SKILL.md` is found, validates the working tree, and gates the agent's commits only. First adopted crib of the hooks-as-gates direction. Full entry: [`DECISIONS.md`](DECISIONS.md) D-017.
 
+### D-018 — Outside agents: no product writes, one measurement-ledger carve-out
+
+Outside agent surfaces (Cowork, claude.ai, Codex, etc.) may not author or edit **product** — skills, code, docs, decisions — which go through the Claude-Code scope-gated workflow. **Exception:** a designated, append-only **measurement artifact** the agent owns may be written by that agent — currently only the furnace trial ledger (Cowork's `/plan-review` writes it). Category test: *product, or the agent's own measurement output?* Product banned, own-measurement-data permitted. Replaces the former blanket "agents are read-only here"; reverses the 2026-06-16 no-carve-out call. Full entry: [`DECISIONS.md`](DECISIONS.md) D-018.
+
 ## Cross-references
 
 - Full append-only log with rationale: [`docs/DECISIONS.md`](DECISIONS.md).
