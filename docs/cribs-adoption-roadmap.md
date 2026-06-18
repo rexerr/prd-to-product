@@ -1,4 +1,4 @@
-<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) · AB-03/AB-i3 (claude-skill-bundles) — 2026-06-18; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18; C-14 adopted (→D-025) 2026-06-18; C-10 adopted (→D-026) 2026-06-18; CF-04 adopted (→D-027) 2026-06-18; C-15 adopted (→D-028) 2026-06-18; CF-02 adopted (→D-029) 2026-06-18; DG-02 declined-and-parked (→D-030) 2026-06-18 — Wave 1 cribs all resolved. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
+<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) · AB-03/AB-i3 (claude-skill-bundles) — 2026-06-18; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18; C-14 adopted (→D-025) 2026-06-18; C-10 adopted (→D-026) 2026-06-18; CF-04 adopted (→D-027) 2026-06-18; C-15 adopted (→D-028) 2026-06-18; CF-02 adopted (→D-029) 2026-06-18; DG-02 declined-and-parked (→D-030) 2026-06-18 — Wave 1 cribs all resolved. gstack mined + adversarially verified 2026-06-18 (G-01–G-21; 7 survivors → Wave 2). Update this marker whenever a source tracker gains cribs or a crib changes status. -->
 
 # Cribs adoption roadmap — one strategy across all four trackers
 
@@ -16,6 +16,7 @@ The four crib trackers are **inventories** (what exists, organized by source). T
 | [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; 4 adopted (CF-03→D-023, CF-06→D-024, CF-04→D-027, CF-02→D-029), rest Proposed |
 | [`cribs-from-designer-skills.md`](cribs-from-designer-skills.md) | `DG-01`–`DG-02` (+ investigates) | Owl-Listener (MC Dean) | Mined 2026-06-17; thin yield; DG-02 declined (→D-030), DG-01 Proposed |
 | [`cribs-from-claude-skill-bundles.md`](cribs-from-claude-skill-bundles.md) | `AB-01`–`AB-03` (+ investigates) | Claude first-party engineering/design/data bundles | Mined 2026-06-18 (before connector disconnect); thin yield; all Proposed. Source not re-fetchable — frozen in `harness-domain-notes.md` |
+| [`cribs/cribs-from-gstack.md`](cribs/cribs-from-gstack.md) | `G-01`–`G-21` (G-17 retired) | `garrytan/gstack` (MIT) | Mined + adversarially verified 2026-06-18; 7 survive / 8 revise / 3 park / 2 refuted (G-02 no-op, G-10 misread). Survivors sequenced into Wave 2 below |
 
 ---
 
@@ -73,6 +74,20 @@ Ordered by leverage-per-effort, then dependency. Each row: crib(s) · landing su
 | `CF-07` source-immutability & merge-on-re-run | co-edited-doc rules; generator re-run path | (T) |
 | `DG-01` even-coverage synthesis rule | context-engineering `.claude/rules` (also hardens our own fan-out) | (T) |
 | `AB-03` per-project-type red-capable-repro definitions *(rides CF-03 — fold in at/after CF-03)* | CLAUDE.md "Reproduce before fixing" + generated harness repro rule | (D) |
+
+**gstack survivors — added 2026-06-18, adversarially verified (default-refuted skeptic, real-file evidence; verdicts in [`cribs/cribs-from-gstack.md`](cribs/cribs-from-gstack.md) § Adversarial verification). Pull as a cohort into the next furnace-plan. 6 actionable + 1 blocked.**
+
+| Crib | Lands on | Class |
+|---|---|---|
+| `G-16` mandatory unresolved-decisions terminal sentinel (last ledger line = `NO UNRESOLVED DECISIONS` or an enumerated block; unbolded) | furnace-plan ledger spec | (T) |
+| `G-08` semantic-leak checklist before finalizing (5 categories) | prd-creator output gate — *drop gstack's regex/audit-sink infra; checklist only* | (T) |
+| `G-06` anti-sycophancy posture (banned-hedge list + take-a-position-and-name-what-would-change-it) | prd-creator interview conduct — *keep the brainstorm-divergence carve-out explicit* | (T) |
+| `G-11` engineered-blindness verifier (withhold your reasoning; pass artifact + criteria only; named self-verify fallback) | CLAUDE.md delegate-to-subagent line | (D) |
+| `G-19` memorable-thing positioning anchor + falsifiable design rationale (cite an observable, not a vibe) | design-system-bootstrap DESIGN_SYSTEM.md companion (the C-39 doc) | (T) |
+| `G-14` generated-file provenance banner | context-engineering emitted files + `output-small` — *INVERT gstack's wording → "safe to hand-edit; re-run to regenerate shape"; cite hand-edit-in-ignorance, not clobber (D-005 owns clobber)* | (T) |
+| `G-18` fence external reviewer off instruction-bearing files (`skills/**/SKILL.md`) | the `C-24` oracle/council prompt — **BLOCKED: that prompt template isn't built yet; adopt when it is** | (D) |
+
+> **Sequencing note (gstack cohort).** All are sub-50-line edits. Cleanest single-file first: `G-16` (furnace-plan) and `G-11` (CLAUDE.md). `G-18` rides on `C-24` (Wave 3 / unbuilt) — don't plan it standalone. The 8 REVISE-tier gstack cribs are *not* here: they survived only as one-to-three-line sharpenings or folds into existing cribs (C-18/CF-13, C-22) and are recorded in the tracker, not given wave slots.
 
 ### Wave 3 — real build (net-new structure; `/furnace-plan` each)
 
