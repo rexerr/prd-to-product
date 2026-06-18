@@ -1,0 +1,111 @@
+{
+  "question": "Should a solo designer (not an engineer) who builds UI products with AI coding agents \u2014 nearly all deployed to Vercel, working fast and alone, with an anti-accretion \u201cRule of Two\u201d philosophy \u2014 build a \u201cconcurrency-aware mode\u201d into his project scaffolder (context-engineering) so he can run multiple AI coding sessions in parallel on UI projects? The scaffolder currently installs a hook that BLOCKS git worktrees in UI projects, because the dev server watches the main checkout, so a change made in a worktree never reaches the running app and visual confirmation silently lies. Running multiple sessions on the SAME working tree already works (one server, honest confirmation) but risks two sessions colliding on the same file \u2014 which nearly happened once but held. Options: (A) per-worktree dev-server port; (B) build nothing, document \u201cshared tree, disjoint files, commit often\u201d; (C) worktrees for non-visual work only; (D) Vercel preview-deploy as the confirm surface; (E) devcontainer per worktree. Building changes a safety guard; getting it wrong is worse than status quo and sticky. The friction is an observed desire, not yet an in-project failure. Worth pursuing \u2014 which option \u2014 or too much machinery?",
+  "title": "Concurrency-aware mode for UI projects \u2014 worth pursuing?",
+  "timestamp": "2026-06-18T08:58:00",
+  "advisors": [
+    {
+      "name": "The Skeptic",
+      "response": "The block exists because visual confirmation silently lying is catastrophic \u2014 and every option except B reintroduces exactly that failure mode through a side door. Option A: \"if the confirmer ever hits the wrong port\" isn't an edge case, it's the default failure when you have N servers on N ports and a human (or agent) under time pressure picking one. You'd be replacing a guard against silent lying with a configuration that invites silent lying. Option D is worse than it looks: Vercel preview deploys lag local edits by build-and-deploy latency, so \"confirm on preview\" means confirming a stale artifact \u2014 the same lie, now with network delay, and it costs build minutes per visual check. C is fine but it's just B with extra steps, since UI work IS the visual work.\n\nNow the actual flaw: the trigger here is one near-miss that was caught, on a workflow that worked. The collision held. Nothing failed. The Rule of Two exists precisely to kill decisions made on this evidence \u2014 you have one data point, and it's a success, not a failure. You're proposing to permanently mutate a safety guard in every future scaffolded project to buy throughput you haven't demonstrated you're bottlenecked on. A solo designer is the bottleneck, not the session count \u2014 parallel sessions mean parallel review burden on one human, and review is where your near-miss actually lived.\n\nVerdict: Build nothing (B). Write the one-paragraph \"shared tree, disjoint files, commit often\" doc. Revisit only when a real collision causes real lost work, twice."
+    },
+    {
+      "name": "The Architect",
+      "response": "Worktrees are a solution to a problem he doesn't have. The actual problem isn't \"I can't run parallel sessions cleanly\" \u2014 it's \"I have one near-miss and a desire for more throughput.\" Those are different variables. You're being asked to harden a safety guard against a failure that hasn't occurred, and the proposed fix (A) makes the guarded invariant weaker, not stronger: a wrong-port confirmer is the exact silent-lie failure the original block exists to prevent. You'd be spending real machinery to reintroduce the risk you already paid to eliminate.\n\nReframe: parallelism on a solo UI workflow is rarely bottlenecked by isolation. It's bottlenecked by the designer's eyes. He visually confirms one screen at a time \u2014 that's a serial human act. Two agents in parallel both want his eyeballs on the same dev server. Worktrees don't buy throughput; they buy the illusion of it while fragmenting his attention.\n\nHis own Rule of Two settles this: one near-miss is one. Not two. By his own formally-applied law, he builds nothing yet.\n\nSo the answer is B, with one cheap instrument \u2014 and the smallest experiment that proves the right variable: adopt \"shared tree, disjoint files, commit often\" as the documented story, and add a single pre-edit collision check (a hook that warns if a second session touches an uncommitted file another session opened). That costs near-zero, strengthens the real observed risk (collision), touches no visual-confirmation invariant, and generates the data. If collisions recur despite it \u2014 that's failure number two. Then, and only then, evaluate D (preview-deploy confirm), never A. D respects the invariant; A betrays it."
+    },
+    {
+      "name": "The Stranger",
+      "response": "The block lists \"worktrees,\" \"dev server,\" \"visual confirmation,\" \"hook,\" \"scaffolder,\" \"preview-deploy,\" \"Vercel\" as if their relationships are self-evident. They are not. Decode for an outsider: the operator wants two robots editing one set of blueprints at once. Today they share one desk \u2014 fast, but the robots occasionally grab the same page. The \"clean\" fix gives each robot its own desk, but the inspector who checks the work only ever looks at the original desk \u2014 so a robot can swear it fixed something the inspector will never see. That is the whole problem. Everything else is plumbing.\n\nThree unspoken assumptions the author wants me to accept:\n\n1. That parallelism is wanted at all. The evidence is one near-miss and a \"desire for more throughput.\" A solo person who \"works fast, alone, values simplicity\" is describing serialized work. Where is the queue of blocked work that two sessions would clear? It is not in the brief.\n\n2. That a collision \"nearly\" happening is a signal. It resolved itself. By the operator's own Rule of Two, that's one failure, and it didn't even land.\n\n3. That the safety guard is the thing under pressure. It isn't. The guard is working \u2014 it blocked the unsafe path. The discomfort is that the operator wants the guard to not apply to him.\n\nWho is affected: one person, future-him, inheriting whichever option ships into every project forever. Option D (preview-deploy) is the only one that doesn't make the inspector lie \u2014 but it ships permanent machinery to solve a problem that has happened zero times.\n\nVerdict: B. Not as a compromise \u2014 as the correct answer. Write the one-paragraph \"shared tree, commit often\" doc. Build nothing until a real collision lands twice."
+    },
+    {
+      "name": "The Long View",
+      "response": "A worktree dev-server port mode is a software asset, and software depreciates. Three years out, the parallelism plumbing you build today is either obsolete (Vercel preview flows, agent-orchestration tooling, and Claude Code's own concurrency story will all have moved) or it's a load-bearing dependency you now maintain across every project you ever scaffolded. Option A and E both compound the wrong thing: maintenance surface on a safety guard. Every project generated under that mode inherits it forever \u2014 you're not making one decision, you're making it N times into the future, each one stickier than the last.\n\nWhat compounds in the right direction is the Rule of Two itself. You have a documented track record of declining features when a workaround held. That reputation-with-yourself \u2014 the discipline \u2014 is the actual asset, and it's worth more than any throughput gain. Building A on one near-miss spends that asset to buy speed you haven't yet proven you need.\n\nThe second-order effect you're not seeing: the friction isn't \"I can't parallelize,\" it's \"I want more throughput.\" Worktrees are one answer; preview-deploys (D) are a strictly better one because you're already paying for Vercel \u2014 the confirm surface exists, costs you nothing new, and points away from the local-port trap that makes A worse-than-status-quo. D is where the industry is going anyway; A is bespoke infrastructure you'd be maintaining alone.\n\nVerdict: B now, D when a real failure appears. Document \"shared tree, disjoint files, commit often.\" Note preview-deploy confirmation as the sanctioned next step the day a collision actually costs you. Don't modify the guard on a desire. The hour spent hardening A is an hour not spent shipping UI \u2014 which is the work that actually compounds your portfolio."
+    },
+    {
+      "name": "The Veteran",
+      "response": "I've watched a dozen solo operators build \"parallel mode\" into their tooling. Here's the pattern: the throughput fantasy is real, the throughput gain is not. You are one person. You can attend to one visual confirmation at a time. Two agent sessions running in parallel on UI work doesn't double your output \u2014 it doubles your context-switching tax, and you're the bottleneck, not the machine. The standard playbook says: don't build concurrency infrastructure for a single-threaded operator. That playbook applies here.\n\nNow the honest exception-check: is your case special? Your own Rule of Two says no. You have one near-miss, zero in-project failures. That's not \"the manual pattern failed twice\" \u2014 that's \"the manual pattern got nervous once.\" Building (A) or (D) now violates your own stated discipline, and you'd be modifying a safety guard on a load-bearing invariant on the strength of a single scare. That's exactly the move you've correctly declined before.\n\nThe trap in option A is the one I've seen bite: wrong-port confirmation is silent breakage wearing a green checkmark. That is strictly worse than today's honest collision risk, where at least git tells you someone stepped on you.\n\nVerdict: B, with teeth. Document \"shared tree, disjoint files, commit often\" \u2014 and add the one cheap guard the near-miss actually justifies: a pre-edit check that warns when two sessions touch the same file. That addresses the observed event, costs almost nothing, and touches no invariant. Revisit worktrees only when you've hit a real collision twice. If that day comes, the answer is D (preview-deploy confirm), never A \u2014 Vercel already solved your isolation problem; don't rebuild it locally."
+    }
+  ],
+  "peer_reviews": [
+    {
+      "reviewer": "The Skeptic",
+      "strongest": "The Architect",
+      "strongest_why": "It relocates the bottleneck to the designer's serial visual review, respects the visual-confirmation invariant, and proposes the single minimal data-generating instrument \u2014 a pre-edit collision-warning hook \u2014 matched to the one observed near-miss at near-zero cost.",
+      "blind_spot": "The Architect",
+      "blind_spot_what": "It endorses preview-deploy as the eventual escalation while calling it invariant-respecting, missing that a build-lagged Vercel preview confirms a stale artifact \u2014 the same silent-lie the block exists to prevent.",
+      "all_missed": "All five frame the collision as file-level git contention, but none asks whether two agents on one tree corrupt each other's UNCOMMITTED mid-edit state \u2014 interleaved writes between commits that a pre-edit file-touch check would not catch, which is the actual mechanism of the near-miss they're all building around."
+    },
+    {
+      "reviewer": "The Architect",
+      "strongest": "The Veteran",
+      "strongest_why": "It alone names the real bottleneck (the solo reviewer's single-threaded attention) AND adds a proportionate cheap guard \u2014 the pre-edit collision check that addresses the actual near-miss without touching the invariant.",
+      "blind_spot": "The Long View",
+      "blind_spot_what": "It frames the maintenance/depreciation cost well but endorses preview-deploy without noticing it confirms a build-lagged stale artifact \u2014 the same silent lie it condemns in option A.",
+      "all_missed": "None interrogates whether the proposed collision-check guard itself needs shared lock state the single-tree setup may not expose (possibly more machinery than 'build nothing' admits); and all accept the binary parallel-vs-serial framing, missing the cheapest real win \u2014 staggered/queued sessions (one confirms while the next scaffolds) that raise throughput without touching isolation or the guard."
+    },
+    {
+      "reviewer": "The Stranger",
+      "strongest": "The Skeptic",
+      "strongest_why": "It dismantles every non-B option on a single consistent axis \u2014 each reintroduces the silent-lie the guard exists to prevent \u2014 and exposes preview-deploy's hidden build-latency staleness that the pro-D responses missed.",
+      "blind_spot": "The Long View",
+      "blind_spot_what": "It endorses preview-deploy as the eventual answer without noticing it confirms a stale, build-delayed artifact \u2014 the same class of silent-lie, just network-delayed.",
+      "all_missed": "None asks the cheapest diagnostic question \u2014 instrument-and-measure the actual blocked-work queue before deciding \u2014 so every verdict reasons from a single anecdote rather than data."
+    },
+    {
+      "reviewer": "The Long View",
+      "strongest": "The Skeptic",
+      "strongest_why": "It attacks every non-B option on the same load-bearing axis the question makes central and uniquely catches that preview-deploy confirms a stale artifact rather than being a free Vercel win.",
+      "blind_spot": "The Long View",
+      "blind_spot_what": "It endorses preview-deploy as the eventual answer while ignoring that preview lag recreates the exact silent-confirmation lie it pins on option A.",
+      "all_missed": "None proposes actually measuring the throughput desire (no blocked-work queue, no count of how often two sessions were genuinely wanted), so every verdict rests on the same unmeasured premise; and none separates the two independent failure modes \u2014 file collision (shared tree) vs silent-lying confirmation (isolated tree)."
+    },
+    {
+      "reviewer": "The Veteran",
+      "strongest": "The Skeptic",
+      "strongest_why": "It names the decision-rule violation explicitly (Rule of Two kills decisions on one successful data point) and debunks every non-B option including preview-deploy's stale-artifact lag, which the others skip or get backwards.",
+      "blind_spot": "The Architect",
+      "blind_spot_what": "It defaults to preview-deploy as the eventual upgrade path while never auditing preview-deploy's own silent-lie risk (build latency confirming a stale build).",
+      "all_missed": "None costs the throughput claim \u2014 two parallel sessions share one reviewer's eyes, so the realistic speedup is small and possibly negative once context-switching is priced; the operator could instrument and log collisions for a few weeks to convert 'desire' into data before deciding at all."
+    }
+  ],
+  "anonymization_mapping": {
+    "A": "The Long View",
+    "B": "The Veteran",
+    "C": "The Skeptic",
+    "D": "The Architect",
+    "E": "The Stranger"
+  },
+  "chairman": {
+    "recommendation_headline": "Build nothing now (Option B), add one cheap collision guard, and instrument the throughput desire \u2014 escalate only after two real, in-project failures, and never to per-port worktrees.",
+    "agreement": "All five advisors land on B as the answer, not a compromise, converging independently on three points. (1) The bottleneck is the human, not the machine: Architect, Veteran, Stranger and Long View all locate the constraint in the designer's serial visual review \u2014 two agents want one pair of eyes, so parallelism fragments attention rather than multiplying output. (2) Option A (per-port) is strictly worse than status quo: Skeptic, Architect, Veteran and Long View agree a wrong-port confirmation is a silent lie wearing a green checkmark, replacing today's honest collision risk (git tells you someone stepped on you) with dishonest confirmation. (3) The Rule of Two forbids acting now: one near-miss that HELD is one data point, and a success at that \u2014 not the two failures the discipline requires before mutating a safety guard inherited by every future scaffolded project.",
+    "clashes": "The only real split is the escalation path. The Long View, with the Architect as fallback, endorses D (preview-deploy) as the eventual upgrade because Vercel is already paid for and it avoids the local-port trap. The Skeptic attacks this head-on: a preview deploy lags local edits by build-and-deploy latency, so 'confirm on preview' confirms a stale artifact \u2014 the same silent lie as A, now with network delay and burned build minutes. The peer round broke the tie decisively against D's promoters.",
+    "blind_spots": "The peer round surfaced five gaps no single advisor saw. (1) The near-miss was mis-modeled: all framed collision as file-level git contention, but the real risk is two agents corrupting each other's UNCOMMITTED mid-edit state \u2014 interleaved writes a pre-edit file-touch check would not catch, which weakens the proposed guard. (2) Nobody costed the throughput claim: there is no blocked-work queue and no count of how often two sessions were genuinely wanted \u2014 the desire is asserted, never quantified. (3) The two failure modes (file collision on a shared tree vs silent-lying confirmation on an isolated tree) were never separated. (4) The cheapest real win went unnamed: staggered/queued sessions (one confirms while the next scaffolds) raise throughput without touching isolation or the guard. (5) The proposed collision guard may itself be machinery \u2014 a cross-session check may need shared lock state the single-tree setup doesn't expose.",
+    "recommendation": "Build nothing into the scaffolder. Keep the worktree block exactly as it is \u2014 it is the one component here protecting against a catastrophic, silent failure, and four advisors plus four reviewers agree every isolation option (A, D, E) reintroduces that failure through a different door. Adopt the documented pattern 'shared tree, disjoint files, commit often,' and add at most the one lightweight instrument the council converged on: a pre-edit warning when a second session touches a file with uncommitted changes from another session \u2014 but treat it as provisional, because the peer round showed it won't catch interleaved mid-edit corruption and may need lock state you don't have, so if it turns out to require real infrastructure, drop it and fall back to discipline alone. Do NOT ship preview-deploy (D) as a planned upgrade path: the peer round showed it confirms a build-lagged stale artifact, the same silent lie as A. This whole question rests on an observed desire with zero in-project failures, and your Rule of Two exists precisely to refuse that \u2014 one near-miss that held is not evidence, it's the absence of it. The discipline of declining is itself your most valuable compounding asset; spend it only on a demonstrated, twice-repeated failure.",
+    "first_step": "For the next two to four weeks, log every moment you genuinely wanted a second parallel session and every actual file collision \u2014 converting 'desire' into a counted queue \u2014 and decide nothing until that data exists.",
+    "alignment": [
+      {
+        "name": "The Skeptic",
+        "position": "Build nothing (B)",
+        "argument": "Every option but B reintroduces the silent-lie failure the block exists to prevent, and one near-miss that held is a success, not the evidence the Rule of Two demands."
+      },
+      {
+        "name": "The Architect",
+        "position": "B plus collision check",
+        "argument": "The bottleneck is the designer's serial visual review, not isolation, so add one minimal pre-edit collision warning and touch no invariant."
+      },
+      {
+        "name": "The Stranger",
+        "position": "B, the correct answer",
+        "argument": "A solo person who works fast and alone is describing serialized work, and the guard isn't under pressure \u2014 the operator just wants it not to apply to him."
+      },
+      {
+        "name": "The Long View",
+        "position": "B now, D later",
+        "argument": "Worktree plumbing depreciates into maintenance debt on a safety guard, while the Rule-of-Two track record is the asset that actually compounds."
+      },
+      {
+        "name": "The Veteran",
+        "position": "B with teeth",
+        "argument": "A single-threaded operator gains nothing from concurrency infrastructure; document the pattern and add the one cheap guard the near-miss justifies."
+      }
+    ]
+  }
+}

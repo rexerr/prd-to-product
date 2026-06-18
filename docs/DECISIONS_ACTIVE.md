@@ -1,3 +1,5 @@
+<!-- Reconciled against DECISIONS.md through D-027 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-027 appears here (many are deliberately skipped as visible-by-reading). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+
 # Active decisions
 
 Curated view of currently-binding decisions whose constraints are not obvious from reading code alone. IDs mirror the full append-only history in [`docs/DECISIONS.md`](DECISIONS.md). Read the full entry there for rationale and context.

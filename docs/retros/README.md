@@ -21,6 +21,7 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 ## Failure this session
 
 - **Tag:** [bad substitution / scope creep / lost context / goal drift / none]
+- **Name the artifact.** If a failure landed, quote the specific evidence — the exact bad output, the file:line, the wrong claim — not a generic restatement of the tag. A failure with no quotable artifact is too vague to prune the rule it spawns later.
 - If a failure or near-miss landed, force the lesson→change jump — don't stop at narrating it:
   - **Tool or agent?** the harness/tooling, or the agent's judgment?
   - **Does it generalize?** a one-off, or a class that will recur?
