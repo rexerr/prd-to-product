@@ -1,6 +1,6 @@
 # Session retros
 
-Short end-of-session summaries written by the agent before closing out. Name files `YYYY-MM-DD-topic.md`. At the start of a new session, read the most recent retro to resume context before touching any code.
+Short end-of-session summaries written by the agent before closing out. Name files `YYYY-MM-DD-topic.md`. If a file with that name already exists, append a distinct suffix (e.g. `-2`) — never overwrite an existing retro. At the start of a new session, read the most recent retro to resume context before touching any code.
 
 ## Discipline
 
