@@ -49,17 +49,26 @@ The ledger is the interface to Cowork. It is part of the plan document, so it tr
 ```
 ## Verification ledger
 - Claim: <a load-bearing factual claim the plan makes>
-  Checked: <the exact read/grep/probe you ran, or "could not confirm">
+  Checked: <the exact read/grep/probe — quote the verbatim line(s) you read, not a paraphrase of having read them; or "could not confirm">
   Result: <what you found; if it changed the plan, say which step>
 - Claim: ...
   Checked: ...
   Result: ...
+
+NO UNRESOLVED DECISIONS
 ```
 
+**Terminal sentinel (mandatory).** The ledger's last line is non-optional: it must be either `NO UNRESOLVED DECISIONS` (unbolded, verbatim) or an enumerated block listing every skipped or unresolved decision. A skipped `AskUserQuestion`, or any fork the plan could not settle, goes there explicitly — never silently defaulted to the recommended option. It may not be a bolded or reworded variant (anti-gaming: a styled near-match reads as "done" while hiding a live choice). *Failure it prevents:* a real fork silently resolved to its default, so the plan looks complete but buried a decision the human never saw.
+
 **Honesty rule (load-bearing).** A fabricated "verified" is worse than an honest "unverified" — it converts a catchable bug into an invisible one. If you could not confirm a claim, write `Checked: could not confirm` and `Result: UNVERIFIED` and either make it a probe step or flag it for Cowork. A short honest ledger beats a long green one. Cowork will adversarially attack this ledger; assume every entry will be checked.
+
+## Sign-off items — hand off a decision, never a bare question
+
+When the plan hits a genuine product/scope/intent fork the furnace can't resolve, do **not** escalate a bare "what do you think?". Do all the autonomous work first, then present each item decision-ready: **the stakes in plain language · the proof you already completed · an opinionated recommendation · the exact options.** Every unresolved item here must also appear in the ledger's terminal sentinel above, so it can't be dropped on the way to Cowork/Rex.
+*Failure it prevents:* offloading the analysis back onto Rex/Cowork at the decision point — a fork handed over with no homework done.
 
 ## What this is not
 
 - Not a replacement for Cowork review. Every plan still goes to Cowork. The ledger shrinks and targets what Cowork must check; it does not let anyone skip the review.
 - Not a license to narrow Cowork's scope. Cowork keeps full coverage — the ledger just tells it where you already looked.
-- Not the judgment-call layer. Genuine product/scope/intent decisions are NOT for the furnace to resolve — surface them in the plan as sign-off items and let Cowork and Rex own them.
+- Not the judgment-call layer. Genuine product/scope/intent decisions are NOT for the furnace to resolve — surface them as decision-ready **Sign-off items** (above) and let Cowork and Rex own them.
