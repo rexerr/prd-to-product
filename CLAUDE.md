@@ -126,6 +126,21 @@ If a conflict isn't covered above, surface it as an open question. Don't pick si
 
 ---
 
+## Where new docs go
+
+Default new `docs/` files into a typed subfolder by name; do not add to the root pile. **Failure it prevents:** root-level sprawl — with no routing rule every new doc lands loose at `docs/` (path of least resistance), so browsing the folder becomes a cognitive tax. The rule governs *new* files; existing loose docs stay put until a move is explicitly requested (relocating them breaks ~75–90 cross-references — not worth it incidentally).
+
+- **Stay at root** (anchors, frequently linked): `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `DECISIONS_ACTIVE.md`.
+- **Route by name** into a subfolder (create it lazily on the first file of that type):
+  - `cribs-*` → `docs/cribs/`
+  - `*-brief.md` → `docs/briefs/`
+  - `*-handoff.md`, `design-handoff-*` → `docs/handoffs/`
+  - `*-reference.md`, domain notes, templates → `docs/reference/`
+  - dated retros → `docs/retros/`, council transcripts → `docs/council/`, audits → `docs/audits/`, brainstorms → `docs/brainstorms/`, exploratory product ideas → `docs/product-briefs/` (existing convention).
+- When in a subfolder, write relative links at the correct depth (`../DECISIONS.md`, peer as `sibling.md`) and re-check that cross-references resolve (per "Verification before claiming done").
+
+---
+
 ## Before you respond — load-bearing constraints
 
 Read this block last so it stays in attention. Items here meet the bar: violating them damages product, loses work, or burns a stakeholder. Other rules live in the body; do not duplicate them here.
