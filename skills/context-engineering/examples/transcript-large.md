@@ -113,6 +113,7 @@ This combination is the structural parameterization demo. Four derived flags res
 - `additional_stack_summary`: FastAPI, Postgres (Fly Postgres add-on), Anthropic SDK, structlog for JSON logs.
 - Workflows: single primary workflow (classification pipeline). The three AI surfaces are pipeline stages, not parallel workflows.
 - Vocabulary lock: none. Topic and urgency taxonomies live in `docs/PRD.md` and the prompt constants; no project-wide vocabulary lockdown across docs.
+- `include_synthesis_rule`: no (Q35a — asked because modular; the pipeline classifies one ticket at a time, no multi-source synthesis).
 
 ## Rule shape determination
 
@@ -166,7 +167,7 @@ The combination `stack=python + deploy_target=fly + design_shape=none + voice_an
 > - `docs/DECISIONS_ACTIVE.md`
 > - `docs/retros/README.md`
 >
-> **Not written:** `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `product-rules.md`, `ai-shared.md`, `block-deploy-cli.sh`, `block-worktree.sh`. Each absence traces to a specific suppression flag, not to a forgotten template.
+> **Not written:** `voice-and-tone.md`, `design-system.md`, `design-heuristics.md`, `product-rules.md`, `synthesis-even-coverage.md`, `ai-shared.md`, `block-deploy-cli.sh`, `block-worktree.sh`. Each absence traces to a specific suppression flag, not to a forgotten template.
 >
 > Proceed?
 

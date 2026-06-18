@@ -94,6 +94,7 @@ Derived:
 - Architecture content captures the draft-generation flow (brief → API route → Anthropic SDK → structured response), localStorage for voice-profile persistence, no database, Cloudflare Pages Functions for the API route.
 - `additional_stack_summary`: Anthropic SDK for draft generation. localStorage for voice-profile and recent-drafts cache. No database.
 - Architecture rules: not asked (modular shape — architecture lives in `docs/ARCHITECTURE.md` and per-surface rules; `architecture_rules_numbered_list` is flat-shape only).
+- `include_synthesis_rule`: no (Q35a — asked because modular; Maya's tool generates one draft at a time, no multi-source synthesis).
 
 ## Rule shape determination
 

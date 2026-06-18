@@ -41,6 +41,7 @@ Companion to [`transcript-large.md`](transcript-large.md). The large case is the
 - `voice-and-tone.md` — `voice_and_tone == false`.
 - `design-system.md`, `design-heuristics.md` — `design_shape == "none"`.
 - `product-rules.md` — `include_product_rules == false`.
+- `synthesis-even-coverage.md` — `include_synthesis_rule == false`.
 - `ai-shared.md` — `stack_has_client_server_split == false` (Python service has no client/server boundary; the "never call AI from a client component" rule has no analogue).
 - `block-deploy-cli.sh` (+ `settings.json` entry) — `deploy_target_has_cli_conflict == false` (Fly CLI is the standard deploy path).
 - `block-worktree.sh` (+ `settings.json` entries × 2) — `uses_visual_confirmation_gate == false` (no UI; worktrees do not break a non-existent visual-confirmation gate).
@@ -136,7 +137,7 @@ The surface-specific files emit per [`decisions.md`](../generator/decisions.md) 
 
 (No `voice-and-tone.md`, no `design-system.md`, no `ai-shared.md` — each absence traces to a flag.)
 
-Always-on rules: `git-and-deploy.md`, `session-discipline.md`. (No `product-rules.md`.)
+Always-on rules: `git-and-deploy.md`, `session-discipline.md`. (No `product-rules.md`, no `synthesis-even-coverage.md`.)
 
 ## Two corrections still apply
 

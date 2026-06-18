@@ -1,0 +1,23 @@
+<!--
+Template: .claude/rules/synthesis-even-coverage.md
+Purpose: Conditional rule. Guards multi-source synthesis against primacy/recency bias — the model over-weighting the first/last inputs and reporting a "pattern" only a few sources actually support.
+Related principles: "Every rule cites its failure mode." Applies to any fan-out the agent runs (mining N documents, summarizing N retros, merging N subagent reads).
+Use this template when: the project routinely synthesizes multiple sources into one output — document/research mining, multi-file summarization, or subagent fan-out whose results get merged. Skip if the project does no multi-source synthesis (most single-surface apps).
+-->
+
+# Even-coverage synthesis
+
+Conditional agent rule. When you combine N sources into one synthesized output, the failure to prevent is **silent under-coverage**: under load the model over-represents the sources it read first and last, and reports a "pattern" that only a few early sources actually support (primacy/recency bias). The reader cannot see the gap — the output looks complete.
+
+## The discipline
+
+1. **Tag before you cluster.** Attach the source ID to every observation *before* grouping observations into themes. An untagged observation cannot be coverage-checked.
+2. **Verify every source survived.** After clustering, confirm each input source appears somewhere in the output. If a source is absent, go back and re-read it — its absence is a coverage gap, not evidence it had nothing to say.
+3. **Flag single-source patterns, do not drop them.** A claim only one source supports is a finding ("1 of N"), not noise. Surface it with its support count; never silently discard it, and never inflate it into a "pattern."
+
+## What this prevents
+
+- A 12-source synthesis whose themes all trace to sources 1–3 and 11–12, with the middle eight quietly unrepresented.
+- A confident "most sources say X" where only the first two do — the rest were skimmed past once the model had a hypothesis.
+
+When coverage is load-bearing, report it explicitly: "N sources in, N represented" beats an unqualified summary.

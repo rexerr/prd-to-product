@@ -235,6 +235,7 @@ Free-text fills for the docs templates:
 33. **Vocabulary lock.** Canonical names and forbidden old values, if any. → `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule`.
 34. **Architecture rules** (only for flat shape). 3–5 numbered architecture rules. → `architecture_rules_numbered_list`.
 35. **Product UX rules** (only for flat shape, if applicable). → `product_ux_rules_list`, `critical_invariants`.
+35a. **Even-coverage synthesis rule** (only for modular shape — the modular-only mirror of Q34/Q35). Ask only when `rule_shape == "modular"`: does this project routinely synthesize multiple sources into one output (research/document mining, multi-file summarization, subagent fan-out whose results get merged)? If yes, emit the `synthesis-even-coverage.md` rule. Default No. → `include_synthesis_rule`. Asked here, after rule-shape determination, because `rule_shape` is not settled until workflow count (Q30) lands.
 
 ## Confirm before writing
 
@@ -380,6 +381,7 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 - `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule` — Q33
 - `architecture_rules_numbered_list` — Q34 (only for flat shape)
 - `product_ux_rules_list`, `critical_invariants` — Q35 (only for flat shape, if applicable)
+- `include_synthesis_rule` — Q35a (state map; only for modular shape). Gates the `synthesis-even-coverage.md` rule.
 - `numbered_product_rules_list` — only if `include_product_rules == true`. Free-text 3–10 rules.
 - `open_decisions_list_or_none` — Q31 sub-fill (open decisions for the build plan, free text)
 - `ux_row_doc_names` — only for flat shape. Either drop the row (handled in decisions.md) or fill from project's UX docs.

@@ -40,6 +40,7 @@ The generator should hold answers in a state map with these keys:
 | `codex_usage` | Q25 | enum | `regular`, `occasional`, `none`. |
 | `canonical_workflow_doc_name` | Q26 | string or null | |
 | `include_product_rules` | Q27 | bool | |
+| `include_synthesis_rule` | Q35a | bool | Default false. Gates the modular-only `synthesis-even-coverage.md` rule. Only asked when `rule_shape == "modular"` (Cluster 6, after rule-shape determination). |
 | `workflows` | Q30 | list of `{name, description}` | |
 | `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` | Q31 | strings | User-defined first phase. Routed into `phase_1_*` or `phase_2_*` template parameters by the Phase 1 derivation below. |
 | (all other content fills) | Q28–Q35 | strings | Used as direct substitutions. |
@@ -161,6 +162,12 @@ When `deploy_target == "none"`:
 
 The `ai-shared.md` rule template carries a "never call AI from a client component" rule. This is only meaningful when `stack_has_client_server_split == true`. For `node-cli` and `python` stacks, suppress the rule (or replace with a stack-appropriate analogue if the project has one — e.g., "AI keys never in user-facing config" for a CLI). When suppressed, also suppress the corresponding recency-block item.
 
+## Even-coverage synthesis rule (conditional)
+
+The `synthesis-even-coverage.md` rule guards multi-source synthesis against primacy/recency bias (over-weighting first/last sources, fabricating a pattern only a few support). It is **modular-only and off by default**, gated `rule_shape == "modular" and include_synthesis_rule`. It is **always-on when emitted** — no `paths:` frontmatter, like `git-and-deploy.md` and `session-discipline.md`; it is therefore **not** part of `path_scoped_rule_list`.
+
+Its intake question (**Q35a**) lives in **Cluster 6, after rule-shape determination**, framed as the modular-only mirror of the flat-only Q34/Q35. It cannot live in Cluster 5: `rule_shape` is not computable there because one of its triggers (`len(workflows) > 1`) depends on workflow capture at Q30 (Cluster 6). A flat project is never asked Q35a — consistent with the modular-only emission gate, so there is no flat answer-but-no-landing dead-end. The failure it prevents: a project that routinely synthesizes N sources silently under-covering the middle inputs.
+
 ## Redundancy guards
 
 The paper's redundancy finding (LLM context files improve by 2.7% when README is removed) means the practical risk is overlap inside our own outputs. PRD.md, ARCHITECTURE.md, and CLAUDE.md should not all describe the project.
@@ -219,6 +226,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `claude-rules-modular/design-heuristics.md.template` | `rule_shape == "modular" and apply_design_heuristics` | `.claude/rules/design-heuristics.md` |
 | `claude-rules-modular/ai-shared.md.template` | `rule_shape == "modular" and ai_surface_count >= 1` | `.claude/rules/ai-shared.md` |
 | `claude-rules-modular/ai-surface-stub.md.template` | `rule_shape == "modular" and ai_surface_count >= 1`. Instantiated **once per surface**. | `.claude/rules/ai-<surface_kebab_name>.md` |
+| `claude-rules-modular/synthesis-even-coverage.md.template` | `rule_shape == "modular" and include_synthesis_rule` | `.claude/rules/synthesis-even-coverage.md` |
 | `docs/PRD.md.template` | always | `docs/PRD.md` |
 | `docs/ARCHITECTURE.md.template` | always | `docs/ARCHITECTURE.md` |
 | `docs/BACKLOG.md.template` | always | `BACKLOG.md` (root) — the single work-tracking surface (build plan + in-progress + backlog + open decisions + done). Optional `Later / V2` section gated on `backlog_include_v2`. |
