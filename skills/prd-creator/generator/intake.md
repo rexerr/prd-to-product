@@ -15,6 +15,14 @@ Every cluster follows the same shape. Do not skip steps.
 4. Sweep for decisions before closing the cluster. If the user stated something that locks a future choice ("we are using Vercel," "single-user no auth"), assign a draft `D-NNN` ID and append to the running decisions list. Do not ask permission to capture, and do not narrate the draft ID to the user (no "that's D-002"). Just capture, and review the numbered list in cluster 5.
 5. Summarize what was captured in two or three sentences. Wait for the user to correct or confirm before moving to the next cluster.
 
+**Interview posture: diagnose, don't validate.** The interview's job is to test the user's thinking, not to agree with it. A weak premise that survives by sounding acknowledged is the failure this prevents (sycophancy as goal-drift). Three rules:
+
+- **Drop the hedges.** Do not soften with empty validation. Replace `"that's interesting"` → name the specific thing that is sharp or risky about it; `"there are many ways to think about this"` → state the way you'd think about it and why; `"you might consider…"` → "I'd do X because Y — push back if Z." If you have no position, say what you'd need to know to form one.
+- **Take a position, and name what would change it.** When the user's answer is vague, risky, or self-contradictory, say so and state where you'd land — then name the evidence that would move you off it. A recommendation the user can attack beats a neutral restatement they can't.
+- **Challenge the strongest version, not a strawman.** Steelman the user's own claim first, then test *that*. Do not knock down a weaker reading they didn't mean.
+
+This is bound to **challenging the user's premises**, never to inventing the product's direction. Pushing back on a weak success criterion is in scope; proposing a product strategy the user has not chosen is not (the skill does not invent decisions). This sharpens the ad-hoc pushback already in clusters 2 and 7 into a standing posture.
+
 **User-facing copy is natural language.** Never name internal scaffolding in what you say to the user. No "cluster 0" or "cluster 3", no "as source material", no draft decision-ID narration while capturing. The cluster numbers and draft `D-NNN` IDs are yours, not the user's. Confirmed decision IDs appear to the user only at the cluster 5 read-back and in the written PRD, where they are part of the deliverable. **Failure it prevents:** the user sees how the sausage is made instead of a conversation, which reads as the skill not having understood them.
 
 ## Cluster 0: source material

@@ -338,6 +338,14 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Reason:** A human edits faster than they author and can attack a stance that's on the table; rule 2 is scoped so the skill never crosses from eliciting into inventing — the line D-010 and "does not invent decisions" both draw. The bare-question carve-out preserves the canonical `examples/small/transcript.md` cold-path fixture (regression #11) and the no-invented-decisions test (#7). **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the intake/principles files; marker bumped D-035 → D-036.
 **Revisit if:** the recommended-option guard is observed leading users toward a decision they hadn't made (tighten toward option c, rules 2 & 3 only), or the explainer-before-choice opener bloats turns on questions that needed none.
 
+### D-037 — G-06 adopted: anti-sycophancy interview posture
+
+**Date:** 2026-06-18
+**Context:** Wave-2 Sprint 2, Pass B (prd-creator surface; Cowork-reviewed across 2 rounds). `G-06` ([`cribs/cribs-from-gstack.md`](cribs/cribs-from-gstack.md), gstack survivor) — an enumerated banned-hedge list with sharper replacements, take-a-position-and-name-what-would-change-it, and steelman-then-challenge. prd-creator had only ad-hoc pushback (clusters 2, 7) and no standing posture, so a weak premise could survive the interview by sounding acknowledged. Distinct from CF-18 (D-036): CF-18 governs question *form*, G-06 governs *stance*.
+**Decision:** Add the posture as an actionable block in [`intake.md`](../skills/prd-creator/generator/intake.md) "How to run a cluster" — **the runtime file** (Cowork Must-fix-1, R1: `principles.md` is not loaded during the interview, so the actionable list must live where the runtime sees it). Rationale only is mirrored to [`principles.md`](../skills/prd-creator/principles.md) "Interview conduct." **Carve-out:** bound to challenging the user's premises, never to inventing product direction (the anti-invention contract holds; prd-creator has no divergence phase, so gstack's brainstorm-divergence carve-out maps to premise-challenge-not-ideation). Cites its failure mode (architecture rule #2).
+**Reason:** Sycophancy is goal-drift wearing politeness — an opinion the user can attack surfaces a flaw a neutral restatement hides. **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the intake/principles files; marker bumped D-036 → D-037.
+**Revisit if:** the posture is observed reading as adversarial/contrarian rather than diagnostic (then dial toward steelman-first), or pushing the skill into proposing strategy (tighten the carve-out).
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).
