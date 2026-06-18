@@ -81,7 +81,7 @@ Failing reproduction first, then the fix, then the same reproduction passing. Th
 - **Prefer `/rewind` to re-prompting** — re-prompting leaves the failed attempt in the prefix; `/rewind` reverts both conversation and working tree.
 - **New session for a new task** — carried-over context burns tokens and imports stale assumptions.
 - **`/compact` proactively with a description during long debug sessions** — autocompact fires at peak context-rot; `/clear` + a fresh brief when you want full control of what carries forward. **Failure it prevents:** losing edge-case context to a bad autocompact.
-- **Delegate to a subagent when you need the conclusion, not the artifact** — keeps verbose intermediates out of the prefix, and a fresh subagent verifying work is not the model grading its own output.
+- **Delegate to a subagent when you need the conclusion, not the artifact** — keeps verbose intermediates out of the prefix, and a fresh subagent verifying work is not the model grading its own output. **For that independence to hold, withhold your reasoning:** hand the verifier only the artifact + the acceptance criteria, never your own conclusion or the path you took — a verifier shown the author's framing anchors on it and rubber-stamps. When no subagent is available, say so explicitly (`Self-verified — independent sub-task unavailable`) rather than passing anchored self-review off as independent.
 
 ### Session retros
 

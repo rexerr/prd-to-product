@@ -322,6 +322,14 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Reason:** A forward-looking authoring constraint with a live consumer — the queued `/repo-miner` shape decision turns on exactly this cut. Names the cost C-12 only gestured at. **Mirrored to `DECISIONS_ACTIVE.md`** — it binds future skill-authoring and is not visible by reading any single skill (the one Sprint-1 crib that meets the ACTIVE bar); marker bumped D-033 → D-034.
 **Revisit if:** the harness changes how skill descriptions load (e.g. lazy/deferred description loading would shrink the context-load side and shift the default).
 
+### D-035 — G-11 adopted: withhold reasoning from the verifying subagent
+
+**Date:** 2026-06-18
+**Context:** Wave-2 Sprint 1, Pass D (gated CLAUDE.md edit, isolated commit). `G-11` ([`cribs/cribs-from-gstack.md`](cribs/cribs-from-gstack.md), gstack survivor) — CLAUDE.md's session-management line named *that* you delegate to a fresh subagent to verify, but not *what to withhold* to keep that second opinion independent.
+**Decision:** Tighten the existing "Delegate to a subagent…" bullet in [`CLAUDE.md`](../CLAUDE.md) (Session management) — not a new rule: hand the verifier only the artifact + acceptance criteria, never the author's conclusion or path (a verifier shown the framing anchors and rubber-stamps); and when no subagent is available, say so explicitly (`Self-verified — independent sub-task unavailable`) rather than passing anchored self-review off as independent.
+**Reason:** Closes the anti-anchoring gap — a "second opinion" that isn't independent because it saw the first opinion's framing. Edits agent config, so gated and isolated on its own commit. **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the CLAUDE.md line itself; marker bumped D-034 → D-035.
+**Revisit if:** the withhold-reasoning step is observed making verification miss real defects it would have caught with context (then the fresh-eyes/context-fed asymmetry G-11's source pairs becomes worth scaffolding).
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).
