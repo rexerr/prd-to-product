@@ -7,6 +7,10 @@ Process and governance patterns mined from two repos that mirror this workspace'
 **import scar tissue, not reinvent it** — these authors have run the same loop at far higher
 volume and wrote down what broke.
 
+> **Adoption sequencing** for this sheet is unified with the other crib trackers in
+> [`cribs-adoption-roadmap.md`](cribs-adoption-roadmap.md) — that's where waves, the adoption
+> lifecycle, and verification classes live. This sheet stays the inventory + status of record.
+
 This is a **living adoption-tracker**, not a one-shot summary. Each crib has a stable `C-NN`
 ID, the failure it prevents, where it lands in this repo, an effort estimate, and a status.
 Promote a crib to a `D-NNN` decision (and an actual edit) when adopted; mark it `Declined`
