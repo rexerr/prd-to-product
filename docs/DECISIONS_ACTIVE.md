@@ -1,4 +1,4 @@
-<!-- Reconciled against DECISIONS.md through D-033 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-033 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032/D-033 evaluated, not mirrored — visible by reading the furnace-plan/prd-creator skill files). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+<!-- Reconciled against DECISIONS.md through D-034 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-034 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032/D-033 evaluated, not mirrored — visible by reading the furnace-plan/prd-creator skill files; D-034 mirrored below). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
 
 # Active decisions
 
@@ -65,6 +65,10 @@ Do **not** symlink / promote the `context-engineering-audit` skill into `~/.clau
 ### D-020 — `furnace-plan` hosted + versioned in this repo
 
 `furnace-plan` lives at `skills/furnace-plan/`, symlinked into `~/.claude/skills/` like the chain skills (no longer a bare unbacked dir). Its `trial-ledger.md` is the durable cross-project furnace-learning ledger. D-018's category test partitions the two files: **`SKILL.md` = product** (edit only via the Claude-Code scope-gated workflow), **`trial-ledger.md` = measurement output** (the distinct reviewer may append; see D-018 for that write permission — not restated here). `SKILL.md` forces plan mode (`EnterPlanMode`) as its first action on invocation. Full entry: [`DECISIONS.md`](DECISIONS.md) D-020.
+
+### D-034 — the two-load model governs `disable-model-invocation`
+
+When authoring a skill, choose invocation mode by the two-load cut: a **model-invoked** skill's description sits in the context window every turn (context-load); a **user-invoked** skill (`disable-model-invocation: true`) costs nothing in-window but is findable only from the human's memory (cognitive-load). Set `disable-model-invocation: true` for narrow/heavyweight explicit-invoke tools whose always-in-window description would tax every turn (e.g. `furnace-plan`); leave it model-invoked when firing on trigger phrases without the user remembering the skill is the point (the chain skills). Full entry: [`DECISIONS.md`](DECISIONS.md) D-034.
 
 ## Cross-references
 

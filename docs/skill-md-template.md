@@ -93,6 +93,9 @@ Our `context-engineering/SKILL.md` already has this (`"scaffold a Next.js app"`,
 **7. "Gotchas" section bottom-anchored.**
 Three load-bearing failure modes, each one sentence, each citing the specific cause. Matches our principles-must-cite-failure-modes invariant. Every SKILL.md should have this section if there are non-obvious ways to misuse the skill.
 
+**8. Invocation mode by the two-load cut.**
+Whether a skill sets `disable-model-invocation: true` is governed by the two-load model — context-load (model-invoked descriptions sit in the window every turn) vs cognitive-load (user-invoked skills are indexed only by the human's memory). Narrow/heavyweight explicit-invoke tools (`furnace-plan`, `frontend-er`) go user-invoked to protect the window; broadly-useful auto-firing skills (the `context-engineering`/`prd-creator`/`design-system-bootstrap` chain) stay model-invoked. The binding rule lives in [`DECISIONS.md`](DECISIONS.md) D-034 — this is the example, not the spec.
+
 ---
 
 ## How our existing skills compare

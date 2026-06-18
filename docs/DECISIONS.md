@@ -314,6 +314,14 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Reason:** Closes the ritual-overhead failure — heavyweight planning/interview ceremony bolted onto work too small to carry a bug. The furnace half was written to NOT collide with D-020 (in-plan check, not a pre-plan bail). **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the two SKILL.md files; marker bumped D-032 → D-033.
 **Revisit if:** the self-skip is observed firing on work that did need the discipline (then tighten the trivial-change test), or never firing across many small tasks (then it's dead prose to prune).
 
+### D-034 — CF-23 adopted: the two-load model governs `disable-model-invocation`
+
+**Date:** 2026-06-18
+**Context:** Wave-2 Sprint 1, Pass C. `CF-23` ([`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md)) names the tradeoff behind every skill's invocation-mode choice — previously made ad hoc with no stated rule. This record *is* the binding rule (not a separate "adoption" entry); [`skill-md-template.md`](skill-md-template.md) carries only a pointer/example.
+**Decision (the rule):** every skill split spends exactly one of two conserved costs. **Context-load** — a *model-invoked* skill's description sits in the context window every turn, costing tokens and diluting attention whether or not it fires. **Cognitive-load** — a *user-invoked* skill (`disable-model-invocation: true`) costs nothing in-window but is indexed only by the human's memory, so it's findable only if the human remembers it exists. **Set `disable-model-invocation: true` when** the skill is invoked deliberately at known moments (explicit-invoke by nature) and auto-selection isn't the point — its always-in-window description would tax every turn for a skill rarely the right pick (e.g. `furnace-plan`, `frontend-er`). **Leave it model-invoked when** firing on trigger phrases *without* the user remembering the skill is the whole value (e.g. the `context-engineering`/`prd-creator`/`design-system-bootstrap` chain). When unsure, default to user-invoked for narrow/heavyweight tools (protect the window) and model-invoked for broadly-useful ones.
+**Reason:** A forward-looking authoring constraint with a live consumer — the queued `/repo-miner` shape decision turns on exactly this cut. Names the cost C-12 only gestured at. **Mirrored to `DECISIONS_ACTIVE.md`** — it binds future skill-authoring and is not visible by reading any single skill (the one Sprint-1 crib that meets the ACTIVE bar); marker bumped D-033 → D-034.
+**Revisit if:** the harness changes how skill descriptions load (e.g. lazy/deferred description loading would shrink the context-load side and shift the default).
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).
