@@ -346,6 +346,14 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Reason:** Sycophancy is goal-drift wearing politeness — an opinion the user can attack surfaces a flaw a neutral restatement hides. **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the intake/principles files; marker bumped D-036 → D-037.
 **Revisit if:** the posture is observed reading as adversarial/contrarian rather than diagnostic (then dial toward steelman-first), or pushing the skill into proposing strategy (tighten the carve-out).
 
+### D-038 — G-08 adopted: semantic-leak scan before finalizing a PRD
+
+**Date:** 2026-06-18
+**Context:** Wave-2 Sprint 2, Pass C (prd-creator surface; Cowork-reviewed across 2 rounds). `G-08` ([`cribs/cribs-from-gstack.md`](cribs/cribs-from-gstack.md), gstack survivor) — a five-category leak checklist run before finalizing. prd-creator had no leak gate, and a PRD is routinely shared while designers draft them naming people, customers, and strategy constantly.
+**Decision:** Add a **"Semantic-leak scan before finalizing"** section to [`decisions.md`](../skills/prd-creator/generator/decisions.md) (the checklist body, beside the write guard and "What never emits") covering the five categories: named-individual+negative-judgment, customer-name+negative-event, unannounced-strategy/dates, NDA material, codename bleed. A one-line **trigger** fires it at `intake.md`'s pre-write confirmation step; a **resolution-provenance** line in [`output-summary.md`](../skills/prd-creator/generator/output-summary.md) (case 4) records what was kept/cut. **Flag, do not auto-redact** — surface each hit, let the user decide, never silently delete content. **Dropped gstack's regex tier + audit-sink machinery** (infra, explicitly declined in the gstack tracker). Cites its failure mode (architecture rule #2).
+**Reason:** Closes a real exposure for the skill's actual users; flag-not-redact keeps it inside the no-silent-edit ethos; the output-summary line is provenance (post-resolution), not a live warning (Cowork R1 finding 4). **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the decisions/intake/output-summary files; marker bumped D-037 → D-038.
+**Revisit if:** the scan is observed false-positiving on benign mentions often enough to be tuned out (then narrow the categories), or a leak class it doesn't cover surfaces (add the category).
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).

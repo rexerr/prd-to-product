@@ -86,6 +86,18 @@ rm -f ~/.claude/state/write-guard/"$CLAUDE_CODE_SESSION_ID".sentinel \
 
 Where the hook isn't installed this is a harmless no-op. A forgotten arm = no enforcement for that run (the prose is the backstop); a forgotten disarm is harmless.
 
+## Semantic-leak scan before finalizing
+
+Before writing `PRD.md`/`BRAND.md`, scan the about-to-be-written content for sensitive material that a *shared* document should not carry. A PRD is routinely shared, and designers draft them naming people, customers, and strategy constantly — so this scan runs every time, at the pre-write confirmation step. Scan for five categories:
+
+1. **A named individual paired with a negative judgment** ("Priya's design was weak," "the contractor underdelivered").
+2. **A customer or client name tied to a negative event** ("we lost the Acme account," "Globex churned after the outage").
+3. **Unannounced strategy or dates** — a launch date, pricing change, layoff, acquisition, or roadmap commitment not yet public.
+4. **NDA or confidential material** — anything covered by an agreement, or marked confidential in the source.
+5. **Codename bleed** — an internal codename for a product, project, or party that should not appear in a shared artifact.
+
+**Flag, do not auto-redact.** When the scan hits, surface each one to the user at the pre-write confirmation and let them decide to keep, reword, or cut it — never silently delete the user's content (silent edits violate the same no-silent-absorption ethos as cluster 0). Record the resolution for the output summary (see `output-summary.md`). This is a prose checklist only; do not build regex matchers or an audit sink. **Failure it prevents:** a shared PRD leaks a person tied to "underperforming," a customer tied to a negative event, or an unannounced launch date.
+
 ## What never emits
 
 These never appear in the output, even if mentioned during intake:
