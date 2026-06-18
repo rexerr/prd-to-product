@@ -1,4 +1,4 @@
-<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) — 2026-06-17. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
+<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) — 2026-06-17; CF-03 adopted (→D-023) 2026-06-17. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
 
 # Cribs adoption roadmap — one strategy across all three trackers
 
@@ -13,7 +13,7 @@ The three crib trackers are **inventories** (what exists, organized by source). 
 | Tracker | IDs | Source | Status |
 |---|---|---|---|
 | [`cribs-from-steinberger-ecosystem.md`](cribs-from-steinberger-ecosystem.md) | `C-01`–`C-41` | Van Horn / Steinberger ecosystem | Mining complete; 1 adopted (C-27→D-017), rest standing |
-| [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; all Proposed |
+| [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; 1 adopted (CF-03→D-023), rest Proposed |
 | [`cribs-from-designer-skills.md`](cribs-from-designer-skills.md) | `DG-01`–`DG-02` (+ investigates) | Owl-Listener (MC Dean) | Mined 2026-06-17; thin yield; all Proposed |
 
 ---

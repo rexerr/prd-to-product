@@ -74,7 +74,7 @@ Never claim success because "the code looks correct."
 
 ### Reproduce before fixing
 
-Failing reproduction first, then the fix, then the same reproduction passing.
+Failing reproduction first, then the fix, then the same reproduction passing. The repro must be **red-capable** — it asserts the *exact* symptom and you have run it once and watched it fail, not merely "runs without erroring": no hypothesis before a failing repro exists. With no test runner here (see Commands), that repro is the live-fired hook or the dry-run substitution diffed against `skills/context-engineering/examples/output-small/`, captured red before you theorize (cross-ref "Verification before claiming done"). Prefix throwaway debug logs (`[DEBUG-a4f2]`) so cleanup is one grep. **Failures it prevents:** building a theory before a failing repro exists (the most common debug miss); orphaned debug logging reaching a commit.
 
 ### Session management
 
