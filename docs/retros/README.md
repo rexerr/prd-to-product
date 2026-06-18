@@ -7,6 +7,7 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 - **Timestamp the H1 and number the session of the day** (`date "+%Y-%m-%d %H:%M %Z"`). Filenames are date-only, but several sessions can run in one day; without intra-day ordering, an earlier same-day retro's "not done this session" gets misread as "not done at all" after a later session already did it.
 - **Write the retro before the code commit and bundle both into one push** — not a trailing retro-only commit (that double-push is the waste the retro exists to prevent).
 - **Only for non-trivial sessions** — skip one-line tweaks to avoid retro-spam.
+- **Reference, don't restate.** When a fact already lives in a durable artifact (`DECISIONS.md`, `BACKLOG.md`, a PRD, a plan, a commit/diff), link it by path — never paste its content into the retro. Two copies drift, and the retro then silently contradicts its source. Redact any secret/PII before writing.
 
 ## Template
 
@@ -19,7 +20,11 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 
 ## Failure this session
 
-- [bad substitution / scope creep / lost context / goal drift / none]
+- **Tag:** [bad substitution / scope creep / lost context / goal drift / none]
+- If a failure or near-miss landed, force the lesson→change jump — don't stop at narrating it:
+  - **Tool or agent?** the harness/tooling, or the agent's judgment?
+  - **Does it generalize?** a one-off, or a class that will recur?
+  - **→ The change it demands:** the concrete edit (rule / template / doc), or "none" with why.
 
 ## Files changed
 
@@ -35,5 +40,5 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 
 ## Next session
 
-- [What to pick up first]
+- [What to pick up first — and name the skill to open with, if any]
 ```
