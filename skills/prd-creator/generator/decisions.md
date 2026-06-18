@@ -19,6 +19,7 @@ Each row names a section, the cluster that fills it, the condition for inclusion
 | Decisions already made | 5 | Always (even if zero captured, emit the section with a one-line "no decisions locked yet" placeholder) | `PRD.md` |
 | Open questions | sweep across clusters | Emit only if at least one captured. If empty, omit the section. | `PRD.md` |
 | Success criteria | 7 | Always | `PRD.md` |
+| Testing decisions | 7 | Always (even if no automated tests; "no suite, verified by <how>" is the content, and an undecided approach cross-references open questions) | `PRD.md` |
 | Brand and voice (inline) | 6 | Cluster 6 ran AND total items captured ≤ 3 | `PRD.md` (appendix section) |
 | Brand and voice (sibling file) | 6 | Cluster 6 ran AND total items captured > 3 | `BRAND.md` |
 | Supporting documents | 0, 6 | Sibling `BRAND.md` was emitted, OR cluster 0 named external source documents the reader should reference, OR the user named other sibling docs (e.g. existing research) | `PRD.md` |

@@ -1,16 +1,17 @@
-# Retro — 2026-06-18 09:37 CDT — retro overwrite-guard + C-15 binding-contracts hoist   (5th session of the day)
+# Retro — 2026-06-18 09:37 CDT — retro overwrite-guard + C-15 hoist + CF-02 durable-PRD rules   (5th session of the day)
 
 ## What was completed
 
 - **Retro-convention overwrite guard.** Closed the one unhandled retro-collision path (two same-day sessions choosing the same topic slug → silent overwrite). One sentence added to [`docs/retros/README.md`](README.md) + the `context-engineering` template + its `output-small` example. Recommendation deliberately *declined* the heavier "add `HH:MM` to filenames" path — ordering was already solved (H1 timestamp + session-of-day + git-history selection); only the overwrite gap was live. Committed `cc42e7d` (pushed).
 - **Wave-1 crib `C-15` adopted → [D-028](../DECISIONS.md).** Hoisted a terse `## Binding contracts (read before acting)` block to the top of the three generator skills' SKILL.md, above the Procedure the agent executes; `furnace-plan` already complied (the model). Tracker flipped, D-028 logged, `DECISIONS_ACTIVE.md` marker bumped D-027→D-028 (evaluated-not-mirrored), roadmap marker + count bumped.
+- **Wave-1 crib `CF-02` adopted → [D-029](../DECISIONS.md)** — the heaviest Wave-1 item (tagged *integrate*). Two durable-PRD rules into prd-creator: (1) no volatile code locations in a PRD (paths/line-numbers/snippets rot on rename), carve-out for decision-encoding snippets; (2) a new always-emitted `## Testing decisions` section, sourced by one added cluster-7 question. Eight files: template + intake + `decisions.md` emission-row + principles (bullet + canonical-list renumber) + the small/medium/large example trio. Tracker flipped, D-029 logged, marker bumped D-028→D-029, pocock count 3→4.
 
 ## Failure this session
 
 - **Tag:** none.
-- **Near-miss (named):** attempted an `Edit` on `docs/DECISIONS.md` after only `tail`-ing it via Bash; the harness rejected it ("File has not been read yet") because a Bash `tail` doesn't register as a Read. Cost: one wasted Edit call, recovered immediately with a real `Read`.
-  - **Tool or agent?** Agent habit — reached for `tail` to preview a long file's end cheaply, forgetting Edit requires the Read tool specifically.
-  - **Does it generalize?** Minor, recurring-class: any "peek then edit" on a large doc. → **The change it demands:** none structural — when the intent is to edit, Read the target region with the Read tool, not Bash. Not rule-worthy (one wasted call, self-correcting).
+- **Near-miss (named), fired twice:** attempted `Edit` after only previewing a file via Bash (`tail` on `docs/DECISIONS.md`; `sed` on the medium/large transcripts) — the harness rejected both ("File has not been read yet") because a Bash preview doesn't register as a Read. Cost: ~3 wasted Edit calls, each recovered immediately with a real `Read`.
+  - **Tool or agent?** Agent habit — reached for `tail`/`sed` to preview cheaply, forgetting Edit requires the Read tool specifically.
+  - **Does it generalize?** Yes, recurring-class (hit twice this session): any "peek-then-edit" on a large doc. → **The change it demands:** behavioral, not rule-worthy — when the intent is to edit, Read the target region with the Read tool, never a Bash preview. Cheap and self-correcting, so it stays a habit note, not a CLAUDE.md rule (logging it so a third recurrence would cross the Rule-of-Two bar).
 
 ## Files changed
 
@@ -23,11 +24,11 @@
 
 ## Open items
 
-- **Wave 1 remaining:** `CF-02` (durable-PRD rules, class T — prd-creator output discipline) and `DG-02` (semantic-not-directional token naming, class T — *first resolve: is RTL in DSB scope?*). Both in [`cribs-adoption-roadmap.md`](../cribs-adoption-roadmap.md).
+- **Wave 1 remaining: just `DG-02`** (semantic-not-directional token naming, class T, lands on design-system-bootstrap) — **blocked on a scope question: is RTL in DSB's V1 scope?** Resolve that first; if RTL is out of scope the crib may be a near-no-op. After DG-02, Wave 1 is complete and C-15/CF-02's deferred scaffold-template backports + Wave 2 are next. In [`cribs-adoption-roadmap.md`](../cribs-adoption-roadmap.md).
 - **Deferred (carried):** scaffold-template backport of C-09/CF-06/C-14 to `context-engineering`'s emitted retro template — a class-(T) batch, still pending per D-024/D-025.
 
 ## Next session
 
-- Pick `CF-02` (top open Wave-1 item; class T → dry-run + diff against `output-small`). `DG-02` is blocked on the RTL-scope question — resolve that first or skip it. No skill to open with (Wave-1 cheap edits run inside the normal scope gate).
+- Resolve the **DG-02 RTL-scope question first** (is right-to-left in design-system-bootstrap's V1 scope?), then adopt or decline DG-02 accordingly — it's the last open Wave-1 item. No skill to open with (Wave-1 edits run inside the normal scope gate).
 </content>
 </invoke>

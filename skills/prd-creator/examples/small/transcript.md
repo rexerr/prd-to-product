@@ -124,11 +124,15 @@ What does V1 success look like.
 
 **User:** I use it every morning for two weeks straight without dropping a day. The 6pm SMS arrives reliably and I tap yes or no without thinking about it. Streak counter is accurate.
 
-**Skill:** Captured three criteria. Anything you do not yet know about success.
+**Skill:** Captured three criteria. One more on the same theme: how will you know V1 works, and what counts as a good test here. The external behaviors to verify, which parts matter most, any prior art. Not test code. If there's no automated suite, say so and how you'll verify instead.
+
+**User:** No tests. It's a personal tool. I'll just use it for two weeks and watch that the 6pm text lands and the streak is right. The cron job and the Twilio send are the only things that can really break.
+
+**Skill:** Captured as testing decisions: no automated suite in V1, verified by the two-week live window, focused on the 6pm job and the Twilio send. Anything you do not yet know about success or testing.
 
 **User:** No.
 
-**Skill:** Recap: success is two weeks of daily use, reliable SMS, accurate streak.
+**Skill:** Recap: success is two weeks of daily use, reliable SMS, accurate streak. Testing is manual over the same window, focused on the cron and Twilio send.
 
 All clusters complete. Proposed PRD outline:
 
@@ -144,6 +148,7 @@ Sections that will emit:
 - Decisions already made (four entries)
 - Open questions (one entry)
 - Success criteria
+- Testing decisions
 
 Sections that will be skipped:
 - Brand and voice. Reason: not run, no user-facing copy.
@@ -169,6 +174,7 @@ Sections that emitted:
 - Decisions already made
 - Open questions
 - Success criteria
+- Testing decisions
 
 Sections that were skipped:
 - Brand and voice. Reason: not run, no user-facing copy.

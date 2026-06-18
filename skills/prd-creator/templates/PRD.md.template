@@ -45,7 +45,7 @@
 
 ## Architecture and stack
 
-<!-- KEEP AS-IS: What is decided about how this gets built. Stack, deploy target, key services, third-party dependencies. Prose plus a short bullet list. Do not design new architecture here; capture what the user has already decided. Open architectural questions go in open questions. -->
+<!-- KEEP AS-IS: What is decided about how this gets built. Stack, deploy target, key services, third-party dependencies. Prose plus a short bullet list. Do not design new architecture here; capture what the user has already decided. Open architectural questions go in open questions. Name stack and services, not implementation file paths, line numbers, or code; those go stale on the first rename (see principles "No volatile code locations"). A snippet appears only when it pins a decision prose cannot (schema, type shape, state machine), trimmed to the decision-rich part. -->
 <!-- PARAMETERIZE: architecture_block -->
 
 ## Decisions already made
@@ -67,6 +67,11 @@
 <!-- KEEP AS-IS: Concrete done-when statements. Each one is checkable. If the user could not answer a criterion concretely, the unanswered version goes in open questions instead. -->
 - <!-- PARAMETERIZE: success_criterion_1 -->
 - <!-- PARAMETERIZE: success_criterion_2 -->
+
+## Testing decisions
+
+<!-- KEEP AS-IS: Names what a good test is for this product, not test code. State the external behaviors to verify, which parts of the system matter most, and any prior art the tests model. If V1 ships no automated suite, say so and name how V1 is verified instead (a manual pass, a live validation window). This is a decision record, not a test plan. Always emitted; if the user named no approach, state that verification is undecided and cross-reference open questions. -->
+<!-- PARAMETERIZE: testing_decisions_block -->
 
 <!-- OPTIONAL: include this section only when cluster 8 produced three or fewer items and the user chose inline placement. If the user chose sibling file, omit this section and link to docs/BRAND.md from Supporting documents instead. -->
 ## Brand and voice

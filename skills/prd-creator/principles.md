@@ -62,8 +62,9 @@ Canonical section names, in order:
 9. Decisions already made
 10. Open questions
 11. Success criteria
-12. Brand and voice (optional, see below)
-13. Supporting documents (optional)
+12. Testing decisions
+13. Brand and voice (optional, see below)
+14. Supporting documents (optional)
 
 ## When the brand-and-voice material lives in a sibling file
 
@@ -98,6 +99,8 @@ These shape what goes in the sections, not just how they look.
 - **Deferred capabilities point forward.** Each item is a candidate for V2 or later, not a "maybe never." If the user wants "maybe never," it goes in out of scope.
 - **Open questions name what would change the build.** A question that does not change a decision belongs in a discussion thread, not the PRD.
 - **Success criteria are concrete.** "10 users complete the workflow without help" beats "users find it intuitive." If the user cannot answer a criterion concretely, capture it as an open question instead.
+- **No volatile code locations in the PRD.** Do not pin implementation file paths, line numbers, or verbatim code. They go stale the moment files move or get renamed, and a PRD that references them rots silently while reading as if it is still accurate. One carve-out: inline a short prototype-derived snippet only when it encodes a decision more precisely than prose can, a state machine, schema, reducer, or type shape, trimmed to the decision-rich part. Citing a decision or a named source doc by reference (as the style rule above does) is fine. The ban is on volatile code, not on references. **Failure it prevents:** a PRD that pinned `app/api/route.ts:42` or pasted a component becomes wrong on the first rename, and the reader cannot tell the stale line from the live ones.
+- **Testing decisions name what a good test is, not test code.** The testing decisions section states the external behaviors to verify, which parts of the system matter most, and any prior art the tests model. If V1 ships no automated suite, that is itself a testing decision: say so and name how V1 is verified instead (a manual pass, a live validation window). It is a decision record, not a test plan.
 
 ## Recommend a stress-test before locking high-stakes scope
 

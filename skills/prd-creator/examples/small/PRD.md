@@ -67,3 +67,7 @@ Next.js App Router on Vercel. Postgres on Neon for storage. Twilio for SMS send 
 - User completes daily intent capture and 6pm check-in for two consecutive weeks without missing a day.
 - The 6pm SMS arrives within five minutes of the scheduled time on every day during the validation window.
 - Streak counter matches a hand-counted ledger across the two-week window.
+
+## Testing decisions
+
+No automated test suite in V1. Verification is the two-week live validation window named in success criteria, confirmed by hand that the 6pm SMS fires on time and the streak counter matches a hand-counted ledger. The parts that matter most are the 6pm scheduled job and the Twilio send path, since a missed or late send is the only failure the user would feel. No prior art to model tests on. Probe the Vercel cron reliability open question before relying on the scheduler.

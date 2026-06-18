@@ -114,15 +114,18 @@ Track the volume. Three or fewer total items across all four questions means the
 
 Sweep for open questions. Summarize and confirm.
 
-## Cluster 7: success criteria
+## Cluster 7: success criteria and testing decisions
 
-Concrete done-when statements. Each one is checkable. If the user cannot answer concretely, the unanswered version goes in open questions, not in success criteria.
+Concrete done-when statements, then how V1 gets verified. Each success criterion is checkable. If the user cannot answer concretely, the unanswered version goes in open questions, not in success criteria.
 
-Ask:
+Ask, one question per call:
 
-> What does V1 success look like. Concrete metrics, behaviors, or events. "Ten users complete the workflow without help" is checkable. "Users find it intuitive" is not. List two to five.
+1. "What does V1 success look like. Concrete metrics, behaviors, or events. 'Ten users complete the workflow without help' is checkable. 'Users find it intuitive' is not. List two to five."
+2. "How will you know V1 actually works, and what counts as a good test here. Name the external behaviors to verify, which parts of the system matter most, and any prior art you will model tests on. Not test code, just the testing decisions. If V1 ships no automated tests, say so and how you will verify instead."
 
 Push back on vibes-criteria. "Feels good" → "what specifically would feel bad, and how would you know." Convert to checkable or capture as open question.
+
+Capture into: success criteria, testing decisions. "No automated suite, verified by a manual pass over the validation window" is a valid testing decision, not a blank. If the user names no verification approach at all, capture "verification approach undecided" as an open question rather than leaving the testing decisions section empty.
 
 Sweep for open questions. Summarize and confirm.
 

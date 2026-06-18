@@ -54,21 +54,21 @@ Renumbered: D-001 through D-008. Final list confirmed.
 
 **Skill:** Counting items: one audience block, five tone attributes, three vocabulary terms (canonical plus alternates), one do-not pattern. Total nine items. Sibling file per the placement rule.
 
-> Success criteria.
+> Success criteria and testing decisions.
 
-**User:** Hundred founders complete at least three Sunday reviews in their first month. Decision log entries are read at the next week's review at least 60% of the time. AI extraction accuracy on contacts is over 90% as judged by user accept rate. Founders self-report that the weekly email "made them think about something they would have skipped" at least once a month.
+**User:** Hundred founders complete at least three Sunday reviews in their first month. Decision log entries are read at the next week's review at least 60% of the time. AI extraction accuracy on contacts is over 90% as judged by user accept rate. Founders self-report that the weekly email "made them think about something they would have skipped" at least once a month. On testing: the contact-extraction accuracy is the load-bearing path, I'll hold out a labeled contact set to check it; otherwise manual review during onboarding, no broad automated suite for V1.
 
-**Skill:** Last criterion captured as a survey-driven measure with explicit phrasing. Open question: "Whether self-report quarterly is checkable enough or needs an in-product question."
+**Skill:** Last criterion captured as a survey-driven measure with explicit phrasing. Open question: "Whether self-report quarterly is checkable enough or needs an in-product question." Testing decisions captured: contact-extraction accuracy verified against a held-out labeled set plus the user-accept-rate measure above, manual review during onboarding, no broad suite for V1.
 
 > Outline confirmed. Writing files.
 
-[PRD.md emits 12 sections plus a Supporting documents pointer to BRAND.md. BRAND.md emits with audience, five tone attributes, vocabulary block, do-not list, and three on/off voice examples generated from the user's stated tone.]
+[PRD.md emits 13 sections plus a Supporting documents pointer to BRAND.md. BRAND.md emits with audience, five tone attributes, vocabulary block, do-not list, and three on/off voice examples generated from the user's stated tone.]
 
 > Output summary.
 
 PRD generated at docs/PRD.md. BRAND.md generated at docs/BRAND.md.
 
-Sections that emitted: 12 in PRD plus the BRAND.md sibling.
+Sections that emitted: 13 in PRD plus the BRAND.md sibling.
 
 Sections that were skipped: none.
 

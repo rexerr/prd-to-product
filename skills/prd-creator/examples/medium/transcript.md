@@ -52,21 +52,21 @@ Here's the pitch drawn from your note: Standup Digest reads engineering managers
 
 **Skill:** Three items captured (audience plus three tone attributes counts as one tone-attributes block plus one audience plus one vocabulary item, total three). Inline appendix per the placement rule.
 
-> Success criteria.
+> Success criteria and testing decisions.
 
-**User:** Hundred users post a digest within their first three days. Drafts are accepted (posted with no edits) at least 30% of the time. Mean edit time under 60 seconds. No support tickets about "the AI hallucinated activity that didn't happen."
+**User:** Hundred users post a digest within their first three days. Drafts are accepted (posted with no edits) at least 30% of the time. Mean edit time under 60 seconds. No support tickets about "the AI hallucinated activity that didn't happen." On testing: no dedicated suite for V1, I'll verify the digest-generation path and the no-hallucination guard against real Slack activity during the first-week rollout.
 
-**Skill:** Captured. Last criterion is a watch-not, kept as success criterion (checkable: count tickets matching that complaint).
+**Skill:** Captured. Last criterion is a watch-not, kept as success criterion (checkable: count tickets matching that complaint). Testing decisions captured: digest-generation path is the part that matters most, verified by manual review during rollout plus the no-hallucination criterion above, no automated suite named for V1.
 
 > Outline confirmed. Writing PRD.
 
-[PRD emits 11 sections plus inline brand-and-voice appendix. Six decisions, four open questions, four success criteria.]
+[PRD emits 12 sections plus inline brand-and-voice appendix. Six decisions, four open questions, four success criteria.]
 
 > Output summary.
 
 PRD generated at docs/PRD.md.
 
-Sections that emitted: 12 (including inline Brand and voice appendix).
+Sections that emitted: 13 (including inline Brand and voice appendix).
 
 Sections that were skipped:
 - Supporting documents. Reason: no sibling file, no external sources named.
