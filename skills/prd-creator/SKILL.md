@@ -36,6 +36,8 @@ Do not activate on:
 
 When triggered:
 
+**Self-skip check first.** If the request is a *trivial single-feature* PRD — one capability, no real product decisions to elicit, nothing that needs a multi-cluster interview — say so and offer a lighter path (a short direct PRD, or jumping to only the sections that carry content) rather than running the full clustered interview. Proceed with the full flow only if the scope warrants it or the user asks. *Failure it prevents:* forcing a heavyweight interview onto work too small to need one.
+
 1. Run the generator flow at `generator/intake.md`. Ask the questions cluster by cluster, in order. Do not dump every question at once.
 2. Cluster 0 always asks for source material first, even if material appears to be in conversation context already. Do not silently absorb context. When material is present, draft each covered cluster's answer from it and present the draft for the user to confirm or edit, rather than asking cold or absorbing silently (see `generator/intake.md` cluster 0).
 3. After every cluster, summarize what was captured in two or three sentences before moving on. The user can correct before the next cluster.

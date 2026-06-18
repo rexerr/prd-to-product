@@ -1,4 +1,4 @@
-<!-- Reconciled against DECISIONS.md through D-032 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-032 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032 evaluated, not mirrored — visible by reading furnace-plan SKILL.md). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+<!-- Reconciled against DECISIONS.md through D-033 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-033 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032/D-033 evaluated, not mirrored — visible by reading the furnace-plan/prd-creator skill files). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
 
 # Active decisions
 

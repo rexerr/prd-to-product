@@ -306,6 +306,14 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Reason:** A real fork silently resolved to its default is the exact "looks complete, buried a live choice" failure; the verbatim-quote clause defends the assert-from-a-paraphrase class. **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the SKILL.md ledger spec; marker bumped D-031 → D-032. `G-16` flipped to `Adopted (→ D-032)`, `G-01` to `Adopted-as-revised (→ D-032)` in the gstack tracker.
 **Revisit if:** the sentinel is observed gamed despite the anti-gaming clause, or the verbatim-quote requirement bloats ledgers without catching a paraphrase-only claim.
 
+### D-033 — CF-20 adopted: skill self-skip gate (furnace-plan + prd-creator)
+
+**Date:** 2026-06-18
+**Context:** Wave-2 Sprint 1, Pass B. `CF-20` ([`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md)) — a discipline skill should detect when it adds no value and offer to bow out, rather than run ceremony on trivial work. Neither furnace-plan nor prd-creator had a self-skip path.
+**Decision:** Add a self-skip offer to both. **furnace-plan** ([`skills/furnace-plan/SKILL.md`](../skills/furnace-plan/SKILL.md)): a `## Self-skip` section placed *after* "What you're planning" and *before* the preflight — an **in-plan-mode** check (the mandatory `EnterPlanMode` first action, [D-020](DECISIONS.md), stands; this is explicitly never a reason to skip entering plan mode) that, for a trivial change (≈1 file, no multi-session fog, no unverified mechanic, no decision boundary), offers to drop the discipline and implement directly. **prd-creator** ([`skills/prd-creator/SKILL.md`](../skills/prd-creator/SKILL.md) Procedure + [`principles.md`](../skills/prd-creator/principles.md)): a "self-skip check first" note offering a lighter path for a trivial single-feature PRD. Both cite their failure mode (architecture rule #2).
+**Reason:** Closes the ritual-overhead failure — heavyweight planning/interview ceremony bolted onto work too small to carry a bug. The furnace half was written to NOT collide with D-020 (in-plan check, not a pre-plan bail). **Not mirrored to `DECISIONS_ACTIVE.md`** — visible by reading the two SKILL.md files; marker bumped D-032 → D-033.
+**Revisit if:** the self-skip is observed firing on work that did need the discipline (then tighten the trivial-change test), or never firing across many small tasks (then it's dead prose to prune).
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).

@@ -8,6 +8,8 @@ Most projects start with a sentence or two and not a PRD. The user holds the res
 
 The skill writes a PRD. It does not invent product strategy, run research, generate code, or scaffold the rule files around the PRD. The next skill in the sequence (context-engineering) consumes this skill's output.
 
+**Self-skip when the interview adds nothing.** The full clustered interview earns its cost on a real product with decisions to elicit. For a *trivial single-feature* PRD — one capability, nothing genuinely undecided — the skill should say so and offer a lighter path (a short direct PRD, or only the sections that carry content) rather than run all clusters. The failure this prevents: heavyweight elicitation ceremony on work too small to need it, which reads as form-processing and wastes the user's turns.
+
 ## Why interview-driven, not template-fill
 
 A blank template plus "fill it in" produces a thin PRD. The user writes for the section in front of them and stops. The interview asks for what is in their head before pointing them at a section, which surfaces material the template would have left out. It also forces the user to make a decision when they have been holding two options open, because the skill asks one question at a time and waits.

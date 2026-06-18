@@ -22,6 +22,11 @@ It does **not** make you a sufficient reviewer of your own plan — you can't re
 
 The task may come as an argument, or not at all. Often Rex invokes this right after you proposed a next step and he said "ok, plan that" — in that case plan the work just proposed and agreed in the conversation, you do not need him to restate it. If a task argument is given, plan that instead. Either way, the preflight runs before you present.
 
+## Self-skip — bow out when the furnace adds nothing
+
+You are already in plan mode (the mandatory first action stands — this is an in-plan check, never a reason to skip entering it). Before drafting the full plan, judge whether the task actually needs the furnace: if it's a **trivial change** — roughly one file, no multi-session fog, no unverified tool/platform mechanic, no recorded-decision boundary in play — say so and **offer to drop the discipline** and implement directly (or hand back to a lighter path) rather than run a preflight and ledger over a one-line edit. If Rex confirms, exit; if the task is non-trivial or he wants the furnace anyway, proceed.
+*Failure it prevents:* turning the furnace into ritual overhead — a full preflight + ledger ceremony bolted onto work too small to carry a planning bug.
+
 ## The preflight — run on your own draft before presenting
 
 For each check: if it fails, **do the read/probe NOW and fix the plan before presenting.** It is expected and correct for this preflight to send you back to open a file or run a probe before you are allowed to call `ExitPlanMode`. A plan that fails any check does not get presented.
