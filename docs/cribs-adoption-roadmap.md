@@ -1,20 +1,21 @@
-<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) — 2026-06-17; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
+<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) · AB-03/AB-i3 (claude-skill-bundles) — 2026-06-18; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18; C-14 adopted (→D-025) 2026-06-18; C-10 adopted (→D-026) 2026-06-18; CF-04 adopted (→D-027) 2026-06-18. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
 
-# Cribs adoption roadmap — one strategy across all three trackers
+# Cribs adoption roadmap — one strategy across all four trackers
 
 **Read this when:** deciding what crib-work to do next, or at session start to see the current wave.
 
-The three crib trackers are **inventories** (what exists, organized by source). This file is the **strategy** (what to adopt, in what order, how to verify, and how it stays out of the cracks). It deliberately does **not** copy the cribs — it points to them, so there is one source of truth per crib and one prioritized plan over all of them.
+The four crib trackers are **inventories** (what exists, organized by source). This file is the **strategy** (what to adopt, in what order, how to verify, and how it stays out of the cracks). It deliberately does **not** copy the cribs — it points to them, so there is one source of truth per crib and one prioritized plan over all of them.
 
-> **Why a roadmap and not one merged file.** Merging the inventories would destroy the per-source provenance (who mined what, against which failure) and the Steinberger sheet is already "effectively complete." Keeping three source-organized trackers + one thin pointer-roadmap is the C-19 move (pointer, never copy). This roadmap is the only place that *sequences across* sources.
+> **Why a roadmap and not one merged file.** Merging the inventories would destroy the per-source provenance (who mined what, against which failure) and the Steinberger sheet is already "effectively complete." Keeping four source-organized trackers + one thin pointer-roadmap is the C-19 move (pointer, never copy). This roadmap is the only place that *sequences across* sources.
 
 ## The trackers it sequences
 
 | Tracker | IDs | Source | Status |
 |---|---|---|---|
-| [`cribs-from-steinberger-ecosystem.md`](cribs-from-steinberger-ecosystem.md) | `C-01`–`C-41` | Van Horn / Steinberger ecosystem | Mining complete; 2 adopted (C-27→D-017, C-09→D-024), rest standing |
-| [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; 2 adopted (CF-03→D-023, CF-06→D-024), rest Proposed |
+| [`cribs-from-steinberger-ecosystem.md`](cribs-from-steinberger-ecosystem.md) | `C-01`–`C-41` | Van Horn / Steinberger ecosystem | Mining complete; 4 adopted (C-27→D-017, C-09→D-024, C-14→D-025, C-10→D-026), rest standing |
+| [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; 3 adopted (CF-03→D-023, CF-06→D-024, CF-04→D-027), rest Proposed |
 | [`cribs-from-designer-skills.md`](cribs-from-designer-skills.md) | `DG-01`–`DG-02` (+ investigates) | Owl-Listener (MC Dean) | Mined 2026-06-17; thin yield; all Proposed |
+| [`cribs-from-claude-skill-bundles.md`](cribs-from-claude-skill-bundles.md) | `AB-01`–`AB-03` (+ investigates) | Claude first-party engineering/design/data bundles | Mined 2026-06-18 (before connector disconnect); thin yield; all Proposed. Source not re-fetchable — frozen in `harness-domain-notes.md` |
 
 ---
 
@@ -71,6 +72,7 @@ Ordered by leverage-per-effort, then dependency. Each row: crib(s) · landing su
 | `CF-23` two-load model for the invocation cut | skill-authoring (chain vs non-chain) | (D) |
 | `CF-07` source-immutability & merge-on-re-run | co-edited-doc rules; generator re-run path | (T) |
 | `DG-01` even-coverage synthesis rule | context-engineering `.claude/rules` (also hardens our own fan-out) | (T) |
+| `AB-03` per-project-type red-capable-repro definitions *(rides CF-03 — fold in at/after CF-03)* | CLAUDE.md "Reproduce before fixing" + generated harness repro rule | (D) |
 
 ### Wave 3 — real build (net-new structure; `/furnace-plan` each)
 
@@ -88,6 +90,7 @@ Ordered by leverage-per-effort, then dependency. Each row: crib(s) · landing su
 - **AGENTS.md-canonical flip** — decided 2026-06-17, not executed; a real migration (`/furnace-plan` it). Council-grade was the bar to *decide*; it's decided, so execution is a planning task.
 - **Build the `solutions/` scar-tissue library** (decision #3) — the biggest unbuilt thing; **unblocks `CF-05`** (rule-compression method) and is the home for `C-14`-tagged failure cards.
 - **`CF-05` rule-compression method** — gated on the `solutions/` library existing.
+- **`AB-01` mobile (React Native/Expo) project type** and **`AB-02` data/analytics project type** — each *expands what project types the generator scaffolds*, which is the shape-vs-content fork (how much domain content a "scaffolds shape, not content" generator bakes in — architecture rule #3). **Council before building** per D-009; then `/furnace-plan` each. Full harvested content frozen in [`harness-domain-notes.md`](harness-domain-notes.md).
 
 **Parked (not scheduled):** the investigate-tier and useful-someday items in each tracker's "Parked / Investigate" sections. They re-enter a wave only when their open question is resolved — they are *not* lost (that's the CF-04 discipline), but they don't get a wave slot until promoted.
 

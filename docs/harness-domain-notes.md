@@ -6,15 +6,19 @@ audit, this session). It answers one question: when `context-engineering` scaffo
 **web app / mobile app / backend service / CLI / data project**, what failure-mode-citing rules,
 verification disciplines, and docs should it know to emit — beyond what the generator captures today?
 
-**Status — reference only, NOT generator content yet.** This is raw input, not a commitment. How much
-of this belongs *inside* the generator (which "scaffolds shape, not content" — architecture rule 3)
-vs. stays here as a doc you consult is a genuine, costly-to-reverse fork. Per CLAUDE.md "recommend a
-council at genuine forks," **run that decision through a council before folding any of this into
-`skills/context-engineering/`.** Bloating the generator with domain opinion is the failure mode to
-weigh against under-scaffolding non-skill project types.
+**Status — frozen source capture, NOT an adoption plan.** This is the raw, un-triaged harvest. The
+triaged inventory (what's adoptable vs. declined-on-fit, deduped against existing cribs) lives in
+[`cribs-from-claude-skill-bundles.md`](cribs-from-claude-skill-bundles.md) (`AB-` cribs); sequencing
+lives in [`cribs-adoption-roadmap.md`](cribs-adoption-roadmap.md). This file plays the role the source
+GitHub repo plays for the other crib lanes — **except the source is a disconnected connector and is
+NOT re-fetchable**, so this capture is the permanent source-of-record. Do not adopt from here directly;
+go through the `AB-` tracker's lifecycle. The shape-vs-content fork (how much domain content a
+"scaffolds shape, not content" generator should bake in — architecture rule 3) gates AB-01/AB-02 and is
+council-worthy per D-009; see the tracker's sequencing section.
 
 **Provenance.** Distilled by three read-only subagents that loaded each skill's `SKILL.md` from disk
-(none executed, none reconstructed). Source bundles: `engineering:*`, `design:*`, `data:*`.
+(none executed, none reconstructed; they returned drafts, did not write product). Source bundles:
+`engineering:*`, `design:*`, `data:*`, mined 2026-06-18 before connector disconnect.
 
 ---
 
@@ -112,7 +116,9 @@ Cross-cutting: report findings as observation vs interpretation ("5 of 8 clicked
 
 ## Next step
 
-This is captured; the connectors can now be disconnected without losing the substance. Before any of
-it becomes generator behavior, take the **shape-vs-content fork** (how much domain opinion belongs in
-a "scaffolds shape, not content" generator) to a council. Mobile stack support and a data-project type
-are the two most concrete candidates if that decision goes toward enrichment.
+Captured; connectors disconnected without losing the substance. Adoption is tracked, not done — the
+survivors are `AB-01` (mobile type), `AB-02` (data type), and `AB-03` (per-type repro), filed in
+[`cribs-from-claude-skill-bundles.md`](cribs-from-claude-skill-bundles.md) and sequenced in
+[`cribs-adoption-roadmap.md`](cribs-adoption-roadmap.md). AB-01/AB-02 expand generator scope → council
+before building (D-009). Most of the per-type UI/ops content above landed `ignore`-on-fit (rule #3) —
+it stays here as reference, not as cribs.
