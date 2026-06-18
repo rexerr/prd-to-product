@@ -1,4 +1,4 @@
-<!-- Reconciled against DECISIONS.md through D-027 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-027 appears here (many are deliberately skipped as visible-by-reading). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+<!-- Reconciled against DECISIONS.md through D-028 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-028 appears here (many are deliberately skipped as visible-by-reading). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
 
 # Active decisions
 

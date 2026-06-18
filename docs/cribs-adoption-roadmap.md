@@ -1,4 +1,4 @@
-<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) · AB-03/AB-i3 (claude-skill-bundles) — 2026-06-18; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18; C-14 adopted (→D-025) 2026-06-18; C-10 adopted (→D-026) 2026-06-18; CF-04 adopted (→D-027) 2026-06-18. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
+<!-- Synced through: C-41 (steinberger) · CF-29/16-keepers (pocock-craft) · DG-02 (designer) · AB-03/AB-i3 (claude-skill-bundles) — 2026-06-18; CF-03 adopted (→D-023) 2026-06-17; C-09 + CF-06 adopted (→D-024) 2026-06-18; C-14 adopted (→D-025) 2026-06-18; C-10 adopted (→D-026) 2026-06-18; CF-04 adopted (→D-027) 2026-06-18; C-15 adopted (→D-028) 2026-06-18. Update this marker whenever a source tracker gains cribs or a crib changes status. -->
 
 # Cribs adoption roadmap — one strategy across all four trackers
 
@@ -12,7 +12,7 @@ The four crib trackers are **inventories** (what exists, organized by source). T
 
 | Tracker | IDs | Source | Status |
 |---|---|---|---|
-| [`cribs-from-steinberger-ecosystem.md`](cribs-from-steinberger-ecosystem.md) | `C-01`–`C-41` | Van Horn / Steinberger ecosystem | Mining complete; 4 adopted (C-27→D-017, C-09→D-024, C-14→D-025, C-10→D-026), rest standing |
+| [`cribs-from-steinberger-ecosystem.md`](cribs-from-steinberger-ecosystem.md) | `C-01`–`C-41` | Van Horn / Steinberger ecosystem | Mining complete; 5 adopted (C-27→D-017, C-09→D-024, C-14→D-025, C-10→D-026, C-15→D-028), rest standing |
 | [`cribs-from-pocock-craft.md`](cribs-from-pocock-craft.md) | `CF-01`–`CF-29` (22 live) | Pocock + Ciemborowicz | Mined + 6-lens re-mined 2026-06-17; 3 adopted (CF-03→D-023, CF-06→D-024, CF-04→D-027), rest Proposed |
 | [`cribs-from-designer-skills.md`](cribs-from-designer-skills.md) | `DG-01`–`DG-02` (+ investigates) | Owl-Listener (MC Dean) | Mined 2026-06-17; thin yield; all Proposed |
 | [`cribs-from-claude-skill-bundles.md`](cribs-from-claude-skill-bundles.md) | `AB-01`–`AB-03` (+ investigates) | Claude first-party engineering/design/data bundles | Mined 2026-06-18 (before connector disconnect); thin yield; all Proposed. Source not re-fetchable — frozen in `harness-domain-notes.md` |

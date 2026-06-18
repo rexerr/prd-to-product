@@ -7,6 +7,14 @@ description: Bootstrap a token-based design system from brand assets or direct i
 
 Turns brand assets or direct input into a working token CSS file, three seed React components, and a DESIGN_SYSTEM.md doc via a clustered interview. Integrates with the design-system rule that context-engineering scaffolds.
 
+## Binding contracts (read before acting)
+
+- **Never clobber an existing design system** — decline an unrequested collision; diff and require consent on any existing file.
+- **No raw hex in the semantic layer** — semantic aliases reference `var(--<primitive>)` only.
+- **Design-system files only** — three seed components max; never product code.
+
+Full failure modes in Gotchas (bottom).
+
 ## When to trigger
 
 Activate on any of these phrasings:

@@ -7,6 +7,14 @@ description: Scaffold the context structure (AGENTS.md, CLAUDE.md, .claude/rules
 
 Scaffolds the rules and docs that orient an AI agent in a new coding project. Modeled on conventions developed across two production projects. Stack and deploy target are intake parameters: the generator supports Next.js, React + Vite, Node CLI, Python, or other; deploy targets include Vercel, Netlify, Cloudflare, Fly, Railway, manual, or none. Single developer, single human visual confirmer.
 
+## Binding contracts (read before acting)
+
+- **Writes shape, not content** — never author product (tokens, PRD prose, domain vocabulary).
+- **Never overwrites existing files** — diff and require explicit consent (default skip).
+- **The hooks default is load-bearing** — don't flip `enforce_rules_as_hooks` to false without a named replacement.
+
+Full failure modes in Gotchas (bottom).
+
 ## When to trigger
 
 Activate on any of these phrasings:

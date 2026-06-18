@@ -7,6 +7,14 @@ description: Turn a rough idea, working brief, or research dump into a structure
 
 Turns a rough idea or working brief into a structured `PRD.md` via an interview the user answers cluster by cluster. The output PRD is shaped to feed the context-engineering skill's cluster 0 with no edits beyond domain content.
 
+## Binding contracts (read before acting)
+
+- **Never silently absorb context** — draft-and-present from any brief; ask cold only where it's thin.
+- **No internal scaffolding in user-facing copy** — "Cluster 0" / `D-NNN` are machinery, not the user's words.
+- **Never speculate about source-material age** — describe what the material contains, not provenance you can't cite.
+
+Full failure modes in Gotchas (bottom).
+
 ## When to trigger
 
 Activate on any of these phrasings:
