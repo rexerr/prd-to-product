@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket + queue vs. the dense single-file BACKLOG</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Ticket + queue vs. the dense single-file BACKLOG</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should Rex — a designer running a SOLO skill-development repo whose main collaborator is an AI coding agent (Claude Code), no team, no deployed app — replace his current project management (a single dense BACKLOG.md where each item is an 800+ word entry fusing a prioritized &#x27;what&#x27;s next&#x27; list WITH a deep reasoning archive, read whole by the agent at every session start) with an industry-standard ticket + queue model (per-file tickets, a structured file, an HTML app, or Linear/GitHub Issues)? Or is the dense single file actually well-suited to a solo-human-plus-agent workflow, making tickets pointless ceremony? Constraints: a standing invariant (D-001) requires markdown for context files the agent reads at session start; CLAUDE.md warns that relocating docs breaks ~75–90 cross-references.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Keep one markdown file but split it in two layers — a thin top-of-file priority queue over the dense reasoning archive — and do not adopt tickets, an external tool, or the HTML app.</h3>
+    <p>Restructure BACKLOG.md in place: a thin, priority-ordered queue at the top (one line per active item — title, status, next action, and a link to the detail), with the dense reasoning kept below it in the same file. Do not adopt tickets, do not move to Linear or GitHub Issues, and do not build the HTML roadmap app. The reasoning is straightforward: the only constraint that actually governs this repo is the agent&#x27;s session-start read, and the genuine defect is paying archive-weight tokens to extract a queue-weight signal every single session — a tax that compounds as the archive grows. The two-layer split fixes exactly that without triggering any of the repo&#x27;s known hazards: keeping the archive in the same file means anchors don&#x27;t move, so the ~75–90 cross-references keep resolving; staying markdown honors D-001; and adding no UI surface avoids building product to manage a workspace. This is a 30-minute, fully reversible edit — which also defuses the Long View&#x27;s false urgency: you&#x27;re not racing a closing window, you&#x27;re making a cheap change whenever you like. Two disciplines make the split durable rather than cosmetic: (a) the queue links into the existing DECISIONS.md/retros records rather than restating them, so you get a pointer not a third copy; and (b) you add a one-line rule (in CLAUDE.md or atop BACKLOG) that queue entries stay one line and reasoning lives below or in the archive — the guardrail against silent re-fusion.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Before editing anything, measure the actual session-start token cost of reading BACKLOG.md today and confirm whether its reasoning is already duplicated in DECISIONS.md/retros — that one check tells you whether this is a restructuring job or a deduplication job, and gives you the before/after baseline the repo&#x27;s own verification discipline requires.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Split in-file, no tickets</span></td>
+  <td>The single-read advantage is priority plus reasoning in one shot; splitting into files reintroduces &#x27;lost context&#x27; — fix the fusion inside markdown, and kill the HTML app as a D-001 violation.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Reframe, then split</span></td>
+  <td>This is a context-engineering problem, not a PM-format choice: two artifacts with opposite read-frequencies were fused, so optimize session-start tokens per decision — separate the live queue from the dead record.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">No tickets, split in-file</span></td>
+  <td>Per-file tickets force the agent to discover which files matter; &#x27;industry standard&#x27; carries no authority because Linear/Issues solve a multi-human coordination this solo workspace lacks.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Split now, compounding cost</span></td>
+  <td>The fused file grows monotonically; the perishable queue drags the appreciating archive through a full re-read every session — they depreciate at opposite rates and want to live apart.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Thin index, keep reasoning inline</span></td>
+  <td>The ticket migration is cargo cult that a solo operator pays for with no payoff; add a prioritized index on top but keep the &#x27;why&#x27; adjacent to action — though four reviews flag that this leaves the archive still re-read every session.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>The council is close to unanimous on the destination. All five reject the ticket-and-queue model outright: it solves coordination problems (handoffs, assignment, multi-human status visibility) that a solo-human-plus-agent workflow simply does not have, so it imports ceremony with nothing to coordinate. All five reject the external tools (Linear, GitHub Issues) for the same reason plus a sharper one — they live outside the repo, so the agent can&#x27;t read them at session start without a tool call, which collides with D-001. All five reject the HTML app as ceremony in a costume that also fights the markdown-only invariant. And four of the five converge on the real diagnosis: the defect was never the file count, it&#x27;s the fusion of two artifacts with opposite read-frequencies and lifespans — a perishable, every-session queue welded to a rarely-read, append-only reasoning archive — so the agent pays archive cost at queue frequency. The prescription that follows: thin queue on top, dense archive below or linked.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>The one real fracture is the Veteran versus everyone else. Four advisors call the fusion the bug — the thing to fix. The Veteran calls the fusion the feature, arguing that an agent resuming cold works better with reasoning adjacent to action, so reasoning should stay inline. Four of the five peer reviews independently flagged this as the Veteran&#x27;s blind spot: a thin index added above still-inline dense entries doesn&#x27;t stop the archive from being re-read every session — it adds signal without removing the tax. The Veteran is right that the fix is cheap and reversible and that &#x27;professionalizing&#x27; is the trap; he&#x27;s wrong that inlining is costless. The other latent clash is on urgency: the Long View insists migration is &#x27;cheapest today and never cheaper,&#x27; which a reviewer rightly notes overstates the case for what everyone agrees is a low-risk, reversible edit.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The reviews surfaced three things no advisor handled, and they matter more than the verdict itself:</p>
+<p>1. Nobody measured the premise. Every advisor asserts the archive is &#x27;re-read at full token cost every session,&#x27; but none verified whether the agent actually ingests all 800-word entries or could simply be instructed to read only the queue header. The repo&#x27;s own &#x27;verification before claiming done&#x27; discipline demands measuring session-start tokens before and after — yet no advisor proposed it as the gate.</p>
+<p>2. The split could spawn a third copy of the &#x27;why.&#x27; The reasoning may already be duplicated in DECISIONS.md and retros (which the BACKLOG cross-references). If so, the fix is partly deduplication, not restructuring — and a careless split risks creating a third home for the same reasoning instead of a pointer into the existing one.</p>
+<p>3. The cross-reference hazard is real and was hand-waved. CLAUDE.md warns that relocating docs breaks ~75–90 cross-references. Advisors who claimed &#x27;no cross-reference breakage&#x27; asserted it rather than checked it. The safe version keeps the archive in the same file (queue on top, archive below) so anchors don&#x27;t move — moving the archive out is where the breakage lives.</p>
+<p>4. No advisor named the anti-re-fusion discipline. What stops the agent from re-bloating one-line queue entries back into 800-word prose over time? Without a rule, the split silently undoes itself.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>Tickets-per-file fails the one constraint that actually governs this repo: the agent&#x27;s session-start read. The whole BACKLOG advantage isn&#x27;t &quot;one file&quot; aesthetically — it&#x27;s that a single read gives the agent the priority ordering plus the reasoning in one shot. Split into N ticket files and the agent now needs an index to know what&#x27;s next, then must fan out reads to reconstruct the why. That&#x27;s strictly more tokens and more round-trips, and it reintroduces the exact failure CLAUDE.md keeps legislating against: &quot;lost context between sessions.&quot; You&#x27;d be optimizing for a coordination problem you don&#x27;t have — there is no second human to assign a ticket to.</p>
+<p>Now turn the skepticism on the status quo, because it&#x27;s not clean either. The real defect isn&#x27;t the file count; it&#x27;s the fusion. An 800-word entry that welds &quot;do this next&quot; to a decision archive means the actionable signal is buried in prose the agent re-pays for every single session, forever, whether or not today&#x27;s task touches it. That&#x27;s a slow tax, and it compounds as the archive grows.</p>
+<p>But the HTML-app fix is a trap. It collides head-on with D-001 (markdown-only for session-start context) and the markdown-only architecture invariant — the agent can&#x27;t cheaply read a JSON island, and you&#x27;d be building product to manage a workspace. Drag UI for a one-person backlog is pure ceremony.</p>
+<p>The honest answer: don&#x27;t migrate, split the two jobs inside markdown. A thin top-of-file queue (one line per item, priority-ordered, pointer to detail) plus the archive below or in docs/. Cheap, reversible, no cross-reference breakage, no D-001 fight. Tickets solve a team problem you don&#x27;t have.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Tickets versus a dense BACKLOG is the wrong axis. You&#x27;re treating this as a project-management format choice when it&#x27;s actually a context-engineering problem: the failure mode isn&#x27;t &quot;no queue,&quot; it&#x27;s that you&#x27;ve fused two artifacts with opposite read-frequencies and opposite lifespans into one file. The actionable queue is read every session and changes constantly. The reasoning archive is read rarely, on demand, and is append-only. Cramming them together means the agent re-ingests an 800-word/item archive every session to extract a one-line &quot;what&#x27;s next&quot; — you&#x27;re paying archive cost at queue frequency.</p>
+<p>So don&#x27;t import the ticket model. Import the one property that makes tickets work and that you&#x27;re missing: separation of the live queue from the dead record. The simplest first move that proves this: split BACKLOG.md into a thin top section (one line per active item: title, status, next action, link) and push the prose reasoning down or out into the retros/decision records you already cross-reference. The agent reads the thin queue every session; it follows a link into the archive only when it actually picks that item up. No new tool, no per-file ceremony, no migration of cross-references — they keep resolving.</p>
+<p>Skip Linear/GitHub Issues entirely: they live outside the repo, so the agent can&#x27;t read them at session start without a tool call, and they break D-001&#x27;s &quot;markdown the agent reads at startup.&quot; Skip the HTML app too — it&#x27;s solving a human-drag-UI problem you don&#x27;t have as a solo operator, and it violates the same invariant.</p>
+<p>The variable to optimize is session-start tokens per decision, not &quot;do I have tickets.&quot; Split the file; measure the read.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Per-ticket files would force the agent to do something it is bad at: discover which files matter before reading them. Right now the agent reads one file and has the whole board plus the reasoning behind it. Split that into thirty ticket files and the agent either reads all thirty anyway (same tokens, more file-open overhead) or guesses which three are relevant and resumes work on a wrong or stale assumption. The single-file read is not legacy mess — it is the format that matches how this particular collaborator ingests context.</p>
+<p>But there is a real fault line buried in the framing. &quot;Fuses two jobs&quot; is the tell. A prioritized what-next queue is read every session; an 800-word nested reasoning archive is read once and referenced rarely. Co-locating them means the agent pays the archive&#x27;s token cost on every single resume, forever, to get the queue. That is the actual problem — not &quot;no tickets.&quot;</p>
+<p>What outsiders are assumed to already accept: that &quot;industry standard&quot; carries authority here. It does not. Linear and GitHub Issues exist to solve a problem this workspace does not have — multiple humans needing shared visibility, assignment, and status they did not personally write. Solo-plus-agent has none of that. Importing the tool imports the ceremony and the coordination tax with no coordinating to do.</p>
+<p>Who is actually affected: two readers, Rex and the agent. Neither needs handoff. Both need fast resume.</p>
+<p>Verdict: do not adopt tickets. Split the queue from the archive — a lean actionable queue at the top, the reasoning history in a separate referenced file. That is the cheap, reversible win. The HTML app is ceremony wearing a different costume; it also breaks D-001.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Reading this whole file at session start is the load-bearing fact, and it&#x27;s the one that compounds against you. BACKLOG.md grows monotonically — every retro, every decision, every cross-reference accretes. In three years a fused reasoning-archive-plus-queue isn&#x27;t an 800-word-per-item file, it&#x27;s a document where the actionable &quot;what&#x27;s next&quot; is a thin signal buried in a deep sediment of why-we-did-things. The agent re-reads the sediment every session, at rising token cost, to extract a queue that could have been 200 lines. That&#x27;s not a steady state; it&#x27;s a slow leak that gets worse precisely as the project succeeds.</p>
+<p>The thing invisible from where you stand: the two jobs depreciate at opposite rates. The queue is perishable — today&#x27;s priority is worthless next month. The reasoning archive appreciates — old decisions get more valuable as context for new ones. Fusing them means your perishable layer drags your durable layer through a full re-read every session, and your durable layer bloats the file you scan to decide what to do next. They want to live apart.</p>
+<p>What this makes true later if you split: a thin queue (the perishable &quot;now/next&quot;) plus the archive you already have (DECISIONS.md, retros — your durable layer, untouched). The queue stays cheap to read forever; the archive stays linked, not inlined.</p>
+<p>Don&#x27;t build the HTML app. A JSON island violates the spirit of D-001, adds a UI surface a solo operator maintains forever, and the drag-to-reprioritize ceremony is exactly the human-coordination theater an agent doesn&#x27;t need. The depreciating asset (software you maintain) to manage a queue is the wrong trade.</p>
+<p>Reversibility cuts toward acting now: cross-references get harder to untangle every session you wait. Migration is cheapest today and never cheaper again.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The dense single-file BACKLOG is the right tool, and the instinct to &quot;professionalize&quot; it is the trap. I have watched this exact migration a dozen times: someone imports the ticket-and-queue ritual because it&#x27;s what &quot;real teams&quot; do, and six months later they have a Linear board nobody grooms, tickets that rot because the context lives somewhere else, and a workspace that now requires two reads to do one thing.</p>
+<p>Ask why the obvious move is obvious. Tickets exist to solve coordination problems you do not have: handoffs between people, status visibility for a manager, parallel work that must not collide, the need to assign. You are one person and one agent on `main`. Every cost the ticket model amortizes across a team, you pay alone with zero payoff. That&#x27;s not &quot;industry standard transferring&quot; — that&#x27;s cargo cult.</p>
+<p>The genuine difference here: your collaborator reads the entire file every session and works better with reasoning adjacent to action. Splitting reasoning-archive from actionable-queue — the thing tickets do — is precisely wrong for an agent that resumes cold and needs the &quot;why&quot; inline. Per-ticket reads multiply context cost and lose cross-reference locality. The fusion you&#x27;re uncomfortable with is the feature.</p>
+<p>Where the standard playbook does apply: the actual pain isn&#x27;t structure, it&#x27;s that prioritization is buried in 800-word prose. Fix the queue, not the model. Put a thin prioritized index at the top of BACKLOG — five lines, &quot;what&#x27;s next&quot; — and leave the dense entries below as the archive. That&#x27;s a 30-minute edit, fully reversible, breaks zero cross-references. Kill the HTML app outright: it fights D-001 and buys you drag-UI you don&#x27;t need.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td><td><span class="vote-dot longview"></span></td></tr>
+<tr><td><span class="advisor-name veteran">The Veteran</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">All five converge on &#x27;thin queue on top, archive below/linked&#x27; but none specifies the operational discipline that keeps the split from re-fusing — what stops the agent from re-bloating queue lines back into 800-word entries over time. They also unanimously assert the per-session whole-file read as fixed cost without questioning whether queue and archive could simply be two files the agent reads selectively, which would resolve the token problem without any in-file restructuring at all.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">Every response prescribes &#x27;split queue from archive&#x27; but none specifies the cut line where Rex&#x27;s queue links INTO the existing reasoning record (DECISIONS.md, retros) without duplicating it — risking a third copy of the &#x27;why&#x27; rather than a pointer, and re-creating the bloat under a new name. None proposes the actual measurement (session-start tokens before/after) as a gate to confirm the split paid off, despite the repo&#x27;s own &#x27;verification before claiming done&#x27; discipline.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">Every response asserts the fused archive is re-read at full token cost each session, but none verifies the actual mechanic — whether the agent truly ingests all 800-word entries or can be told to read only the queue header, and what current per-session token cost actually is. They also unanimously ignore that the reasoning may already be duplicated in DECISIONS.md and retros, which means the fix may be deduplication, not restructuring — and nobody flags the migration risk that splitting BACKLOG could break the ~75–90 cross-references CLAUDE.md explicitly warns about.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">All five assert the archive is &#x27;re-read every session&#x27; and bloats token cost, but none verifies the actual claim — whether the agent truly ingests the full BACKLOG.md at session start or whether existing cross-references already externalize most reasoning. None addresses the migration&#x27;s real hidden cost in THIS repo — CLAUDE.md says relocating docs breaks 75–90 cross-references — so &#x27;cheapest today&#x27; and &#x27;no cross-reference breakage&#x27; are asserted, not checked against the repo&#x27;s own stated constraint.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">Every response prescribes &#x27;thin queue on top, archive below/linked&#x27; but none specifies the load-bearing detail: D-001 requires the agent to read markdown at session start, so if the archive moves OUT of the always-read set, the agent loses the inline &#x27;why&#x27; it currently resumes cold with — meaning the split only works if the link-following actually fires on the right items, which nobody defines a mechanism or test for. None proposes actually measuring current session-start tokens before committing to a migration, despite CLAUDE.md&#x27;s own &#x27;reproduce/verify before claiming&#x27; discipline.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the question as the underlying variable to optimize — session-start tokens per decision — names the precise mechanism (paying archive cost at queue frequency), and ends with a measurable test rather than just a verdict.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It insists migration is cheapest now and never cheaper, yet its own recommended split is the cheap, reversible 30-minute edit others describe — overstating urgency for a change it admits is low-cost and low-risk.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five converge on &#x27;thin queue on top, archive below/linked&#x27; but none specifies the operational discipline that keeps the split from re-fusing — what stops the agent from re-bloating queue lines back into 800-word entries over time. They also unanimously assert the per-session whole-file read as fixed cost without questioning whether queue and archive could simply be two files the agent reads selectively, which would resolve the token problem without any in-file restructuring at all.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It is the only response that names the two-jobs split AND grounds the timing decision in a concrete dynamic — the perishable queue and appreciating archive depreciate at opposite rates, so migration is cheapest now and never cheaper again.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It alone treats the fusion as &#x27;the feature&#x27; and recommends keeping the dense entries inline, contradicting the consensus that re-reading the archive at queue frequency is the actual tax.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response prescribes &#x27;split queue from archive&#x27; but none specifies the cut line where Rex&#x27;s queue links INTO the existing reasoning record (DECISIONS.md, retros) without duplicating it — risking a third copy of the &#x27;why&#x27; rather than a pointer, and re-creating the bloat under a new name. None proposes the actual measurement (session-start tokens before/after) as a gate to confirm the split paid off, despite the repo&#x27;s own &#x27;verification before claiming done&#x27; discipline.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It alone names the dynamic that makes the split urgent rather than optional — the two layers depreciate at opposite rates, so fusion drags a perishable queue through a re-read of an appreciating archive that bloats monotonically.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It proposes leaving the dense entries inline below the thin index, which preserves the exact monotonic-bloat-at-queue-frequency cost the other responses identify — a top index doesn&#x27;t stop the agent re-reading the archive every session.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response asserts the fused archive is re-read at full token cost each session, but none verifies the actual mechanic — whether the agent truly ingests all 800-word entries or can be told to read only the queue header, and what current per-session token cost actually is. They also unanimously ignore that the reasoning may already be duplicated in DECISIONS.md and retros, which means the fix may be deduplication, not restructuring — and nobody flags the migration risk that splitting BACKLOG could break the ~75–90 cross-references CLAUDE.md explicitly warns about.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It is the only response that names the asymmetry precisely — perishable queue vs. appreciating archive depreciate at opposite rates — and converts it into a timing argument without overreaching into tooling Rex doesn&#x27;t need.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It proposes inlining a thin index ABOVE the dense entries in the same file, which leaves the archive still being fully re-read every session — failing to solve the very token-cost problem the other four correctly isolate.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five assert the archive is &#x27;re-read every session&#x27; and bloats token cost, but none verifies the actual claim — whether the agent truly ingests the full BACKLOG.md at session start or whether existing cross-references already externalize most reasoning. None addresses the migration&#x27;s real hidden cost in THIS repo — CLAUDE.md says relocating docs breaks 75–90 cross-references — so &#x27;cheapest today&#x27; and &#x27;no cross-reference breakage&#x27; are asserted, not checked against the repo&#x27;s own stated constraint.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It uniquely names the dynamic that makes the split urgent — the two layers depreciate at opposite rates — and points out cross-references get harder to untangle the longer you wait, making the migration-cost argument concrete rather than asserted.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">It treats the fusion of why-with-action as &#x27;the feature&#x27; and frames the fix as cosmetic (a 30-min thin index on top), missing that the archive&#x27;s monotonic growth means the agent keeps re-paying the full archive cost every session.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response prescribes &#x27;thin queue on top, archive below/linked&#x27; but none specifies the load-bearing detail: D-001 requires the agent to read markdown at session start, so if the archive moves OUT of the always-read set, the agent loses the inline &#x27;why&#x27; it currently resumes cold with — meaning the split only works if the link-following actually fires on the right items, which nobody defines a mechanism or test for. None proposes actually measuring current session-start tokens before committing to a migration, despite CLAUDE.md&#x27;s own &#x27;reproduce/verify before claiming&#x27; discipline.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Ticket + queue vs. the dense single-file BACKLOG</p>
+  <p>Generated by the LLM Council skill · 2026-06-19T12:00:00</p>
+</footer>
+
+</div>
+</body>
+</html>
