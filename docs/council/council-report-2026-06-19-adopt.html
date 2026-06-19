@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>design-system-adopt: build the skill, or ship a rule?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>design-system-adopt: build the skill, or ship a rule?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should Rex (single-developer, markdown-only Claude Code skill workspace) build a new design-system-adopt skill that ingests a finished &#x27;Claude Design&#x27; artifact (a real ~1,200-line prop-driven React component library) and preserves it at three levels — tokens, components, AND composition/fidelity — accepting that it crosses his existing design-system-bootstrap skill&#x27;s deliberate invariant (&#x27;never feature components&#x27;)? Grounded failure from his real project the-council: the design-to-app handoff harvested ONLY token values; zero components adopted, every page rebuilt inline, composition drifted 100%. Sub-questions: (1) is &#x27;port existing&#x27; safe where &#x27;improvise&#x27; is not? (2) can composition fidelity be enforced by a skill/rule, or only a human gate? (3) is the fix a lightweight discipline + import rule rather than a heavy generator? (4) ROI for a single-dev workspace?</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Don&#x27;t build the heavy design-system-adopt skill — ship a ~20-line always-on import rule plus a present, cheap human diff-against-source gate, log the invariant-crossing as a decision regardless, and only revisit a generator after the rule survives three real handoffs.</h3>
+    <p>Build the rule, not the skill — and don&#x27;t pretend the rule is self-enforcing. A 300-line generator buys a second skill that overlaps design-system-bootstrap, contradicts its headline invariant, rots on every Claude Design export change, and adds root-pile sprawl your own CLAUDE.md legislates against — all to solve the cheap half while the expensive half (composition) stays exactly as unenforced as it was in the-council. Skip it. But the peer reviews exposed a flaw in the easy answer: a &#x27;diff-against-source, no-merge&#x27; gate staffed by the one person who already failed to open the design is the same habit wearing a badge. So build the rule around the two distinctions the reviewers drew. FIRST, split composition into its two halves and enforce them differently: intra-app consistency is the half you CAN make mechanical even in a markdown workspace — a session-start check or emitted hook that greps for inline re-implementations of components that already exist in the imported library (the way your hooks already live-fire on blocked operations); that removes the cheap, high-frequency drift without a human. Fidelity-to-source genuinely needs a human — make that gate survivable by making it cheap and PRESENT, not diligent: the rendered reference pages live in the repo next to the surfaces and the import rule fires on every new-surface session. Presence beats discipline; the-council failed because the design was absent, not because Rex lacked willpower. SECOND, address staleness in the rule: the reference of record is re-snapshotted on each design change with a dated marker, and a surface diffed against a stale reference is flagged, not trusted. THIRD — non-negotiable per house rules — log the invariant crossing as a D-NNN decision either way; even the lightweight rule establishes a deliberate breach of &#x27;never feature components,&#x27; and the decision entry is what stops future-Rex from reading the two skills as contradictory and deleting the wrong one. On ROI: a single-dev workspace is exactly where a maintained generator loses and a deletable rule wins. And the Stranger&#x27;s challenge — is this even a real problem? — is answered by the rule itself: run it for three real handoffs. If fidelity holds, presence-plus-gate was the fix. If it drifts anyway, you&#x27;ve proven composition needs a human gate no skill can supply — and spent ~20 reversible lines learning it instead of 300 maintained ones.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>On the NEXT real design-to-app handoff, before writing any rule or skill: drop the actual rendered Claude Design pages (screenshots + component source) into the repo as design/reference/, copy the real component files in, and add one ~20-line always-on import rule that cites its failure mode (100% composition drift, the-council) — &#x27;a design library exists at design/reference/; import from it, never rebuild a surface it already covers; rebuilding requires a cited reason; diff each new surface against its dated reference page before commit.&#x27; Run that one cycle, then decide whether anything heavier earns its keep. Open the D-NNN decision entry recording the invariant crossing as part of the same change.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Don&#x27;t build; demand a mechanical enforcer</span></td>
+  <td>A markdown skill ships no build-time gate, so it re-encodes the unenforced axis and calls it enforcement — name the mechanical check first or it&#x27;s theater with a budget.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Don&#x27;t build; test the real variable</span></td>
+  <td>Composition lives in the page not the library, so drop the rendered design into the repo as the reference of record and run one diff-gated cycle to prove presence-plus-gate is the fix.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Question whether there&#x27;s a problem</span></td>
+  <td>One dev, one app, components possibly used once, &#x27;100%&#x27; with no count behind it — a skill won&#x27;t fix a forgotten-to-open-the-design habit, so test the cheap rule before assuming the failure is real.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Don&#x27;t build; rules compound, generators rot</span></td>
+  <td>Inline JSX is the local-minimum gravity that beat you last time, and a maintained generator overlaps bootstrap and depreciates on every export change — the rule and its failure citation are what survive.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Don&#x27;t build; wiring plus import rule</span></td>
+  <td>The standard playbook for &#x27;components got rebuilt instead of imported&#x27; is wiring not a generator — copy the files, add an always-on rule, be honest that fidelity lands on a human gate, then watch two handoffs.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>Near-total consensus on the diagnosis, which is rare and worth weighting. (1) Composition fidelity is the real problem and it is NOT in the library: even a perfectly ported component kit leaves layout, slotting, and page assembly to be invented fresh each surface — tokens-plus-components solves only the cheap half. (2) A markdown skill cannot mechanically enforce fidelity: it ships no build-time gate, no PR block, no forced reference-open; tokens were enforceable because compliance is mechanically checkable, fidelity is a judgment call. (3) The fix is wiring, not a generator: copy the real component files in, add an always-on import rule that cites its failure mode, lean on a human gate — reversible, cheap, house-style-compliant. (4) The root cause was ABSENCE, not a missing tool: the finished design wasn&#x27;t in the build context at composition time, so nothing was looked at because nothing was there to look at.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>Little genuine clash on the verdict — all five land at &#x27;don&#x27;t build the heavy skill, ship the rule.&#x27; The divergence is about whether even the rule will work. The Skeptic is most pessimistic: a rule is theater unless a mechanical enforcer exists. The Stranger attacks one rung lower: maybe there&#x27;s no problem worth solving — one dev, one app, components possibly used once, &#x27;100%&#x27; with no count behind it. The Architect and Long View are constructive: presence + a gate probably works, and even if it doesn&#x27;t, running it manually proves the variable cheaply. The clash is about confidence in the human gate, not about building the generator — nobody defends the generator.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer reviews surfaced four decision-relevant gaps the advisors missed. (1) Two different &#x27;compositions&#x27; got conflated: intra-app consistency (does page 2 compose primitives like page 1?) is snapshot/lint-checkable WITHOUT a human; fidelity-to-source (does any page match the Claude Design?) needs a human. Different enforcers; the cheap mechanical win lives in the first, and every advisor blurred them together. (2) The gate&#x27;s enforcer is the same habit that already failed: every recommendation relocates the unenforced discipline from &#x27;copy the components&#x27; to &#x27;pass the gate,&#x27; staffed by the same dev who skipped opening the design last time. (3) Re-export staleness: Claude Design regenerates on every design change, so any committed &#x27;reference of record&#x27; silently goes stale. (4) The DECISIONS process: crossing the &#x27;never feature components&#x27; invariant is precisely the costly, hard-to-reverse fork that CLAUDE.md says must be councilled AND logged — even the lightweight rule establishes &#x27;adopt ports real components,&#x27; so it still needs a D-NNN entry.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>Composition fidelity is unenforceable by a markdown skill, and that&#x27;s the flaw that sinks the heavy version. In the-council the design existed, the components existed, and a human-plus-agent loop with a linter STILL rebuilt every surface inline. The drift wasn&#x27;t caused by a missing skill — it was caused by the path of least resistance being &#x27;write fresh JSX.&#x27; A design-system-adopt skill ships markdown; it cannot ship a build-time diff gate, block a PR, or force an agent to open the reference. So it says &#x27;compose from these, diff against the design&#x27; — and the next agent rebuilds inline because it&#x27;s faster and nobody&#x27;s watching. You&#x27;d encode the unenforced axis a second time and call it enforcement. Sub-question 1 is a trap: &#x27;port not invent&#x27; sounds safe, but JSX-to-app translation IS invention — routing, state wiring, data fetching, slot composition. The component boundary is where improvisation re-enters. Bootstrap&#x27;s invariant was &#x27;agents handed a design artifact improvise,&#x27; and adopt hands an agent a design artifact. Enforceable only if something mechanical checks it. Build that check first. If you can&#x27;t name the mechanical enforcer, the skill is theater, and a 300-line generator is theater with a budget. Ship the rule, wire the gate, see if fidelity holds for one cycle.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Composition fidelity is the entire problem, and tokens-plus-components doesn&#x27;t touch it. Even if adopt ports TarotCard perfectly, an agent building a page still decides HOW to arrange TarotCard, Channel, and Waveform — invented fresh every time. You can port a component library and still get 100% composition drift, because composition lives in the page, not the library. So sub-question 1 is a trap: porting components is necessary and safe, but it solves the cheap half. The expensive half — layout/structure — has no artifact to port unless the Claude Design system ALSO shipped the assembled pages, not just the component kit. Reframe: the variable you&#x27;re optimizing isn&#x27;t &#x27;should the skill write components.&#x27; It&#x27;s &#x27;what is the reference of record, and is it present at the moment of composition.&#x27; The drift happened because the finished design was ABSENT from the build context. Nothing was looked at because nothing was there to look at. Simplest first move that proves it: skip the skill. Next handoff, drop the actual rendered Claude Design pages (screenshots + component source) into the repo as design/reference/, add one rule — &#x27;every new surface diffs against its reference page before commit; no reference, no merge.&#x27; Run it once. If fidelity holds, your fix was presence + a gate, not a generator. If it drifts anyway, you&#x27;ve proven composition needs a human review gate, and no skill saves you. Either outcome kills a wrong variable cheaply.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Composition fidelity drifted &#x27;100% of the time&#x27; — but I can&#x27;t see a single number behind that. How many surfaces? Three pages or thirty? &#x27;Citable failure&#x27; is doing a lot of work for one project observed once. A failure you can name in a quotable sentence is not the same as a failure you&#x27;ve measured. Who is actually affected? One developer, on his own projects. There is no team, no handoff to a stranger who never saw the design. The &#x27;we&#x27; in &#x27;we enforced token compliance&#x27; is one person. So the real question isn&#x27;t &#x27;can a skill enforce fidelity&#x27; — it&#x27;s &#x27;why didn&#x27;t Rex, the only person in the loop, open the design and copy the components when he wrote the app?&#x27; If the answer is &#x27;I forgot / it was easier to retype,&#x27; a skill won&#x27;t fix a habit; it&#x27;ll be another file he forgets to invoke. Unspoken assumption: that the components are worth preserving as-built. TarotCard, Waveform, Channel sound bespoke to one app. &#x27;Reusable library&#x27; describes their form, not their reuse. Have any been reused across two projects? If not, &#x27;adopt and preserve fidelity&#x27; is preserving a thing used once. Build the thin discipline-rule — reversible, tests the habit; if Rex still rebuilds inline anyway, you&#x27;ve learned the generator would&#x27;ve been forgotten too, cheaply.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Composition divergence didn&#x27;t drift because nobody built the right tool — it drifted because three years of incentives all point at &#x27;rebuild inline.&#x27; An adopt skill ships once, but the gravity that beat it last time keeps pulling every session. Inline JSX is the local minimum — faster to type, no import to reconcile, no design file to re-open. A markdown skill cannot out-pull that gravity at build time; only a gate the agent must pass through can. Play it forward: build the heavy generator and in three years you own a second skill that overlaps bootstrap, contradicts its headline invariant, and depreciates every time Claude Design changes its export shape — future-Rex pays the tax of remembering which, the root-pile sprawl your CLAUDE.md legislates against. Generators rot; the ported library rots faster. What compounds instead is the rule and the failure citation — &#x27;when a Claude Design system ships real components, adopt the files and compose from them — never rebuild; the unenforced axis drifts every time&#x27; — which survives export-format churn and ports to the next design tool. Pick option 3: thin wiring plus an always-on fidelity rule, teeth being a human diff-against-design review gate. Don&#x27;t build the generator until you&#x27;ve run the rule manually three times. A rule you delete costs nothing; a skill you maintain costs forever.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>Composition fidelity drifted because nobody was forced to look at the design — and a skill cannot force that. The pattern I&#x27;ve watched a dozen times: teams enforce the cheap-to-check axis (tokens, a linter) and declare the expensive-to-check axis &#x27;covered&#x27; because a tool now exists. Building adopt risks repeating the exact failure one level up — generated component files satisfy &#x27;components were ported,&#x27; composition drifts again, except now you trust it less because a skill blessed it. The standard playbook is right here and your case is not special: the fix for &#x27;components got rebuilt instead of imported&#x27; is wiring, not a generator. Copy the component files in, add an always-on rule — &#x27;a design library exists at X/; import from it, never rebuild a surface it already covers; rebuilding requires a cited reason.&#x27; That rule cites its failure mode (100% composition drift, the-council), exactly your house style; ~20 lines, reversible, ports the real components rather than a generator&#x27;s idea of them. Be honest on enforcement: tokens were enforceable because compliance is mechanically checkable; fidelity is a judgment call, so it lands on a human review gate, not a skill. ROI: single-dev workspace, reversible problem, real fix is a rule. Don&#x27;t build the heavy skill; ship discipline + import rule, watch two real handoffs, then ask whether a generator earns its keep.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name stranger">The Stranger</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">None seriously asks whether Claude Design could ship the assembled pages/layout as a portable artifact — everyone treats composition as inherently un-portable when the leverage may be upstream in what the design tool exports. And none reconciles the recommendation against Rex&#x27;s own DECISIONS process: crossing the &#x27;never feature components&#x27; invariant is exactly the costly, hard-to-reverse fork his CLAUDE.md says should trigger a council AND a logged decision, not a quietly-shipped rule.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">None costed the dominant single-dev cost: the recurring attention tax of one more skill/rule to remember and re-invoke vs the one-time cost of copying components by hand. And all converge on &#x27;fidelity rule + human gate&#x27; without confronting that Rex is the only human gate and already failed to open the design once — so the gate&#x27;s enforcer is the same unreliable habit the rule is meant to fix.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">All five treat &#x27;composition&#x27; as one thing, but none separates intra-app consistency (does page 2 compose the same primitives the same way as page 1 — snapshot/lint-checkable WITHOUT a human) from design-fidelity-to-source (does any page match the Claude Design — needs a human). Different enforcers; the cheapest win is the former. And none costs the re-export problem: the Claude Design source regenerates on every design change, so any committed &#x27;reference of record&#x27; silently goes stale.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">None asks whether a single dev who already failed to open a finished design will reliably honor a self-imposed &#x27;diff against reference, no merge&#x27; gate — every recommendation quietly relocates the same unenforced human discipline from &#x27;copy the components&#x27; to &#x27;pass the gate,&#x27; so the fix inherits the exact failure it diagnoses.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">All five accept that the agent should preserve the design&#x27;s composition, but none asks whether the original Claude Design pages are themselves the spec worth holding to — whether a one-dev single-app artifact deserves fidelity enforcement at all versus letting composition legitimately evolve per surface. And the only person to staff the gate is the same one who skipped opening the design last time.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It isolates the true variable — the finished design was absent from the build context at composition time — then proposes a one-cycle test that kills the wrong answer cheaply.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">Its &#x27;were these components ever reused&#x27; challenge misreads the goal: the artifact is the deliverable&#x27;s own fidelity to its design, not cross-project reuse.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None seriously asks whether Claude Design could ship the assembled pages/layout as a portable artifact — everyone treats composition as inherently un-portable when the leverage may be upstream in what the design tool exports. And none reconciles the recommendation against Rex&#x27;s own DECISIONS process: crossing the &#x27;never feature components&#x27; invariant is exactly the costly, hard-to-reverse fork his CLAUDE.md says should trigger a council AND a logged decision, not a quietly-shipped rule.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It locates the actual variable — composition lives in the page, not the library — and turns it into a one-cycle test that resolves the question either way.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It risks dismissing a real named failure on a technicality and never asks whether the absent reference, not Rex&#x27;s discipline, was the cause.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None costed the dominant single-dev cost: the recurring attention tax of one more skill/rule to remember and re-invoke vs the one-time cost of copying components by hand. And all converge on &#x27;fidelity rule + human gate&#x27; without confronting that Rex is the only human gate and already failed to open the design once — so the gate&#x27;s enforcer is the same unreliable habit the rule is meant to fix.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It locates the true variable — the reference of record absent from build context — yielding a cheap falsifiable test rather than another rule.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It nearly dismisses fidelity as a non-problem while missing that composition drift hurts even a single-use app&#x27;s quality.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five treat &#x27;composition&#x27; as one thing, but none separates intra-app consistency (does page 2 compose the same primitives the same way as page 1 — snapshot/lint-checkable WITHOUT a human) from design-fidelity-to-source (does any page match the Claude Design — needs a human). Different enforcers; the cheapest win is the former. And none costs the re-export problem: the Claude Design source regenerates on every design change, so any committed &#x27;reference of record&#x27; silently goes stale.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It alone turns the diagnosis into a presence-plus-gate test that falsifies the variable cheaply either way.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It frames it all as incentive gravity and rule-vs-generator while never noticing even a perfect ported library leaves composition unported.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None asks whether a single dev who already failed to open a finished design will reliably honor a self-imposed &#x27;diff against reference, no merge&#x27; gate — every recommendation quietly relocates the same unenforced human discipline from &#x27;copy the components&#x27; to &#x27;pass the gate,&#x27; so the fix inherits the exact failure it diagnoses.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It alone locates the mechanism — composition lives in the page, not the library, so the missing artifact is the assembled reference pages, not ported components — and proposes a presence-plus-gate test.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It never asks whether the bespoke components are reused anywhere, so argues to preserve fidelity for possible one-offs.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five accept that the agent should preserve the design&#x27;s composition, but none asks whether the original Claude Design pages are themselves the spec worth holding to — whether a one-dev single-app artifact deserves fidelity enforcement at all versus letting composition legitimately evolve per surface. And the only person to staff the gate is the same one who skipped opening the design last time.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: design-system-adopt: build the skill, or ship a rule?</p>
+  <p>Generated by the LLM Council skill · 2026-06-19T07:20:58</p>
+</footer>
+
+</div>
+</body>
+</html>
