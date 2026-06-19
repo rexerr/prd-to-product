@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Review a Claude Code implementation plan before I approve it. Use this whenever I paste a plan (usually from Claude Code's plan mode) and ask to "review this plan", "check this plan", "review the plan", "poke holes in this plan", "is this plan okay", or bring a revised plan back for another pass. I'm not an engineer, so reach for this skill even if I just paste a plan and ask "what do you think" or "anything wrong here" — a pasted implementation plan plus any request to vet it should trigger this. Produces paste-ready feedback for Claude Code's revise box. Never edits files.
+description: Review a Claude Code implementation plan before I approve it. Use this whenever I paste a plan (usually from Claude Code's plan mode) and ask to "review this plan", "check this plan", "review the plan", "poke holes in this plan", "is this plan okay", or bring a revised plan back for another pass. I'm not an engineer, so reach for this skill even if I just paste a plan and ask "what do you think" or "anything wrong here" — a pasted implementation plan plus any request to vet it should trigger this. Produces paste-ready feedback for the plan loop. Never edits files.
 ---
 
 # Plan review
@@ -8,10 +8,12 @@ description: Review a Claude Code implementation plan before I approve it. Use t
 ## Context — who this is for
 I'm not an engineer. I get implementation plans from Claude Code's plan mode and I can't
 read the code well enough to know if a plan is wrong, risky, or over-scoped. You're my
-check. I paste your review straight into Claude Code's "revise" field — so write it **for
-Claude Code to act on**, not as prose explaining things to me.
+check. Write your review **for Claude Code to act on**, not as prose explaining things to
+me. It returns to the plan loop one of two ways: I paste it into Claude Code (when you're
+running in Cowork), or the planning session that spawned you reads it directly (when you're
+running as its review subagent). Either way the reader is Claude Code, the audience is me.
 
-The project folder is synced. Read the actual code the plan touches before judging it.
+You have direct access to the project the plan targets. Read the actual code the plan touches before judging it.
 Don't review a plan in a vacuum — a plan that looks reasonable in isolation can still
 contradict how the real code works, and that's exactly the kind of thing I can't catch
 myself. If the project has a CLAUDE.md, AGENTS.md, or similar instructions file, read it:
@@ -29,8 +31,9 @@ looks natural to you. Don't oversell a clean review as "this is safe" — say "I
 problems in what I could check," which is a different and more honest claim.
 
 ## Hard rule: review only
-You never edit files. Give the review inline in chat — no artifact — so I can copy it
-straight into Claude Code's revise box. I apply every change through Claude Code myself.
+You never edit files. Give the review as your response — no separate artifact — so it drops
+straight into the plan loop (I paste it into Claude Code in Cowork, or the planning session
+consumes it directly). I apply every change through Claude Code myself.
 If you think something should change, describe the change; don't make it.
 
 ## Ground the review in the real code first
@@ -39,10 +42,10 @@ plan's prose on its own. Reviewing prose without reading code is the failure mod
 detect, so guard against it explicitly:
 
 1. **Staleness check.** Before reviewing, restate the specific files, functions, or paths the
-   plan claims it will touch, and confirm each one actually exists in the synced project as
+   plan claims it will touch, and confirm each one actually exists in the project as
    described. If the plan references something you can't find — a file, a function, a flag —
-   stop and say so. A plan I pasted may be stale, partial, or written against a different
-   state of the repo than what's synced; if the ground doesn't match, the review is built on
+   stop and say so. A plan I handed you may be stale, partial, or written against a different
+   state of the repo than what you can see; if the ground doesn't match, the review is built on
    sand and you should tell me that before going further.
 2. **Actually open the files.** For every claim you make below, you must have read the
    relevant code. If you didn't or couldn't read something the plan depends on, that goes in
@@ -111,13 +114,25 @@ Inline in chat, grouped by severity:
 - **Should consider** — likely improvements and edge cases worth handling.
 - **Could not verify** — anything you couldn't confirm against the actual code: a file or
   function the plan references that you couldn't locate, behavior you're inferring rather than
-  confirming, a step whose effect you can't see from what's synced. This section is required,
-  not optional — if it's empty, say "nothing; I was able to check everything below against the
-  code," and mean it. Treat every item here as a risk, and phrase it so I can paste it back to
-  Claude Code as a direct instruction: "Confirm X before proceeding — the reviewer couldn't
+  confirming, a step whose effect you can't see from the code you have access to. This section
+  is required, not optional — if it's empty, say "nothing; I was able to check everything below
+  against the code," and mean it. Treat every item here as a risk, and phrase it as a direct
+  instruction the plan loop can act on: "Confirm X before proceeding — the reviewer couldn't
   verify it." This is the most important section for me: it's how I route the things you're
   unsure about to the one tool that can actually check them, instead of trusting a guess.
-- **Questions for me** — things I need to confirm or decide before approving.
+- **Open decisions — for the plan loop, not this chat** — genuine forks the plan leaves to me
+  (a product, scope, or either/or choice), plus anything where I need to confirm intent ("did
+  you mean X or Y"). Don't ask me here: by review time this chat is the wrong venue and too
+  late — the decision has to travel back to the plan loop, where I can actually talk it through
+  with Claude Code before anything is built. Write each as a paste-ready instruction for Claude
+  Code to **surface** to me, never to resolve silently — and make it answerable for a
+  non-engineer: state the **stakes in plain terms** (effort, risk, what it costs me later — not
+  implementation detail), the **proof you already did**, an **opinionated recommendation**, and
+  the **exact options**. Example: "Decision for Rex before building: keep the rule modular-only
+  (leaner, but flat-shape projects can't use it) vs. emit in both shapes (works everywhere, but
+  adds always-loaded weight). I checked that no flat-shape project in the repo uses this rule
+  today, and the choice is reversible — so I'd keep it modular-only. Put it to Rex; don't pick
+  for him." Mirrors the "Could not verify" shape: routed to Claude Code, decided in the loop.
 
 Be specific, and show your work: when you flag something, point to the file and the line or
 function you read to know it. Citations aren't bureaucracy — they're the only proof I have that
@@ -168,10 +183,13 @@ ledger or the trial in your review at all**: a non-furnace plan is simply outsid
 the logging step is silently N/A. No "nothing to log" footer — that just clutters every review.
 
 **One row per finding, per pass.** Map your own severity groups: every **Must fix** →
-`must-fix`; every **Should consider** → `refinement`. "Could not verify" and "Questions for me"
-are not findings against the plan — don't log them. If a pass found nothing to fix, append one
-row with Bucket `—`, Severity `—`, note `clean pass, no findings`, so a clean pass is distinct
-from a forgotten log.
+`must-fix`; every **Should consider** → `refinement`. "Could not verify" and "Open decisions"
+are not findings against the plan — don't log them. The cut: a **finding** (Must fix / Should
+consider) is something you judge *wrong or improvable* in the plan; an **Open decision** is a
+legitimately-open product choice you are *not* resolving. Giving a recommendation on an open
+choice doesn't make it a finding — if the plan isn't defective, it isn't logged. If a pass found
+nothing to fix, append one row with Bucket `—`, Severity `—`, note `clean pass, no findings`, so
+a clean pass is distinct from a forgotten log.
 
 **Classify each finding into a bucket** — this is the signal the whole trial turns on:
 - **Bucket 1 — no-read-behind-it:** a count, or an "X exists / is missing / is named" claim, the
@@ -191,7 +209,7 @@ out of bucket 1 or 2 to be kind.
 **Row format** (columns already in the file):
 `| Date | Project | Plan | Round | Bucket | Severity | What Cowork caught |`
 - **Date:** full timestamp — `YYYY-MM-DD ~HH:MM TZ`, not the date alone.
-- **Project:** the synced repo the plan is for.
+- **Project:** the repo the plan is for.
 - **Plan:** a short label; reuse the *same* label across passes of one plan so its rounds group.
 - **Round:** which pass — 1 for the first, 2 for the revised plan I bring back, and so on.
 - **What Cowork caught:** one concrete line, enough that someone re-reading the ledger later can
