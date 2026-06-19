@@ -20,6 +20,20 @@ Held as a flat map keyed by the names in `intake.md` "Marker map". The keys most
 | `dark_mode_selector` | Q7d | string | `.dark` or `@media (prefers-color-scheme: dark) :root`. |
 | `rule_overwrite_strategy` | Q8a | enum | `write_fresh`, `overwrite_safe`, `merge`, `skip`. |
 
+## Adopt-mode branch (when `mode == adopt`)
+
+When cluster 0 set `mode = adopt`, the bootstrap interview and template substitution **do not run** — everything below this section (styling-path branch, per-template inclusion table, derived values) is bootstrap-mode logic and is skipped. Adopt **copies** a finished Claude Design bundle into the product and wires one rule. Authorized by [D-044](../../../docs/DECISIONS.md), which narrows [D-008](../../../docs/DECISIONS.md).
+
+Three writes, all in the **product repo**, each governed by the non-destructive write guard (below):
+
+1. **Copy the rendered design → `design/reference/`.** `cp` the bundle's pages + component source verbatim (a directory copy, not a transform). This is the *presence* fix — composition drifted ~100% in `the-council` because the finished design was absent at compose time.
+2. **Copy the bundle's token values → the product's own CSS, verbatim.** Keep the bundle's structure. **Do NOT route bundle tokens through `tokens.css.template`.** *Why (do not "optimize" this away):* the scale-first template is **structurally non-isomorphic** to a real bundle — it fabricates a numeric shade scale, holds only 3 type slots, and has no tier for categorical accents or a theme scalar; forcing a bundle into it is the exact fidelity trap [D-008](../../../docs/DECISIONS.md) documented and [D-044](../../../docs/DECISIONS.md) preserves the ban on. A literal copy is value-lossless; the template is not. A future maintainer who reaches for `tokens.css.template` here is re-introducing the bug.
+3. **Emit the import rule → `.claude/rules/design-adoption.md`** from `templates/design-adoption.md.template` (substitute `reference_dir`, default `design/reference/`; the default emission matches the source-of-record fence in `../../../docs/design-handoff-adoption.md`). This is the only substituted artifact adopt produces.
+
+**Write-guard interplay.** Steps 1–2 are Bash `cp` operations: on a first run they create fresh files (auto-tracked as run-owned, ungated, like the arm/disarm Bash). On a **re-run / re-snapshot**, `design/reference/` and the copied tokens already exist — the guard gates the overwrite (interactive `ask`, headless skip), so a second adopt never silently clobbers a hand-edited reference. Step 3's rule emission is a `Write|Edit`: gated the same way if `.claude/rules/design-adoption.md` already exists. (These three guard interactions are flagged for a `/verify` live-fire — they are reasoned from D-005/D-006, not yet fired.)
+
+After the three writes, hand off to `output-summary.md` (adopt variant).
+
 ## The styling-path branch
 
 `styling_path` is the most consequential decision. Three things change with it.
@@ -198,6 +212,8 @@ Per-size usage strings come from the picked scale shape's defaults (compact / co
 
 This skill writes only files at these paths:
 
+**Bootstrap mode:**
+
 - `<token_file_path>` (default `app/styles/tokens.css`)
 - `<globals_css_path>` (default `app/styles/globals.css`) — written fresh if absent, else agent-merged additively (top-of-file `@import`/`@tailwind` pieces) with diff confirm
 - `<component_dir_path>/Button.tsx`, `Card.tsx`, `Input.tsx` (and the paired `.module.css` files on vanilla path)
@@ -205,7 +221,13 @@ This skill writes only files at these paths:
 - `docs/DESIGN_SYSTEM.md`
 - `.claude/rules/design-system.md` (per `rule_overwrite_strategy`)
 
-**Never** write files anywhere else. If source material implies content elsewhere (a brand book describing voice, a Figma export with feature components), surface in the output summary.
+**Adopt mode** ([D-044](../../../docs/DECISIONS.md)) — these are **copies of the design of record**, not authored product code:
+
+- `design/reference/**` — the bundle's rendered pages + component source, copied verbatim
+- the product's token CSS — bundle `:root` values copied verbatim (path is the product's own; not a new template output)
+- `.claude/rules/design-adoption.md` — the emitted import rule
+
+**Never** write files anywhere else — **except the adopt-mode paths above, which are the one sanctioned exception and only by copy** (adopt copies a bundle's existing design into `design/reference/`; it still never *authors* feature components, utilities, or page layout). If source material implies content elsewhere (a brand book describing voice, a Figma export with feature components to build), surface in the output summary.
 
 ## After writing
 

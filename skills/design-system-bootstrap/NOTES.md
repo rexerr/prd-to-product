@@ -41,6 +41,12 @@ The skill must produce usable output for three project shapes. "Usable" means th
 
 **Expected output:** full token file including motion tokens and dark mode block. Three seed components show all variant states including disabled and error. DESIGN_SYSTEM.md includes a complete token listing, full component catalog, and accessibility notes section.
 
+### Adopt shape (D-044)
+
+**Input:** a Claude Design handoff bundle present in the working directory (a `claude-design*`/`design-*` dir whose README self-declares a bundle). No interview.
+
+**Expected output:** three artifacts in the product repo — `design/reference/**` (bundle pages + component source, copied verbatim), the product's token CSS (bundle `:root` values copied verbatim, NOT routed through `tokens.css.template`), and `.claude/rules/design-adoption.md` (the emitted import rule). The emitted rule's default paths + three failure-mode bullets match the `# Design adoption — import, don't rebuild` fence in `docs/design-handoff-adoption.md` byte-for-byte. Regression fixture: `examples/transcript-adopt.md` (interview branch + emitted rule only — the `cp` steps have no substitution to dry-run). **RED conditions:** tokens routed through the template; no `design/reference/` copy step; emitted rule drifts from the fence default.
+
 ## Styling approach decision (2026-05-09)
 
 Context-engineering scaffolds projects with "No Tailwind. No shadcn." (see `context-engineering/templates/claude-rules-modular/design-system.md.template`). The real ePost projects (feed, assessment) use CSS custom properties via inline `style` props and global CSS classes — no Tailwind, no CSS Modules. CSS Modules is the better pattern for the seed components in App Router because it co-locates styles and prevents global class name collisions. The seed components prove the token system works; CSS Modules is the right demonstration vehicle for that proof.
@@ -76,6 +82,15 @@ Considered during Pass 1. Out of scope. If the user wants Storybook, they add it
 ### Token migration
 
 Out of scope for V1. "Migrating an existing token system" is explicitly listed as out of scope in the brief. If a user has partial tokens and wants this skill to augment them, surface the conflict and ask the user to either clear the existing file or proceed knowing this skill overwrites it.
+
+### Adopt-mode v2: mechanical intra-app-consistency hook + staleness check (deferred)
+
+Adopt v1 ([D-044](../../docs/DECISIONS.md)) ships presence + cp-tokens + the import rule, enforcing intra-app consistency and `design/reference/` staleness as **rule prose**. Deferred to v2, by deliberate decision (Rex, 2026-06-19):
+
+- **A mechanical intra-app-consistency hook** — a session-start check / emitted hook that greps for inline re-implementations of components that already exist in the imported `design/reference/` set, the way the write-guard hook live-fires on blocked operations. This is the half of composition that *can* be made mechanical even in a markdown workspace; fidelity-to-source genuinely needs a human and stays a present, cheap gate.
+- **A scaffolded staleness check** on `design/reference/` (flag a surface diffed against a reference older than the latest export).
+
+Why deferred, not dropped: the council sequenced "the human fidelity gate ships first," and a hook carries its own authoring + heavy live-fire verification contract (copy emitted scripts to `/tmp`, fire each blocked op in a fresh session) that would roughly double v1's verification surface and blow the per-session scope ceiling. The v1 import rule already carries both checks as prose (`templates/design-adoption.md.template`, the `hook_deferred` OPTIONAL block) — drop that block when the hook ships.
 
 ### FUTURE.md entry
 

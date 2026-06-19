@@ -16,6 +16,17 @@ The question flow Claude runs when the design-system-bootstrap skill is invoked.
 
 The user often arrives with a brand book, a palette image, a Figma export, or a screenshot of an existing product they want to mirror. This cluster captures it before the question flow begins.
 
+### Bundle detection (the adopt fork — runs first)
+
+Before Q0a, scan the working directory for a **Claude Design handoff bundle**: a `README.md` — in the repo root or an export directory whose name matches `claude-design*` or `design-*` — whose body **self-declares a handoff bundle** (it names itself a handoff/export bundle for a coding agent and typically names the file the user had open; see `../../../docs/design-handoff-adoption.md`). Grep the candidate README for that self-declaration; presence of a `design-*`-named folder alone is not enough — the README must declare itself.
+
+- **Bundle found** → **propose adopt, do not switch silently.** Say what you found and ask: "This looks like a Claude Design handoff bundle. Adopt it — copy the rendered design + tokens into the repo and wire an import rule — or bootstrap a fresh token system from it instead?" This is a **documented, deliberate exception** to "default to asking, not detecting" (below): detection only *proposes* a fork it would otherwise miss; the user still chooses.
+  - User picks **adopt** → set `mode = adopt`; **skip clusters 2–7 entirely** (adopt copies token values, it does not interview for them). Capture the bundle location, then hand off to `decisions.md` "Adopt-mode branch." Cluster 1 (paths) and cluster 8 (confirm) still apply.
+  - User picks **bootstrap** → set `mode = bootstrap` and continue the normal flow, treating the bundle as ordinary source material.
+- **No bundle found** → `mode = bootstrap`. Continue with Q0a below.
+
+State-map keys set here: `mode` (`bootstrap` | `adopt`), and on adopt `adopt_bundle_path` (string, the bundle's location in the repo).
+
 **Always ask Q0a explicitly, even if material appears to be in conversation context.** Silent absorption is the failure mode that makes the user wonder later "did the agent actually use my brand book or guess?" Asking out loud forces the user to confirm intent.
 
 Ask in one call:
@@ -299,6 +310,7 @@ Every PARAMETERIZE marker, its source question (or "derived"), and its cluster.
 
 State-map keys only (no PARAMETERIZE markers):
 
+- `mode` (`bootstrap` | `adopt`), `adopt_bundle_path` (adopt only) — bundle detection
 - `source_assets_present`, `source_assets_summary`, `source_other_material`
 
 ### Cluster 1

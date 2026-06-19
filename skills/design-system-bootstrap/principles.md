@@ -120,9 +120,17 @@ Never write files at these paths:
 - `lib/**/*` — library code
 - `features/**/*` — feature modules
 - `pages/**/*` — page components
-- Any path outside `app/styles/`, `app/components/ui/`, `docs/DESIGN_SYSTEM.md`, and `.claude/rules/design-system.md`
+- Any path outside `app/styles/`, `app/components/ui/`, `docs/DESIGN_SYSTEM.md`, `.claude/rules/design-system.md`, and — **adopt mode only** — `design/reference/**`, the product's token CSS, and `.claude/rules/design-adoption.md` ([D-044](../../docs/DECISIONS.md))
 
 If source material (a brand book, a Figma export) implies product-code-shaped content (component library beyond the seed set, utility functions, page layout), surface it in the output summary as "your [component/utility/etc.] is not in scope for this skill — build it as a feature once the token system is established."
+
+### Why adopt copies but never authors
+
+Adopt mode writes a bundle's components into `design/reference/` and the bundle's token values into the product's CSS — that looks like it breaks "design-system files only / never feature components." It does not, because adopt **copies, it never authors**. The distinction is load-bearing and is why [D-044](../../docs/DECISIONS.md) could narrow [D-008](../../docs/DECISIONS.md) without re-opening the schema-mismatch ban:
+
+- **A copy is lossless; authoring is lossy.** Bundle tokens are value-lossless but structurally non-isomorphic to the scale-first `tokens.css` template (6 fonts won't fit 3 slots, no tier for categorical accents or a theme scalar). Copying carries every value across as-is; routing them through the template fabricates a shape that does not fit — the exact fidelity trap D-008 found. So adopt never touches the template for bundle tokens.
+- **Presence is the fix, not recreation.** Composition drifted ~100% in `the-council` because the finished design was *absent* at compose time, not because anyone lacked skill. Bringing the rendered design in-repo (`design/reference/`) puts it where the build can see it. Authoring a fresh interpretation would re-introduce the drift; copying the source of record cannot.
+- **What stays banned.** Adopt still never *writes* a feature component, utility, or page — it only relocates the bundle's own. The bundle remains the design source of record.
 
 ## Progressive disclosure in the output
 

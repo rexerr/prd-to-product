@@ -64,6 +64,38 @@ A suggested next-step sequence:
 3. Update `docs/DESIGN_SYSTEM.md` as the system grows. Add new components to the catalog. Document any new tokens you add.
 4. If `.claude/rules/design-system.md` was merged or skipped, finish the integration before starting feature work. The agent will reference this rule on every UI task.
 
+## Adopt mode report (when `mode == adopt`)
+
+Adopt did not run the interview, so the four sections above do not apply. Report these instead:
+
+### 1. What was copied and wired
+
+```
+<repo_root>/
+├── design/
+│   └── reference/                    (bundle pages + component source, copied verbatim)
+├── <product token CSS>               (bundle :root values, copied verbatim — kept the bundle's structure)
+└── .claude/
+    └── rules/
+        └── design-adoption.md        (import rule — import, don't rebuild)
+```
+
+Mark any file skipped or overwritten per the write guard with the standard `(skipped — already exists; not overwritten)` / `(overwritten with consent)` markers — relevant on a re-snapshot, when `design/reference/` and the tokens already exist.
+
+### 2. The bundle stays the design source of record
+
+Say it plainly: the copied tokens are not the canonical design — the bundle is. Anything not yet transcribed (theming variants, motion, screenshots) is still read from the bundle. Re-snapshot `design/reference/` on each Claude Design re-export; a surface diffed against a stale reference is flagged, not trusted.
+
+### 3. What enforces fidelity (and what does not yet)
+
+State the honest limit so the user knows where the gate is: the emitted `design-adoption.md` rule carries **both** the intra-app-consistency check (never rebuild a surface the bundle covers) **and** the staleness check as **prose**. **Mechanical** enforcement of the consistency check — a hook that greps for inline re-implementations of imported components — is **deferred to v2**. Until it ships, the user gatekeeps composition by hand by following the rule; presence (the design sits in-repo next to the surfaces) is what makes that survivable.
+
+### 4. What to review
+
+- Open `.claude/rules/design-adoption.md`. Confirm its `paths:` glob covers where surfaces are built, and that `design/reference/` holds the copied pages + components.
+- Spot-check the copied tokens against the bundle's `:root` — values should be byte-identical (the copy is lossless; any divergence is a copy bug).
+- Confirm the bundle's components are importable from `design/reference/` (the import rule's first bullet depends on it).
+
 ## Routed-elsewhere material
 
 If during cluster 0 the user provided material that belongs to other skills, surface it here:
