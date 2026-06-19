@@ -22,14 +22,14 @@ See `git diff` — the 11 planned files. Highlights: `SKILL.md` (modes framing +
 
 - **Tokens copied verbatim, never through `tokens.css.template`** — the load-bearing invariant; documented inline in `decisions.md` with the "do not optimize this away" warning so a maintainer can't re-introduce the D-008 fidelity trap. Verification check 2 is the RED gate for it.
 - **Closed-allowlist amendment (Cowork Must-fix):** both `decisions.md` "What the generator never writes" *and* the parallel list in `principles.md` are positive path-allowlists — both amended to add the two adopt paths + carve the "never elsewhere" line. (I found the principles.md instance myself; Cowork had only flagged decisions.md.)
-- Verification: 5/5 checks pass (bootstrap unaffected — no bootstrap template/cluster touched; tokens-copied-not-templated; presence step emitted; emitted rule byte-matches the fence; all cross-refs resolve + D-009 needs no touch). Self-verified the checks — independent sub-task not used for the final pass; the write-guard live-fire on the 3 adopt write paths is honestly **UNVERIFIED** and routed to Cowork `/verify`.
+- Verification: 5/5 checks pass (bootstrap unaffected — no bootstrap template/cluster touched; tokens-copied-not-templated; presence step emitted; emitted rule byte-matches the fence; all cross-refs resolve + D-009 needs no touch). Self-verified the checks — independent sub-task not used for the final pass; the write-guard live-fire on the 3 adopt write paths is honestly **UNVERIFIED** (a fresh Claude Code session must live-fire it per CLAUDE.md's hook-testing contract — *not* a Cowork task; Cowork only runs `/plan-review`).
 
 ## Open items
 
-- **Write-guard live-fire** on the 3 adopt write paths (fresh `design/reference/` cp; re-snapshot overwrite; rule re-emission on re-run) — reasoned from D-005/D-006, not fired. Route to Cowork `/verify` in a fresh session before relying on it.
+- **Write-guard live-fire** on the 3 adopt write paths (fresh `design/reference/` cp; re-snapshot overwrite; rule re-emission on re-run) — reasoned from D-005/D-006, not fired. Live-fire it in a **fresh Claude Code session** per CLAUDE.md's hook-testing contract (copy emitted scripts to `/tmp/<test>/`, fire each blocked op) before relying on it. Not a Cowork task.
 - **v2:** mechanical intra-app-consistency hook + scaffolded staleness check (deferred; parked in `NOTES.md`).
 - **Not mine, found in the tree:** uncommitted `BACKLOG.md` edit + new `docs/briefs/docs-structure-and-artifact-routing-brief.md` (outside-agent product writes — flag to Rex, do not absorb); `skills/furnace-plan/trial-ledger.md` (Cowork's measurement carve-out from the two plan-review rounds — sweep into its own commit per CLAUDE.md when committing).
 
 ## Next session
 
-- Cowork `/verify` the write-guard live-fire, then commit (DSB adopt-mode + D-044 as one commit; sweep the Cowork ledger append separately). Nothing to open with a skill.
+- Live-fire the write-guard (3 adopt write paths) in a fresh Claude Code session per the hook-testing contract — *not* Cowork. (Adopt-mode + D-044 already committed `5b237bd`; Cowork ledger swept separately `9ae3bb6`.) Nothing to open with a skill.
