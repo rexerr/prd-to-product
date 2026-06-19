@@ -1,4 +1,4 @@
-<!-- Reconciled against DECISIONS.md through D-040 · 2026-06-18. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-040 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032/D-033/D-035 and D-036/D-037/D-038/D-039/D-040 evaluated, not mirrored — visible by reading the furnace-plan/prd-creator/context-engineering/CLAUDE.md files; D-034 mirrored below). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+<!-- Reconciled against DECISIONS.md through D-042 · 2026-06-19. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: not every D-NNN ≤ D-042 appears here (many are deliberately skipped as visible-by-reading; D-031/D-032/D-033/D-035 and D-036/D-037/D-038/D-039/D-040/D-041 evaluated, not mirrored — visible by reading the furnace-plan/prd-creator/context-engineering/CLAUDE.md files; D-034 and D-042 mirrored below). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
 
 # Active decisions
 
@@ -69,6 +69,10 @@ Do **not** symlink / promote the `context-engineering-audit` skill into `~/.clau
 ### D-034 — the two-load model governs `disable-model-invocation`
 
 When authoring a skill, choose invocation mode by the two-load cut: a **model-invoked** skill's description sits in the context window every turn (context-load); a **user-invoked** skill (`disable-model-invocation: true`) costs nothing in-window but is findable only from the human's memory (cognitive-load). Set `disable-model-invocation: true` for narrow/heavyweight explicit-invoke tools whose always-in-window description would tax every turn (e.g. `furnace-plan`); leave it model-invoked when firing on trigger phrases without the user remembering the skill is the point (the chain skills). Full entry: [`DECISIONS.md`](DECISIONS.md) D-034.
+
+### D-042 — `plan-review` hosted + versioned in this repo
+
+The `plan-review` Cowork skill lives at `skills/plan-review/SKILL.md`, versioned in-repo (was unbacked-up, edited in place). Mirrors D-020's furnace-plan treatment with one difference: it's a **Cowork** skill, so it deploys by **ZIP-upload (Cowork → Settings → Skills)**, not a `~/.claude/skills/` symlink — and it is **not** symlinked onto the Claude Code surface (runs there only as a deliberately-spawned subagent, never inline). D-018 category test: **`SKILL.md` = product** (Claude-Code scope-gated edits only); it already writes the `trial-ledger.md` measurement file. The skill is host-agnostic (output returns to "the plan loop" by either path). Full entry: [`DECISIONS.md`](DECISIONS.md) D-042.
 
 ## Cross-references
 
