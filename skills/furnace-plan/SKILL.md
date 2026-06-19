@@ -76,6 +76,32 @@ NO UNRESOLVED DECISIONS
 When the plan hits a genuine product/scope/intent fork the furnace can't resolve, do **not** escalate a bare "what do you think?". Do all the autonomous work first, then present each item decision-ready: **the stakes in plain language · the proof you already completed · an opinionated recommendation · the exact options.** Every unresolved item here must also appear in the ledger's terminal sentinel above, so it can't be dropped on the way to Cowork/Rex.
 *Failure it prevents:* offloading the analysis back onto Rex/Cowork at the decision point — a fork handed over with no homework done.
 
+## The blind review — run before ExitPlanMode (every pass)
+
+After the plan, verification ledger, and any sign-off items are written, run them past one fresh, blind reviewer before `ExitPlanMode`. This is the in-session pre-filter for the bucket-2 class — a claim you read and still misread — that your own preflight structurally cannot reach. It does **not** replace Cowork; it is a second filter before the plan reaches the authoritative reviewer.
+
+**The plan is already on disk.** You authored it in the plan-mode plan file (its path is in the plan-mode system message; writing it is the one edit plan mode permits). Capture that path — never guess it. That file, carrying the plan + `## Verification ledger`, is what the reviewer reads.
+
+**Spawn one read-only reviewer subagent** (`Explore` type — it must not be able to edit). Its prompt contains ONLY:
+1. the plan-file path,
+2. the task's acceptance criteria — what the plan must accomplish, in plain language,
+3. this instruction: *resolve this skill's own real directory (it is a symlink) and read the reviewer rubric at `<real-dir>/../plan-review/SKILL.md`; apply it to the plan at the path above; return findings as Must-fix / Should-consider / Could-not-verify; edit nothing.*
+
+Pass nothing else. Do not paste your planning conversation or your reasoning — a reviewer shown the author's framing anchors on it and rubber-stamps (G-11 engineered blindness; [D-035](../../docs/DECISIONS.md)). A fresh subagent already inherits none of your context; the discipline is to keep the prompt that way.
+
+**When the reviewer returns:**
+1. Revise the plan for every Must-fix and each Should-consider you accept.
+2. Append a `## Subagent review log` to the plan — each finding verbatim, plus how you resolved it (accepted-and-fixed / declined-and-why). This log survives your fixes so Cowork can later compare what each reviewer caught; it is how the cc-subagent's catches reach the trial ledger.
+3. Verify-landed-tree: run `git status` in the project repo and confirm the review pass changed nothing there. The reviewer is read-only and the plan file lives outside the repo, so a clean repo proves no product was touched. A dirty repo means something is wrong — stop and inspect.
+
+Then call `ExitPlanMode` with the twice-baked plan.
+
+**One pass, not a loop.** One blind review, one revision. Iterating the reviewer against your own revisions converges into mutual rubber-stamping and burns tokens.
+
+**Toggle (reversible, dual-purpose).** Runs every pass by default. Rex may say "skip the blind review" to bypass it once — a skipped pass doubles as a *calibration* run, sending raw furnace output straight to Cowork so the trial can read the furnace preflight without the pre-filter in the way (see `trial-ledger.md`). To disable permanently, delete this section.
+
+*Failure it prevents:* shipping a plan to Cowork that still carries bucket-2 errors a fresh blind read would have caught at authoring time — and, if the prompt leaks your reasoning, a fake second opinion that rubber-stamps instead of reviewing.
+
 ## What this is not
 
 - Not a replacement for Cowork review. Every plan still goes to Cowork. The ledger shrinks and targets what Cowork must check; it does not let anyone skip the review.

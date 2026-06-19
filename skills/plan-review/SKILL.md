@@ -96,13 +96,16 @@ The review-only rule above holds absolutely for the plan and the project. This i
 When you're genuinely torn between 2 and 3, lean 3: over-calling 3 under-credits the furnace and correctly slows its promotion, the safe direction. But never soften a real wrong fact out of bucket 1 or 2 to be kind.
 
 **Row format** (columns already in the file):
-`| Date | Project | Plan | Round | Bucket | Severity | What Cowork caught |`
+`| Date | Project | Plan | Round | Bucket | Severity | What the reviewer caught | Reviewer |`
 
 - **Date:** full timestamp — `YYYY-MM-DD ~HH:MM TZ`, not the date alone.
 - **Project:** the repo the plan is for.
 - **Plan:** a short label; reuse the *same* label across passes of one plan so its rounds group.
 - **Round:** which pass — 1 for the first, 2 for the revised plan brought back, and so on.
-- **What Cowork caught:** one concrete line, enough that someone re-reading the ledger later can audit whether the bucket call was right.
+- **What the reviewer caught:** one concrete line, enough that someone re-reading the ledger later can audit whether the bucket call was right.
+- **Reviewer:** `cowork` for your own findings. This is the last column, added 2026-06-19; rows above the `--- Reviewer column … added ---` divider leave it blank, which means `cowork`.
+
+**Also log the in-session blind reviewer.** If the plan carries a `## Subagent review log` (the furnace's cc-subagent reviewed the raw plan before you), append one row per finding listed there with **Reviewer `cc-subagent`**, bucketing and setting severity exactly as you would your own — the log records what the in-session reviewer caught *before* the author's fixes. This is how the pre-filter's catches enter the ledger, and the one case where you transcribe findings that aren't yours. Your own review of the (now twice-baked) plan is logged separately with Reviewer `cowork`, as usual.
 
 ## What this skill is not
 

@@ -2,7 +2,7 @@
 
 A **durable, cross-project record** of what Cowork's `/plan-review` (and, in future, other distinct reviewers) catches in `/furnace-plan`-authored plans — each row one finding, classified into a bucket — kept versioned so the furnace+reviewer loop accumulates learning across *every* project rather than scattering it across per-session retros. It serves two purposes: (1) **ongoing improvement** of the furnace's verification preflight, by surfacing which bucket-1 / bucket-2 catches recur; and (2) one specific **open sub-question** — whether the preflight has earned promotion from an invoke-skill to an `ExitPlanMode` hook, graded on the *distribution* of buckets over time, not a raw catch count. The bucket legend and promote/kill/tighten triggers below answer (2); the growing row history serves (1).
 
-**Writer:** Cowork's `/plan-review` skill appends rows here as it reviews — one or more per round, regardless of which project the plan was for. Claude Code (the furnace) never writes here. The header below is static; only the table grows.
+**Writer:** Cowork's `/plan-review` skill appends rows here as it reviews — one or more per round, regardless of which project the plan was for. It records its own findings (`Reviewer = cowork`) and, when a plan carries a `## Subagent review log`, transcribes the in-session blind reviewer's findings too (`Reviewer = cc-subagent`). Claude Code (the furnace/planner) never writes here. The header below is static; only the table grows.
 
 **Subject vs. writer:** this file lives under the `furnace-plan` skill because the furnace is what it measures, even though `/plan-review` is what writes it.
 
@@ -16,10 +16,18 @@ A **durable, cross-project record** of what Cowork's `/plan-review` (and, in fut
 
 ## How to read it for the promotion / kill decision
 
+**Read the rubric per reviewer — load-bearing since Plan 2 added a second reviewer.** The promote/kill decision is about the *furnace preflight*, so it can only be read from the reviewer that sees **raw furnace output**: the **cc-subagent** (it reviews the plan before any fix), or **Cowork on a calibration pass** (cc-subagent skipped, raw plan sent straight to Cowork). On a normal twice-baked plan, **Cowork reviews the already-fixed plan, so its catches measure the cc-subagent's *residual* (miss-rate), not the furnace preflight** — never read Cowork's post-fix distribution as the furnace's report card. Doing so misreads pre-filtering as preflight improvement: a cc-subagent that strips bucket-1/2 leaves Cowork mostly bucket-3, which would spuriously trip "promote."
+
+Apply the four reads below to the **raw-output reviewer's** distribution:
+
 - **Promote (earn the hook):** catches collapse to **mostly bucket-3 *refinements*** — few/no must-fixes of any bucket. A hook that automates the preflight only helps bucket 1, so the furnace earns it once bucket 1 is gone and what's left is the judgment tier the hook was never going to touch.
 - **Tighten the preflight:** **bucket 1 recurs.** The forcing function isn't being executed; a hook would just automate a half-working layer.
 - **Distinct verifier stays load-bearing:** **bucket 2 persists.** The blind spot is real and a planning prompt can't reach it — the fix is a fresh-context verifier fed the ledger, not a kill, and not a hook.
 - **Watch severity, not just bucket.** Mostly bucket-3 *must-fixes* means the furnace is still shipping flawed plans of a kind no mechanical layer could catch — that argues *against* the hook, not for it.
+
+**Identifying a calibration row.** A calibration pass is just a Cowork review of raw output, so it looks like an unpaired `cowork` row (no `cc-subagent` row for that Plan label). Read a **post-Plan-2** unpaired `cowork` row as a raw/calibration furnace reading. The pre-Plan-2 rows are also raw, but graded against older preflight versions — the dated dividers separate instrument generations, so never pool pre- and post-divider raw rows into one furnace reading.
+
+**Pair-by-plan tally (cc-subagent vs Cowork).** Compare the two reviewers only on plans **both** reviewed — the same Plan label carrying both a `cc-subagent` row and a `cowork` row. There, the `cc-subagent` rows are what the pre-filter caught early and the `cowork` rows are what leaked past it to the oracle; a small leak means the pre-filter earns its keep, a large one means it underperforms. cc-subagent is a same-model reviewer, so treat its distribution as *directional* and lean on calibration passes for a trusted furnace reading.
 
 When the furnace preflight is ever changed (e.g. read-enforcement tightened), add a dated `### --- preflight tightened YYYY-MM-DD ---` divider row so before/after trend is visible without a version column.
 
@@ -29,8 +37,8 @@ Full rationale and triggers: `~/Sites/prd-to-product/BACKLOG.md` (furnace-plan t
 
 ## Ledger
 
-| Date | Project | Plan | Round | Bucket | Severity | What Cowork caught |
-|---|---|---|---|---|---|---|
+| Date | Project | Plan | Round | Bucket | Severity | What the reviewer caught | Reviewer |
+|---|---|---|---|---|---|---|---|
 | 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 1 | 1 | must-fix | claimed new decision = D-013; already taken (skipped the read-the-log step) |
 | 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 1 | 2 | must-fix | "DSB never named in either file" — false; context-engineering/SKILL.md:59 names it (read but misread) |
 | 2026-06-14 ~10:45 CDT | prd-to-product | chain-handoffs D-014/D-015 | 2 | 3 | refinement | `notes.md` — invented filename BACKLOG never specified |
@@ -96,3 +104,7 @@ Full rationale and triggers: `~/Sites/prd-to-product/BACKLOG.md` (furnace-plan t
 | 2026-06-19 ~12:22 UTC | prd-to-product | Plan 2 blind in-session reviewer loop | 1 | 3 | must-fix | Second reviewer confounds the promotion/kill rubric, which the plan doesn't update. trial-ledger.md "How to read it for the promotion / kill decision" (lines 17-22) reads Cowork's bucket distribution to decide promote/tighten/kill. A cc-subagent that pre-filters bucket-1/2 catches shifts Cowork's residual rows toward bucket-3 artificially → spuriously trips "mostly bucket-3 → promote the hook" when the furnace preflight never improved. Plan adds a tally rule but leaves the promotion-reading section unchanged. Update that section to read the rubric per-reviewer, or the experiment misreads its own promote/kill call |
 | 2026-06-19 ~12:22 UTC | prd-to-product | Plan 2 blind in-session reviewer loop | 1 | 3 | refinement | DECISIONS_ACTIVE.md line-1 reconciliation marker bump omitted — same miss caught twice already (rows 06-19 ~04:08 / ~04:14). Marker currently reads "through D-042 · 2026-06-18"; mirroring D-043 must bump it to D-043. Plan's file table lists the D-043 mirror but not the marker bump |
 | 2026-06-19 ~12:22 UTC | prd-to-product | Plan 2 blind in-session reviewer loop | 1 | 3 | refinement | Reviewer-rename leaves stale "Cowork" naming: renaming the column to "What the reviewer caught" but leaving the trial-ledger legend ("Writer: Cowork", "What Cowork caught" in How-to-read) and plan-review SKILL.md's column-description bullet (line ~105) saying "Cowork" creates header-vs-prose inconsistency. Sweep the naming, not just the header cell |
+| 2026-06-19 ~12:39 UTC | prd-to-product | Plan 2 blind in-session reviewer loop | 2 | 3 | refinement | Rubric repair (Must-fix 2, rev 2) is sound but under-specifies how a future reader IDENTIFIES a cc-subagent-off "calibration" Cowork row: the per-reviewer rubric says read the furnace signal from "Cowork on cc-subagent-off passes," but there's no column marking such passes — they're just unpaired cowork rows, which also describes all 58 pre-Plan-2 historical rows (raw, but from older preflight versions). Rubric should state the identification rule explicitly (post-Plan-2 unpaired cowork row = calibration; use the dated dividers to separate instrument versions) or the raw-furnace reading silently pools two preflight generations |
+
+### --- Reviewer column + blind cc-subagent reviewer added 2026-06-19 (Plan 2, D-043) --- The ledger gained a `Reviewer` column (`cowork` | `cc-subagent`), placed **last** so existing rows need no backfill: every row above this divider predates the column and is **`cowork`** (an empty Reviewer cell = `cowork`). The furnace also gained an in-session blind cc-subagent reviewer (`furnace-plan/SKILL.md`, "The blind review"), so from here Cowork no longer sees raw furnace output on twice-baked plans — read the promotion rubric **per reviewer** (above). New rows fill all 8 columns.
+| 2026-06-19 ~12:39 UTC | prd-to-product | Plan 2 blind in-session reviewer loop | 2 | 3 | refinement | Sign-off 1 option (b) is described as "the cc-subagent writes its own row," but the cc-subagent is a read-only Explore agent that has already returned during plan mode — it structurally cannot write, and is gone by ExitPlanMode. (b) would actually require a separate write-capable agent (or the main agent) writing post-ExitPlanMode. Not blocking since (a) is recommended, but clarify (b)'s real mechanism so it isn't mis-implemented if Rex picks it |
