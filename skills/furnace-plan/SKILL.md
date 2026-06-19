@@ -35,6 +35,10 @@ For each check: if it fails, **do the read/probe NOW and fix the plan before pre
 Every "X is missing", "no files modified", "these mirror each other", every count, filename, or content claim must trace to a grep/read you performed *this session* — not memory, not inference from a filename. If you haven't read it, you don't know it.
 *Failure it prevents:* "Step 7 — replacing AGENTS.md with @CLAUDE.md loses content. AGENTS.md isn't a pure pointer today." A plan built on imagined repo state.
 
+**1a. Sub-case — string-equality & decision-number claims: quote BOTH sides, re-read at write time.**
+When a claim asserts two strings match, or that an id/number is the next free one (the next `D-NNN`), re-grep the source **at the moment you write the entry** and quote both sides from *that* read — not an earlier-in-session grep. Decision numbers and file contents move when parallel work lands mid-session, so re-check `docs/DECISIONS.md` (and `skills/furnace-plan/trial-ledger.md` for earmarked numbers) immediately before writing.
+*Failure it prevents:* "next = D-041" asserted from a grep that went stale after CF-13 consumed D-041 — the real number was D-042 (Cowork-caught; n=2 with the stale D-018→D-020 id).
+
 **2. Make every verification step able to fail, and able to reach what it claims to test.**
 For each verify item, state the observation that would make it RED. Include the unchanged/default path and the failure path, not just the happy path. Measure claimed wins; don't assert them. If a check would pass even when the thing it tests is broken, it's theater — replace it.
 *Failure it prevents:* "The live abort-path test doesn't test the abort path — a bad key rejects instantly and never arms the timeout." / "The script may run zero tests and report green."
