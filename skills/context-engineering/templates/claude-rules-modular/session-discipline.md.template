@@ -83,6 +83,8 @@ When a decision is **both costly to get wrong and hard to reverse** — an archi
 
 ## Verification before claiming done
 
+- **Wired-up behavior must be fired, not inferred.** If a change installs executable behavior — a hook, a slash command, a script, a CI gate — the closing verification routes *through* it once: trigger what a hook should block, run the command. A file looking correct is not the behavior firing (an unregistered hook, a script without `chmod +x` both look fine on disk).
+
 <!-- OPTIONAL: verification_ui_bullet — include if uses_visual_confirmation_gate == true -->
 - UI changes: describe exactly what to look for and where.
 - Logic or data changes: show output (query result, API response, console log).
