@@ -39,7 +39,7 @@ Grouped by landing surface. Only `integrate`/`implement`-tier survivors appear h
 
 | ID | Crib | Failure it prevents | Tier | Landing surface | Status |
 |---|---|---|---|---|---|
-| AB-03 | **Per-project-type red-capable-repro definitions** — extend the "reproduce before fixing" gate with a small table defining what a red-capable repro *is* per type (web: failing component/visual-diff; mobile: real OS/network/permission state; backend: HTTP-layer integration/contract test or deploy-window metric query; CLI: shell invocation asserting exact exit code + stdout/stderr; data: re-derive the number a second way and watch the cross-check reconcile) | "Reproduce before fixing" stays abstract per type, so a "repro" that doesn't actually assert the symptom (a unit test of logic, a simulator happy path) passes for the gate | integrate | extends **CF-03** (red-capable-repro gate) on CLAUDE.md "Reproduce before fixing" + the generated harness's repro rule | Proposed |
+| AB-03 | **Per-project-type red-capable-repro definitions** — extend the "reproduce before fixing" gate with a small table defining what a red-capable repro *is* per type (web: failing component/visual-diff; mobile: real OS/network/permission state; backend: HTTP-layer integration/contract test or deploy-window metric query; CLI: shell invocation asserting exact exit code + stdout/stderr; data: re-derive the number a second way and watch the cross-check reconcile) | "Reproduce before fixing" stays abstract per type, so a "repro" that doesn't actually assert the symptom (a unit test of logic, a simulator happy path) passes for the gate | integrate | extends **CF-03** (red-capable-repro gate) on CLAUDE.md "Reproduce before fixing" + the generated harness's repro rule | Adopted (→ D-045) |
 
 ---
 

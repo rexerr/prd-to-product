@@ -48,7 +48,15 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - **Checkpoint between phases of multi-step work.** Pause between phases and restate what was done / verified / left. Don't continue from a state you can't describe.
 - **Recommend a structured review at genuine forks.** When a decision is costly to get wrong AND hard to reverse (architecture/stack choice, core-invariant change, build-vs-don't), recommend a multi-perspective review (LLM-council-style, if available) before committing — don't ship a first instinct. Not for routine/reversible work. Prevents a plausible-but-wrong instinct surviving solo review.
 - **Verification before claiming done.** UI: run `npm run dev`, tell Jordan what to look for and on which page, wait for visual confirmation. Logic: run `npm run check`, report results. Wired-up behavior (hook, command, script): fire it once and observe — a file looking right is not the behavior firing.
-- **Reproduce before fixing.** Failing reproduction first, then fix, then verify.
+- **Reproduce before fixing.** Failing reproduction first, then fix, then verify. A repro that passes without asserting the symptom (a unit test of logic, a simulator happy-path) is theater — what counts as red-capable depends on the project type:
+
+  | Project type | A red-capable repro is… |
+  |---|---|
+  | Web | a failing component render or visual diff — not a green unit test of the handler underneath |
+  | Mobile | exercised against real OS / network / permission state, not a simulator happy-path |
+  | Backend | an HTTP-layer integration or contract test, or a deploy-window metric query — not a logic unit test |
+  | CLI | a shell invocation asserting the exact exit code + stdout/stderr |
+  | Data | re-derive the number a second way and watch the cross-check reconcile |
 - **Session management** (Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025):
   - Prefer `/rewind` to re-prompting when an approach fails — reverts conversation and working tree instead of accumulating dead-end context.
   - Start a new session for a new task. The orientation cost is one retro read.

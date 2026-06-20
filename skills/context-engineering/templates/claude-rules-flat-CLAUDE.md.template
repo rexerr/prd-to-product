@@ -128,7 +128,15 @@ Never claim success based on "the code looks correct."
 
 ### Reproduce before fixing
 
-For any bug, write the failing reproduction first, then the fix, then verify the same reproduction now passes.
+For any bug, write the failing reproduction first, then the fix, then verify the same reproduction now passes. A repro that passes without asserting the symptom (a unit test of logic, a simulator happy-path) is theater — what counts as red-capable depends on the project type:
+
+| Project type | A red-capable repro is… |
+|---|---|
+| Web | a failing component render or visual diff — not a green unit test of the handler underneath |
+| Mobile | exercised against real OS / network / permission state, not a simulator happy-path |
+| Backend | an HTTP-layer integration or contract test, or a deploy-window metric query — not a logic unit test |
+| CLI | a shell invocation asserting the exact exit code + stdout/stderr |
+| Data | re-derive the number a second way and watch the cross-check reconcile |
 
 ### Session management
 

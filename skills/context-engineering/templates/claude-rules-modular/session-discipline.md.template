@@ -102,6 +102,16 @@ For any bug, write the reproduction before the fix:
 
 If reproducing is hard (race condition, prod-only data, intermittent), say so out loud. Don't skip silently and ship a guess.
 
+What counts as **red-capable** depends on the project type — a repro that passes *without asserting the symptom* (a unit test of pure logic, a simulator happy-path) satisfies the gate while testing nothing:
+
+| Project type | A red-capable repro is… |
+|---|---|
+| Web | a failing component render or visual diff — not a green unit test of the handler underneath |
+| Mobile | exercised against real OS / network / permission state, not a simulator happy-path |
+| Backend | an HTTP-layer integration or contract test, or a deploy-window metric query — not a logic unit test |
+| CLI | a shell invocation asserting the exact exit code + stdout/stderr |
+| Data | re-derive the number a second way and watch the cross-check reconcile |
+
 ## Session management
 
 Built-in commands that keep the conversation prefix clean. Source: Thariq Shihipar, *Lessons from Building Claude Code: Session Management & 1M Context*, Anthropic 2025.
