@@ -96,8 +96,8 @@ These came up during Phase 1 build. Park them; do not address until Phase 1 ship
 templates/
 ├── AGENTS.md.template                    Entry-point file, modular shape (default)
 ├── CLAUDE.md.template                    Thin pointer (one line: @AGENTS.md)
-├── claude-rules-flat-CLAUDE.md.template  Alternative for small projects, CLAUDE canonical
-├── claude-rules-flat-AGENTS.md.template  Pairs with the flat CLAUDE; thin pointer plus Codex override
+├── claude-rules-flat-AGENTS.md.template  Alternative for small projects, AGENTS canonical (rules inline + Codex section)
+├── claude-rules-flat-CLAUDE.md.template  Pairs with the flat AGENTS; thin pointer (one line: @AGENTS.md)
 ├── codex-config.toml.template            Optional, when uses_codex == true
 ├── agents-skills-README.md.template      Optional, when uses_codex && has_repo_skills
 ├── claude-rules-modular/

@@ -94,8 +94,8 @@ The full output tree this transcript produces lives in `output-small/`.
 > **Rule shape:** flat (no AI surfaces, no design system, single workflow, no voice rule).
 >
 > **Files to write:**
-> - `AGENTS.md` (thin pointer + Codex override)
-> - `CLAUDE.md` (canonical, all rules inline)
+> - `AGENTS.md` (canonical, all rules inline + Codex section)
+> - `CLAUDE.md` (thin pointer: @AGENTS.md)
 > - `BACKLOG.md`
 > - `.claude/commands/session-start.md`
 > - `docs/PRD.md`

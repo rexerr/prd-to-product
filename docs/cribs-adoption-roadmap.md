@@ -102,7 +102,7 @@ Ordered by leverage-per-effort, then dependency. Each row: crib(s) · landing su
 
 ### Big Rocks — each its own decision + plan (gated on Rex)
 
-- **AGENTS.md-canonical flip** — decided 2026-06-17, not executed; a real migration (`/furnace-plan` it). Council-grade was the bar to *decide*; it's decided, so execution is a planning task.
+- **AGENTS.md-canonical flip** — decided 2026-06-17. **Generator half executed 2026-06-20 (→ [D-047](DECISIONS.md)):** the `context-engineering` flat shape now scaffolds AGENTS-canonical (modular already did), so every project the skill emits is AGENTS-canonical. **This-repo half still deferred** (Rex scoped D-047 to the generator only): migrating this workspace's own root `CLAUDE.md`/`AGENTS.md` is the remaining ~75–90-cross-reference change — `/furnace-plan` it if/when wanted.
 - **Build the `solutions/` scar-tissue library** (decision #3) — the biggest unbuilt thing; **unblocks `CF-05`** (rule-compression method) and is the home for `C-14`-tagged failure cards.
 - **`CF-05` rule-compression method** — gated on the `solutions/` library existing.
 - **`AB-01` mobile (React Native/Expo) project type** and **`AB-02` data/analytics project type** — each *expands what project types the generator scaffolds*, which is the shape-vs-content fork (how much domain content a "scaffolds shape, not content" generator bakes in — architecture rule #3). **Council before building** per D-009; then `/furnace-plan` each. Full harvested content frozen in [`harness-domain-notes.md`](harness-domain-notes.md).

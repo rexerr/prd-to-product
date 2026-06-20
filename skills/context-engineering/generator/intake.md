@@ -158,7 +158,7 @@ Branching first:
 
 If "Token system with linter": follow up with token-system fills (typography, motion, icon set, layout rules, indicator vocabulary, button tiers, form rules, things to avoid, three load-bearing one-liners for the AGENTS.md instant-recall block, design heuristics specifics like action ceiling count and Miller-law application).
 
-If "Basic styling": skip the design system rule template. The flat CLAUDE template carries minimal styling rules inline.
+If "Basic styling": skip the design system rule template. The flat AGENTS template carries minimal styling rules inline.
 
 If "None": skip both.
 

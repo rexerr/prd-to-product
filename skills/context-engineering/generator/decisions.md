@@ -83,7 +83,7 @@ Defaults inferred from `stack` × `deploy_target`. The user can override any val
 | `manual` | false | |
 | `none` | false | |
 
-When `deploy_target_has_cli_conflict == true`, the flat-CLAUDE template's "Code rules" emits a "Never use the <deploy_cli_name> CLI" line, and the recency block's primary-constraints anchor (item 3) appends "No <deploy_cli_name> CLI." When false, both are suppressed.
+When `deploy_target_has_cli_conflict == true`, the flat-AGENTS template's "Code rules" emits a "Never use the <deploy_cli_name> CLI" line, and the recency block's primary-constraints anchor (item 3) appends "No <deploy_cli_name> CLI." When false, both are suppressed.
 
 `stack_summary_one_line` is built from stack + deploy_target. Examples:
 
@@ -178,7 +178,7 @@ The paper's redundancy finding (LLM context files improve by 2.7% when README is
   - `len(workflows) >= 6`: pointer-only, list lives in PRD only. Past five bullets the list defeats the compact-pointer goal and belongs in PRD. Suppress `workflows_list`.
 
   Reason: the paper's 2.7% finding targets duplicated prose descriptions. A bulleted workflow list is structurally distinct from a narrative paragraph — an orientation index, not a duplicate — and is cheap to keep at AGENTS-level when there are 2–5 named flows. When `source_prd_present == false` and PRD.md is not being generated, fall back to the inline `project_description_section` paragraph; `workflows_list` still gates on `len(workflows) > 1` per the existing template comment.
-- **Architecture pointer guard.** When `docs/ARCHITECTURE.md` is being generated, the flat CLAUDE template's "Architecture rules (non-negotiable)" stays (those are behavioral rules, not layout description), but any prose paragraph that restates the layout, folder structure, or data model is dropped. The flat template does not currently include such prose; this guard is documented here so future template edits do not introduce duplication.
+- **Architecture pointer guard.** When `docs/ARCHITECTURE.md` is being generated, the flat AGENTS template's "Architecture rules (non-negotiable)" stays (those are behavioral rules, not layout description), but any prose paragraph that restates the layout, folder structure, or data model is dropped. The flat template does not currently include such prose; this guard is documented here so future template edits do not introduce duplication.
 - **Decisions guard.** When `include_decisions_active == true`, constraints already in `DECISIONS_ACTIVE.md` are not restated in the body of CLAUDE.md/AGENTS.md. They may still appear in the recency block if they meet the bar (the recency block is intentionally short and rules already in DECISIONS_ACTIVE are unlikely to clear that bar).
 
 ## Rule shape: flat vs modular
@@ -198,10 +198,10 @@ The token-plus-linter wording matters. A project with `lib/styles.js` and `app/g
 
 When `rule_shape == "flat"`, the generator writes two files together:
 
-- `CLAUDE.md` from `claude-rules-flat-CLAUDE.md.template`. This is canonical.
-- `AGENTS.md` from `claude-rules-flat-AGENTS.md.template`. This is the thin pointer plus the Codex-specific override paragraph.
+- `AGENTS.md` from `claude-rules-flat-AGENTS.md.template`. This is canonical and carries all rules inline, plus a Codex-specific section when `uses_visual_confirmation_gate == true`.
+- `CLAUDE.md` from `claude-rules-flat-CLAUDE.md.template`. One line: `@AGENTS.md`.
 
-Do not write the modular-shape `AGENTS.md.template` or `CLAUDE.md.template` when rule_shape is flat. The pairing is not obvious from the templates alone; this rule is what binds them.
+Do not write the modular-shape `AGENTS.md.template` or `CLAUDE.md.template` when rule_shape is flat. The pairing is not obvious from the templates alone; this rule is what binds them. **Both shapes are AGENTS-canonical** (CLAUDE.md is always the `@AGENTS.md` pointer); flat and modular differ only in whether the rules live inline (flat) or under `.claude/rules/` (modular).
 
 ## Paired-write rule for the modular shape
 
@@ -275,16 +275,13 @@ Behavior:
 - If the condition is true: keep the marker line itself removed from output, keep the gated block as-is.
 - If the condition is false: drop the marker line **and** the gated block (the next line, or the next contiguous block ending at a blank line, depending on context).
 
-Some markers gate inline cells in tables (e.g., `<!-- OPTIONAL: ux_row -->` in the flat CLAUDE "Where to look" table). For those, drop the entire row when the condition is false.
+Some markers gate inline cells in tables (e.g., `<!-- OPTIONAL: ux_row -->` in the flat AGENTS "Where to look" table). For those, drop the entire row when the condition is false.
 
-### session-start AGENTS.md read is rule-shape-conditional
+### session-start AGENTS.md read is unconditional
 
-`claude-commands/session-start.md.template` carries `<!-- OPTIONAL: agents_read_step -->` on its `AGENTS.md` step. Gate it on `rule_shape`:
+`claude-commands/session-start.md.template` reads `AGENTS.md` as step 1 in **both** shapes. AGENTS.md is canonical in flat and modular alike (CLAUDE.md is just `@AGENTS.md`), so the explicit orientation read is always worthwhile. No `rule_shape` gating applies — keep the step as written, do not drop or renumber it.
 
-- `rule_shape == "modular"`: **keep** the read. AGENTS.md is canonical there (CLAUDE.md is just `@AGENTS.md`), so the explicit orientation read is worthwhile.
-- `rule_shape == "flat"`: **drop** the read. CLAUDE.md auto-loads at session start and carries the rules; AGENTS.md is only a thin pointer to it (per the flat paired-write rule above), so reading AGENTS.md is wasted tokens.
-
-When the step is dropped, renumber the remaining steps so the list stays contiguous (1, 2, 3 — not 2, 3, 4), per the OPTIONAL renumber convention. The failure mode this prevents: a flat-shape session paying to re-open a pointer file whose target is already in context.
+> Historical note: flat shape used to drop this read because flat was CLAUDE-canonical and AGENTS.md was a thin pointer. The flat shape is now AGENTS-canonical (matching modular), so that exception is gone.
 
 ### KEEP AS-IS
 
@@ -363,7 +360,7 @@ After substitution, the generator must validate the output is parseable JSON. If
 
 ## Recency safeguard renumbering rule
 
-The recency safeguard block in `AGENTS.md.template` and the equivalent in `claude-rules-flat-CLAUDE.md.template` carries item 1 always present and items 2 (visual confirmation), 3 (AI), 4 (vocabulary) conditional.
+The recency safeguard block in `AGENTS.md.template` (modular) and the equivalent in `claude-rules-flat-AGENTS.md.template` (flat) carries item 1 always present and items 2 (visual confirmation), 3 (AI), 4 (vocabulary) conditional.
 
 Always-on item:
 
@@ -379,14 +376,14 @@ When optional items are skipped, renumber the remaining items so the list is con
 
 ## No-UI project handling
 
-When `uses_visual_confirmation_gate == false`, the following content is dropped from the flat-CLAUDE template, the modular AGENTS template, the modular session-discipline template, and the flat-AGENTS Codex-override paragraph:
+When `uses_visual_confirmation_gate == false`, the following content is dropped from the flat-AGENTS template (the rule-carrying canonical file), the modular AGENTS template, the modular session-discipline template, and the flat-AGENTS Codex-specific section:
 
 - Primary-constraints item 2 ("Visual confirmation gates the commit") — both templates.
 - The "No worktrees." suffix on primary-constraints item 3 — both templates.
 - Recency-block item 2 — both templates.
-- Body "Commit gate" section — flat CLAUDE and modular session-discipline.
-- "UI changes" bullet under "Verification before claiming done" — flat CLAUDE and modular session-discipline.
-- The Codex-override paragraph in flat-AGENTS.md.template (the entire override is about visual confirmation).
+- Body "Commit gate" section — flat AGENTS and modular session-discipline.
+- "UI changes" bullet under "Verification before claiming done" — flat AGENTS and modular session-discipline.
+- The Codex-specific section in flat-AGENTS.md.template (the entire section is the visual-confirmation override).
 - The worktree-restriction code rule (already gated by the same flag — confirm it stays gated).
 - The block-worktree.sh hook and its two `settings.json` entries (already gated).
 
@@ -404,7 +401,7 @@ For example, if the modular set includes `voice-and-tone.md`, `design-system.md`
 
 If only one is included, the value is just that one filename. If none are included, the entire "Path-scoped rules" sentence in AGENTS.md is omitted via the OPTIONAL marker that gates it.
 
-## UX row content for the flat CLAUDE template
+## UX row content for the flat AGENTS template
 
 The `ux_row_doc_names` parameter is only relevant when `rule_shape == "flat"` and the project has UX or styling docs. If `design_shape == "none"`, drop the row entirely (the `<!-- OPTIONAL: ux_row -->` marker handles this). If `design_shape == "basic_styling"` and the user named UX or styling docs, fill with those doc paths in the format `\`docs/UX_HEURISTICS.md\` (canonical), \`docs/UI_SYSTEM.md\` (styling)` or whatever the project actually has.
 

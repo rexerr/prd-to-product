@@ -42,15 +42,15 @@ Four patterns hold up the rest. If a project skips any of them, the rest of the 
 
 ### Thin-pointer pair
 
-`AGENTS.md` is the canonical entry-point file. `CLAUDE.md` is a one-line file that imports it: `@AGENTS.md`. Codex and other agent tools read `AGENTS.md` directly. Claude Code reads it via `CLAUDE.md`. One file is the source of truth. The other is a pointer plus, at most, one tool-specific override paragraph.
+`AGENTS.md` is the canonical entry-point file. `CLAUDE.md` is a one-line file that imports it: `@AGENTS.md`. Codex and other agent tools read `AGENTS.md` directly. Claude Code reads it via `CLAUDE.md`. `AGENTS.md` is the source of truth; `CLAUDE.md` is a pure pointer. Any tool-specific override (e.g. the Codex "no visual confirmation" note) lives in a section *inside* the canonical `AGENTS.md`, not in the pointer.
 
-The default direction is AGENTS canonical because AGENTS is the agent-agnostic name. The other direction works but adds friction when adding a second tool to the workflow.
+AGENTS canonical is the direction because AGENTS is the agent-agnostic name — it is the file every tool can read, so the source of truth should not be named for one tool. The generator emits this direction for **both** rule shapes (flat and modular); the inverse (CLAUDE-canonical) is a valid hand-built pattern but adds friction when a second tool joins the workflow, so the skill does not scaffold it.
 
 ### Always-on vs path-scoped split
 
 Rules that apply to every session live in `AGENTS.md` directly or in always-on files under `.claude/rules/` (no `paths:` frontmatter). Rules that apply only when certain files are touched live in path-scoped files under `.claude/rules/` with `paths:` frontmatter. Claude Code honors `paths:` automatically. Codex does not. The AGENTS.md "Path-scoped rules" section names this and tells Codex to read every rule file at session start and mentally check matches.
 
-Use the modular split when the rule set is large enough that a flat `CLAUDE.md` becomes hard to scan. Use the flat shape (everything in `CLAUDE.md`) when the project is small enough to fit in one file without losing structure.
+Use the modular split when the rule set is large enough that a single flat rule file becomes hard to scan. Use the flat shape (everything inline in the canonical `AGENTS.md`) when the project is small enough to fit in one file without losing structure.
 
 ### Canonical-source-of-truth on conflict
 

@@ -60,6 +60,10 @@ Direction set while mining is still in progress. Each **graduates to a formal `D
    of truth is correct for that. Resolves the divergence-audit open question. *Execution is a real
    migration* — every "see CLAUDE.md" reference, the pointer direction, and the mirror rules flip.
    → council-grade was the bar to *decide*; the decision is made, so execution is now a planning task.
+   **Generator half executed 2026-06-20 (→ [D-047](DECISIONS.md)):** the `context-engineering` skill
+   now scaffolds AGENTS-canonical for *both* rule shapes (flat joined modular). **This-repo half still
+   deferred** — Rex scoped D-047 to generator output only; migrating this workspace's own root files
+   remains the ~75–90-cross-reference planning task.
 
 2. **Keep D-001 (markdown-only); invest in hooks-as-gates for determinism.** No tension between the
    two: markdown stays the output substrate, hooks (shell, wired in `settings.json`) are the
@@ -193,7 +197,7 @@ his generator and *none* on his shipped app), so fit-to-product is the rule, not
 | Collaboration hygiene | Full PR discipline — templates, review bots, mergify | Direct-on-main (D-002) | **Strongly justified. Keep.** They have contributors + CI; we're one person. Correct divergence. |
 | Regression safety | Golden tests + verify harness + CI | Hand-written example output trees, no runner | **Partially justified.** No CI is fine solo; but we under-use golden "should-NOT-change" fixtures (C-08) and contract tests (C-23). |
 | Close the learning loop | Retros → generator changes; a `solutions/` scar-tissue library | Retros that stop at "next session" | **No justification. Adopt (C-09).** We also have *nothing* like their solutions/ failure-card library — the biggest unbuilt thing. |
-| Source-of-truth file | **`AGENTS.md` canonical**, Claude/Codex/Cursor symlink to it (tool-neutral) | **CLAUDE.md canonical**, AGENTS.md a thin pointer | **DECIDED 2026-06-17 — flip to AGENTS.md-canonical** (Rex; reverts his original intent — the CLAUDE.md-canonical setup was a later change he didn't contest). See Decisions & leanings. |
+| Source-of-truth file | **`AGENTS.md` canonical**, Claude/Codex/Cursor symlink to it (tool-neutral) | **CLAUDE.md canonical**, AGENTS.md a thin pointer | **DECIDED 2026-06-17 — flip to AGENTS.md-canonical** (Rex; reverts his original intent). **Generator half DONE 2026-06-20 (→ [D-047](DECISIONS.md));** this-repo half deferred. See Decisions & leanings. |
 
 **The one not to unmake:** D-001 (markdown-only) is the decision most tempting to drop under their
 influence and the most justified by product shape. The upgrade is *not* "ship binaries like them" —
