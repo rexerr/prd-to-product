@@ -25,9 +25,16 @@ See commit `1705412`. New: `tickets/README.md`, `tickets/furnace-trial.md`, `tic
 
 - [D-048](../DECISIONS.md) — the full record. Settled this session: decisions tier needs no ADR status-field (narrowed the brief); ACTIVE-thinning is in-scope (the `/devils-advocate` finding that Rex's "ever-growing ACTIVE" worry targets); per-file `DECISIONS.md` split + skill port deferred.
 
+## Post-retro update (this section added after the retro was first committed)
+
+This retro was committed at `5a9b545` and then **more work landed in the same session** — the retro froze before the session truly ended. Corrections, so the next session doesn't inherit a stale picture:
+
+- **The retirement ritual IS now exercised** (the "UNEXERCISED" item below is superseded). The first live test ran: link-depth rewrite tested red→green, and a real decision-demotion + marker reconcile happened this session. The test surfaced an edge — `git mv` refuses an untracked ticket (one created and resolved in a single session) — now hardened by commit [`5ba52ec`](https://github.com/rexerr/prd-to-product/commit/5ba52ec) ("Guard the retirement ritual's git mv against same-session untracked tickets"). All pushed.
+- **The one genuinely-unexercised piece left is thin-on-touch** — self-testing the first time a `## Legacy` entry is edited.
+
 ## Open items — verification gaps (honest)
 
-- **The retirement ritual is written but UNEXERCISED.** No ticket has been archived yet, so the concrete `git mv` + link-depth (`../` → `../../`) steps are unproven. First real archival is the live test (red-capable: a moved ticket's links must still resolve).
+- ~~**The retirement ritual is written but UNEXERCISED.**~~ **Superseded — see Post-retro update above.** (Original note: no ticket archived yet, so `git mv` + link-depth steps unproven.)
 - **Thin-on-touch is a stated rule, untested.** First time a `## Legacy` fat entry is edited, watch whether it actually gets converted.
 - **The proven shape has NOT been ported to `context-engineering`** — the deferred leverage rock. This dogfood exists to de-risk that port; it is now the next-highest foundational item.
 - `plan-review` rehost stays a fat `## Legacy` entry (deferred, not parked) — converts on next touch.
