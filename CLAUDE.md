@@ -138,6 +138,7 @@ Default new `docs/` files into a typed subfolder by name; do not add to the root
   - `*-reference.md`, domain notes, templates → `docs/reference/`
   - dated retros → `docs/retros/`, council transcripts → `docs/council/`, audits → `docs/audits/`, brainstorms → `docs/brainstorms/`, exploratory product ideas → `docs/product-briefs/` (existing convention).
 - When in a subfolder, write relative links at the correct depth (`../DECISIONS.md`, peer as `sibling.md`) and re-check that cross-references resolve (per "Verification before claiming done").
+- **When a doc graduates (growth, not placement):** a hot-set living registry — read every session, holding a mutable item-set — with no retirement step graduates to thin-index + on-demand parts (`tickets/`-style) + a retirement ritual. **Failure it prevents:** registries accreting in the always-loaded set until they blow the read cap (the `BACKLOG.md`-bloat class). Pattern + trigger: [`docs/briefs/living-document-lifecycle-brief.md`](docs/briefs/living-document-lifecycle-brief.md); rule: [D-048](docs/DECISIONS.md).
 
 ---
 
