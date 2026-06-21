@@ -27,6 +27,16 @@ council-worthy per D-009; see the tracker's sequencing section.
 1. **Mobile is absent.** The stack enum in [`intake.md`](../skills/context-engineering/generator/intake.md)
    (Q5b) has no React Native / Expo option, yet mobile is a named target. Both the engineering and
    design harvests flagged mobile-specific concerns the generator can't currently encode.
+   - **First real-run evidence (2026-06-21, cat-tracker dogfood — AB-01 council input).** Ran the
+     generator on a real Expo/Supabase app (`~/Sites/cat-tracker`). It handled the missing type
+     *gracefully* via `stack=Other` free-text + `deploy_target=None` — clean stack prose, a sensible
+     "run on a real device" Phase 1 instead of a meaningless web hello-world, and the
+     `stack=other + deploy=none` `stack_summary_one_line` gap ([`BACKLOG.md`](../BACKLOG.md)) did **not**
+     manifest. But **0 of the 8 mobile failure-mode rules** below (touch-target, safe-area/notch,
+     OS-gesture-collision, HIG, thumb-zone, offline-as-required-state, store-review release gate,
+     remote-config-rollback) were emitted — confirming the gap concretely. The scaffold is a usable
+     *generic* harness that simply never names the failures unique to a shipped binary. This is the
+     evidence file the AB-01 council (D-009-gated Big Rock) should open with.
 2. **Data-project type is hollow.** The Python stack option exists but carries no data-specific rule
    or doc content. A data/analytics harness wants its own rules (metric-lock, query-validation) and
    docs (`metrics.md`, `data-context.md`).
