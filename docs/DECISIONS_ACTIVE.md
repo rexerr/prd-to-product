@@ -1,4 +1,4 @@
-<!-- Reconciled against DECISIONS.md through D-048 · 2026-06-20. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: many D-NNN are deliberately skipped as visible-by-reading (D-031/32/33/35, D-036–D-041, D-045/D-046, and D-047 — visible by reading the furnace-plan/prd-creator/context-engineering files and templates). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
+<!-- Reconciled against DECISIONS.md through D-049 · 2026-06-20. If DECISIONS.md carries higher-numbered decisions not yet evaluated for this view, this marker is stale — re-reconcile and bump it. Curated subset, NOT a completeness claim: many D-NNN are deliberately skipped as visible-by-reading (D-031/32/33/35, D-036–D-041, D-045/D-046, and D-047 — visible by reading the furnace-plan/prd-creator/context-engineering files and templates). Bump this line whenever a new decision is evaluated for mirroring, mirrored or not. -->
 
 # Active decisions
 
@@ -26,6 +26,7 @@ A decision belongs here if **all** are true: it imposes a rule the agent must fo
 - **[D-043](DECISIONS.md)** — Every `/furnace-plan` pass spawns one blind read-only `Explore` reviewer before `ExitPlanMode` (prompt = plan path + criteria + rubric pointer only, no author reasoning); Cowork remains the **sole** ledger writer (the cc-subagent never writes); declines the "reviewer subagent writes" evolution.
 - **[D-044](DECISIONS.md)** *(narrows D-008)* — DSB adopt mode **copies, never authors**: `cp` the rendered design + bundle tokens verbatim (never through the scale-first template) + emit `design-adoption.md`; never writes feature code; the bundle stays the design source of record; the mechanical consistency hook is deferred to v2.
 - **[D-048](DECISIONS.md)** — Hot-set living registries (`BACKLOG.md`, `DECISIONS_ACTIVE.md`) graduate to thin-index + on-demand parts (`tickets/`) + a **mandatory** `/end-session` retirement ritual; **archive don't delete**; **thin-on-touch is a rule**; ticket IDs are slug-based not a counter; ACTIVE is kept to one-line index form. Per-file `DECISIONS.md` split + root placement and the skill port are deferred (docs-structure rock / later).
+- **[D-049](DECISIONS.md)** — `context-engineering` scaffolds projects **born graduation-aware**: a concrete graduation rule (when `BACKLOG.md` outgrows the session-start read → thin index + `docs/tickets/`) in the flat-AGENTS / modular-session-discipline templates + the `/end-session` retirement ritual; `tickets/` is graduation-created at runtime under `docs/tickets/`, never scaffold-emitted, no inclusion-table row.
 
 ## Cross-references
 

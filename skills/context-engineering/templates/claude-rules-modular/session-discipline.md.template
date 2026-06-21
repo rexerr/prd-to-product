@@ -151,6 +151,10 @@ When <!-- PARAMETERIZE: visual_confirmer_name --> says **"end session"**, run th
 
 At the start of a new session, read the most recent retro before doing anything else. This replaces asking <!-- PARAMETERIZE: visual_confirmer_name --> to re-explain what was last worked on.
 
+## When BACKLOG outgrows the session-start read
+
+`BACKLOG.md` loads every session, so it has a size budget. When it grows past a quick scan, split it into a thin one-line-per-item index, move each item's working detail into an on-demand `docs/tickets/<slug>.md`, and retire resolved items via `/end-session` (archive to `docs/tickets/archive/`, never delete). **Failure it prevents:** an always-loaded registry growing unbounded until it blows the session-start read budget and orientation gets expensive.
+
 ## Gotchas
 
 Experience-derived failure modes. Each is a real failure that has happened more than once.

@@ -157,6 +157,10 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 
 Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. At the start of a new session, read the most recent retro before doing anything else.
 
+### When BACKLOG outgrows the session-start read
+
+`BACKLOG.md` loads every session, so it has a size budget. When it grows past a quick scan, split it into a thin one-line-per-item index, move each item's working detail into an on-demand `docs/tickets/<slug>.md`, and retire resolved items via `/end-session` (archive to `docs/tickets/archive/`, never delete). **Failure it prevents:** an always-loaded registry growing unbounded until it blows the session-start read budget and orientation gets expensive.
+
 ---
 
 ## Code rules

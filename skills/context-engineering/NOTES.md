@@ -112,7 +112,7 @@ templates/
 ├── docs/
 │   ├── PRD.md.template                   Required
 │   ├── ARCHITECTURE.md.template          Required
-│   ├── BACKLOG.md.template               Required (build plan + in-progress + backlog + open decisions; optional Later/V2 section)
+│   ├── BACKLOG.md.template               Required (build plan + in-progress + backlog + open decisions; optional Later/V2; graduates to thin-index + docs/tickets/ via /end-session when it outgrows the session-start read — D-049)
 │   ├── DECISIONS.md.template             Required
 │   ├── DECISIONS_ACTIVE.md.template      Optional (recommended)
 │   └── retros/README.md.template         Required

@@ -55,6 +55,7 @@ See `docs/retros/` for the session-by-session record.
 
 - One line + a pointer per entry; never paste reasoning inline (this file loads every session).
 - In progress names a "done when"; Backlog names a promotion trigger; resolved items move to a retro, not back here.
+- **When this file outgrows the session-start read,** split it into a thin one-line-per-item index + on-demand `docs/tickets/<slug>.md` parts, retiring resolved items via `/end-session` (archive, don't delete). See the session-discipline rule in `AGENTS.md`.
 
 ## Cross-references
 

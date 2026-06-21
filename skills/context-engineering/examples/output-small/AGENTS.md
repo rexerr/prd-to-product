@@ -65,6 +65,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
   - `/compact` proactively, with a description, during long debug sessions before autocompact fires at peak context-rot.
 - **Commit gate (UI changes).** Do not commit until Jordan visually confirms.
 - **Session retros.** Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. Read the most recent retro at session start.
+- **Graduate BACKLOG when it outgrows the session-start read.** When `BACKLOG.md` grows past a quick scan, split it into a thin one-line-per-item index + on-demand `docs/tickets/<slug>.md` parts, and retire resolved items via `/end-session` (archive to `docs/tickets/archive/`, never delete). Prevents an always-loaded registry blowing the read budget.
 
 ---
 
