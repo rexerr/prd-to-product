@@ -1,6 +1,6 @@
 ---
 slug: furnace-trial
-status: active
+status: watching
 title: Furnace-plan trial — Cowork-graded experiment
 ---
 
