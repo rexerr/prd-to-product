@@ -17,7 +17,7 @@ The `furnace-plan` skill ([`skills/furnace-plan/`](../skills/furnace-plan/SKILL.
 
 ## Next
 
-1. **Exercise a calibration pass** (skip the blind review once → Cowork reviews raw furnace output) for a clean cc-subagent-vs-Cowork-on-raw divergence number — documented but unexercised.
+1. **Exercise a calibration pass** (skip the blind review once → Cowork reviews raw furnace output) for a clean cc-subagent-vs-Cowork-on-raw divergence number — documented but unexercised. **Must run on a fresh plan BEFORE building it:** calibration verifies the raw plan's claims against the pre-build repo, so it can't be done retroactively — once the plan's work is merged the repo has moved past it (learned 2026-06-20: tried to calibrate the D-049 plan post-push, couldn't).
 
 ## Grade / promote / kill (one line each — full rubric in the ledger legend, do not restate here)
 
