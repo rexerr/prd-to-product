@@ -1,3 +1,4 @@
+<!-- SHAPE CONTRACT: the per-section KEEP-AS-IS cues below are the loaded operative rules — keep them self-sufficient. The full failure-cited shape rules, the canonical section skeleton/order, the style rules, and the hand-off contract live in ../PRD-FORMAT.md, which is authoritative on any conflict. -->
 <!-- KEEP AS-IS: H1 carries the project name only. No tagline, no version suffix. -->
 # <!-- PARAMETERIZE: project_name -->
 
@@ -45,7 +46,7 @@
 
 ## Architecture and stack
 
-<!-- KEEP AS-IS: What is decided about how this gets built. Stack, deploy target, key services, third-party dependencies. Prose plus a short bullet list. Do not design new architecture here; capture what the user has already decided. Open architectural questions go in open questions. Name stack and services, not implementation file paths, line numbers, or code; those go stale on the first rename (see principles "No volatile code locations"). A snippet appears only when it pins a decision prose cannot (schema, type shape, state machine), trimmed to the decision-rich part. -->
+<!-- KEEP AS-IS: What is decided about how this gets built. Stack, deploy target, key services, third-party dependencies. Prose plus a short bullet list. Do not design new architecture here; capture what the user has already decided. Open architectural questions go in open questions. Name stack and services, not implementation file paths, line numbers, or code; those go stale on the first rename (see ../PRD-FORMAT.md "Content conventions" — No volatile code locations, with the decision-snippet carve-out). A snippet appears only when it pins a decision prose cannot (schema, type shape, state machine), trimmed to the decision-rich part. -->
 <!-- PARAMETERIZE: architecture_block -->
 
 ## Decisions already made

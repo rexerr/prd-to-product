@@ -51,8 +51,9 @@ Read `principles.md` only when the user asks why a pattern exists, or when you h
 
 ## Files in this skill
 
-- `principles.md` — rationale, cluster contract, hand-off contract with context-engineering. Reference, not boot.
-- `templates/PRD.md.template` — annotated PRD skeleton. Sentence-case headers, H1/H2/H3 only.
+- `PRD-FORMAT.md` — the shape contract for `PRD.md`: canonical section skeleton/order, per-section + style + content rules (failure-cited), and the hand-off contract. Authoritative on conflict; diff it against `examples/small/PRD.md`. Reference, not boot.
+- `principles.md` — rationale, cluster contract, why the hand-off matters. Reference, not boot.
+- `templates/PRD.md.template` — annotated PRD skeleton, loaded at generation. Sentence-case headers, H1/H2/H3 only (full shape rules: `PRD-FORMAT.md`).
 - `templates/BRAND.md.template` — optional sibling file. Emits when the brand-and-voice cluster produces enough material.
 - `generator/` — `intake.md` (clustered question flow), `decisions.md` (which optional sections emit), `output-summary.md` (post-generation report).
 - `examples/` — three transcripts (small, medium, large) plus the full output PRD for the small case.

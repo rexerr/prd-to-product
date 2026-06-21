@@ -4,7 +4,7 @@ After the intake completes, run this logic to determine which optional sections 
 
 ## Emission table
 
-Each row names a section, the cluster that fills it, the condition for inclusion, and the file the section emits to.
+Each row names a section, the cluster that fills it, the condition for inclusion, and the file the section emits to. This table governs *inclusion conditions* only; the canonical section **names and order** are owned by `../PRD-FORMAT.md` (authoritative on conflict) — keep the names below matching that skeleton, do not re-order here.
 
 | Section | Source cluster | Inclusion condition | File |
 |---|---|---|---|

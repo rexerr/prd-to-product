@@ -18,13 +18,9 @@ The interview is the heart of this skill. The template is the format the answers
 
 ## Position-aware placement in the output PRD
 
-The U-shaped attention curve penalizes information placed in the middle of long context. The output PRD pulls the load-bearing pieces to the top and the bottom.
+The U-shaped attention curve penalizes information placed in the middle of long context, so the output PRD pulls the load-bearing pieces to the top and the bottom: the reader knows what this is and who it is for in the first thirty seconds (top), and the last thing they see is what is unresolved and what "done" looks like (bottom). Structure and detail sit in the middle.
 
-- Top: product summary, target users, core problem. The reader knows what this is and who it is for in the first thirty seconds.
-- Bottom: open questions, success criteria, supporting documents pointer. The last thing the reader sees is what is unresolved and what "done" looks like.
-- Middle: scope, workflow, architecture, decisions, deferred capabilities. Structure and detail.
-
-Apply the same shape if the PRD grows past the V1 template. New sections go in the middle. The top and bottom anchors stay.
+The canonical section order that realizes this shape is the skeleton in `PRD-FORMAT.md` — the ordering authority, not re-listed here. If the PRD grows past V1, new sections go in the middle; the top and bottom anchors stay.
 
 ## The cluster contract
 
@@ -48,27 +44,7 @@ Two conduct rules for the interview itself, distinct from the output PRD's style
 
 ## The hand-off contract with context-engineering
 
-The output PRD is the input to the context-engineering skill's cluster 0. Two pieces of the contract are load-bearing.
-
-- **Named sections.** The context-engineering skill extracts product summary, target users, core problem, and architecture overview by section name. The template uses the canonical names below. Do not rename sections to match a project's local idiom. Add subsections under canonical names instead.
-- **Numbered decision seed list.** The "decisions already made" section uses `D-001`, `D-002`, ..., one per decision, with a one-line rationale each. The format is the format `DECISIONS.md` will absorb later. The seed list is not a duplicate of `DECISIONS.md`, which does not exist yet at PRD time. It is the source the context-engineering skill draws from when scaffolding `DECISIONS.md`.
-
-Canonical section names, in order:
-
-1. Product summary
-2. Target users
-3. Core problem
-4. Main workflow
-5. Version 1 scope
-6. Out of scope
-7. Deferred capabilities
-8. Architecture and stack
-9. Decisions already made
-10. Open questions
-11. Success criteria
-12. Testing decisions
-13. Brand and voice (optional, see below)
-14. Supporting documents (optional)
+The output PRD is the input to the context-engineering skill's cluster 0. Two load-bearing pieces — **named sections** (context-engineering extracts product summary, target users, core problem, and architecture overview *by canonical section name*, so don't rename; add subsections instead) and the **numbered decision seed list** (`D-001`.. one per decision, the format `DECISIONS.md` is later scaffolded from) — are specified, with the canonical section list and order, in `PRD-FORMAT.md`. The rules and the section list live there; what matters here is *why* they're load-bearing: a downstream extractor keys on the section names and the decision-ID shape, so both are part of the deliverable's contract, not cosmetic.
 
 ## When the brand-and-voice material lives in a sibling file
 
@@ -81,30 +57,13 @@ Default to inline. Sibling file is the upgrade path when the material outgrows a
 
 ## Style for the output PRD
 
-Every PRD this skill writes follows these rules. They are the user's house style, applied to the PRD specifically.
-
-- Sentence-case headers. H1 for the document title. H2 for canonical sections. H3 for subsections only when the section has more than one distinct piece. Do not use H4 or deeper.
-- No em dashes. Use commas, periods, or parentheses.
-- No Oxford commas.
-- No colons in titles.
-- AP style.
-- Specific over generic. "Approve and skip are the only triage actions" beats "Triage should be simple."
-- Cite specific files, sources, or prior decisions when describing constraints. "Per D-003 we ship on Vercel" beats "We ship on Vercel."
-- Every paragraph earns its tokens. If a sentence does not change a reader's understanding, cut it.
+Every PRD this skill writes follows a fixed house style — sentence-case headers, no em dashes, no Oxford commas, no colons in titles, AP, specific-over-generic, cite-your-sources, every-paragraph-earns-its-tokens. The full failure-cited rules live in `PRD-FORMAT.md` "Style rules"; this is a signpost, not a second copy — do not restate the bodies here.
 
 The exemplar PRDs at `epost-assessment/docs/PRD.md`, `epost-intelligence-feed/docs/PRD.md`, and `the-council/docs/PRD.md` were written before this style was codified. They use Title Case headers and longer prose. Match their shape and discipline. Do not match their formatting.
 
 ## Conventions for writing PRD content
 
-These shape what goes in the sections, not just how they look.
-
-- **Imperatives, not principles, in scope and decisions.** "V1 ships single-user, no auth" is a decision. "Keep V1 simple" is not. If the statement cannot be checked, rewrite it until it can.
-- **Out of scope is a list of explicit cuts, not a vague boundary.** Each item names what was considered and rejected for V1.
-- **Deferred capabilities point forward.** Each item is a candidate for V2 or later, not a "maybe never." If the user wants "maybe never," it goes in out of scope.
-- **Open questions name what would change the build.** A question that does not change a decision belongs in a discussion thread, not the PRD.
-- **Success criteria are concrete.** "10 users complete the workflow without help" beats "users find it intuitive." If the user cannot answer a criterion concretely, capture it as an open question instead.
-- **No volatile code locations in the PRD.** Do not pin implementation file paths, line numbers, or verbatim code. They go stale the moment files move or get renamed, and a PRD that references them rots silently while reading as if it is still accurate. One carve-out: inline a short prototype-derived snippet only when it encodes a decision more precisely than prose can, a state machine, schema, reducer, or type shape, trimmed to the decision-rich part. Citing a decision or a named source doc by reference (as the style rule above does) is fine. The ban is on volatile code, not on references. **Failure it prevents:** a PRD that pinned `app/api/route.ts:42` or pasted a component becomes wrong on the first rename, and the reader cannot tell the stale line from the live ones.
-- **Testing decisions name what a good test is, not test code.** The testing decisions section states the external behaviors to verify, which parts of the system matter most, and any prior art the tests model. If V1 ships no automated suite, that is itself a testing decision: say so and name how V1 is verified instead (a manual pass, a live validation window). It is a decision record, not a test plan.
+What goes in the sections, not just how it looks — imperatives-not-principles, out-of-scope-as-explicit-cuts, deferred-points-forward, open-questions-name-what-would-change-the-build, concrete-success-criteria, no-volatile-code-locations (with the decision-snippet carve-out), and testing-decisions-name-a-good-test. The full failure-cited rules live in `PRD-FORMAT.md` "Content conventions"; this is a signpost, not a second copy — do not restate the bodies here.
 
 ## Recommend a stress-test before locking high-stakes scope
 
