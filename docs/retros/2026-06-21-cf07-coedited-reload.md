@@ -1,6 +1,6 @@
 # Retro — 2026-06-21 07:08 CDT — CF-07 adopted narrowly (co-edited-file reload-before-write)   (1st session of the day, crib 2 of 2)
 
-Second of the two Wave-2 cleanup cribs this session (after [G-19](2026-06-21-g19-positioning-anchor.md)). Decision: [D-051](../DECISIONS.md). Built, **not pushed** as of writing.
+Second of the two Wave-2 cleanup cribs this session (after [G-19](2026-06-21-g19-positioning-anchor.md)). Decision: [D-051](../DECISIONS.md).
 
 ## What was completed
 
@@ -23,5 +23,4 @@ D-051 (binding via CLAUDE.md prose; not mirrored). No BACKLOG line — roadmap-s
 
 ## Open / next
 
-- **Not pushed** — two crib adoptions this session (D-050 G-19, D-051 CF-07) await Rex's go; will push together if wanted.
 - **Wave 2 effectively complete** — only G-18 remains, blocked on the unbuilt C-24 oracle prompt (Wave 3). Next leverage is **Wave 3** (`/furnace-plan` each); **CF-29** is the planned furnace-trial calibration vehicle per the [furnace-trial ticket](../../tickets/furnace-trial.md) — the next real furnace plan, calibrated pre-build.

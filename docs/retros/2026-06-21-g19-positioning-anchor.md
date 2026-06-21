@@ -1,6 +1,6 @@
 # Retro — 2026-06-21 07:08 CDT — G-19 adoption (positioning anchor + falsifiable rationale → DSB)   (1st session of the day, crib 1 of 2)
 
-First of the two Wave-2 cleanup cribs Rex sequenced before opening CF-29 as the furnace-trial calibration vehicle. Decision: [D-050](../DECISIONS.md). Built, **not pushed** as of writing.
+First of the two Wave-2 cleanup cribs Rex sequenced before opening CF-29 as the furnace-trial calibration vehicle. Decision: [D-050](../DECISIONS.md).
 
 ## What was completed
 
@@ -22,6 +22,5 @@ D-050 (binding via the DSB skill files, not mirrored). No BACKLOG line — G-19 
 
 ## Open / next
 
-- **Not pushed** — awaiting Rex's go (will batch with CF-07 if he wants both in one push).
 - **CF-07 next** — its landing is broader than "small" (5 candidate surfaces, heavy overlap with the D-005/D-006 write guard + the D-018 reload-before-write carve-out). Needs its own scope read before editing — likely collapses to 1–2 genuinely net-new surfaces. That read is the next action.
 - Then CF-29 (Wave 3) as the furnace-trial calibration vehicle, per the [furnace-trial ticket](../../tickets/furnace-trial.md).
