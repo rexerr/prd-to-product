@@ -134,7 +134,13 @@ Adopt mode writes a bundle's components into `design/reference/` and the bundle'
 
 ## Progressive disclosure in the output
 
-The output `DESIGN_SYSTEM.md` follows the same position-aware placement principle as the PRD and AGENTS.md. The load-bearing facts go at the top: which token file is canonical, what the no-hardcoded-values rule is, where the linter command lives. Details (full token listing, component props tables) go in the middle. "What is not in this file" goes at the bottom, pointing at context-engineering's rule for behavior constraints and prd-creator's BRAND.md for voice.
+The output `DESIGN_SYSTEM.md` follows the same position-aware placement principle as the PRD and AGENTS.md. The load-bearing facts go at the top: the **positioning anchor** (the one line the system is remembered for), then which token file is canonical, what the no-hardcoded-values rule is, where the linter command lives. Details (full token listing, component props tables) go in the middle. "What is not in this file" goes at the bottom, pointing at context-engineering's rule for behavior constraints and prd-creator's BRAND.md for voice.
+
+## The positioning anchor and falsifiable rationale
+
+`DESIGN_SYSTEM.md` opens with a **positioning anchor**: one line naming what the system should be remembered for, captured at intake (Q1e) and checked against every token choice thereafter. **Failure it prevents:** a coherent-but-generic palette — a system that tries to be memorable for everything is memorable for nothing, so a value chosen to serve no particular intent defaults to the generic AI aesthetic. When source material is present, propose a candidate anchor extracted from it; the user always owns the final line.
+
+Paired with it is a **falsifiable-rationale rule**: wherever the doc (or the interview) explains *why* a token holds a value, the reason must cite a concrete observation — a brand asset, a stated brand attribute, a measured contrast ratio — never a vibe. "Feels clean," "looks professional," and "modern" are banned: they are unfalsifiable and justify any value equally. This is invariant #2 ("every rule cites its failure mode") turned on design judgments — cite an observable. Adopted from gstack `G-19` ([D-050](../../docs/DECISIONS.md)).
 
 ## Conventions for writing token values
 

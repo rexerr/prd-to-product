@@ -4,6 +4,12 @@ This file is the semantic reference for Linkpad's design system. The token file 
 
 **Hard rule:** no hardcoded hex values, px font sizes, or magic spacing numbers anywhere in product UI. Every visual value resolves through a token.
 
+## Positioning anchor
+
+> Linkpad is remembered for *making a shared link feel instant* — one saturated brand hue (indigo) on a calm neutral field, so the primary action is never in doubt.
+
+Every token choice serves this line; a value that serves nothing in particular is generic by default. **Rationale rule:** every "why" in this file cites a concrete observation (brand asset, stated attribute, measured contrast), never a vibe — "feels clean" / "looks professional" are banned.
+
 ## Token system
 
 ### Color

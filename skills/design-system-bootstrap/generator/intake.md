@@ -71,6 +71,12 @@ Then a separate call for the branch question:
 
 **Detection-as-confirmation, not silent default.** If a `.claude/rules/design-system.md` file exists with the literal string "No Tailwind. No shadcn." present (and not commented out via OPTIONAL marker), the generator may propose vanilla as the default but must still ask: "Your design-system rule file forbids Tailwind. Confirm vanilla CSS path? Y/N." If the rule does not contain that line, or no rule file exists, ask Q1d cold without a proposed default.
 
+Then a separate free-text call:
+
+1e. **Positioning anchor.** In one line, what should this design system be remembered for? Name the single intent every token choice serves — not a feature list, not a mood board. ("Frictionless link-sharing that feels instant." "A dense trading console where nothing moves unless it matters.") → `positioning_anchor`.
+
+If cluster 0 captured source material, propose a candidate anchor extracted from it ("From your brand book, this reads as *X* — confirm or rewrite") rather than asking cold; the user still owns the final line. **Failure it prevents:** without one captured intent, token choices default to the generic AI aesthetic — a system that tries to be memorable for everything is memorable for nothing. The anchor becomes the top section of `DESIGN_SYSTEM.md` and the line every later choice is checked against.
+
 ## Cluster 2: Color system
 
 Two phases: primitives, then semantic mapping.
@@ -319,6 +325,7 @@ State-map keys only (no PARAMETERIZE markers):
 - `token_file_path` — Q1b
 - `component_dir_path` — Q1c
 - `styling_path` — Q1d (state map only; gates template selection in decisions.md)
+- `positioning_anchor` — Q1e (substituted into the Positioning anchor section of `DESIGN_SYSTEM.md.template`)
 
 ### Cluster 2
 

@@ -15,6 +15,14 @@ This file is the semantic reference for <!-- PARAMETERIZE: project_name -->'s de
 
 **Hard rule:** no hardcoded hex values, px font sizes, or magic spacing numbers anywhere in product UI. Every visual value resolves through a token. <!-- OPTIONAL: linter_present --> The `<!-- PARAMETERIZE: token_linter_command -->` linter enforces this and is wired into `<!-- PARAMETERIZE: check_command -->`.
 
+## Positioning anchor
+
+> <!-- PARAMETERIZE: positioning_anchor -->
+
+This is the one thing the system should be remembered for. Every token choice — color, type, motion, radius — earns its place by serving this line; a value that serves nothing in particular is generic by default. A system that tries to be memorable for everything is memorable for nothing.
+
+**Rationale rule.** Wherever this file explains *why* a token holds the value it does, cite a concrete observation — a brand asset, a stated brand attribute, a measured contrast ratio — never a vibe. "Feels clean," "looks professional," and "modern" are banned: they are unfalsifiable and justify any value equally.
+
 ## Token system
 
 ### Color
