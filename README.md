@@ -27,7 +27,7 @@ design-system-bootstrap
 ready to build
 ```
 
-The skills know about each other. Context-engineering reads the PRD without making you restate it. Design-system-bootstrap detects context-engineering's design-system rule and updates rather than overwriting it.
+The skills know about each other. Context-engineering reads the PRD without making you restate it. For a greenfield project, design-system-bootstrap creates the design-system rule and integrates it into context-engineering's existing `.claude/rules/`; for a brownfield project that already has one, it detects that rule and updates rather than overwriting it.
 
 ## Install
 
