@@ -24,7 +24,7 @@ Ports the [D-048](../DECISIONS.md) lifecycle shape into the skill. Decision: [D-
 
 ## Open items
 
-- **Slice B deferred** (own pass if/when wanted): the richer `templates/docs/tickets/README.md.template` source content + any dedicated runtime graduation-emission wiring. The `/end-session` ritual already carries a self-contained convention, so Slice B is a nicety, not a blocker.
+- **Slice B done (same session, corrected form).** The ticket-file convention (slug naming, `slug`/`status`/`title` frontmatter, body = state · next · pointers) is now carried **inline in the scaffolded `/end-session` ritual** — not a separate `templates/docs/tickets/README.md.template`. Caught a flaw in the plan's literal Slice B: a template in the skill's `templates/` is unreachable by an already-scaffolded project at graduation, so the convention must live in a scaffolded artifact. Furnace-skipped (no new decision — executes D-049's deferred half). D-049 amended to "Slice B done."
 - **Not pushed** — awaiting Rex's go.
 - **Calibration read (Cowork-on-raw) effectively moot** now the plan is built; the original-flow read already gave the taint signal. Raw plan still in context if the trial wants the formal divergence number.
 - **Modular half has no fixture** — the session-discipline graduation block is self-verified by ad-hoc dry-run; closing it needs an `examples/output-modular/` tree (a standing BACKLOG item).
