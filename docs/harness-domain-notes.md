@@ -37,6 +37,16 @@ council-worthy per D-009; see the tracker's sequencing section.
      remote-config-rollback) were emitted — confirming the gap concretely. The scaffold is a usable
      *generic* harness that simply never names the failures unique to a shipped binary. This is the
      evidence file the AB-01 council (D-009-gated Big Rock) should open with.
+   - **Sharpening (2026-06-21, DSB step of the same dogfood — [retro](retros/2026-06-21-dsb-cattracker-chain-close.md)).**
+     The gap is **context-engineering-specific, not chain-wide.** Run on the *same* mobile project,
+     `design-system-bootstrap` handled mobile competently — NativeWind, `Pressable`/`View`/`Text`,
+     elevation-not-box-shadow, 44px touch targets, `active:` states + `accessibilityState`,
+     reduced-motion — and its emitted `design-system.md` rule carries UI guards (touch-target
+     minimums, mandatory empty/error states) that context-engineering's harness lacks. **Design input
+     for the AB-01 council:** DSB is a working *reference implementation* of mobile-aware scaffolding;
+     AB-01 can borrow its patterns (touch targets, platform-component conventions, RN shadow handling)
+     rather than invent the mobile rules from scratch. See `~/Sites/cat-tracker/docs/DESIGN_SYSTEM.md`
+     "Platform note" and `.claude/rules/design-system.md`.
 2. **Data-project type is hollow.** The Python stack option exists but carries no data-specific rule
    or doc content. A data/analytics harness wants its own rules (metric-lock, query-validation) and
    docs (`metrics.md`, `data-context.md`).
