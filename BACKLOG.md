@@ -8,7 +8,7 @@ Read this at session start alongside the most recent retro in `docs/retros/`.
 
 One line per item: title · `status` (in-progress | next | watching) · **Next:** the single next action · pointers. Resolved items move to a retro or `tickets/archive/`, never back to fat prose here.
 
-- **[furnace-trial](tickets/furnace-trial.md)** · Furnace-plan trial (Cowork-graded) · in-progress · **Next:** exercise a calibration pass (Cowork on raw furnace output) for the cc-subagent-vs-Cowork divergence number. *(First live cc-subagent run done 2026-06-20, D-049 plan — Cowork transcribed and caught a Must-fix the subagent missed.)*
+- **[furnace-trial](tickets/furnace-trial.md)** · Furnace-plan trial (Cowork-graded) · watching · **Next:** paused 2026-06-21 — first calibration pass done (cc-subagent 0 vs Cowork 5 must-fixes, [D-052](docs/DECISIONS.md)); resume only if a real question needs the per-reviewer data. Deferred follow-ups sit in the ticket, not queued.
 - **Build-defaults pilot item 1** (deploy-shell from `deploy_target`, shipped `0afaa17`) · watching · **Next:** promote to Done when a project with a live-URL deliverable exercises the deploy-shell. [retro](docs/retros/2026-06-08-qventus-post-mortem.md) · [brief](docs/build-defaults-brief.md).
 - **Build-defaults item 5** (check/test pre-commit, prose-only) · watching · pilot pending item 1's real-project evidence. [brief](docs/build-defaults-brief.md).
 - **Build-defaults item 6** (defer abstraction) · watching · pilot pending items 1, 5.

@@ -18,7 +18,9 @@ The `furnace-plan` skill ([`skills/furnace-plan/`](../skills/furnace-plan/SKILL.
 
 ## Next
 
-Calibration is now *exercised* (CF-29, above) — and the "must run on a fresh plan BEFORE building it" rule held. Three follow-ups remain:
+**⏸ Trial paused 2026-06-21 — resume only if a real question needs it.** One calibration pass is done and its finding is recorded (cc-subagent 0 must-fixes vs Cowork 5; [D-052](../docs/DECISIONS.md)). We don't yet know the per-reviewer tally is worth more rounds, so the items below are **deferred, not queued** — do not treat them as standing to-dos.
+
+Calibration is now *exercised* (CF-29, above) — and the "must run on a fresh plan BEFORE building it" rule held. The deferred follow-ups:
 
 1. **Record the CF-29 `cc-subagent` rows (pending — needs Cowork).** The round-0 subagent findings — 0 must-fixes; should-considers were exact-name section matching, ledger-row granularity, and naming who runs each verification step — live only in the session transcript. Feed them to Cowork to transcribe as `cc-subagent` rows (Cowork is the sole writer per [D-043](../docs/DECISIONS.md); the cc-subagent never writes the ledger itself). Without this the per-reviewer miss-rate tally for this plan is Cowork-only.
 2. **Resolve the calibration protocol (the mechanics wrinkle).** Fix: keep Cowork's *review* blind (it grades the raw plan), but hand it the subagent's findings **separately, after its review, as transcription-only input** — this preserves the untainted comparison AND the sole-writer rule AND captures both reviewers' rows on the same plan. Clarify it in the calibration toggle of [`furnace-plan/SKILL.md`](../skills/furnace-plan/SKILL.md) and the transcribe rule of [`plan-review/SKILL.md`](../skills/plan-review/SKILL.md) — both **product** edits (scope-gated; `plan-review` redeploys by ZIP-upload). Until done, a calibration pass measures Cowork-on-raw and the cc half is recovered manually per item 1.
