@@ -1,4 +1,5 @@
 <!-- SHAPE CONTRACT: the per-section KEEP-AS-IS cues below are the loaded operative rules — keep them self-sufficient. The full failure-cited shape rules, the canonical section skeleton/order, the style rules, and the hand-off contract live in ../PRD-FORMAT.md, which is authoritative on any conflict. -->
+<!-- KEEP AS-IS: HOUSE STYLE, apply to ALL prose in this document as you write it. This cue fires at generation; do not defer it to the reference file. No em dashes (use commas, periods, or parentheses). No Oxford commas. No colons in headers. Sentence-case headers. AP style. Specific over generic. Full failure-cited rationale in ../PRD-FORMAT.md "Style rules". Failure it prevents: the house-style rules are unloaded in the reference FORMAT file, so without this echo they never enter the generation context and the output drifts to em-dash-heavy AI prose (observed: D-053). -->
 <!-- KEEP AS-IS: H1 carries the project name only. No tagline, no version suffix. -->
 # <!-- PARAMETERIZE: project_name -->
 
