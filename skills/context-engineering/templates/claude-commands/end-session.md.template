@@ -1,3 +1,7 @@
+---
+description: Close out the session — restate and verify, update docs, write the retro, then commit.
+---
+
 <!--
 Template: .claude/commands/end-session.md
 Purpose: Slash command that closes out a session — restate + verify, update the docs the work changed, write the retro BEFORE the commit, bundle everything into one push, then hand off. The closing bookend to session-start.md. Codifies the close-out as a command so the agent can't fumble the ordering (retro-in-the-same-commit) or skip the commit gate.

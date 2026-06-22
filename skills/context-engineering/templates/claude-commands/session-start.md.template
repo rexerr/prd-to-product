@@ -1,3 +1,7 @@
+---
+description: Orient at session start — read the entry-point, backlog, and latest retro before any work.
+---
+
 <!--
 Template: .claude/commands/session-start.md
 Purpose: Slash command that orients the agent at the start of a session. Reads the entry-point file, the backlog, and the most recent retro.

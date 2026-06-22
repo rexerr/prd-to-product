@@ -300,7 +300,7 @@ Every file the generator emits leads with a one-line **provenance banner** so a 
 | Emitted format | Comment syntax | Banner position |
 |---|---|---|
 | Markdown `.md`, no frontmatter | `<!-- … -->` | First line, before the H1 / `@import`. |
-| Markdown `.md` with YAML frontmatter (path-scoped rules) | `<!-- … -->` | The line **directly after the closing `---`** (no blank between), then a blank line, then the H1. A comment *before* `---` breaks frontmatter parsing. |
+| Markdown `.md` with YAML frontmatter (path-scoped rules; slash commands carry a `description`) | `<!-- … -->` | The line **directly after the closing `---`** (no blank between), then a blank line, then the H1 or body. A comment *before* `---` breaks frontmatter parsing. |
 | Shell `.sh` | two `# …` lines | After the `#!/usr/bin/env bash` shebang, before the `# Hook:`/`# Reason:` lines. |
 | TOML `.codex/config.toml` | two `# …` lines | First emitted lines (replaces the stripped authoring block as the top). |
 | JSON `.claude/settings.json` | n/a — JSON has no comments | Carried by the existing top `"//"` documentation key; **no separate banner**. |
