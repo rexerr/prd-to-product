@@ -53,7 +53,7 @@ So the burden sits on the **project's context files**, never on the global skill
 
 1. Is "skill writes generic / project declares convention" actually the best pattern, or is there a cleaner ecosystem standard (a `docs/` manifest, an env var, an `.outputs` config, a per-skill output-dir param)? **Unvalidated — this is the research question.**
 2. Where should `deep-research` output land? It's a skill Rex runs and it writes a file — opt-in seed like council, or ride the rule? (Currently `research/` is an ungoverned top-level sibling, not under `docs/`.)
-3. Rex's real taxonomy is **"mine" + cribbed-content-from-evaluating-other-codebases + research** — does the crib/mine workflow (see the `/repo-miner` BACKLOG item) want its own staging convention that this brief should align with?
+3. Rex's real taxonomy is **"mine" + cribbed-content-from-evaluating-other-codebases + research** — does the crib/mine workflow (see the `/mine` BACKLOG item) want its own staging convention that this brief should align with?
 4. Does the routing rule need the filename *pattern* per skill, or just the folder?
 
 ## Research findings (2026-06-19) — they confirm the design

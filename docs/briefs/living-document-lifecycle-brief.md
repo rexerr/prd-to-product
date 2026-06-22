@@ -39,6 +39,6 @@ Three in-repo efforts are the **same shape**, not three rocks:
 
 - **Context-lifecycle** (this instance) — bound what session-start *loads*. Shipped via [D-048](../DECISIONS.md).
 - **Docs-structure routing** — bound where new docs are *placed* at birth (the companion: birth-routing + growth-graduation). See [`docs-structure-and-artifact-routing-brief.md`](docs-structure-and-artifact-routing-brief.md).
-- **Repo-miner output** — mined-crib trackers are registries too; they inherit the shape for free once named.
+- **`/mine` output** — mined-crib trackers are registries too; they inherit the shape for free once named.
 
 Recognizing this is the win: name the pattern once, apply it wherever the trigger fires, design nothing new per instance.

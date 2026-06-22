@@ -1,13 +1,13 @@
 ---
-slug: repo-miner-skill
+slug: mine
 status: next
 seq: 2
-title: /repo-miner — codify the external-repo crib-mining process
+title: /mine — codify the source-agnostic mining process
 ---
 
-# /repo-miner
+# /mine
 
-Source-agnostic name (any repo URL or local path). Codifies the refined crib-mining `Workflow`: clone-to-scratch → inventory + license → triage fan-out → adversarial-verify every integrate/implement pick → synthesize into a source-organized tracker.
+Mines **any source** — a repo (URL or local path), a dumped-docs pile, a design export, a research dump — for value and saves the findings into our system. Codifies the refined mining `Workflow`: stage source → inventory (+ license for repos) → triage fan-out → adversarial-verify every integrate/implement pick → synthesize into a source-organized tracker (**lens A** → cribs/roadmap) or the project's own surfaces (**lens B** → its BACKLOG/context). The name is deliberately broader than the old `/repo-miner` — the engine is source-agnostic.
 
 ## Current state
 
@@ -16,11 +16,11 @@ Source-agnostic name (any repo URL or local path). Codifies the refined crib-min
 
 ## Next
 
-Build the engine as a **lightweight playbook** the roadmap points to — **not** a skill (~80% of value at zero invocation surface; keeps the `/furnace-plan` slot free). Wire **lens A** (proven, 3 real mines) to the playbook now. **Defer lens B** until the next real dumped-context pile exists, then hand-run via the playbook into that project — zero new structure built.
+Settle the **form fork first** (see Open), then build the engine: stage → fan-out read → triage → adversarial-verify → tracker + amend one plan. Wire **lens A** (proven, 3 real mines) now. **Defer lens B** until the next real dumped-content pile exists, then run the engine into that project — zero new structure built. **Authoring goes through `/furnace-plan`** — a real authoring task; the plan is presented for approval before any edit.
 
 ## Open
 
-- Final form: full skill vs. playbook — leaning playbook.
+- **Form fork (settle in the furnace-plan):** a lightweight playbook the roadmap points to **vs.** an explicit-invoke `/mine` skill (like `furnace-plan`). The ticket originally leaned playbook to avoid invocation surface — but [D-034](../docs/DECISIONS.md#d-034) says an explicit-invoke skill (`disable-model-invocation: true`) costs **nothing** in-window, which removes the playbook's main rationale and makes a runnable `/mine` skill the stronger candidate. Lean: the skill, unless the plan surfaces a reason not to.
 - B likely resolves into a `context-engineering` *extension* + a convention (broader source-type intake + an "append actionable items to BACKLOG" step), not a new skill — probably avoiding the `CF-22`/`CF-23` router cost entirely.
 - Design inputs to honor **only IF the hand-run proves them needed** (do not pre-build): a per-mine staging folder `mines/<date>-<source>/`; heterogeneous source readers (repos = shallow-clone-to-scratch, never commit raw; dumped docs/designs = staged/pointed-to); a mine index/log; amend the *one* plan, pointer-not-copy (`C-19`).
 

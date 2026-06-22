@@ -11,7 +11,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 | Item | Lane | Seq | Next | Refs |
 |---|---|---|---|---|
 | [plan-review rehost](tickets/plan-review-rehost.md) | next | 1 | First live `cc-subagent` run on a real furnace plan; confirm Cowork transcribes | [D-043](docs/DECISIONS.md#d-043) |
-| [/repo-miner](tickets/repo-miner-skill.md) | next | 2 | Build the engine as a lightweight playbook; wire lens A now | [D-022](docs/DECISIONS.md#d-022) |
+| [/mine](tickets/mine.md) | next | 2 | Settle form fork (playbook vs explicit-invoke skill); build engine + wire lens A — via `/furnace-plan` | [D-022](docs/DECISIONS.md#d-022) |
 | Crib adoption (Wave 3) | next | 3 | Wave 2 done bar blocked G-18; Wave 3 = propagate CF-29 ([D-052](docs/DECISIONS.md#d-052)) to DSB + a scoped context-engineering subset, Rule-of-Two | [crib plan](docs/cribs-adoption-roadmap.md) |
 | Agent-process & context-harness upgrades | next | 4 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
 | Invariant/semantic output checks | next | 5 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
