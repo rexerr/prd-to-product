@@ -16,13 +16,32 @@ Mines **any source** — a repo (URL or local path), a dumped-docs pile, a desig
 
 ## Next
 
-Settle the **form fork first** (see Open), then build the engine: stage → fan-out read → triage → adversarial-verify → tracker + amend one plan. Wire **lens A** (proven, 3 real mines) now. **Defer lens B** until the next real dumped-content pile exists, then run the engine into that project — zero new structure built. **Authoring goes through `/furnace-plan`** — a real authoring task; the plan is presented for approval before any edit.
+Resolved to **proceed** (devils-advocate 2026-06-21 — verdict Proceed with guardrails). The graveyard and unproven-loop attacks collapsed once the design was clarified: **output becomes adoptable work, not an archive**, and the cribs pipeline already proves the loop end to end. Build via `/furnace-plan` (a real authoring task; plan presented for approval before any edit). Form fork **resolved → explicit-invoke skill** (not a playbook): [D-034](../docs/DECISIONS.md#d-034) makes an explicit-invoke skill cost nothing in-window, removing the playbook's only advantage. Order vs the docs-routing item is Rex's call (see Dependency).
+
+## Resolved shape (2026-06-21, post-DA)
+
+- **Portable global explicit-invoke skill** (lives in `~/.claude/skills/`, like `furnace-plan`; runs in any project; reads the host project's context to set the relevance lens). Not scaffolded per project.
+- **Output is proposed work, never an archive.** Every mine ends in candidate board rows / tickets / fixes in the host project (lens B) or tooling cribs (lens A), each carrying the finding, source citation, confidence note and a proposed lane. Rex adopts through the normal gate. No read-later folder to rot — the same path cribs already take.
+- **Tiered verification by source ground-truth.** A code/repo claim is checked against the repo and can become a fix directly. A soft claim (tip, opinion, thread) cannot be proven, so it enters as a **time-boxed experiment ticket with an explicit kill condition** (try X for a week, keep only if it measurably helps) — never a silent fix, never labeled "verified." This is how new-model / new-technique advice enters, as a falsifiable bet.
+- **Reuse the cribs adoption gate** (Rule-of-Two / decision discipline). Propose, never auto-apply.
+- **Success metric = adopted work shipped, not stuff captured.** A thin tally (mined finding → adopted ticket → shipped improvement), like the crib roadmap or furnace ledger. Self-cleaning leading indicator: if mines stop producing adopted work, the skill isn't earning its keep.
+- **v1 scope:** repos + paste-or-URL (pasted text covers YouTube transcripts, Reddit threads, anything Rex drops in). Design/visual mining is a **separate later skill** (vision + site-scraping for design systems/components, a natural feed into DSB adopt mode). New source types earn their way in on real need.
+
+## Storage model (where mined repos live)
+
+- **Committed (the durable reference):** `docs/mined/<date>-<source>.md` — findings + source URL + **pinned commit SHA** + license + the proposed tickets. This *is* the thing referenced ongoing, and it makes the mine reproducible.
+- **Local cache, gitignored (regenerable):** `docs/mined/repos/<name>/` — shallow clone pinned to the SHA, browsable on disk, **never committed**. The skill writes the `.gitignore` entry for `repos/` on first run in a project.
+- **Why not commit the repos:** permanent history bloat, license drag, nested-`.git` mess — and zero gain, since the findings doc + pinned SHA re-clone the exact code on demand.
+- **Alternative (Rule-of-Two):** a shared `~/.mine/cache/` to dedupe clones across projects; switch only if re-cloning the same repos becomes a real annoyance.
+
+## Dependency / sequence (Rex's call — not a hard prerequisite)
+
+`/mine`'s landing behavior should follow the docs-routing principle already settled by research: the skill writes generic, defers to the project's declared landing zone, and proposes one (`docs/mined/`) if none exists. Because `/mine` proposes-and-waits in the no-convention case, it is **not blocked** on the context-engineering docs-routing scaffold change — either build order works. Docs-routing-first buys a settled convention (less rework); `/mine`-first gives docs-routing a real consumer to design against.
 
 ## Open
 
-- **Form fork (settle in the furnace-plan):** a lightweight playbook the roadmap points to **vs.** an explicit-invoke `/mine` skill (like `furnace-plan`). The ticket originally leaned playbook to avoid invocation surface — but [D-034](../docs/DECISIONS.md#d-034) says an explicit-invoke skill (`disable-model-invocation: true`) costs **nothing** in-window, which removes the playbook's main rationale and makes a runnable `/mine` skill the stronger candidate. Lean: the skill, unless the plan surfaces a reason not to.
 - B likely resolves into a `context-engineering` *extension* + a convention (broader source-type intake + an "append actionable items to BACKLOG" step), not a new skill — probably avoiding the `CF-22`/`CF-23` router cost entirely.
-- Design inputs to honor **only IF the hand-run proves them needed** (do not pre-build): a per-mine staging folder `mines/<date>-<source>/`; heterogeneous source readers (repos = shallow-clone-to-scratch, never commit raw; dumped docs/designs = staged/pointed-to); a mine index/log; amend the *one* plan, pointer-not-copy (`C-19`).
+- Build the engine as: stage source → fan-out read → triage through the lens → adversarial-verify every keeper → return draft tickets → (on adoption) amend the *one* plan, pointer-not-copy (`C-19`).
 
 ## Engine gotchas (the encoded scar tissue — the real value, not the mechanics)
 
