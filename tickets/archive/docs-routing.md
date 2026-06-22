@@ -1,7 +1,8 @@
 ---
 slug: docs-routing
-status: next
+status: done
 title: Docs structure & artifact-output routing
+resolved: 2026-06-22 (D-055, commit c37f5ff)
 ---
 
 # Docs structure & artifact routing
@@ -10,7 +11,7 @@ Should `context-engineering` scaffold a doc-routing rule + landing zones **at pr
 
 ## Current state
 
-- **Research DONE 2026-06-19** ([research](../research/docs-structure-artifact-routing-research-2026-06-19.md), 21 claims survived 3-vote verification) and it **confirms the design.** Now a Rex decision + a bounded template change, not a research gap.
+- **Research DONE 2026-06-19** ([research](../../research/docs-structure-artifact-routing-research-2026-06-19.md), 21 claims survived 3-vote verification) and it **confirms the design.** Now a Rex decision + a bounded template change, not a research gap.
 - Decisive findings: Claude Code skills have **no output-dir field** → routing *must* be prose; the only viable split is **skill-writes-generic / project-declares-convention**; "declare landing zones at conception" is the mainstream pattern (adr-tools, log4brains, OpenCode); folder structure does **not** help agent retrieval (that claim refuted 0–3) → the honest payoff is human tidiness + first-run cleanliness, not agent performance.
 
 ## Design (refined 2026-06-21)
@@ -33,4 +34,4 @@ Template change → scope-gate + likely `D-NNN`. (a) routing rule into flat + mo
 
 ## Why (pointers)
 
-[brief](../docs/briefs/docs-structure-and-artifact-routing-brief.md) (full capture); [research](../research/docs-structure-artifact-routing-research-2026-06-19.md); sibling to the lifecycle work ([D-048](../docs/DECISIONS.md#d-048)).
+[brief](../../docs/briefs/docs-structure-and-artifact-routing-brief.md) (full capture); [research](../../research/docs-structure-artifact-routing-research-2026-06-19.md); sibling to the lifecycle work ([D-048](../../docs/DECISIONS.md#d-048)).
