@@ -12,7 +12,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 |---|---|---|---|---|
 | [plan-review rehost](tickets/plan-review-rehost.md) | next | 1 | First live `cc-subagent` run on a real furnace plan; confirm Cowork transcribes | [D-043](docs/DECISIONS.md#d-043) |
 | [/repo-miner](tickets/repo-miner-skill.md) | next | 2 | Build the engine as a lightweight playbook; wire lens A now | [D-022](docs/DECISIONS.md#d-022) |
-| Crib adoption (Wave 2) | next | 3 | S4 DSB (G-19); solo CF-07 | [roadmap](docs/cribs-adoption-roadmap.md) |
+| Crib adoption (Wave 2) | next | 3 | S4 DSB (G-19); solo CF-07 | [crib plan](docs/cribs-adoption-roadmap.md) |
 | Agent-process & context-harness upgrades | next | 4 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
 | Invariant/semantic output checks | next | 5 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
 | [Docs structure & artifact routing](docs/briefs/docs-structure-and-artifact-routing-brief.md) | next | 6 | Rex decision: build the routing rule + narrow intake Q (research done, confirms design) | [research](research/docs-structure-artifact-routing-research-2026-06-19.md) |
@@ -43,7 +43,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 | [Agent-teams scaffold guidance](tickets/agent-teams-scaffold-guidance.md) | backlog | — | Promote when a scaffolded project needs multi-agent structure | — |
 | [README install loop symlinks `context-engineering-audit`](tickets/readme-install-symlink-cea.md) | backlog | — | Fix on a fresh-clone confusion (contradicts D-019) | [D-019](docs/DECISIONS.md#d-019) |
 | AGENTS.md-canonical flip (this-repo half) | backlog | — | Generator half done (D-047); flip this repo's own CLAUDE/AGENTS shape | [D-047](docs/DECISIONS.md#d-047) |
-| Build `solutions/` scar-tissue library | backlog | — | Unblocks crib CF-05 | [roadmap](docs/cribs-adoption-roadmap.md) |
+| Build `solutions/` scar-tissue library | backlog | — | Unblocks crib CF-05 | [crib plan](docs/cribs-adoption-roadmap.md) |
 | [Skill injection by project type](tickets/skill-injection-by-project-type.md) | blocked | — | Resolve the source-dependent promotion mechanic (plugin vs vendored) first | — |
 | DSB HTML supplement | icebox | — | Deferred indefinitely; trigger did not fire at cat-tracker (no hand-built preview) | [D-012](docs/DECISIONS.md#d-012) |
 | Candidate future products (3 briefs) | icebox | — | Revisit after Taste Builder validation | [briefs](docs/product-briefs/) |
