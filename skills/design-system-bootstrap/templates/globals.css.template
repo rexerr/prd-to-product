@@ -34,6 +34,20 @@ body {
   background-color: var(--color-bg-default);
 }
 
+/* Type plumbing — balance evens out short heading lines; pretty stops a lone
+   orphan word on the last line of body copy. Failure it prevents: headings that
+   wrap to a single dangling word and paragraphs ending on an orphan — the kind
+   of ragging that reads as "unfinished" without anyone being able to say why.
+   balance is browser-capped to short blocks (silently no-ops on long text), so
+   it's safe on headings only; pretty has no line cap. */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li, figcaption, blockquote {
+  text-wrap: pretty;
+}
+
 /* Focus ring — applies to all interactive elements unless overridden */
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);

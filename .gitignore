@@ -1,3 +1,6 @@
 # macOS
 .DS_Store
 skills/plan-review.zip
+
+# /mine shallow clones (regenerable)
+docs/mined/repos/
