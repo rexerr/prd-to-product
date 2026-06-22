@@ -91,6 +91,18 @@ The operative cut is **survives a tool switch vs. doesn't.** Claude's auto-memor
 
 ---
 
+## Where new docs go
+
+Default new `docs/` files into a typed subfolder by name; do not add to the root pile. **Failure it prevents:** root-level sprawl — with no routing rule every new doc lands loose at `docs/` (path of least resistance), so browsing the folder becomes a cognitive tax, and an artifact-emitting skill with no convention dumps its output at the repo root on run #1.
+
+- **Stay at root** (anchors, frequently linked): `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`.
+- **Route by name** into a subfolder (created lazily on the first file of that type): `*-brief.md` → `docs/briefs/`; `*-handoff.md` → `docs/handoffs/`; `*-reference.md` / domain notes → `docs/reference/`; research output → `docs/research/`; dated retros → `docs/retros/`; audits → `docs/audits/`.
+- When writing inside a subfolder, use relative links at the correct depth (`../DECISIONS.md`) and re-check that cross-references resolve.
+
+A one-file map of this whole convention lives in `docs/README.md`.
+
+---
+
 ## Codex-specific
 
 **No visual confirmation.** Codex cannot run a browser. For any UI change, run `npm run check`, describe exactly what changed and where, and flag it for Jordan to confirm visually before the change ships. Do not claim the UI is correct.

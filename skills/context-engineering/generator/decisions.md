@@ -40,6 +40,8 @@ The generator should hold answers in a state map with these keys:
 | `codex_usage` | Q25 | enum | `regular`, `occasional`, `none`. |
 | `canonical_workflow_doc_name` | Q26 | string or null | |
 | `include_product_rules` | Q27 | bool | |
+| `artifact_skills_list` | Q24a | list of enum | Subset of `{llm-council, brainstorms}` the project will run regularly. Drives `docs/README.md`'s opt-in rows and the routing rule's `artifact_routing_block`. Empty → no artifact rows/block. `retros/` is **not** in this list (it is always-on, unconditional). |
+| `artifact_routing_lines` | derived | string (markdown block) | Built from `artifact_skills_list`: one bullet per opted-in skill (`- \`<skill>\` → \`docs/<folder>/\` (name: <pattern>)`). See "Doc-routing pre-seed" below. Empty when `artifact_skills_list` is empty (the `artifact_routing_block` OPTIONAL gate drops it). |
 | `include_synthesis_rule` | Q35a | bool | Default false. Gates the modular-only `synthesis-even-coverage.md` rule. Only asked when `rule_shape == "modular"` (Cluster 6, after rule-shape determination). |
 | `workflows` | Q30 | list of `{name, description}` | |
 | `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` | Q31 | strings | User-defined first phase. Routed into `phase_1_*` or `phase_2_*` template parameters by the Phase 1 derivation below. |
@@ -168,6 +170,35 @@ The `synthesis-even-coverage.md` rule guards multi-source synthesis against prim
 
 Its intake question (**Q35a**) lives in **Cluster 6, after rule-shape determination**, framed as the modular-only mirror of the flat-only Q34/Q35. It cannot live in Cluster 5: `rule_shape` is not computable there because one of its triggers (`len(workflows) > 1`) depends on workflow capture at Q30 (Cluster 6). A flat project is never asked Q35a — consistent with the modular-only emission gate, so there is no flat answer-but-no-landing dead-end. The failure it prevents: a project that routinely synthesizes N sources silently under-covering the middle inputs.
 
+## Doc-routing pre-seed (the "Where new docs go" rule + the `docs/README.md` map)
+
+The generator installs a **doc-routing convention** so a scaffolded project starts tidy instead of sprawling, and so artifact-emitting skills (council, brainstorm, deep-research) land their output well on run #1 instead of dumping at the repo root. Three pieces:
+
+1. **The routing rule** — a `## Where new docs go` section, **unconditional in both shapes** (it is not gated on any answer): inline in `claude-rules-flat-AGENTS.md.template` and in `claude-rules-modular/session-discipline.md.template` (always-on rule), with **identical** prose. It names the root anchors and routes every other doc to a typed subfolder by name, lazily created on first write. It cites the root-sprawl failure mode (per "every rule cites its failure mode").
+
+2. **The `docs/README.md` map** — emitted **always** (inclusion table), a human-facing index (doc type → folder → one-line why). It cross-references the routing rule as canonical; it does **not** restate the routing logic (DRY). The map and the rule use **one canonical folder set** and may not diverge.
+
+3. **The artifact-skill opt-in** — intake **Q24a** captures `artifact_skills_list`. For each opted-in skill, build a **filename-pattern deference line** into `artifact_routing_lines` (substituted as a multi-line markdown block, like `architecture_rules_numbered_list` — **not** the inline `path_scoped_rule_list`). The `<!-- OPTIONAL: artifact_routing_block -->` gate (true when `len(artifact_skills_list) > 0`) shows these lines in the rule; matching opt-in rows render in the map. **Pre-seed = the steering line only; never an empty folder or `.gitkeep`** — the folder materializes when the skill first writes.
+
+**Canonical portable folder set** (identical in rule and map):
+
+| Type | Folder | Always or opt-in |
+|---|---|---|
+| `*-brief.md` | `docs/briefs/` | always (rule lists it; folder lazy) |
+| `*-handoff.md` | `docs/handoffs/` | always |
+| `*-reference.md` / domain notes | `docs/reference/` | always |
+| research output (e.g. `deep-research`) | `docs/research/` | always (rides the rule — **no** opt-in checkbox) |
+| dated retros | `docs/retros/` | always (folder pre-seeded with its README — the one folder that ships content) |
+| audits | `docs/audits/` | always |
+| `llm-council` output | `docs/council/` | opt-in via Q24a |
+| `brainstorm` output | `docs/brainstorms/` | opt-in via Q24a |
+
+**Root anchors:** `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`, and `DECISIONS_ACTIVE.md` **only when `include_decisions_active == true`** — gated by `decisions_active_anchor` (inline compressed form in the rule; a gated table row in the map). A Q23=No project must not name a `DECISIONS_ACTIVE.md` it never emitted.
+
+**Repo-specific types are NOT scaffolded.** `cribs/` and `product-briefs/` are idiosyncratic to the meta-repo that hosts this skill; shipping them into every generated project seeds unused-convention noise — the exact sprawl this rule fights. They are deliberately absent from both the rule and the map.
+
+**Scope boundary:** this installs the *project's* convention (its context files declare landing zones). It does **not** edit the global council/brainstorm/deep-research skills — they write to their generic default and defer to a project convention if one exists. At build, read each opted-in skill's actual default output naming for the deference line; **if a skill is unreachable, emit the folder route only (`<skill> → docs/<folder>/`), never an invented filename pattern.**
+
 ## Redundancy guards
 
 The paper's redundancy finding (LLM context files improve by 2.7% when README is removed) means the practical risk is overlap inside our own outputs. PRD.md, ARCHITECTURE.md, and CLAUDE.md should not all describe the project.
@@ -233,6 +264,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `docs/DECISIONS.md.template` | always | `docs/DECISIONS.md` |
 | `docs/DECISIONS_ACTIVE.md.template` | `include_decisions_active` | `docs/DECISIONS_ACTIVE.md` |
 | `docs/retros/README.md.template` | always | `docs/retros/README.md` |
+| `docs/README.md.template` | always | `docs/README.md` (the doc-routing map — see "Doc-routing pre-seed" below) |
 | `claude-commands/session-start.md.template` | always | `.claude/commands/session-start.md` |
 | `claude-commands/end-session.md.template` | always | `.claude/commands/end-session.md` |
 | `codex-config.toml.template` | `codex_usage in ("regular", "occasional")` | `.codex/config.toml` |
@@ -276,6 +308,19 @@ Behavior:
 - If the condition is false: drop the marker line **and** the gated block (the next line, or the next contiguous block ending at a blank line, depending on context).
 
 Some markers gate inline cells in tables (e.g., `<!-- OPTIONAL: ux_row -->` in the flat AGENTS "Where to look" table). For those, drop the entire row when the condition is false.
+
+### Inline compressed OPTIONAL form (content inside the marker)
+
+A fourth form handles **mid-sentence conditional text** — a substring that must appear or vanish without the open/close span or next-line behaviors above reaching it. The content to conditionally insert lives **inside** the marker body:
+
+`<!-- OPTIONAL: <key> — include if <cond>; inline content: <text> -->`
+
+Behavior:
+
+- **Condition true:** replace the entire marker with `<text>` (the part after `inline content:`), trimmed of its leading/trailing space.
+- **Condition false:** drop the entire marker, emitting nothing in its place.
+
+The surrounding line is otherwise untouched, so punctuation must be authored to read correctly in **both** states. Precedent: the bare-content form already in use at `claude-rules-flat-AGENTS.md.template` "Where to look" (`… this file, <!-- OPTIONAL: \`docs/DECISIONS_ACTIVE.md\`, --> the most recent …`), where the inserted text carries its own trailing comma. The labeled `inline content:` variant is the same mechanism made explicit. Used by `decisions_active_anchor` in the "Where new docs go" routing rule (both shapes): author the `DECISIONS.md` list item so it ends with a period when the gated `, \`DECISIONS_ACTIVE.md\`` is dropped and reads as a clean two-item list when kept. **Failure it prevents:** a template relying on an undocumented drop behavior — a stray `<!-- /OPTIONAL -->` leaking into output or mangled mid-sentence punctuation.
 
 ### session-start AGENTS.md read is unconditional
 

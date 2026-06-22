@@ -192,6 +192,10 @@ First call:
 24. **Add a `Later / V2` section to `BACKLOG.md`?** (Mid-session deferrals and parked work always have a home in `BACKLOG.md`'s In progress / Backlog sections — no separate file. This question is only about a dedicated V2-and-beyond section.)
    - Yes — project has a clear V2-and-beyond list worth a standing section.
    - No (default) — V2 ideas, when they arise, live as a Backlog entry; no empty section.
+24a. **Which artifact-emitting skills will this project run regularly?** (Multi-select; default none.) Skills like `llm-council` and `brainstorm` write to a generic output location and rely on the project's convention to land tidily. For each selected, the generator pre-seeds its landing zone in the doc-routing rule + the `docs/README.md` map — the **steering line only**; the folder materializes on the skill's first write, not now. → `artifact_skills_list`.
+   - `llm-council` — council reports/transcripts → `docs/council/`.
+   - `brainstorm` — brainstorm outputs → `docs/brainstorms/`.
+   - None (default) — neither runs regularly; no rows pre-seeded. (`retros/` is always set up regardless — it is not part of this question, and `docs/research/` rides the routing rule with no opt-in.)
 
 Second call:
 
@@ -358,6 +362,10 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 - `include_product_rules` — Q27 (state map)
 - `skill_list` — Q25 sub-fill (only if `codex_usage == "regular"`)
 - `external_skill_references` — Q27a (only if `codex_usage in ("regular", "occasional")`). State-map list, used by `decisions.md` to add cross-link block to `.agents/skills/README.md`.
+- `artifact_skills_list` — Q24a (state map). Subset of `{llm-council, brainstorms}`; drives the doc-routing artifact rows. `retros/` is NOT part of it (always-on).
+- `artifact_routing_lines` — derived (built from `artifact_skills_list` in `decisions.md` "Doc-routing pre-seed"; multi-line markdown block, substituted into the `## Where new docs go` rule in both shapes under the `artifact_routing_block` OPTIONAL gate). Empty → block dropped.
+- `decisions_active_anchor` — OPTIONAL gate (mirrors `decisions_active_row`, condition `include_decisions_active == true`); inline-compressed form gating the `DECISIONS_ACTIVE.md` root anchor in the "Where new docs go" rule, both shapes.
+- `council_map_row`, `brainstorms_map_row` — OPTIONAL whole-row gates in `docs/README.md.template` (conditions `"llm-council" in artifact_skills_list` / `"brainstorms" in artifact_skills_list`).
 
 ### Cluster 6: content fills
 

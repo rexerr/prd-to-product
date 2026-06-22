@@ -30,6 +30,7 @@ Companion to [`transcript-large.md`](transcript-large.md). The large case is the
 │       ├── ai-urgency-detector.md     # path-scoped
 │       └── ai-summary-generator.md    # path-scoped
 └── docs/
+    ├── README.md                     # doc-routing map (always emitted)
     ├── PRD.md
     ├── ARCHITECTURE.md
     ├── DECISIONS.md
@@ -141,6 +142,22 @@ The surface-specific files emit per [`decisions.md`](../generator/decisions.md) 
 
 Always-on rules: `git-and-deploy.md`, `session-discipline.md`. (No `product-rules.md`, no `synthesis-even-coverage.md`.)
 
+## Doc-routing rule (`Where new docs go`)
+
+Modular shape → the `## Where new docs go` section renders inside `.claude/rules/session-discipline.md`. `include_decisions_active == true` (the `DECISIONS_ACTIVE.md` anchor is kept); `artifact_skills_list` is empty for this case (no council/brainstorm opt-in), so the `artifact_routing_block` is **dropped**. The rule is unconditional otherwise — note it is NOT one of the four suppression-cascade flags; it renders regardless. Rendered "Stay at root" line:
+
+> - **Stay at root** (anchors, frequently linked): `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `DECISIONS_ACTIVE.md`.
+
+**Illustrative — the opted-in state (NOT this case's inputs):** had Q24a selected `llm-council`, the `artifact_routing_block` would render and `docs/README.md` would gain a `council/` row:
+
+```markdown
+Artifact-emitting skills write to a generic output location and defer to this project's convention. Land their output here:
+
+- `llm-council` → `docs/council/` (name: confirmed from the skill's actual output at build).
+```
+
+`docs/README.md` (always emitted) carries the matching map: `DECISIONS_ACTIVE.md` root row present; no `council/`/`brainstorms/` rows for this case (empty `artifact_skills_list`).
+
 ## Two corrections still apply
 
 The two structural corrections from prior validation work still apply to this case:
@@ -159,5 +176,6 @@ The large-case test passes if:
 5. **Hook script substitution.** `block-env-commit.sh` echo includes the substituted Fly `env_pattern` as a plain string (single trailing period, no command-substitution backticks).
 6. **Surface-specific frontmatter substituted.** All three `ai-<surface>.md` files have plain `paths:` entries with no remaining `<!-- PARAMETERIZE: ... -->` markers.
 7. **No `ai-shared.md`.** Suppressed because `stack_has_client_server_split == false`; this is the harder check because the generator must read the conditional in [`decisions.md`](../generator/decisions.md) "Server-only AI call rule (conditional)" rather than treating `ai-shared.md` as unconditional for any project with AI.
+8. **Doc-routing rule renders unconditionally; `docs/README.md` emitted.** The `## Where new docs go` section is present in `session-discipline.md` even under the four-flag suppression cascade (it is not a cascade flag). The `DECISIONS_ACTIVE.md` anchor is kept (`include_decisions_active == true`), the `artifact_routing_block` is dropped (empty `artifact_skills_list`), and no `<!-- OPTIONAL/PARAMETERIZE -->` markers leak. `docs/README.md` is emitted with the matching map.
 
 If any check fails, the bug is in the generator (`decisions.md` or substitution rules), not in the templates.

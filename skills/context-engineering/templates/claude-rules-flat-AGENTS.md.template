@@ -217,6 +217,24 @@ If a conflict isn't covered above, surface it as an open question. Don't pick si
 
 ---
 
+## Where new docs go
+
+Default new `docs/` files into a typed subfolder by name; do not add to the root pile. **Failure it prevents:** root-level sprawl — with no routing rule every new doc lands loose at `docs/` (path of least resistance), so browsing the folder becomes a cognitive tax, and an artifact-emitting skill with no convention dumps its output at the repo root on run #1.
+
+- **Stay at root** (anchors, frequently linked): `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`<!-- OPTIONAL: decisions_active_anchor — include if include_decisions_active == true; inline content: `, `DECISIONS_ACTIVE.md` -->.
+- **Route by name** into a subfolder (created lazily on the first file of that type): `*-brief.md` → `docs/briefs/`; `*-handoff.md` → `docs/handoffs/`; `*-reference.md` / domain notes → `docs/reference/`; research output → `docs/research/`; dated retros → `docs/retros/`; audits → `docs/audits/`.
+- When writing inside a subfolder, use relative links at the correct depth (`../DECISIONS.md`) and re-check that cross-references resolve.
+
+<!-- OPTIONAL: artifact_routing_block — include if len(artifact_skills_list) > 0 -->
+Artifact-emitting skills write to a generic output location and defer to this project's convention. Land their output here:
+
+<!-- PARAMETERIZE: artifact_routing_lines -->
+<!-- /OPTIONAL: artifact_routing_block -->
+
+A one-file map of this whole convention lives in `docs/README.md`.
+
+---
+
 <!-- OPTIONAL: codex_visual_override_section — include if uses_visual_confirmation_gate == true. The whole section is the visual-confirmation override; drop it entirely for no-UI projects. -->
 ## Codex-specific
 

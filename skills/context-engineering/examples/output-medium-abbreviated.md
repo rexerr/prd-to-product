@@ -28,6 +28,7 @@ Companion to [`transcript-medium.md`](transcript-medium.md). The medium case lan
 │       ├── ai-shared.md               # path-scoped (stack_has_client_server_split == true)
 │       └── ai-draft-generator.md      # path-scoped (one surface)
 └── docs/
+    ├── README.md                     # doc-routing map (always emitted)
     ├── PRD.md
     ├── ARCHITECTURE.md
     ├── DECISIONS.md
@@ -108,6 +109,24 @@ paths:
 
 Always-on rules: `git-and-deploy.md`, `session-discipline.md`.
 
+## Doc-routing rule (`Where new docs go`)
+
+Modular shape, so the `## Where new docs go` section renders inside `.claude/rules/session-discipline.md` (after "When BACKLOG outgrows the session-start read"). `include_decisions_active == true`, so the `DECISIONS_ACTIVE.md` anchor is **kept**; no artifact-emitting skills opted in at Q24a (`artifact_skills_list` empty), so the `artifact_routing_block` is **dropped**. Rendered:
+
+```markdown
+## Where new docs go
+
+Default new `docs/` files into a typed subfolder by name; do not add to the root pile. **Failure it prevents:** root-level sprawl — with no routing rule every new doc lands loose at `docs/` (path of least resistance), so browsing the folder becomes a cognitive tax, and an artifact-emitting skill with no convention dumps its output at the repo root on run #1.
+
+- **Stay at root** (anchors, frequently linked): `PRD.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `DECISIONS_ACTIVE.md`.
+- **Route by name** into a subfolder (created lazily on the first file of that type): `*-brief.md` → `docs/briefs/`; `*-handoff.md` → `docs/handoffs/`; `*-reference.md` / domain notes → `docs/reference/`; research output → `docs/research/`; dated retros → `docs/retros/`; audits → `docs/audits/`.
+- When writing inside a subfolder, use relative links at the correct depth (`../DECISIONS.md`) and re-check that cross-references resolve.
+
+A one-file map of this whole convention lives in `docs/README.md`.
+```
+
+`docs/README.md` (always emitted) carries the matching map; with no skills opted in, it has no `council/`/`brainstorms/` rows, and the `DECISIONS_ACTIVE.md` root row is present (Q23=yes).
+
 ## What's not present
 
 - `.agents/skills/README.md` (codex_usage occasional, not regular).
@@ -128,5 +147,6 @@ The medium-case test passes if:
 4. **env_pattern convention.** The Cloudflare default substitutes as a plain string into shell echo (no command substitution risk) and gets backtick-wrapped at markdown consumption sites.
 5. **Recency block has three items.** Item 4 (vocabulary lock) is dropped; renumbering rule fires.
 6. **Voice-and-tone frontmatter substituted.** `paths:` lines in `voice-and-tone.md` and `ai-draft-generator.md` are plain string entries with no `<!-- PARAMETERIZE: ... -->` markers.
+7. **Doc-routing rule renders in `session-discipline.md`; `docs/README.md` emitted.** The `## Where new docs go` section is present with the `DECISIONS_ACTIVE.md` anchor kept (`include_decisions_active == true`) and the `artifact_routing_block` dropped (empty `artifact_skills_list`); no `<!-- OPTIONAL/PARAMETERIZE -->` markers leak. `docs/README.md` has the matching map (DECISIONS_ACTIVE row present, no council/brainstorms rows).
 
 If any check fails, the bug is in the generator (`decisions.md` or substitution rules), not in the templates.
