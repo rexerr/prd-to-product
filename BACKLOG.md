@@ -10,10 +10,10 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 
 | Item | Lane | Seq | Next | Refs |
 |---|---|---|---|---|
-| [/mine](tickets/mine.md) | next | 1 | Build via `/furnace-plan` — portable explicit-invoke skill; output→tickets; repos cached gitignored | [D-022](docs/DECISIONS.md#d-022) |
-| Crib adoption (Wave 3) | next | 2 | Wave 2 done bar blocked G-18; Wave 3 = propagate CF-29 ([D-052](docs/DECISIONS.md#d-052)) to DSB + a scoped context-engineering subset, Rule-of-Two | [crib plan](docs/cribs-adoption-roadmap.md) |
-| Agent-process & context-harness upgrades | next | 3 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
-| Invariant/semantic output checks | next | 4 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
+| Crib adoption (Wave 3) | next | 1 | Wave 2 done bar blocked G-18; Wave 3 = propagate CF-29 ([D-052](docs/DECISIONS.md#d-052)) to DSB + a scoped context-engineering subset, Rule-of-Two | [crib plan](docs/cribs-adoption-roadmap.md) |
+| Agent-process & context-harness upgrades | next | 2 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
+| Invariant/semantic output checks | next | 3 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
+| `/mine` hardening candidates | watching | — | Park (Rule-of-Two, n=1): (a) a "what existing docs cover this domain?" discovery step before triage; (b) a sharper skill-about-design vs design-content scope test. Promote to a `skills/mine/` ticket on a 2nd real need | [retro](docs/retros/2026-06-22-mine-audit-and-dsb-text-wrap.md) |
 | [furnace-trial](tickets/furnace-trial.md) | watching | — | Paused 2026-06-21; resume only if a real question needs the per-reviewer data | [D-052](docs/DECISIONS.md#d-052) |
 | Build-defaults pilot item 1 (deploy-shell) | watching | — | Promote to Done when a live-URL project exercises the deploy-shell | [brief](docs/build-defaults-brief.md) |
 | Build-defaults item 5 (check/test pre-commit) | watching | — | Pilot pending item 1's real-project evidence | [brief](docs/build-defaults-brief.md) |

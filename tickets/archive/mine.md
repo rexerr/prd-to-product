@@ -1,8 +1,8 @@
 ---
 slug: mine
-status: next
-seq: 1
+status: done
 title: /mine — codify the source-agnostic mining process
+resolved: 2026-06-22 — v1 built (e35a47f) + dogfooded GREEN (3e9b9ac, make-interfaces-feel-better); promoted in D-056 (binding bits: explicit-invoke · don't-commit-repos · propose-never-auto-apply). Hardening candidates parked as a watching row.
 ---
 
 # /mine
@@ -16,7 +16,7 @@ Mines **any source** — a repo (URL or local path), a dumped-docs pile, a desig
 
 ## Next
 
-Resolved to **proceed** (devils-advocate 2026-06-21 — verdict Proceed with guardrails). The graveyard and unproven-loop attacks collapsed once the design was clarified: **output becomes adoptable work, not an archive**, and the cribs pipeline already proves the loop end to end. Build via `/furnace-plan` (a real authoring task; plan presented for approval before any edit). Form fork **resolved → explicit-invoke skill** (not a playbook): [D-034](../docs/DECISIONS.md#d-034) makes an explicit-invoke skill cost nothing in-window, removing the playbook's only advantage. Order vs the docs-routing item is Rex's call (see Dependency).
+Resolved to **proceed** (devils-advocate 2026-06-21 — verdict Proceed with guardrails). The graveyard and unproven-loop attacks collapsed once the design was clarified: **output becomes adoptable work, not an archive**, and the cribs pipeline already proves the loop end to end. Build via `/furnace-plan` (a real authoring task; plan presented for approval before any edit). Form fork **resolved → explicit-invoke skill** (not a playbook): [D-034](../../docs/DECISIONS.md#d-034) makes an explicit-invoke skill cost nothing in-window, removing the playbook's only advantage. Order vs the docs-routing item is Rex's call (see Dependency).
 
 ## Resolved shape (2026-06-21, post-DA)
 
@@ -45,8 +45,8 @@ Resolved to **proceed** (devils-advocate 2026-06-21 — verdict Proceed with gua
 
 ## Engine gotchas (the encoded scar tissue — the real value, not the mechanics)
 
-Surgical-not-blanket depth ([D-022](../docs/DECISIONS.md#d-022) — full 6-lens pass only on skill-authoring/governance skills, single-lens whole-skill triage for the off-domain mass); adversarial-verify every integrate/implement pick; dedup against existing `C`/`CF`/`DG` cribs (cite overlap, don't re-mint); **synthesis agents must RETURN drafts, never Write product** (the gate that failed 2026-06-17 — a synth agent wrote 23 cribs straight into the doc); don't-merge-trackers (D-022); consolidate skeptically (watch rubric inflation/fragmentation); tracker FORMAT (failure-it-prevents · surface · tier · status · parked); scratch cleanup.
+Surgical-not-blanket depth ([D-022](../../docs/DECISIONS.md#d-022) — full 6-lens pass only on skill-authoring/governance skills, single-lens whole-skill triage for the off-domain mass); adversarial-verify every integrate/implement pick; dedup against existing `C`/`CF`/`DG` cribs (cite overlap, don't re-mint); **synthesis agents must RETURN drafts, never Write product** (the gate that failed 2026-06-17 — a synth agent wrote 23 cribs straight into the doc); don't-merge-trackers (D-022); consolidate skeptically (watch rubric inflation/fragmentation); tracker FORMAT (failure-it-prevents · surface · tier · status · parked); scratch cleanup.
 
 ## Why (pointers)
 
-[2026-06-17-pocock-designer-cribs-and-roadmap](../docs/retros/2026-06-17-pocock-designer-cribs-and-roadmap.md); [cribs-adoption-roadmap](../docs/cribs-adoption-roadmap.md).
+[2026-06-17-pocock-designer-cribs-and-roadmap](../../docs/retros/2026-06-17-pocock-designer-cribs-and-roadmap.md); [cribs-adoption-roadmap](../../docs/cribs-adoption-roadmap.md).
