@@ -134,13 +134,15 @@ Adopt mode writes a bundle's components into `design/reference/` and the bundle'
 
 ## Progressive disclosure in the output
 
-The output `DESIGN_SYSTEM.md` follows the same position-aware placement principle as the PRD and AGENTS.md. The load-bearing facts go at the top: the **positioning anchor** (the one line the system is remembered for), then which token file is canonical, what the no-hardcoded-values rule is, where the linter command lives. Details (full token listing, component props tables) go in the middle. "What is not in this file" goes at the bottom, pointing at context-engineering's rule for behavior constraints and prd-creator's BRAND.md for voice.
+The output `DESIGN_SYSTEM.md` follows the same position-aware placement principle as the PRD and AGENTS.md: load-bearing facts at the top (the positioning anchor, the canonical token file, the no-hardcoded-values rule, the linter command), details in the middle, "what is not in this file" at the bottom. The full placement rule and the canonical section skeleton live in [`DESIGN_SYSTEM-FORMAT.md`](DESIGN_SYSTEM-FORMAT.md) (the shape source of truth). This is a signpost, not a second copy.
 
 ## The positioning anchor and falsifiable rationale
 
-`DESIGN_SYSTEM.md` opens with a **positioning anchor**: one line naming what the system should be remembered for, captured at intake (Q1e) and checked against every token choice thereafter. **Failure it prevents:** a coherent-but-generic palette — a system that tries to be memorable for everything is memorable for nothing, so a value chosen to serve no particular intent defaults to the generic AI aesthetic. When source material is present, propose a candidate anchor extracted from it; the user always owns the final line.
+`DESIGN_SYSTEM.md` opens with a **positioning anchor** (one line naming what the system should be remembered for) and obeys a **falsifiable-rationale rule** (cite a concrete observable, never a vibe). This is invariant #2 ("every rule cites its failure mode") turned on design judgments, adopted from gstack `G-19` ([D-050](../../docs/DECISIONS.md)).
 
-Paired with it is a **falsifiable-rationale rule**: wherever the doc (or the interview) explains *why* a token holds a value, the reason must cite a concrete observation — a brand asset, a stated brand attribute, a measured contrast ratio — never a vibe. "Feels clean," "looks professional," and "modern" are banned: they are unfalsifiable and justify any value equally. This is invariant #2 ("every rule cites its failure mode") turned on design judgments — cite an observable. Adopted from gstack `G-19` ([D-050](../../docs/DECISIONS.md)).
+**Why it matters:** a system that tries to be memorable for everything is memorable for nothing, so a value chosen to serve no particular intent defaults to the generic AI aesthetic; and an unfalsifiable "feels clean" or "modern" justifies any value equally.
+
+The full failure-cited rules, and where the anchor sits in the doc, live in [`DESIGN_SYSTEM-FORMAT.md`](DESIGN_SYSTEM-FORMAT.md); this is a signpost, not a second copy. The operative echo that fires at generation stays in [`templates/DESIGN_SYSTEM.md.template`](templates/DESIGN_SYSTEM.md.template) (the `## Positioning anchor` section and the `Rationale rule` line).
 
 ## Conventions for writing token values
 

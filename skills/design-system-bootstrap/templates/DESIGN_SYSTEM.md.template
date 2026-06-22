@@ -1,3 +1,4 @@
+<!-- SHAPE CONTRACT: the operative cues below (the Hard rule, the Positioning anchor section, the Rationale rule) are the loaded rules that fire as you write this doc — keep them self-sufficient. The full failure-cited shape rules, the canonical section skeleton/order, and the placement rule live in ../DESIGN_SYSTEM-FORMAT.md, which is authoritative on any conflict. Diff the generated doc against examples/output-small/docs/DESIGN_SYSTEM.md to verify shape. -->
 <!--
 Template: docs/DESIGN_SYSTEM.md
 Purpose: Canonical reference for the token system and seed component catalog. Agent-facing:

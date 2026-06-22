@@ -68,6 +68,7 @@ The bundle stays the design source of record. In v1 the import rule enforces int
 
 ## Files in this skill
 
+- `DESIGN_SYSTEM-FORMAT.md` — the shape contract for `DESIGN_SYSTEM.md`: canonical section skeleton/order (incl. the H4 token-domain breakdown) and the failure-cited rules for the doc's opening and placement. Authoritative on conflict; diff it against `examples/output-small/docs/DESIGN_SYSTEM.md`. Reference, not boot.
 - `principles.md` — rationale and conventions. Reference, not boot.
 - `templates/` — annotated token and component templates.
 - `generator/` — `intake.md` (clustered question flow), `decisions.md` (output structure and conditional emission), `output-summary.md` (post-generation report).

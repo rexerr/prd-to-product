@@ -6,6 +6,8 @@ Notes for whoever maintains this skill. Not part of the user-facing flow.
 
 The skill must produce usable output for three project shapes. "Usable" means the token file, seed components, and DESIGN_SYSTEM.md require no structural edits before the user starts building — only cosmetic value tweaks if needed.
 
+The `DESIGN_SYSTEM.md` shape these three cases assert is defined once in [`DESIGN_SYSTEM-FORMAT.md`](DESIGN_SYSTEM-FORMAT.md) (the shape source of truth); on any conflict, that file wins. The per-shape "Expected output" notes below name what each shape adds to the core skeleton — the medium dark-mode conventions and large full-listing + accessibility-notes additions are recorded there as shape-gated sections.
+
 ### Small shape
 
 **Input:** direct text only. No brand book, no assets.
