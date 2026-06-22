@@ -1,7 +1,7 @@
 ---
 slug: mine
 status: next
-seq: 2
+seq: 1
 title: /mine — codify the source-agnostic mining process
 ---
 
