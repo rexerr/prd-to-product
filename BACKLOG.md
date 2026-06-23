@@ -10,7 +10,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 
 | Item | Lane | Seq | Next | Refs |
 |---|---|---|---|---|
-| Crib adoption (Wave 3) | next | 1 | Wave 2 done bar blocked G-18; CF-29 done on prd-creator ([D-052](docs/DECISIONS.md#d-052)) + DSB ([D-057](docs/DECISIONS.md#d-057)); remaining = propagate CF-29 to a scoped context-engineering subset, Rule-of-Two | [crib plan](docs/cribs-adoption-roadmap.md) |
+| Crib adoption (Wave 3) | next | 1 | CF-29 COMPLETE across all 3 skills (prd-creator [D-052](docs/DECISIONS.md#d-052), DSB [D-057](docs/DECISIONS.md#d-057), context-engineering closed don't-build [D-058](docs/DECISIONS.md#d-058)); Wave 2 done bar blocked G-18. Remaining Wave-3 cribs: CF-22 `/which-skill` router, CF-21 wrapper+engine, C-01/C-02 (furnace-plan), C-07 destructive-regen guard — each `/furnace-plan` | [crib plan](docs/cribs-adoption-roadmap.md) |
 | Agent-process & context-harness upgrades | next | 2 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
 | Invariant/semantic output checks | next | 3 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
 | `/mine` hardening candidates | watching | — | Park (Rule-of-Two, n=1): (a) a "what existing docs cover this domain?" discovery step before triage; (b) a sharper skill-about-design vs design-content scope test. Promote to a `skills/mine/` ticket on a 2nd real need | [retro](docs/retros/2026-06-22-mine-audit-and-dsb-text-wrap.md) |
