@@ -8,10 +8,11 @@ Read the following files in this order before responding:
 1. AGENTS.md
 2. BACKLOG.md
 3. The most recent retro in docs/retros/ — pick it by **git history, not filename sort** (multiple retros can share a date, and alphabetical order then surfaces the wrong one). Run `git log --diff-filter=A --format= --name-only -- 'docs/retros/*.md' | grep -m1 retros` and read that file; if `git status` shows an uncommitted retro newer than that, read it instead. If several retros share that same latest date, skim all of them so you don't miss the newest work.
+4. Run `git status -sb` to see how the local branch sits against its upstream (ahead / behind / in sync). **Git is the source of truth for push/commit/sync state — never the retro.**
 
 When done, give me:
 
-- One sentence on where we left off based on the retro
+- One sentence on where we left off based on the retro. **Report push/sync status only from the step-4 `git` check — never relay a retro's "pushed" / "not pushed" / "awaiting-go" line; those freeze when the retro is written and go stale the instant a push lands.**
 - The next item from BACKLOG.md (top of In progress, or top of Backlog if In progress is empty)
 
 Do not write any code. Do not propose solutions yet. Just orient us.

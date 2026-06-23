@@ -14,6 +14,7 @@ Short end-of-session summaries written by the agent before closing out. Name fil
 
 - **Timestamp the H1 and number the session of the day** (`date "+%Y-%m-%d %H:%M %Z"`). Filenames are date-only, but several sessions can run in one day; without intra-day ordering, an earlier same-day retro's "not done this session" gets misread as "not done at all" after a later session already did it.
 - **Write the retro before the code commit and bundle both into one push** — not a trailing retro-only commit (that double-push is the waste the retro exists to prevent).
+- **Never record push / commit / sync state in a retro.** The retro is written before the commit/push (above), so any "pushed" / "not pushed" / "awaiting go" line is a prediction that goes stale the instant the push lands — and `git` is already the source of truth. A genuinely pending push is a *handoff* line, not a retro status claim. **Failure it prevents:** a frozen "not pushed" gets relayed by the next session's `/session-start` as if current (which is why `session-start` reads sync state from `git`, not the retro — belt and suspenders).
 - **Only for non-trivial sessions** — skip one-line tweaks to avoid retro-spam.
 - **Reference, don't restate.** When a fact already lives in a durable artifact (`DECISIONS.md`, `BACKLOG.md`, a PRD, a plan, a commit/diff), link it by path — never paste its content into the retro. Two copies drift, and the retro then silently contradicts its source. Redact any secret/PII before writing.
 
