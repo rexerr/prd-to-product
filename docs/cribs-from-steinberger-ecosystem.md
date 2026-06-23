@@ -71,10 +71,14 @@ Direction set while mining is still in progress. Each **graduates to a formal `D
    "executable enforcement over prose" spirit (C-23) **without** shipping binaries. D-001 is *not*
    unmade.
 
-3. **Build the `solutions/` scar-tissue library.** A failure→rule card collection — the biggest
-   unbuilt thing, and a deliberate forward investment. Structure and scope TBD in execution planning;
-   model on the printing-press `docs/solutions/` shape (cards sorted by failure type, each citing the
-   specific run that earned it — see C-14).
+3. **~~Build the `solutions/` scar-tissue library.~~ CLOSED don't-build ([D-063](DECISIONS.md#d-063),
+   2026-06-23).** Was billed the biggest unbuilt thing and a deliberate forward investment. Closed
+   after the 2026-06-09 [self-healing-loop council](council/council-transcript-2026-06-09-self-healing-loop.md)
+   (5/5 build-nothing on the structurally identical capture/tag/count system) + an empirical scan of all
+   56 retro failure-sections: the log is mostly healthy and a *one-time* scan found everything a standing
+   library would, so the lever is **periodic aggregation, not a card library**. CF-05 parks with it.
+   Revisit only as a scaffold-emit for high-error project types (rides AB-01's [D-009](DECISIONS.md#d-009)
+   gate), or if a 2nd scan finds a hidden pattern (→ mint a recurring scan ritual).
 
 ---
 
@@ -196,7 +200,7 @@ his generator and *none* on his shipped app), so fit-to-product is the rule, not
 | Control scope | Three-bucket (in/deferred/out) + route late finds to a friction log | Hard numeric caps (≤3 files / ≤50 lines) | **Both valid, complementary.** Theirs routes creep; ours caps size. |
 | Collaboration hygiene | Full PR discipline — templates, review bots, mergify | Direct-on-main (D-002) | **Strongly justified. Keep.** They have contributors + CI; we're one person. Correct divergence. |
 | Regression safety | Golden tests + verify harness + CI | Hand-written example output trees, no runner | **Partially justified.** No CI is fine solo; but we under-use golden "should-NOT-change" fixtures (C-08) and contract tests (C-23). |
-| Close the learning loop | Retros → generator changes; a `solutions/` scar-tissue library | Retros that stop at "next session" | **No justification. Adopt (C-09).** We also have *nothing* like their solutions/ failure-card library — the biggest unbuilt thing. |
+| Close the learning loop | Retros → generator changes; a `solutions/` scar-tissue library | Retros → durable work units (C-09 adopted, D-024/D-039); periodic aggregate scan over the retro failure-log | **C-09 adopted.** The `solutions/` library was **closed don't-build** ([D-063](DECISIONS.md#d-063)) — at this repo's volume a one-time scan beats a standing library; the loop closes via periodic aggregation, not a card collection. |
 | Source-of-truth file | **`AGENTS.md` canonical**, Claude/Codex/Cursor symlink to it (tool-neutral) | **CLAUDE.md canonical**, AGENTS.md a thin pointer | **DECIDED 2026-06-17 — flip to AGENTS.md-canonical** (Rex; reverts his original intent). **Generator half DONE 2026-06-20 (→ [D-047](DECISIONS.md));** this-repo half deferred. See Decisions & leanings. |
 
 **The one not to unmake:** D-001 (markdown-only) is the decision most tempting to drop under their
