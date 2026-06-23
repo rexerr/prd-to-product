@@ -91,6 +91,10 @@ Failing reproduction first, then the fix, then the same reproduction passing. Th
 
 End every non-trivial session with `docs/retros/YYYY-MM-DD-topic.md`; read the most recent retro at session start. Each retro tags the dominant failure (bad substitution / scope creep / lost context / goal drift / none — template: `docs/retros/README.md`). **Failure it prevents:** accreting guardrails against failures that never occur — the tag log answers "adopt this?" with evidence.
 
+### Port self-improvements back to the skill
+
+This repo's product *is* the skills it ships. When you improve this repo's own process or config (root `CLAUDE.md`, `.claude/commands/`, `docs/retros/README.md`, session discipline), ask whether the improvement is generic enough to belong in the `context-engineering` scaffold templates (+ the `output-small` fixture) — if so, port it the same session or log a backlog row. **Failure it prevents:** the workspace's own process compounds while the shipped skill stagnates, so scaffolded projects silently inherit an older, weaker discipline (the push-state belt rule lived here unported until [D-057](docs/DECISIONS.md)'s session, three failures deep). **Guardrail:** do not port this-repo-specific machinery (cribs, furnace-trial, `DECISIONS_ACTIVE` mirror, skill-build vocabulary) — the [D-013](docs/DECISIONS.md) / [D-019](docs/DECISIONS.md) don't-import-internal-vocabulary line still governs the cut.
+
 ---
 
 ## Code rules
