@@ -1,5 +1,7 @@
 # Brief — scaffold-port candidates + belt/suspenders scan
 
+> **Status: executed 2026-06-23.** Both known gaps ported; belt+suspenders scan run over the process layer *and* the shipped skills; two evidenced suspenders adopted (prd-creator leak-grep, CE product-code allowlist), four deferred (n<2). Board row retired. Kept as the record of the scan method + the deferred candidates. See the 2026-06-23 retro.
+
 **Read this when:** running the focused session that ports known process improvements into the `context-engineering` scaffold and scans for belt+suspenders gaps. Spawned 2026-06-23 from the CF-29/push-state session ([retro](../retros/2026-06-22-cf29-dsb-format.md)); governs work under the new CLAUDE.md rule "Port self-improvements back to the skill."
 
 This repo's product *is* the skills it ships. Improvements to this repo's own process/config are often portable to the scaffold templates (`skills/context-engineering/templates/` + the `output-small` fixture) so new projects inherit them. This brief lists what's already known un-ported, plus a scan prompt to find more.
