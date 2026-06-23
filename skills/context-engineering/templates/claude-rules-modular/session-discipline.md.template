@@ -48,10 +48,10 @@ Default to finishing the work, not asking permission to finish it — but **the 
 
 - **Non-visual work** (logic, docs, tests, config) within scope: run the loop end to end — edit → `<!-- PARAMETERIZE: check_cmd -->` → retro (if warranted, before the commit) → commit → push — then report with the commit URL.
 <!-- OPTIONAL: autonomy_visual_gate — include if uses_visual_confirmation_gate == true -->
-- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** UI/visual changes (visual confirmation); product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off.
+- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** UI/visual changes (visual confirmation); product / architecture / scope decisions; self-modification of agent config (`.claude/` commands, settings, or this project's startup rules); anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off. **Why the self-config item:** an agent that quietly edits its own startup behavior or guardrails removes the very check meant to catch the change, so the edit escapes review.
 <!-- /OPTIONAL: autonomy_visual_gate -->
 <!-- OPTIONAL: autonomy_no_visual_gate — include if uses_visual_confirmation_gate == false -->
-- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** product / architecture / scope decisions; anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off.
+- **Always gated on <!-- PARAMETERIZE: visual_confirmer_name --> — never self-clear:** product / architecture / scope decisions; self-modification of agent config (`.claude/` commands, settings, or this project's startup rules); anything irreversible or outward-facing (public release, deleting their work, force-push). Surface or hand off. **Why the self-config item:** an agent that quietly edits its own startup behavior or guardrails removes the very check meant to catch the change, so the edit escapes review.
 <!-- /OPTIONAL: autonomy_no_visual_gate -->
 - **Big forks** (new phase, architecture change): propose, get approval, then execute.
 
@@ -120,6 +120,7 @@ Built-in commands that keep the conversation prefix clean. Source: Thariq Shihip
 - **Prefer `/rewind` to re-prompting when an approach fails.** Re-prompting "that didn't work, try X" leaves the failed attempt in the prefix and accumulates dead-end context. `/rewind` reverts both conversation and working tree to a clean state — use it instead of trying to talk the model out of its last bad turn.
 - **Start a new session for a new task.** Carrying over an unrelated task's context burns tokens and risks the new task inheriting stale assumptions. The orientation cost is paid by reading the most recent retro at session start; that is cheaper than dragging the prior thread along.
 - **`/compact` proactively, with a description, during long debug sessions before autocompact fires.** Autocompact picks the moment for you — often when the model is at peak context-rot and the summary captures the wrong things. A user-triggered `/compact "what we're investigating and what we've ruled out"` produces a much better summary than the automatic one.
+- **Delegate to a subagent when you need the conclusion, not the artifact.** It keeps verbose intermediates out of the prefix, and a fresh subagent verifying work is not the model grading its own output. **For that independence to hold, withhold your reasoning:** hand the verifier only the artifact + the acceptance criteria, never your own conclusion or the path you took — a verifier shown the author's framing anchors on it and rubber-stamps. When no subagent is available, say so explicitly (`Self-verified — independent sub-task unavailable`) rather than passing anchored self-review off as independent.
 
 <!-- OPTIONAL: commit_gate_section — include if uses_visual_confirmation_gate == true -->
 ## Commit gate — mandatory for all UI changes
