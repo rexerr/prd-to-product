@@ -43,6 +43,5 @@ Propagated the CF-29 per-artifact FORMAT-file pattern (piloted on prd-creator, [
 
 ## Next session
 
-- Push gated on Rex (not yet pushed; two commits staged locally — product + the ledger sweep).
 - Wave-3 CF-29 remaining: the scoped context-engineering subset (Rule-of-Two now met by prd-creator + DSB) — its own `/furnace-plan` pass, council-gated if it reopens the shape-vs-content fork.
 - If the large DSB shape is ever exercised: the template/NOTES accessibility-notes gap becomes a real ticket.
