@@ -35,6 +35,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 | [/decision command](tickets/decision-command.md) | watching | — | Build only if by-hand decision-logging misfires twice (Rule of Two) | [D-021](docs/DECISIONS.md#d-021) |
 | Concurrency / parallel-exploration for UI | watching | — | PINNED — not building; clone-or-branch first. **Read the brief before re-proposing** | [brief](docs/concurrency-mode-brief.md) |
 | One-board model → context-engineering scaffold | watching | — | After dogfooding here, port the proven board via a D-009 council | [D-054](docs/DECISIONS.md#d-054) |
+| Scaffold-port candidates + belt/suspenders scan | backlog | — | Focused session: port the 2 known generic gaps (self-mod-config gate, subagent-blindness verifier) into the scaffold, then run the belt+suspenders scan | [brief](docs/briefs/scaffold-port-candidates-brief.md) |
 | [OPTIONAL-marker gating in scaffolded verification rule](tickets/optional-marker-gating.md) | backlog | — | Settle block-vs-line gating, then move universal sentence + logic bullet outside the gate | [D-041](docs/DECISIONS.md#d-041) |
 | [/session-start rewrite (Appendix-A)](tickets/session-start-rewrite.md) | backlog | — | Only if `/session-start` bloat bites | [brief](docs/agent-process-brief.md) |
 | [Modular-shape example output tree](tickets/modular-example-output-tree.md) | backlog | — | Build as structural assertions (not byte-diff) when modular work picks up | [council](docs/council/council-report-2026-06-08.html) |
