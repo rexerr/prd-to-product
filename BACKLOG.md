@@ -10,7 +10,7 @@ One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the ka
 
 | Item | Lane | Seq | Next | Refs |
 |---|---|---|---|---|
-| Crib adoption (Wave 3) | next | 1 | CF-29 COMPLETE (all 3 skills, [D-058](docs/DECISIONS.md#d-058)); CF-22 `/which-skill` router DEFERRED ([D-059](docs/DECISIONS.md#d-059), watching row below); Wave 2 done bar blocked G-18. Remaining Wave-3 cribs: CF-21 wrapper+engine, C-01/C-02 (furnace-plan), C-07 destructive-regen guard — each `/furnace-plan` | [crib plan](docs/cribs-adoption-roadmap.md) |
+| Crib adoption (Wave 3) | next | 1 | Remaining Wave-3 cribs: CF-21 wrapper+engine, C-01/C-02 (furnace-plan) — each `/furnace-plan`. (Done this wave: CF-29 [D-058], CF-22 deferred [D-059], C-07 closed [D-060] — see roadmap marker.) Wave-2 done bar blocked G-18 | [crib plan](docs/cribs-adoption-roadmap.md) |
 | Agent-process & context-harness upgrades | next | 2 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
 | Invariant/semantic output checks | next | 3 | OPEN: no-jargon-leak + provenance-grounded checks (write-guard done) | [council](docs/council/council-report-2026-06-08.html) |
 | CF-22 family router (`/which-skill`) | watching | — | Build the router (design ready in the [furnace plan](.claude/plans/radiant-soaring-yao.md)) when a skill-selection misfire is **logged** in a retro (wrong skill picked mid-run, chain hand-rolled, or `/mine`/`/furnace-plan` forgotten) **or** the family opens beyond the single author. It's [D-014](docs/DECISIONS.md#d-014)'s gated fix-candidate B — don't build speculatively | [D-059](docs/DECISIONS.md#d-059) |
