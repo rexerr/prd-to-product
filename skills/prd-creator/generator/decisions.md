@@ -98,6 +98,21 @@ Before writing `PRD.md`/`BRAND.md`, scan the about-to-be-written content for sen
 
 **Flag, do not auto-redact.** When the scan hits, surface each one to the user at the pre-write confirmation and let them decide to keep, reword, or cut it — never silently delete the user's content (silent edits violate the same no-silent-absorption ethos as cluster 0). Record the resolution for the output summary (see `output-summary.md`). This is a prose checklist only; do not build regex matchers or an audit sink. **Failure it prevents:** a shared PRD leaks a person tied to "underperforming," a customer tied to a negative event, or an unannounced launch date.
 
+## Scaffolding-leak scan before finalizing
+
+Before writing `PRD.md`/`BRAND.md`, run a **mechanical category grep** over the about-to-be-written content for internal-scaffolding vocabulary that must never reach the deliverable. Unlike the semantic-leak scan above (which is a judgment call, hence prose-only), this one *is* deterministic — so run the grep and read its output, do not eyeball:
+
+- `grep -niE '[Cc]luster [0-9]'` over the content → expect **zero** matches.
+- `grep -niE 'D-0[0-9]'` → matches only inside the cluster-5 decisions read-back and the "Decisions already made" section, where confirmed IDs are part of the deliverable; **never** as mid-capture narration ("D-001 candidate", "Captured as D-002").
+
+Rules:
+
+- Use **category patterns, never literal strings.** A literal test (`(from cluster N)`) re-encodes the blind spot that let "Captured as D-002" slip past an earlier hand-enumeration.
+- Any hit outside the sanctioned blocks → surface it at the pre-write confirmation and fix before writing; do not ship the file with the leak in it.
+- Also confirm `output-summary.md` no longer prescribes `(from cluster N)` tags — spec and example must agree.
+
+**Failure it prevents:** internal machinery (`cluster N`, draft `D-NNN` narration, `(from cluster N)` provenance tags) reaching user-facing copy or shipped fixtures — observed shipped into *both* the spec (`output-summary.md` rule 43) and the example transcripts, requiring a scrub (2026-06-09 intake fix; D-010). The belt rules in `SKILL.md` / `principles.md` prevent it being *written*; this grep is the independent backstop that catches it if they are forgotten on any one run.
+
 ## What never emits
 
 These never appear in the output, even if mentioned during intake:
