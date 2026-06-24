@@ -86,12 +86,28 @@ After the plan, verification ledger, and any sign-off items are written, run the
 
 **The plan is already on disk.** You authored it in the plan-mode plan file (its path is in the plan-mode system message; writing it is the one edit plan mode permits). Capture that path — never guess it. That file, carrying the plan + `## Verification ledger`, is what the reviewer reads.
 
-**Spawn one read-only reviewer subagent** (`Explore` type — it must not be able to edit). Its prompt contains ONLY:
-1. the plan-file path,
-2. the task's acceptance criteria — what the plan must accomplish, in plain language,
-3. this instruction: *resolve this skill's own real directory (it is a symlink) and read the reviewer rubric at `<real-dir>/../plan-review/SKILL.md`; apply it to the plan at the path above; return findings as Must-fix / Should-consider / Could-not-verify; edit nothing.*
+**Spawn one read-only reviewer subagent** — `Explore` type (it must not be able to edit), **pinned to the Opus model tier**: set the subagent's `model` to the tier alias `opus` (use `sonnet` only if Opus is unavailable). Write the tier *name*, never a version id, so the pin never goes stale. An unpinned reviewer can default to a weak tier, and a weak reviewer handed any framing can only rubber-stamp.
 
-Pass nothing else. Do not paste your planning conversation or your reasoning — a reviewer shown the author's framing anchors on it and rubber-stamps (G-11 engineered blindness; [D-035](../../docs/DECISIONS.md)). A fresh subagent already inherits none of your context; the discipline is to keep the prompt that way.
+**Fill this prompt template verbatim — the only things you supply are the two bracketed slots. Add nothing else.**
+
+```
+Plan file: {plan-path}
+
+Acceptance criteria — what this plan must accomplish, in plain language:
+{acceptance-criteria}
+
+Resolve this skill's own real directory (it is a symlink) and read the reviewer
+rubric at <real-dir>/../plan-review/SKILL.md. Apply that rubric to the plan at the
+path above. Return findings as Must-fix / Should-consider / Could-not-verify. Edit nothing.
+```
+
+The `{acceptance-criteria}` slot is **task goals only** — what the plan must achieve, never what to confirm or which line to look at. The moment it names a claim to check, you have handed the reviewer an answer key and the review becomes a rubber-stamp (G-11 engineered blindness; [D-035](../../docs/DECISIONS.md)). Both leak shapes are banned:
+- *line-reference* — write "the scan runs at the pre-write gate" (goal), never "confirm the scan at decisions.md:101" (answer key);
+- *named-finding* — write "the generated output is free of internal intake labels" (goal), never "confirm the leaked `(Q7c)` label was removed" (names a specific finding to check).
+
+**Pass nothing else** — no planning conversation, no reasoning, no findings of your own. A fresh subagent already inherits none of your context; the template keeps it that way. The template keeps the handoff clean but does **not** mechanically enforce it — there is no runner. If a tainted handoff recurs despite this, the fix is a model-pin guard hook, not more prose ([D-065](../../docs/DECISIONS.md)).
+
+**Before spawning, self-check:** prompt = template verbatim, no findings or reasoning added, spawn pinned to the Opus tier. **After it returns, confirm the reviewer actually ran on the pinned tier; if this surface can't honor a per-spawn `model` override, say so explicitly (`reviewer ran on <tier> — pin not honored here`) rather than letting it silently fall back to a weak default.**
 
 **When the reviewer returns:**
 1. Revise the plan for every Must-fix and each Should-consider you accept.
