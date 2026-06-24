@@ -122,6 +122,7 @@ When a decision is **both costly to get wrong and hard to reverse** — an archi
 Never claim success based on "the code looks correct."
 
 - **Wired-up behavior must be fired, not inferred.** If a change installs executable behavior — a hook, a slash command, a script, a CI gate — the closing verification routes *through* it once: trigger what a hook should block, run the command. A file looking correct is not the behavior firing (an unregistered hook, a script without `chmod +x` both look fine on disk).
+- **A check must match the scope of the claim it grounds.** Evidence that *ran* is not automatically evidence that *establishes the claim*: a claim about every call site needs every call site checked (breadth), a specific value needs that value observed not the file skimmed (granularity), a downstream effect needs the consumers exercised not just the edit site (forward-reach) — a green test over one of five call sites still ships the four-site claim untested. Widen the check or narrow the claim.
 
 <!-- OPTIONAL: verification_ui_bullet — include if uses_visual_confirmation_gate == true -->
 - UI changes: run `<!-- PARAMETERIZE: dev_cmd -->`, describe what to look for and on which page, wait for <!-- PARAMETERIZE: visual_confirmer_name -->'s visual confirmation.
