@@ -105,6 +105,7 @@ This repo's product *is* the skills it ships. When you improve this repo's own p
 - Work directly on `main` in `/Users/rexc/Sites/prd-to-product`; no branches.
 - Push only when the task explicitly says to; after every push, paste the commit URL (`https://github.com/rexerr/prd-to-product/commit/<sha>`).
 - Never preemptively pass `-c` config overrides to `git` without asking.
+- **Stage explicit named paths — never `git add -A` / `git add .` / `git commit -a`.** **Failure it prevents:** when another session or process shares the working tree, a broad add sweeps changes you didn't make — or your own half-finished work — into the wrong commit (the 2026-06-24 cross-session sweep that absorbed an uncommitted decision-log hunk into an unrelated commit, [D-066](docs/DECISIONS.md)). Belt only — it binds sessions that start *after* it lands, not one already running; for genuinely concurrent sessions, prefer a separate `git worktree` so the trees can't collide at all.
 - Do not silently change SKILL.md trigger phrases or the markdown-only invariant. Document material changes in `docs/DECISIONS.md`; mirror binding ones into `docs/DECISIONS_ACTIVE.md`.
 
 ---
