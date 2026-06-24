@@ -18,4 +18,4 @@ The furnace-plan blind-review step is **structurally tainted by author improvisa
 
 **Open question:** can the furnace add a self-audit that the blind review was run per spec (model pinned, prompt unmodified)? Probably not mechanically (no runner) — but a one-line author checklist item ("reviewer prompt = template verbatim, model pinned") in the skill might help. Decide during the fix.
 
-Reasoning + root cause: [retro 2026-06-24](../docs/retros/2026-06-24-no-jargon-leak-scan.md) ("Failure this session"); the [D-043](../docs/DECISIONS.md#d-043) blind-reviewer design; [D-035](../docs/DECISIONS.md#d-035) engineered-blindness rationale.
+Reasoning + root cause: [retro 2026-06-24](../../docs/retros/2026-06-24-no-jargon-leak-scan.md) ("Failure this session"); the [D-043](../../docs/DECISIONS.md#d-043) blind-reviewer design; [D-035](../../docs/DECISIONS.md#d-035) engineered-blindness rationale. **Shipped 2026-06-24 (2nd session) as [D-065](../../docs/DECISIONS.md#d-065)** — archived.
