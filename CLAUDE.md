@@ -22,6 +22,8 @@ The full set is at the bottom in "Before you respond." Read this block first if 
 
 None — no package manifest, server, linter, or test runner. Regression is the hand-written `skills/context-engineering/examples/` output trees plus live-firing emitted hooks. No `.env*` in any form should be committed.
 
+One optional dev check (not a gate): `python3 scripts/check-live-links.py` reports broken internal links in **live** always-loaded docs (skips dated retros/council/archive as point-in-time records). Run it before any commit that renames or moves files — that's the only moment live-doc link rot is created. On-demand by design, not a cron; promote to a pre-commit hook only if rot recurs.
+
 ---
 
 ## Architecture rules (non-negotiable)
