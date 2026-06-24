@@ -560,6 +560,22 @@ The skill's scope is context files: rules, docs, slash commands, the AGENTS.md/C
 
 This rule is non-negotiable. The validation run on `the-council` and on the `epost-assessment` retrospective both surfaced violations where the agent improvised product code from source material. Any deviation requires user-explicit instruction ("yes, write the tokens file") and even then should be a separate session, not folded into context scaffolding.
 
+## Scaffolding-leak scan before finalizing
+
+Before writing the scaffolded files, run a **mechanical category grep** over the about-to-be-written content for internal interview/generator machinery that must never reach a user's repo. This is deterministic — run the grep and read its output, do not eyeball. It is the independent backstop to the "Internal scaffolding stays internal" prose rule in `principles.md`: the prose prevents the leak being *written*; this grep catches it if the rule is forgotten on any one run. Mirrors the same scan in `prd-creator` ([generator/decisions.md](../../prd-creator/generator/decisions.md)).
+
+**Use category patterns, never a literal word-list** — a literal test re-encodes the blind spot it is meant to catch:
+
+- `grep -niE '[Cc]luster [0-9]'` → expect **zero** (interview-stage machinery).
+- `grep -niE 'Q[0-9][a-z]'` → expect **zero** (state-map question labels, e.g. `Q0a`).
+- `grep -niE 'state.?map'` → expect **zero** (the generator-state map is internal).
+- `grep -niE '<!-- *(PARAMETERIZE|OPTIONAL)|PARAMETERIZE:'` → expect **zero** unsubstituted template markers. Match the **comment-marker form**, never the bare word — "optional" is ordinary English and must not flag.
+- `grep -niE 'D-0[0-9]'` → scope **by content region**, not a blanket zero. `D-NNN` is sanctioned deliverable content **inside the project's own decisions-log file** (its `Numbered D-001, D-002, etc.` guidance and, in a mature project, real `### D-001` entries). It is a leak **only outside that file**: a *this-repo* decision ID (`D-010`, `D-063`…) cited as a failure mode in a rule/`AGENTS.md`, or any `D-NNN` narration in prose. (Mirrors prd-creator's "where confirmed IDs are part of the deliverable; never as narration.")
+
+Any hit outside its sanctioned region → fix before writing; do not ship the file with the leak in it.
+
+**Failure it prevents:** internal machinery (`cluster N`, `Q0a` labels, `state map`, unsubstituted `PARAMETERIZE`/`OPTIONAL` markers, or a this-repo `D-NNN` cited as a failure mode) reaching a user's scaffolded files — the [D-010](../../../docs/DECISIONS.md) leak class, mechanically backstopped.
+
 ## After writing
 
 After all files are written, hand off to `output-summary.md` for the post-generation report.

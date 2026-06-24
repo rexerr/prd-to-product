@@ -297,7 +297,7 @@ If dark mode is on, ask for the dark semantic mappings (cluster 7e).
 - The styling-path branch decision (vanilla CSS Modules or Tailwind path).
 - Any flagged routed-elsewhere material from cluster 0 (voice, copy, product strategy).
 
-8c. **Confirm before writing.** Wait for explicit user confirmation. Phrases that count: "yes", "go", "proceed", "looks good." Anything that asks a clarifying question or proposes a change resets to the relevant cluster.
+8c. **Confirm before writing.** Wait for explicit user confirmation. Phrases that count: "yes", "go", "proceed", "looks good." Anything that asks a clarifying question or proposes a change resets to the relevant cluster. Before writing, run the **Scaffolding-leak scan before finalizing** (see `decisions.md`) over the about-to-be-written content; surface any hit here and fix it before writing.
 
 ## Dry-run mode
 

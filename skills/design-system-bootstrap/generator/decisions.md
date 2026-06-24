@@ -229,6 +229,21 @@ This skill writes only files at these paths:
 
 **Never** write files anywhere else — **except the adopt-mode paths above, which are the one sanctioned exception and only by copy** (adopt copies a bundle's existing design into `design/reference/`; it still never *authors* feature components, utilities, or page layout). If source material implies content elsewhere (a brand book describing voice, a Figma export with feature components to build), surface in the output summary.
 
+## Scaffolding-leak scan before finalizing
+
+Before writing the files, run a **mechanical category grep** over the about-to-be-written content (`DESIGN_SYSTEM.md`, the emitted rule block, and any CSS/TS comments) for internal interview/generator machinery that must never reach a user's repo. Deterministic — run the grep and read its output, do not eyeball. It is the independent backstop to the "Internal scaffolding stays internal" prose rule in `principles.md`, and mirrors the same scan in `prd-creator` ([generator/decisions.md](../../prd-creator/generator/decisions.md)).
+
+**Use category patterns, never a literal word-list:**
+
+- `grep -niE '[Cc]luster [0-9]'` → expect **zero** (interview-stage machinery).
+- `grep -niE 'Q[0-9][a-z]'` → expect **zero** (state-map question labels). This was a real leak: a `(Q7c)` label shipped in a `globals.css` comment until 2026-06-24 (template fixed).
+- `grep -niE 'state.?map'` → expect **zero**.
+- `grep -niE '<!-- *(PARAMETERIZE|OPTIONAL)|PARAMETERIZE:'` → expect **zero** unsubstituted template markers. Match the **comment-marker form**, never the bare word — "optional" is ordinary English ("optional layout slots" in `DESIGN_SYSTEM.md` is legitimate) and must not flag.
+
+Any hit → fix before writing; do not ship the file with the leak in it.
+
+**Failure it prevents:** internal machinery (`cluster N`, `Q7c`-style labels, `state map`, unsubstituted markers) reaching a user's design files — the [D-010](../../../docs/DECISIONS.md) leak class, mechanically backstopped. (DSB emits no decisions-log file, so unlike `context-engineering` there is no `D-0[0-9]` sanctioned-content case here.)
+
 ## After writing
 
 After all files are written, hand off to `output-summary.md` for the post-generation report.
