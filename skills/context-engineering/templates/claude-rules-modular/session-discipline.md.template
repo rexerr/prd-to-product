@@ -38,6 +38,14 @@ Before adding code in a file, understand what's already there:
 
 If you do not understand why existing code is structured the way it is, ask before adding to it. "Looks orthogonal to me" is the most dangerous phrase in this codebase. The failure mode this prevents: adding a function next to an existing identical function nobody read, with import-order silently deciding which one wins.
 
+## Reload a co-edited file before writing it
+
+Before writing a file another agent or process may have changed since you last read it — a doc open in another tool, anything a background agent touches — reload it from disk first and write from that, never from a stale in-context buffer. Within a single session the Edit tool already enforces this (it rejects a write to a file changed since your read); this rule carries the discipline to the cross-agent case the harness can't see. **Failure it prevents:** clobbering a collaborator's or background agent's edit by overwriting from a copy that predates it.
+
+## One authoring surface for product changes
+
+Route product edits — code, docs, decisions — through one designated agent workflow with the scope gate above. Other agent surfaces sharing the repo (a second AI tool, a background agent) propose changes and wait, rather than authoring out of band. **Failure it prevents:** two tools with different discipline rules editing product in parallel, silently diverging from the scope-gated workflow.
+
 ## Scope check before coding
 
 Before writing any code, state the plan: which files, what changes and why, estimated scope (small / medium / large). If the plan touches more than 2 files or scope is uncertain, wait for confirmation before beginning.

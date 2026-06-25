@@ -90,7 +90,15 @@ These rules prevent scope creep, hallucinated success, and lost context between 
 
 ### Read before you write
 
-Before adding code in a file, read the file's exports, the immediate caller(s), and any obvious shared utilities. If the file is part of a pattern (route handlers, hooks, model adapters), skim a sibling that already works. If you do not understand why existing code is structured the way it is, ask before adding to it. "Looks orthogonal to me" is the most dangerous phrase in this codebase.
+Before adding code in a file, read the file's exports, the immediate caller(s), and any obvious shared utilities. If the file is part of a pattern (route handlers, hooks, model adapters), skim a sibling that already works. If you do not understand why existing code is structured the way it is, ask before adding to it. "Looks orthogonal to me" is the most dangerous phrase in this codebase. The failure mode this prevents: adding a function next to an existing identical function nobody read, with import-order silently deciding which one wins.
+
+### Reload a co-edited file before writing it
+
+Before writing a file another agent or process may have changed since you last read it — a doc open in another tool, anything a background agent touches — reload it from disk first and write from that, never from a stale in-context buffer. Within a single session the Edit tool already enforces this; this rule carries it to the cross-agent case the harness can't see. **Failure it prevents:** clobbering a collaborator's or background agent's edit by overwriting from a copy that predates it.
+
+### One authoring surface for product changes
+
+Route product edits — code, docs, decisions — through one designated agent workflow with the scope gate above. Other agent surfaces sharing the repo (a second AI tool, a background agent) propose changes and wait, rather than authoring out of band. **Failure it prevents:** two tools with different discipline rules editing product in parallel, silently diverging from the scope-gated workflow.
 
 ### Scope check before coding
 
@@ -178,6 +186,7 @@ Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-t
 <!-- OPTIONAL: push_protocol_no_deploy — include if deploy_target == "none". No production deploy to wait for. -->
 - Do not push to GitHub unless the task explicitly says to commit and push. After every push, paste the commit URL (`<!-- PARAMETERIZE: github_repo_url -->/commit/<sha>`).
 - Never preemptively pass `-c` config overrides to `git` without asking first.
+- **Stage explicit named paths — never `git add -A` / `git add .` / `git commit -a`.** A broad add sweeps in untracked secrets and, when another session or process shares the checkout, changes you didn't make — landing them in the wrong commit. For concurrent sessions, prefer a separate `git worktree` where this project allows them.
 <!-- OPTIONAL: stack_constraint_line -->
 - Do not silently change <!-- PARAMETERIZE: critical_invariants -->. Document product-impacting changes in `docs/DECISIONS.md`.
 

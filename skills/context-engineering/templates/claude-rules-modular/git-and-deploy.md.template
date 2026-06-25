@@ -22,7 +22,7 @@ Always-on agent rule. Governs commits, branches, pushes, and deployments. These 
 - Do not push to GitHub unless the task explicitly says to commit and push. "Commit" alone means commit locally and stop.
 - Never preemptively pass a `-c` git config override (e.g. `commit.gpgsign=false`, `core.editor=`) without asking first.
 - Never hardcode secrets. Credentials follow this project's env pattern: `<!-- PARAMETERIZE: env_pattern -->`.
-- Stage files explicitly. Avoid `git add -A` or `git add .` when the working tree contains unrelated changes.
+- **Stage explicit named paths — never `git add -A` / `git add .` / `git commit -a`.** See Gotchas for why.
 
 ## Push protocol
 
@@ -56,7 +56,7 @@ Push protocol: production confirmation is a human-in-the-loop check, not an auto
 Experience-derived failure modes. Each is a real failure that has happened more than once.
 
 - **The deploy provider's "Ready" is not "live."** CDN propagation and browser cache delay visible-on-production by a minute or two. Wait for human confirmation, not the platform's status.
-- **`git add -A` sweeps in `.env.local`.** When the working tree has unrelated changes, `-A` and `.` will stage secrets, large binaries, and untracked debug files. Stage explicit paths.
+- **A broad `git add -A` / `git add .` / `git commit -a` stages more than you mean to.** When the working tree has unrelated changes it sweeps in untracked secrets (`.env.local`), large binaries, and debug files — and, when another session or process shares the checkout, the changes *they* made, landing them in the wrong commit. Stage explicit named paths. For genuinely concurrent sessions, prefer a separate `git worktree` (where this project allows them — see Branches and worktrees) so the trees can't collide at all.
 <!-- OPTIONAL: worktree_gotcha — include if uses_visual_confirmation_gate == true -->
 - **A worktree feels harmless and breaks visual confirmation silently.** The dev server points at the main checkout. The worktree has its own working copy. Changes you "see" in the worktree are not what `npm run dev` is rendering. (Outside this workflow, worktrees are fine.)
 - **Pushing without being asked feels efficient and corrupts the workflow.** "Commit" alone means commit locally and stop. The push protocol exists because production confirmation is human-in-the-loop, and a surprise push skips the loop.

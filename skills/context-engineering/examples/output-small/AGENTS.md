@@ -44,7 +44,9 @@ The actual commands a session needs. Use these; do not invent alternatives.
 ## Session discipline
 
 - **Hard limits:** bug fix ≤ 3 files / ≤ 50 lines, feature ≤ 300 lines, file ≤ 500 lines. If a task would exceed, stop and state full scope before writing code.
-- **Read before you write.** Read the file's exports, immediate callers, and obvious shared utilities before adding code. "Looks orthogonal to me" is the most dangerous phrase in this codebase.
+- **Read before you write.** Read the file's exports, immediate callers, and obvious shared utilities before adding code. "Looks orthogonal to me" is the most dangerous phrase in this codebase — it precedes adding a function next to an existing identical one nobody read, with import-order silently deciding which one wins.
+- **Reload a co-edited file before writing it.** If another agent or process may have changed a file since you last read it, reload from disk first — never write from a stale in-context buffer. Prevents clobbering a collaborator's or background agent's edit.
+- **One authoring surface for product changes.** Route product edits (code, docs, decisions) through one designated agent workflow with the scope gate. Other agent surfaces sharing the repo propose and wait, rather than authoring out of band. Prevents two tools with different discipline rules diverging.
 - **Scope check before coding.** State files, intended changes, scope estimate. If > 2 files or scope uncertain, wait for confirmation.
 - **Autonomy — run to done, then report.** The scope check is the outer gate: within the scope limits, run the whole loop (edit → `npm run check` → retro if warranted → commit → push) and report — don't stop to ask "want me to commit?"; over the limits, stop and confirm first. Always gated on Jordan, never self-cleared: UI/visual changes, product/architecture/scope decisions, self-modification of agent config (`.claude/` commands, settings, this project's startup rules — quietly loosening your own guardrails removes the check meant to catch the change), anything irreversible or outward-facing.
 - **Checkpoint between phases of multi-step work.** Pause between phases and restate what was done / verified / left. Don't continue from a state you can't describe.
@@ -77,6 +79,8 @@ The actual commands a session needs. Use these; do not invent alternatives.
 - Always work directly on `main` in `/Users/jordan/Sites/simple-form`. Do not create branches.
 - Do not use `git worktree` while the visual-confirmation commit gate is in effect. The dev server points at the main checkout; a worktree has its own working copy, so changes "made" in the worktree are not what `npm run dev` is rendering. Do not invoke worktree-creating tools (`EnterWorktree`, `Agent` with `isolation: "worktree"`) for this project.
 - After every push, paste the commit URL (`https://github.com/jordan-d/simple-form/commit/<sha>`) and state "waiting for Vercel deploy." Do not declare done until Jordan confirms production.
+- Never preemptively pass `-c` config overrides to `git` without asking first.
+- **Stage explicit named paths — never `git add -A` / `git add .` / `git commit -a`.** A broad add sweeps in untracked secrets and, when another session or process shares the checkout, changes you didn't make — landing them in the wrong commit.
 
 Decisions log in `docs/DECISIONS.md`.
 
