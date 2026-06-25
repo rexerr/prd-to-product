@@ -4,3 +4,6 @@ skills/plan-review.zip
 
 # /mine shallow clones (regenerable)
 docs/mined/repos/
+
+# Generated kanban view of BACKLOG.md (regenerable; scripts/render-backlog-kanban.py)
+BACKLOG.html
