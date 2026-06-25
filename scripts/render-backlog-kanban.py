@@ -24,14 +24,14 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "BACKLOG.md"
 OUT = ROOT / "BACKLOG.html"
 
-# Lane order (kanban columns, left to right) + accent color.
+# Lane order (kanban columns, left to right) + a small header-dot accent.
 LANES = [
-    ("active", "Active", "#D97757"),
-    ("next", "Next", "#3b82a0"),
-    ("watching", "Watching", "#b08948"),
-    ("backlog", "Backlog", "#6b6b8a"),
-    ("blocked", "Blocked", "#b0524a"),
-    ("icebox", "Icebox", "#8c8c8a"),
+    ("active", "Active", "#16a34a"),
+    ("next", "Next", "#2563eb"),
+    ("watching", "Watching", "#d97706"),
+    ("backlog", "Backlog", "#71717a"),
+    ("blocked", "Blocked", "#dc2626"),
+    ("icebox", "Icebox", "#a1a1aa"),
 ]
 
 MAX_TAGS = 2
@@ -140,18 +140,22 @@ def card_html(row: dict) -> str:
         chips.append(f'<span class="tag {axis}">{html.escape(t)}</span>')
     meta = f'<div class="meta">{type_chip}{"".join(chips)}</div>' if (type_chip or chips) else ""
 
+    # Title — link to the ticket when one exists; otherwise keep any inline link / plain text.
+    title = render_inline(row["item"])
+    tkt = ticket_link(row)
+    if tkt and "<a " not in title:
+        title = f'<a href="{html.escape(tkt)}">{title}</a>'
+    title_html = f'<span class="title">{title}</span>'
+
     gloss = row["gloss"].strip()
     gloss_html = f'<div class="gloss">{render_inline(gloss)}</div>' if gloss and gloss != "—" else ""
-
-    tkt = ticket_link(row)
-    tkt_html = f'<a class="ticket" href="{html.escape(tkt)}">\U0001F4CB open ticket</a>' if tkt else ""
     refs = row["refs"].strip()
     refs_html = f'<div class="refs">{render_inline(refs)}</div>' if refs and refs != "—" else ""
 
     return (
         '<div class="card">'
-        f'<div class="card-head">{seq_badge}<span class="title">{render_inline(row["item"])}</span></div>'
-        f"{meta}{gloss_html}{tkt_html}{refs_html}"
+        f'<div class="card-head">{seq_badge}{title_html}</div>'
+        f"{meta}{gloss_html}{refs_html}"
         "</div>"
     )
 
@@ -179,7 +183,7 @@ def build(md: str) -> str:
         cards = "".join(card_html(r) for r in lane_rows) or '<div class="empty">—</div>'
         columns.append(
             f'<section class="col" style="--lane:{color}">'
-            f'<h2>{label}<span class="count">{len(lane_rows)}</span></h2>'
+            f'<h2><span class="dot"></span>{label}<span class="count">{len(lane_rows)}</span></h2>'
             f'<div class="cards">{cards}</div>'
             "</section>"
         )
@@ -197,44 +201,46 @@ TEMPLATE = """<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
-:root{{--bg:#faf9f5;--card:#fff;--ink:#141413;--ink2:#5c5c5a;--muted:#8c8c8a;--border:#e5e4df;--shadow:rgba(20,20,19,.05)}}
-body{{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:28px 32px}}
-header{{margin-bottom:22px}}
-h1{{font-size:22px;font-weight:700;letter-spacing:-.01em}}
-.sub{{color:var(--muted);font-size:13px;margin-top:3px}}
-.warn{{background:#fbeae4;border:1px solid #e0a99e;color:#8a3128;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:13px}}
+:root{{--bg:#fff;--card:#fff;--ink:#09090b;--ink2:#52525b;--muted:#a1a1aa;--border:#e4e4e7}}
+body{{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);
+  color:var(--ink);line-height:1.5;padding:32px 36px;-webkit-font-smoothing:antialiased}}
+header{{margin-bottom:24px}}
+h1{{font-size:19px;font-weight:600;letter-spacing:-.02em}}
+.sub{{color:var(--muted);font-size:12.5px;margin-top:4px}}
+.warn{{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:8px;padding:11px 14px;margin-bottom:20px;font-size:12.5px}}
 .warn ul{{margin:6px 0 0 18px}}
 .warn li{{margin:2px 0}}
-.board{{display:flex;gap:16px;align-items:flex-start;overflow-x:auto;padding-bottom:16px}}
-.col{{flex:0 0 320px;background:#f5f4ef;border:1px solid var(--border);border-radius:12px;padding:12px}}
-.col h2{{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);
-  display:flex;align-items:center;gap:8px;padding:2px 4px 12px;border-bottom:2px solid var(--lane);margin-bottom:12px}}
-.count{{margin-left:auto;background:var(--lane);color:#fff;font-size:11px;font-weight:600;
-  border-radius:10px;padding:1px 8px;letter-spacing:0}}
-.cards{{display:flex;flex-direction:column;gap:10px}}
-.card{{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--lane);
-  border-radius:9px;padding:11px 12px;box-shadow:0 1px 2px var(--shadow)}}
-.card-head{{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}}
-.seq{{flex:0 0 auto;background:var(--lane);color:#fff;font-size:11px;font-weight:700;
-  border-radius:6px;padding:1px 7px;line-height:1.5}}
-.title{{font-size:13.5px;font-weight:600;letter-spacing:-.005em}}
-.meta{{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px}}
-.type{{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);
-  background:#efeee9;border-radius:4px;padding:1.5px 6px}}
-.tag{{font-size:10.5px;font-weight:500;border-radius:4px;padding:1.5px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}}
-.tag.gate{{background:#fbeae4;color:#a8493f}}
-.tag.area{{background:#e7eef2;color:#37657d}}
-.tag.other{{background:#efeee9;color:var(--ink2)}}
-.gloss{{font-size:12.5px;color:var(--ink);margin-bottom:6px}}
-.ticket{{display:inline-block;font-size:11px;font-weight:600;margin-top:6px;color:var(--lane)!important;
-  border:1px solid var(--lane);border-radius:6px;padding:2px 9px;text-decoration:none}}
-.ticket:hover{{background:var(--lane);color:#fff!important}}
-.refs{{font-size:11px;color:var(--muted);margin-top:7px}}
-.empty{{color:var(--muted);font-size:13px;text-align:center;padding:14px 0}}
-a{{color:var(--lane,#D97757);text-decoration:none;border-bottom:1px solid transparent}}
-a:hover{{border-bottom-color:currentColor}}
-code{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;
-  background:#efeee9;border-radius:4px;padding:.5px 4px}}
+.board{{display:flex;gap:14px;align-items:flex-start;overflow-x:auto;padding-bottom:16px}}
+.col{{flex:0 0 296px;min-width:296px}}
+.col h2{{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);
+  display:flex;align-items:center;gap:7px;padding:0 2px 10px;border-bottom:1px solid var(--border);margin-bottom:12px}}
+.dot{{width:7px;height:7px;border-radius:50%;background:var(--lane);flex:0 0 auto}}
+.count{{margin-left:auto;color:var(--muted);font-weight:500;font-size:11px}}
+.cards{{display:flex;flex-direction:column;gap:8px}}
+.card{{background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:12px 13px;transition:border-color .12s,box-shadow .12s}}
+.card:hover{{border-color:#d4d4d8;box-shadow:0 1px 3px rgba(0,0,0,.05)}}
+.card-head{{display:flex;align-items:baseline;gap:7px;margin-bottom:7px}}
+.seq{{flex:0 0 auto;background:var(--ink);color:#fff;font-size:10.5px;font-weight:600;
+  border-radius:5px;padding:0 6px;line-height:1.7}}
+.title{{font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}}
+.title a{{color:var(--ink);text-decoration:none}}
+.title a:hover{{text-decoration:underline;text-underline-offset:2px}}
+.meta{{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:7px}}
+.type{{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);
+  background:#f4f4f5;border-radius:4px;padding:2px 6px}}
+.tag{{font-size:10.5px;font-weight:500;border-radius:4px;padding:2px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}}
+.tag.gate{{background:#fef3c7;color:#92400e}}
+.tag.area{{background:#dbeafe;color:#1e40af}}
+.tag.other{{background:#f4f4f5;color:var(--ink2)}}
+.gloss{{font-size:12.5px;color:#3f3f46;margin-bottom:4px}}
+.refs{{font-size:11px;color:var(--muted);margin-top:8px}}
+.refs a{{color:var(--ink2)}}
+.empty{{color:var(--muted);font-size:12.5px;padding:8px 2px}}
+a{{color:#2563eb;text-decoration:none}}
+a:hover{{text-decoration:underline}}
+code{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;
+  background:#f4f4f5;border-radius:4px;padding:1px 4px;color:#3f3f46}}
 strong{{font-weight:600;color:var(--ink)}}
 </style></head><body>
 <header><h1>{title}</h1>
