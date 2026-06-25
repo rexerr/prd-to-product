@@ -6,51 +6,56 @@ Read this at session start alongside the most recent retro in [`docs/retros/`](d
 
 ## Board
 
-One row per live unit: **Item · Lane · Seq · Next · Refs**. Lanes are the kanban columns (see Format). `Seq` orders the actionable lanes; `—` elsewhere. Done rows leave the board — their card is archived to [`tickets/archive/`](tickets/archive/).
+One row per live unit: **Item · Type · Lane · Seq · Tags · Gloss · Refs**. Lanes are the kanban columns (see Format). `Seq` orders the actionable lanes — so the next item to pick up is just the lowest `Seq`; `—` elsewhere. The `Gloss` says in plain English what each item is. Done rows leave the board — their card is archived to [`tickets/archive/`](tickets/archive/).
 
-| Item | Lane | Seq | Next | Refs |
-|---|---|---|---|---|
-| Agent-process & context-harness upgrades | next | 2 | Residual: the group-5 in-repo dogfood self-edit loose end | [brief](docs/agent-process-brief.md) |
-| Invariant/semantic output checks | next | 3 | OPEN: provenance-grounded check only (write-guard + no-jargon-leak both done — [D-064](docs/DECISIONS.md#d-064)) | [council](docs/council/council-report-2026-06-08.html) |
-| Crib adoption (residual) | watching | — | **Waves 1–3 complete** — Wave 3 closed with zero new builds (see roadmap marker). Residual: G-18 blocked on the unbuilt C-24 oracle prompt; deferred cribs live in their own rows below ([CF-22](docs/DECISIONS.md#d-059), [C-01/C-02](docs/DECISIONS.md#d-062)). Re-enters only on a new mine | [crib plan](docs/cribs-adoption-roadmap.md) |
-| CF-22 family router (`/which-skill`) | watching | — | Build the router (design ready in the furnace plan) when a skill-selection misfire is **logged** in a retro (wrong skill picked mid-run, chain hand-rolled, or `/mine`/`/furnace-plan` forgotten) **or** the family opens beyond the single author. It's [D-014](docs/DECISIONS.md#d-014)'s gated fix-candidate B — don't build speculatively | [D-059](docs/DECISIONS.md#d-059) |
-| C-01/C-02 furnace mechanical primitives | watching | — | Build C-01 (R/KTD citation graph) and/or C-02 (anti-bulk-accept) on the furnace-plan ledger + Cowork rubric when a dropped-requirement or bulk-decline is **logged** in a furnace/Cowork pass **or** the furnace family opens to a 2nd author. `/furnace-plan` candidate (touches plan-review, [D-042](docs/DECISIONS.md#d-042)) | [D-062](docs/DECISIONS.md#d-062) |
-| `/mine` hardening candidates | watching | — | Park (Rule-of-Two, n=1): (a) a "what existing docs cover this domain?" discovery step before triage; (b) a sharper skill-about-design vs design-content scope test. Promote to a `skills/mine/` ticket on a 2nd real need | [retro](docs/retros/2026-06-22-mine-audit-and-dsb-text-wrap.md) |
-| [furnace-trial](tickets/furnace-trial.md) | watching | — | Paused 2026-06-21; resume only if a real question needs the per-reviewer data | [D-052](docs/DECISIONS.md#d-052) |
-| Ledger-sweep hook | watching | — | Build the pre-commit hook (block committing `trial-ledger.md` alongside other files) if a 2nd accidental sweep lands — Rule of Two, n=1; not portable (repo-specific) | [D-018](docs/DECISIONS.md#d-018) |
-| Build-defaults pilot item 1 (deploy-shell) | watching | — | Promote to Done when a live-URL project exercises the deploy-shell | [brief](docs/build-defaults-brief.md) |
-| Build-defaults item 5 (check/test pre-commit) | watching | — | Pilot pending item 1's real-project evidence | [brief](docs/build-defaults-brief.md) |
-| Build-defaults item 6 (defer abstraction) | watching | — | Pilot pending items 1, 5 | [brief](docs/build-defaults-brief.md) |
-| Build-defaults item 2 (vertical slice) | watching | — | Pilot pending items 1, 5, 6 | [brief](docs/build-defaults-brief.md) |
-| Build-defaults item 3 (test-first for logic) | watching | — | Pilot pending earlier items | [brief](docs/build-defaults-brief.md) |
-| `stack_summary_one_line` row missing (`stack=other + deploy_target=none`) | watching | — | Add on 2nd instance (one seen) | [decisions](skills/context-engineering/generator/decisions.md) |
-| Skill ecosystem gaps (Thariq 9-category) | watching | — | Promote one only on a real failure (8 uncovered) | — |
-| Chain auto-compose | watching | — | Escalate to `/idea-to-product` orchestrator only if soft handoffs observed dropped | [D-014](docs/DECISIONS.md#d-014) |
-| Brownfield context-drift | watching | — | Fix old projects by hand; revisit only if a change must sweep all at once | [D-013](docs/DECISIONS.md#d-013) |
-| Token-adopt for Claude Design bundles | watching | — | Revisit on a 2nd real bundle (Rule of Two) | [D-044](docs/DECISIONS.md#d-044) |
-| Harness-proposals kill-watch | watching | — | After ~10 sessions read retro failure-tags; revive C / deepen E only if tags recur | [council](docs/council/council-transcript-2026-06-09-harness-proposals.md) |
-| On-demand hook scaffolds in the skill | watching | — | Pending a real failure mode (Rule-of-Two not met) | — |
-| [Pressure-test behavior-shaping prose](tickets/pressure-test-behavior-prose.md) | watching | — | Verify CLAUDE-auto-load assumption; ≥3 trials/condition before the counter moves (0/2) | [handoff](docs/superpowers-context-engineering-handoff.md) |
-| [Superpowers liftables](tickets/superpowers-liftables.md) | watching | — | Fold a/b/c/d into the next incidental edit of the relevant file | [handoff](docs/superpowers-context-engineering-handoff.md) |
-| animations.dev skill-craft patterns | watching | — | Fold into the next incidental skill-template edit | [reference](docs/animation-taste-reference.md) |
-| [Scaffold-level superpowers candidates](tickets/scaffold-superpowers-candidates.md) | watching | — | Next substantive context-engineering template session | [handoff](docs/superpowers-context-engineering-handoff.md) |
-| [Harness-batch liftables](tickets/harness-batch-liftables.md) | watching | — | Fold a/b/c/d into incidental edits on their named triggers | [retro](docs/retros/2026-06-12-harness-batch-review.md) |
-| [/decision command](tickets/decision-command.md) | watching | — | Build only if by-hand decision-logging misfires twice (Rule of Two) | [D-021](docs/DECISIONS.md#d-021) |
-| Concurrency / parallel-exploration for UI | watching | — | PINNED — not building; clone-or-branch first. **Read the brief before re-proposing** | [brief](docs/concurrency-mode-brief.md) |
-| [Build the kanban system into the scaffold](tickets/kanban-into-scaffold.md) | next | 1 | **Urgent ([D-069], reverses D-068).** Port the one-board model + a generic render view into the scaffold (both shapes + fixture + generator) so new projects ship what we engineer here. Ticket has full scope; furnace-plan for sync-safety; ~2 passes | [ticket](tickets/kanban-into-scaffold.md), [D-069](docs/DECISIONS.md) |
-| Loop-graduation guidance for scaffolded projects | watching | — | Add a "when/how to run an unattended agentic loop" section to context-engineering (4-box necessity gate + verify-as-exit + silent-spend stop). Scaffold names laziness/self-preference but is silent on autonomous loops. Promote when a scaffolded coding project adopts a loop/CI-agent and the gap bites | [mine](docs/mined/2026-06-24-loops-article.md) |
-| Soften external-audience framing in live docs ([D-069]) | backlog | — | The lens quietly defaults to "audience" via `CLAUDE.md:9` ("product…consumed"), `CLAUDE.md:98` ("scaffolded projects…inherit"), `principles.md:94` (other projects' authors as users), `README` ("you"). [D-069](docs/DECISIONS.md) governs now (primary audience = Rex); reword these toward it on the next incidental edit of each file — not a sweep | [D-069](docs/DECISIONS.md) |
-| [OPTIONAL-marker gating in scaffolded verification rule](tickets/optional-marker-gating.md) | backlog | — | Settle block-vs-line gating, then move universal sentence + logic bullet outside the gate | [D-041](docs/DECISIONS.md#d-041) |
-| Flat-shape rule parity sweep | watching | — | Batch A ([D-067](docs/DECISIONS.md)) closed the staging + read-before-write + cross-agent gaps across both shapes, but the flat AGENTS template still drops the modular `## Autonomy` "failure mode this prevents" sentence — same asymmetry class as the read-before-write gap. Fold into the next CE template edit; if a 3rd flat/modular parity gap surfaces, sweep them all at once | [D-067](docs/DECISIONS.md) |
-| [/session-start rewrite (Appendix-A)](tickets/session-start-rewrite.md) | backlog | — | Only if `/session-start` bloat bites | [brief](docs/agent-process-brief.md) |
-| [Modular-shape example output tree](tickets/modular-example-output-tree.md) | backlog | — | Build as structural assertions (not byte-diff) when modular work picks up | [council](docs/council/council-report-2026-06-08.html) |
-| [Agent-teams scaffold guidance](tickets/agent-teams-scaffold-guidance.md) | backlog | — | Promote when a scaffolded project needs multi-agent structure | — |
-| [README install loop symlinks `context-engineering-audit`](tickets/readme-install-symlink-cea.md) | backlog | — | Fix on a fresh-clone confusion (contradicts D-019) | [D-019](docs/DECISIONS.md#d-019) |
-| AGENTS.md-canonical flip (this-repo half) | backlog | — | Generator half done (D-047); flip this repo's own CLAUDE/AGENTS shape | [D-047](docs/DECISIONS.md#d-047) |
-| `solutions/` scar-tissue library + CF-05 | watching | — | **Closed don't-build** ([D-063](docs/DECISIONS.md#d-063)): council + an empirical retro-scan show a one-time scan suffices; the lever is periodic aggregation, not a library, and CF-05 compression parks with it (rule-accretion isn't biting). Revisit only as a scaffold-emit for high-error project types (rides AB-01's [D-009](docs/DECISIONS.md#d-009) gate), or if a 2nd scan finds a hidden pattern (→ mint a recurring scan ritual) | [D-063](docs/DECISIONS.md#d-063) |
-| [Skill injection by project type](tickets/skill-injection-by-project-type.md) | blocked | — | Resolve the source-dependent promotion mechanic (plugin vs vendored) first | — |
-| DSB HTML supplement | icebox | — | Deferred indefinitely; trigger did not fire at cat-tracker (no hand-built preview) | [D-012](docs/DECISIONS.md#d-012) |
-| Candidate future products (3 briefs) | icebox | — | Revisit after Taste Builder validation | [briefs](docs/product-briefs/) |
+<!-- TAGS · max 2 per row · two axes only — the render validates rows against this list and flags unknowns:
+gate:  what must happen before it moves — council · furnace · rule-of-2 · needs-decision · blocked-on-<x>
+area:  which part of the system — scaffold · generator · render · skill · skill-templates · docs · crib · mine · furnace-plan · prd-creator · dsb · build-defaults
+-->
+
+| Item | Type | Lane | Seq | Tags | Gloss | Refs |
+|---|---|---|---|---|---|---|
+| [Build the kanban system into the scaffold](tickets/kanban-into-scaffold.md) | feature | active | 1 | gate:furnace, area:scaffold | Ship the board + cards I use here into every new project — building now, across passes ([D-069], reverses D-068). | [ticket](tickets/kanban-into-scaffold.md), [D-069](docs/DECISIONS.md) |
+| Agent-process & context-harness upgrades | feature | next | 2 | area:scaffold | Leftover polish on how the agent works across sessions — one in-repo dogfood self-edit loose end remains. | [brief](docs/agent-process-brief.md) |
+| Invariant/semantic output checks | feature | next | 3 | area:generator | Make the generator catch when its output drifts from source — only the "is this claim grounded?" check is left (write-guard + no-jargon-leak done). | [council](docs/council/council-report-2026-06-08.html), [D-064](docs/DECISIONS.md#d-064) |
+| Crib adoption (residual) | chore | watching | — | area:crib, gate:rule-of-2 | Folding lessons mined from other repos into ours — waves 1–3 done; re-enters only on a new mine. | [crib plan](docs/cribs-adoption-roadmap.md), [D-059](docs/DECISIONS.md#d-059) |
+| CF-22 family router (`/which-skill`) | feature | watching | — | gate:rule-of-2, area:skill | A helper that picks the right skill for a task — build only once skill-picking actually misfires (logged) or the family opens to a 2nd author. | [D-059](docs/DECISIONS.md#d-059) |
+| C-01/C-02 furnace mechanical primitives | feature | watching | — | gate:furnace, area:furnace-plan | Two safety checks for the plan-authoring tool — build when a dropped requirement bites or the furnace opens to a 2nd author. | [D-062](docs/DECISIONS.md#d-062) |
+| `/mine` hardening candidates | feature | watching | — | gate:rule-of-2, area:mine | Two possible upgrades to the `/mine` skill — held until a second real need shows up. | [retro](docs/retros/2026-06-22-mine-audit-and-dsb-text-wrap.md) |
+| [furnace-trial](tickets/furnace-trial.md) | research | watching | — | area:furnace-plan | A measurement experiment on the planning tool — paused; resume only if a real question needs the data. | [D-052](docs/DECISIONS.md#d-052) |
+| Ledger-sweep hook | feature | watching | — | gate:rule-of-2, area:furnace-plan | An auto-guard so the Cowork measurement file never gets swept into the wrong commit — build on a 2nd accident. | [D-018](docs/DECISIONS.md#d-018) |
+| Build-defaults pilot item 1 (deploy-shell) | feature | watching | — | area:build-defaults | Scaffold a deploy-ready shell first — done when a live-URL project exercises it. | [brief](docs/build-defaults-brief.md) |
+| Build-defaults item 5 (check/test pre-commit) | feature | watching | — | area:build-defaults | A pre-commit test gate for scaffolded projects — queued behind item 1. | [brief](docs/build-defaults-brief.md) |
+| Build-defaults item 6 (defer abstraction) | feature | watching | — | area:build-defaults | Guidance to not over-abstract early — queued behind items 1 and 5. | [brief](docs/build-defaults-brief.md) |
+| Build-defaults item 2 (vertical slice) | feature | watching | — | area:build-defaults | Build one end-to-end slice before going wide — queued behind earlier items. | [brief](docs/build-defaults-brief.md) |
+| Build-defaults item 3 (test-first for logic) | feature | watching | — | area:build-defaults | Write tests first for real logic — queued behind earlier items. | [brief](docs/build-defaults-brief.md) |
+| `stack_summary_one_line` row missing (`stack=other + deploy_target=none`) | fix | watching | — | gate:rule-of-2, area:generator | A missing summary row for one project-type combo — add when it's seen a second time (one seen). | [decisions](skills/context-engineering/generator/decisions.md) |
+| Skill ecosystem gaps (Thariq 9-category) | research | watching | — | area:skill | Eight kinds of skill we don't have yet — build one only when its absence causes a real failure. | — |
+| Chain auto-compose | feature | watching | — | area:skill | An orchestrator that chains the skills together automatically — only if hand-offs start getting dropped. | [D-014](docs/DECISIONS.md#d-014) |
+| Brownfield context-drift | chore | watching | — | area:scaffold | Old scaffolded projects drift from current standards — fix by hand unless a change must sweep all at once. | [D-013](docs/DECISIONS.md#d-013) |
+| Token-adopt for Claude Design bundles | feature | watching | — | gate:rule-of-2, area:dsb | Auto-adopt design tokens from a Claude Design handoff — revisit on a 2nd real bundle. | [D-044](docs/DECISIONS.md#d-044) |
+| Harness-proposals kill-watch | research | watching | — | area:docs | Watching whether parked harness ideas earn revival — decide after ~10 sessions of retro failure-tags. | [council](docs/council/council-transcript-2026-06-09-harness-proposals.md) |
+| On-demand hook scaffolds in the skill | feature | watching | — | gate:rule-of-2, area:generator | Optional hook scaffolds the skill could emit — waiting on a real failure mode. | — |
+| [Pressure-test behavior-shaping prose](tickets/pressure-test-behavior-prose.md) | research | watching | — | area:skill | Test whether behavior-shaping wording actually changes the agent — needs ≥3 trials/condition (0/2). | [handoff](docs/superpowers-context-engineering-handoff.md) |
+| [Superpowers liftables](tickets/superpowers-liftables.md) | chore | watching | — | area:skill | Four small ideas borrowed from the Superpowers project — fold in on the next relevant edit. | [handoff](docs/superpowers-context-engineering-handoff.md) |
+| animations.dev skill-craft patterns | chore | watching | — | area:skill-templates | Skill-writing patterns from animations.dev — fold in on the next template edit. | [reference](docs/animation-taste-reference.md) |
+| [Scaffold-level superpowers candidates](tickets/scaffold-superpowers-candidates.md) | chore | watching | — | area:scaffold | Scaffold ideas from Superpowers — pick up in the next big template session. | [handoff](docs/superpowers-context-engineering-handoff.md) |
+| [Harness-batch liftables](tickets/harness-batch-liftables.md) | chore | watching | — | area:docs | Four batched process ideas — fold each in when its trigger file is next touched. | [retro](docs/retros/2026-06-12-harness-batch-review.md) |
+| [/decision command](tickets/decision-command.md) | feature | watching | — | gate:rule-of-2, area:skill | A slash-command to log decisions — build only if doing it by hand misfires twice. | [D-021](docs/DECISIONS.md#d-021) |
+| Concurrency / parallel-exploration for UI | decision | watching | — | area:docs | Decided NOT to build parallel-exploration mode — read the brief before ever re-proposing. | [brief](docs/concurrency-mode-brief.md) |
+| Loop-graduation guidance for scaffolded projects | feature | watching | — | gate:rule-of-2, area:scaffold | Teach scaffolded projects when/how to safely run an unattended agent loop — add when one adopts a loop and the gap bites. | [mine](docs/mined/2026-06-24-loops-article.md) |
+| Soften external-audience framing in live docs ([D-069]) | chore | backlog | — | area:docs | Reword a few docs that quietly assume an external audience, now that D-069 says the audience is Rex — on next incidental edit, not a sweep. | [D-069](docs/DECISIONS.md) |
+| [OPTIONAL-marker gating in scaffolded verification rule](tickets/optional-marker-gating.md) | feature | backlog | — | area:generator | Fix how an optional verification rule is gated in the scaffold — settle block-vs-line first. | [D-041](docs/DECISIONS.md#d-041) |
+| Flat-shape rule parity sweep | chore | watching | — | gate:rule-of-2, area:scaffold | The flat and modular scaffold shapes have a small wording gap — sweep all parity gaps together on the 3rd. | [D-067](docs/DECISIONS.md) |
+| [/session-start rewrite (Appendix-A)](tickets/session-start-rewrite.md) | chore | backlog | — | area:docs | Slim down the session-start command — only if it gets bloated. | [brief](docs/agent-process-brief.md) |
+| [Modular-shape example output tree](tickets/modular-example-output-tree.md) | feature | backlog | — | area:scaffold | A worked example of the modular scaffold shape — build when modular work picks up. | [council](docs/council/council-report-2026-06-08.html) |
+| [Agent-teams scaffold guidance](tickets/agent-teams-scaffold-guidance.md) | feature | backlog | — | area:scaffold | Guidance for multi-agent project structure — add when a scaffolded project needs it. | — |
+| [README install loop symlinks `context-engineering-audit`](tickets/readme-install-symlink-cea.md) | fix | backlog | — | area:docs | The README's install steps wrongly symlink an audit doc — fix when it confuses a fresh clone. | [D-019](docs/DECISIONS.md#d-019) |
+| AGENTS.md-canonical flip (this-repo half) | chore | backlog | — | area:docs | Make AGENTS.md the canonical file (not CLAUDE.md) in this repo — generator half already done. | [D-047](docs/DECISIONS.md#d-047) |
+| `solutions/` scar-tissue library + CF-05 | decision | watching | — | area:docs | Decided NOT to build a "past mistakes" library — revisit only as a scaffold-emit for high-error project types, or if a 2nd scan finds a hidden pattern. | [D-063](docs/DECISIONS.md#d-063) |
+| [Skill injection by project type](tickets/skill-injection-by-project-type.md) | feature | blocked | — | gate:needs-decision, area:skill | Auto-add the right skills based on project type — blocked on deciding plugin vs vendored delivery. | — |
+| DSB HTML supplement | feature | icebox | — | area:dsb | An optional HTML supplement for the design-system skill — shelved indefinitely. | [D-012](docs/DECISIONS.md#d-012) |
+| Candidate future products (3 briefs) | research | icebox | — | area:docs | Three possible future product ideas — revisit after Taste Builder is validated. | [briefs](docs/product-briefs/) |
 
 ## Done
 
@@ -60,20 +65,31 @@ See [`docs/retros/`](docs/retros/) for the session-by-session record, and [`tick
 
 `BACKLOG.md` is a **thin always-loaded kanban board** ([D-048](docs/DECISIONS.md#d-048) / [D-054](docs/DECISIONS.md#d-054)). The board is the only work-tracking surface — no separate roadmap file; the roadmap is the board sorted by `Seq`.
 
+**Columns:**
+
+- **Item** — the unit of work (links its `tickets/<slug>.md` card when one exists).
+- **Type** — one word: `feature` · `chore` · `decision` · `research` · `fix` · `spike`.
+- **Lane** — the kanban column (see below).
+- **Seq** — order within the actionable lanes (`active`/`next`); the next item to pick up is the lowest `Seq`. `—` elsewhere. There is no per-item "next action" column — `Seq` answers *which item is next*, the linked card answers *how*.
+- **Tags** — **max 2**, two axes only: `gate:` (what must happen before it moves) and `area:` (which part of the system). Allowed values live in the `<!-- TAGS -->` comment above the board; the render validates against them.
+- **Gloss** — one plain-English line saying what the item *is* (and, for parked items, the trigger that un-parks it). The deliberate readability exception to one-line-terseness ([D-069](docs/DECISIONS.md) — optimize for Rex's clarity); a label, **not** inline reasoning (that stays in the card/brief/`D-NNN`).
+- **Refs** — pointers to the card, brief, or `D-NNN`/retro that hold the *why* and the operational detail.
+
 **Lanes** (the `Lane` column — the kanban columns):
 
 - `active` — being worked **this session**.
 - `next` — queued and ready to pick up; `Seq` orders it.
-- `watching` — parked on a **named trigger**; fires when the trigger trips (not on a schedule).
+- `watching` — parked on a **named trigger** (in the gloss); fires when the trigger trips, not on a schedule.
 - `backlog` — real work, not yet queued.
-- `blocked` — can't proceed until a dependency clears (the `Next` names it).
+- `blocked` — can't proceed until a dependency clears (the gloss names it).
 - `icebox` — someday/maybe; deliberately not soon.
 
 **Rules:**
 
-- **One line per row.** The context to *act* lives in the linked `tickets/<slug>.md`, brief, or `D-NNN`/retro — never inline. A fat row is a rule violation, not a deferral.
+- **One line per row.** The context to *act* lives in the linked `tickets/<slug>.md`, brief, or `D-NNN`/retro — never inline. The `Gloss` is a one-line plain-English label, not an exception to this. A fat row is a rule violation, not a deferral.
 - **A row earns a ticket card only when it has working context to act on.** Icebox/thin rows stay a single line + pointer to an existing detail store (a brief, council, tracker, or `D-NNN`). Don't spawn empty cards.
 - **`Seq` orders the actionable lanes** (`active`/`next`) — a suggested order Rex curates; `—` for `watching`/`backlog`/`blocked`/`icebox`.
+- **Tags stay within the `<!-- TAGS -->` vocabulary, max 2 per row.** A new value earns its place in the comment block first; the render flags anything off-list.
 - **Retire, don't re-accrete.** A resolved row's card is `git mv`'d to [`tickets/archive/`](tickets/archive/) (archive, don't delete) via the `/end-session` retirement ritual; the row leaves the board. Done rows do not return.
 - **New idea → a new row**, lane `icebox` or `backlog`. It earns a card when you start it.
 
