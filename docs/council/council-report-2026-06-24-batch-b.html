@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch B — port the one-board kanban model into the context-engineering scaffold?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Batch B — port the one-board kanban model into the context-engineering scaffold?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should the context-engineering skill&#x27;s scaffold templates be changed so every newly-scaffolded project is BORN with a one-board kanban work-tracking model (one row per unit; lanes active/next/watching/backlog/blocked/icebox; a Seq ordering column; board-is-the-roadmap; thin-on-touch; retire-don&#x27;t-re-accrete; detail in tickets/&lt;slug&gt;.md) — instead of the older multi-section backlog shape (Build plan / In progress / Backlog / Open decisions / Later / Done) the scaffold ships today? Graduation machinery already exists (when the backlog outgrows the session-start read, split into a thin index + docs/tickets/ + a retirement ritual); the mismatch between today&#x27;s shape and that graduation target is a soft seam, not a hard contradiction. The model is proven in the meta-repo that builds the skill but unproven on arbitrary scaffolded projects. The decision is costly + hard to reverse (bakes structure into every future project; changing later means a brownfield migration the workspace avoids). Options: (A) full port now; (B) keep the simple multi-section default; (C) reduced/optional form — lanes-no-Seq, or ship the one-board model as the target the existing graduation rule migrates into, not the day-one default.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Keep the simple multi-section backlog as the day-one default and rewrite the existing graduation rule to migrate into the one-board kanban model — but verify first that real scaffolded projects ever actually trigger graduation, because the whole compromise dies if they don&#x27;t.</h3>
+    <p>Go with Option C, the &#x27;adopt at graduation&#x27; variant, day-one default stays simple — but treat it as provisional on a premise check. Concretely: (1) Day-one default keeps Option B&#x27;s simple multi-section backlog, Seq-free. This is the robust, low-regret call regardless of how the premise checks resolve. (2) Rewrite the graduation rule&#x27;s target from &#x27;thin index + generic-status tickets&#x27; to &#x27;thin index + one-board kanban (named lanes) + tickets,&#x27; each lane citing its failure mode, and point the generic `status` field at the named lanes to close the soft seam. This is the Architect&#x27;s move, the cheapest coherent step, and it has no day-one coupling — so it&#x27;s reversible. (3) On Seq: leave it out of the day-one default entirely; include it in the graduation target only if it earns its failure-mode citation. Don&#x27;t ship Seq as a birthright under any option. I&#x27;m siding with the four-advisor consensus over the Long View&#x27;s pure inaction because repointing the graduation target costs almost nothing, is reversible, and stops the proven shape from rotting as tribal knowledge — the Long View&#x27;s own migration-liability argument doesn&#x27;t distinguish its pick from C, since C-at-graduation incurs no installed-base coupling. The one place I override the council&#x27;s confidence: they all built on an unchecked premise. So the rewrite should not ship until the premise check comes back. If graduation never fires on real projects, the honest move is Option B unadorned — don&#x27;t dress up a dead-letter rule as a compromise.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Verify the two load-bearing premises before writing any rule change. Specifically, pull whatever evidence exists about real scaffolded projects — even informally — and answer two questions: (1) what is the actual horizon/size distribution of projects this scaffold has been used on, and (2) has the graduation trigger ever fired on any project other than the meta-repo? If there is no downstream data at all, that itself is the finding: ship nothing structural now, keep Option B, and add a single lightweight observation hook (a note in the scaffold or a check-in) so the next few real projects generate the signal the council was forced to assume. Only after that signal exists do you rewrite the graduation target.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Default B; kanban as graduation target</span></td>
+  <td>The meta-repo is the maximum-favorable case and bloat is already handled, so day-one Seq solves a non-existent problem and fails the failure-mode-citation rule.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Option C at graduation</span></td>
+  <td>The fork is when a project pays the cost, not which template — so keep the simple default and repoint the graduation rule at named lanes, each citing its failure mode.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Option C at graduation</span></td>
+  <td>An outsider handed a six-lane Seq board before writing a line of code experiences governance as overhead with no felt payoff — birth is the wrong moment, graduation is the right one.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Option B, wait for signal</span></td>
+  <td>Scaffolds are a distribution decision; porting a young, unstabilized model hard-couples the installed base to a future migration liability, so wait until multiple projects independently reinvent lanes.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Option C, lanes not Seq, at graduation</span></td>
+  <td>Lanes are cheap and legible but Seq plus accretion rituals are the expensive operator-dependent part, so ship the board as an earned upgrade at graduation, not a birthright.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>Near-unanimous on the core call: reject Option A (full day-one port), all five advisors. The shared reasoning: the meta-repo is the maximum-favorable case (solo dev, multi-month horizon, work-is-tickets, an author who invented and personally runs the model), not the median scaffolded project — so &#x27;it works here&#x27; doesn&#x27;t transfer. Day-one lanes/Seq/retirement rituals are the over-engineer-on-day-one anti-pattern the project already guards against, and they fail the project&#x27;s own &#x27;every rule cites its failure mode&#x27; test (a three-week app has no roadmap for Seq to order). The bloat problem A claims to solve is already handled by existing graduation machinery — the seam is soft, not a hard contradiction. The one-board model is the right thing to graduate INTO, not to be born with. Four of five converge on some form of C-at-graduation; the Skeptic lands functionally adjacent (ship it as the documented graduation target). The Architect&#x27;s reframe is the runaway peer favorite (5/5 &#x27;strongest&#x27; votes): the fork is not which template but when a project pays the cost of lanes/Seq/tickets — and the cheapest move is to repoint the graduation target at the named lanes, each citing its failure mode.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>This is not a B-vs-C fight in spirit — it&#x27;s largely unanimous against A and toward &#x27;simple now, kanban at graduation.&#x27; The one real axis is how much to ship into the graduation target, and whether to do anything at all now. The Long View is the lone outlier toward pure inaction (Option B, &#x27;wait for a real signal of multiple projects reinventing lanes&#x27;). Every other advisor and all five reviewers mark this as the council&#x27;s biggest blind spot: it leaves the graduation target half-defined and strands a proven shape as tribal knowledge, when repointing the target is a reversible, no-day-one-coupling move. On Seq specifically: the Veteran and Skeptic want lanes-maybe but Seq/roadmap-collapse/accretion-rules explicitly out (expensive, opinionated); the Architect would port the fuller lanes+Seq shape but only at the graduation step. Minor, and resolvable by keeping the day-one default Seq-free regardless.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer reviews are unusually aligned and land on two unverified, load-bearing premises that EVERY advisor assumed without evidence. (1) The median-project distribution is pure assumption. All five built their case on &#x27;the median user is a solo dev shipping a weekend app that never outgrows a flat backlog.&#x27; There is zero adoption data, telemetry, or even one named real downstream project behind this. If the skill in fact serves mostly longer-horizon products, the anti-pattern framing collapses and Option A gets materially stronger. One unproven persona is doing ALL the work of defeating A. (2) Whether the graduation trigger ever fires in the wild is also unproven. The graduation machinery is validated only in the meta-repo. If real scaffolded projects get abandoned before their backlog outgrows the session-start read, then &#x27;adopt at graduation&#x27; ships a model that arrives never — making the C-at-graduation consensus functionally Option B in a compromise costume. (3) A secondary catch: even the graduation target may export an operator-dependent practice — the retirement ritual works here because Rex runs it; an arbitrary project may never run it regardless of when it&#x27;s introduced. Given both premises under the consensus are unverified, confidence in the specific shape of the recommendation is moderate, not high. The direction (don&#x27;t port to day-one) is robust; the value of the graduation-target rewrite is contingent on premises nobody checked.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>Don&#x27;t be seduced by &quot;it works HERE.&quot; The meta-repo is the single most atypical user of this scaffold: single developer, multi-month horizon, the work *is* discrete process-tickets, and the operator personally invented the one-board model and wants it. That is the maximum-favorable case. The scaffold&#x27;s job is to serve the median case — a solo dev shipping a weekend app — and there the kanban model is overhead theater: lanes, Seq, and a separate `tickets/&lt;slug&gt;.md` card per row is a project-management ritual for someone who has nine TODOs and a deploy deadline.</p>
+<p>The fatal flaw in Option A is the failure-mode citation rule. Every emitted rule must name the failure it prevents. What failure does day-one Seq prevent for a three-week project? &quot;Roadmap drift&quot;? There&#x27;s no roadmap yet. You&#x27;d be shipping a rule whose justification is &quot;the workspace that built me likes it&quot; — which is exactly the don&#x27;t-import-internal-vocabulary line (D-013/D-019) you already drew. Lanes/Seq/retire-don&#x27;t-re-accrete is workspace machinery wearing a scaffold costume.</p>
+<p>And the premise undercuts itself: you state the graduation machinery *already* handles bloat, and the seam to the kanban target is *soft, not a hard contradiction*. So the problem A solves doesn&#x27;t exist. You&#x27;d take on a hard-to-reverse, brownfield-creating commitment to fix a non-bug.</p>
+<p>Verdict: A is over-engineering the day-one experience — the exact anti-pattern this project names. Reject A outright. Reject C too if &quot;C&quot; means lanes-on-day-one-minus-Seq; that&#x27;s the same costume, fewer buttons. The only defensible C is *ship the one-board model as the documented graduation target* — adopted when a project actually outgrows the flat backlog, never on day one. Default stays B. Make the kanban the upgrade you grow into, not the cage you&#x27;re born in.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Port a reduced, opt-in form — Option C, and specifically the &quot;adopt at graduation&quot; variant. Here is the reframe.</p>
+<p>You are not choosing between two work-tracking shapes. You are choosing *when* a project pays the cognitive cost of lanes/Seq/tickets. The fragmented template and the one-board model aren&#x27;t competing structures — they&#x27;re the same project at two different sizes. The real variable is **the trigger**, not the template.</p>
+<p>That reframe collapses the fork. A solo weekend app with nine items does not need lanes, a Seq column, or a `tickets/` split — it needs a list. Forcing the kanban on day one optimizes for the meta-repo&#x27;s problem (a long-lived registry that blew its read cap) and imports it into projects that will never have that problem. That is exactly the day-one over-engineering this project already names as an anti-pattern. Option A loses.</p>
+<p>But Option B is too passive — it leaves the one-board model as tribal knowledge the workspace proved out and then declined to ship. The graduation machinery is *already scaffolded* and *already triggered by the real failure mode* (board outgrows the session-start read). That is the seam. The one-board model is what graduation should graduate *into*.</p>
+<p>Smallest first move that actually works: keep the fragmented template as the day-one default, and rewrite the graduation rule&#x27;s target from &quot;thin index + generic-status tickets&quot; to &quot;thin index + one-board kanban (lanes/Seq) + tickets.&quot; Add the lane vocabulary to the rule template *at the graduation step only*, each lane citing its failure mode. Close the soft seam you already found — point generic `status` at the named lanes — so graduation lands somewhere coherent instead of half-defined. You ship the proven model exactly where the proven failure mode justifies it, and nowhere it doesn&#x27;t.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Day-one default is the wrong place for this. Here is what someone outside this workspace hears when handed a freshly scaffolded project that is &quot;born&quot; with a one-board kanban: six lanes (active/next/watching/backlog/blocked/icebox), a Seq column they must keep ordered, a &quot;thin-on-touch&quot; rule they can violate, a &quot;retire-don&#x27;t-re-accrete&quot; ritual, and a tickets/ directory — before they have written a single line of code or have a single unit of work to track. That is a process for a mature, multi-stream repo. The solo weekend-app dev opens BACKLOG.md, sees a governance apparatus, and either fights it or ignores it. Neither is the welcome you want.</p>
+<p>The question assumes the reader already wants the meta-repo&#x27;s discipline. They don&#x27;t know they have a backlog problem yet — and most never will, because the scaffold already ships graduation machinery that triggers *exactly when* the backlog outgrows the session-start read. That is the tell: you have already built the thing that introduces this model at the right moment. The right moment is not birth.</p>
+<p>Who is actually affected: every future scaffolded project, most of which are smaller than this one. They experience the full model as overhead with no felt payoff, because the payoff (a board that scales) only appears at a scale they may never reach.</p>
+<p>So: not (A). Lean (C), and specifically the &quot;documented upgrade adopted at graduation&quot; variant — make the one-board model the *target* the existing graduation rule migrates toward, not the day-one shape. That closes the soft seam the question already flagged (generic `status` → named lanes) at the one moment a project has earned the complexity, and it honors the constraint you stated yourself: writes shape, not content; over-engineering day-one for a solo dev is a known anti-pattern. You are about to commit the anti-pattern you guard against.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Don&#x27;t port (Option B), with C as the fallback only if a real signal ever appears.</p>
+<p>Three years out, the asset that compounds here is the skill&#x27;s reputation as the tool that gives a solo dev exactly what they need and nothing more. The asset that depreciates fastest is bespoke structural vocabulary baked into day-one scaffolds. Lanes and Seq are a control system tuned for *this* workspace&#x27;s load — multiple concurrent skill streams, a furnace trial, cross-agent ledgers. A weekend-app builder inherits the ceremony without the load that justifies it, and &quot;every fat row is a rule violation&quot; becomes a guilt mechanism for someone whose backlog is six lines. That&#x27;s not adoption, that&#x27;s friction the skill&#x27;s name eventually carries.</p>
+<p>The second-order effect the user is missing: scaffolds are a *distribution* decision, not a workspace decision. Every project born on the one-board model is a future migration liability the moment the model evolves again — and it will, because it&#x27;s young here (the workspace adopted it &quot;recently,&quot; the ritual&#x27;s frontmatter doesn&#x27;t even hardcode the lanes yet). Porting now hard-couples the installed base to a structure that hasn&#x27;t stabilized. You&#x27;d be exporting v0.9 of your own thinking to projects you&#x27;ll never touch again.</p>
+<p>The soft seam is the tell. The honest note says today&#x27;s shape and the graduation target only *softly* mismatch — generic `status`, not hardcoded lanes. That seam is doing real work: it lets the model prove itself at graduation, on real projects, before you commit the installed base. Don&#x27;t weld it shut for elegance.</p>
+<p>What compounds instead: let the one-board model earn its way in. Keep the simple default, let graduation carry the upgrade if and when bloat demands it. If in a year multiple scaffolded projects independently reinvent lanes, *that&#x27;s* your signal — and you&#x27;ll port a proven shape, not a fresh one.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>Port a reduced form — Option C, specifically &quot;lanes but no Seq, adopted at graduation, not day-one.&quot; Here&#x27;s the pattern I&#x27;ve watched fail and the one exception that makes it work.</p>
+<p>The failure: a tool team falls in love with the workflow that works *for them* and ships it as everyone&#x27;s default. Kanban-for-everyone is the canonical version. It works in the meta-repo because the meta-repo has continuous multi-lane work, a retirement ritual someone actually runs, and an author who *likes* tending a board. A solo dev shipping a weekend app has none of that. For them, lanes + Seq + one-row-per-unit + thin-on-touch + retire-don&#x27;t-re-accrete is five rules of ceremony guarding against bloat they will never generate. You&#x27;d be exporting your discipline as their tax. That&#x27;s the &quot;over-engineer the day-one experience&quot; anti-pattern this project already named — and the board *is* the canonical instance of it.</p>
+<p>Why this case isn&#x27;t fully special: you told me the seam is *soft*. Graduation machinery already exists, the ticket frontmatter is already a generic `status` field, and bloat is already handled. So the problem the full port &quot;solves&quot; is mostly already solved. Option A buys you elegance in the meta-repo and a brownfield trap (D-013) in every scaffolded project that later disagrees.</p>
+<p>The real exception: lanes are cheap and legible; Seq + roadmap-collapse + the two accretion rules are the expensive, opinionated part. So make graduation the moment the board appears — when a project has *earned* enough work to need lanes, the upgrade path lights up, citing its failure mode (multi-section sprawl at scale). Day-one stays simple. You ship the model you proved, but as an earned upgrade, not a birthright. That&#x27;s the standard playbook honoring its own exception.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">Every response treats &#x27;over-engineering day-one for a solo weekend app&#x27; as decisive, but none verifies the load-bearing empirical premise — what the median scaffolded project actually is; the skill may overwhelmingly serve longer-horizon products where lanes earn their keep on day one, collapsing the anti-pattern framing. Relatedly, all five assume the graduation trigger actually fires in practice — but that machinery is itself proven only in the meta-repo; if it never fires, &#x27;adopt at graduation&#x27; ships a model that arrives never, functionally Option B dressed as compromise.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">Every response treats &#x27;the one-board model works in the meta-repo&#x27; as established, but none verifies the premise underneath the whole question — that the meta-repo&#x27;s success is attributable to the kanban shape rather than to the operator who invented it and personally runs the retirement ritual, meaning even the graduation target may export an operator-dependent practice no arbitrary project will sustain. And none asks whether &#x27;graduation&#x27; is ever actually triggered on real scaffolded projects.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">None verified the load-bearing factual premise that arbitrary scaffolded projects ever actually hit graduation — if real solo weekend apps are abandoned long before their backlog outgrows the session-start read, then both the day-one port AND the graduation-target rewrite are dead letters, and the honest answer is &#x27;do nothing because the trigger never fires.&#x27; All five assert the &#x27;solo weekend-app dev&#x27; as the median user without evidence, yet that single unproven persona is doing all the work of defeating Option A.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">All five assert the median scaffolded user is a &#x27;solo dev shipping a weekend app&#x27; that rarely outgrows a flat backlog, but none establishes this with any evidence — the actual distribution of context-engineering installs is the load-bearing premise the whole verdict rests on, and it is pure assumption. None asks whether the graduation rule&#x27;s trigger has ever actually fired on any scaffolded project, which would tell you if &#x27;graduate into the board&#x27; is a real path or a rule no project ever reaches.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">Every response asserts the median scaffolded project is a &#x27;solo weekend app&#x27; that never grows a backlog problem, but none cites a shred of evidence — adoption data, telemetry, even a single real downstream project — so the entire &#x27;serve the median&#x27; case rests on an unverified premise about who actually uses the skill. None considers that graduation machinery firing correctly is itself unverified on arbitrary projects, meaning the C-at-graduation consensus quietly assumes the trigger works in the wild, no more proven than the kanban model it gates.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the fork from &#x27;which template&#x27; to &#x27;when does a project pay the cost&#x27; and gives the only concrete, scoped move — rewrite the existing graduation rule&#x27;s target to the one-board model with each lane citing its failure mode — turning a verdict into an action.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It argues &#x27;don&#x27;t weld the seam shut&#x27; but never proposes pointing graduation at the proven model, leaving the soft seam half-defined and the proven shape stranded as tribal knowledge — the passivity the Architect explicitly names.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats &#x27;over-engineering day-one for a solo weekend app&#x27; as decisive, but none verifies the load-bearing empirical premise — what the median scaffolded project actually is; the skill may overwhelmingly serve longer-horizon products where lanes earn their keep on day one, collapsing the anti-pattern framing. Relatedly, all five assume the graduation trigger actually fires in practice — but that machinery is itself proven only in the meta-repo; if it never fires, &#x27;adopt at graduation&#x27; ships a model that arrives never, functionally Option B dressed as compromise.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the fork from &#x27;which template&#x27; to &#x27;when does a project pay the cost,&#x27; then names the single smallest concrete move — repoint the graduation target at the named lanes — that ships the proven model exactly where its failure mode is earned.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It argues for keeping the simple default but ignores that the graduation target is currently half-defined (generic status, no named lanes), so doing nothing leaves the seam open rather than resolving where graduation actually lands.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats &#x27;the one-board model works in the meta-repo&#x27; as established, but none verifies the premise underneath the whole question — that the meta-repo&#x27;s success is attributable to the kanban shape rather than to the operator who invented it and personally runs the retirement ritual, meaning even the graduation target may export an operator-dependent practice no arbitrary project will sustain. And none asks whether &#x27;graduation&#x27; is ever actually triggered on real scaffolded projects.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the choice as a trigger problem not a template problem and gives the most concrete, lowest-cost move — rewrite the existing graduation rule&#x27;s target and point generic `status` at the named lanes — closing the soft seam exactly where the proven failure mode justifies it.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the one-board model as still-mutating (&#x27;v0.9,&#x27; frontmatter doesn&#x27;t hardcode lanes) and concludes &#x27;don&#x27;t ship at all,&#x27; missing that graduation is a low-risk place to ship even an evolving shape because few projects reach it — under-using machinery that already exists.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None verified the load-bearing factual premise that arbitrary scaffolded projects ever actually hit graduation — if real solo weekend apps are abandoned long before their backlog outgrows the session-start read, then both the day-one port AND the graduation-target rewrite are dead letters, and the honest answer is &#x27;do nothing because the trigger never fires.&#x27; All five assert the &#x27;solo weekend-app dev&#x27; as the median user without evidence, yet that single unproven persona is doing all the work of defeating Option A.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the choice as a trigger problem rather than a template problem and gives the single most concrete, minimal move: rewrite the existing graduation rule&#x27;s target to the one-board model and point generic `status` at named lanes, each lane citing its failure mode.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It correctly flags the model is still young and unstabilized, but uses that to argue for pure inaction, missing that the proven graduation machinery already gives a safe, reversible place to ship the model without touching day-one.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All five assert the median scaffolded user is a &#x27;solo dev shipping a weekend app&#x27; that rarely outgrows a flat backlog, but none establishes this with any evidence — the actual distribution of context-engineering installs is the load-bearing premise the whole verdict rests on, and it is pure assumption. None asks whether the graduation rule&#x27;s trigger has ever actually fired on any scaffolded project, which would tell you if &#x27;graduate into the board&#x27; is a real path or a rule no project ever reaches.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It reframes the choice as when (the trigger) rather than which shape, then names the single smallest concrete move — rewrite the graduation target and point generic `status` at named lanes — that closes the soft seam exactly where the proven failure mode lives.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">It treats the installed base as a migration liability but ignores that the C-at-graduation variants incur no day-one coupling at all, so its central cost argument doesn&#x27;t actually distinguish its own pick from the consensus alternative.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response asserts the median scaffolded project is a &#x27;solo weekend app&#x27; that never grows a backlog problem, but none cites a shred of evidence — adoption data, telemetry, even a single real downstream project — so the entire &#x27;serve the median&#x27; case rests on an unverified premise about who actually uses the skill. None considers that graduation machinery firing correctly is itself unverified on arbitrary projects, meaning the C-at-graduation consensus quietly assumes the trigger works in the wild, no more proven than the kanban model it gates.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Batch B — port the one-board kanban model into the context-engineering scaffold?</p>
+  <p>Generated by the LLM Council skill · 2026-06-24T22:23:29</p>
+</footer>
+
+</div>
+</body>
+</html>
