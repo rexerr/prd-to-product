@@ -8,6 +8,11 @@ title: Build the kanban system (model + view) into the context-engineering scaff
 
 **Decision:** [D-069](../docs/DECISIONS.md) (reverses [D-068](../docs/DECISIONS.md)). This project is the template; the scaffold must ship the one-board kanban we engineered here. Optimize for Rex's clarity, not a hypothetical external user.
 
+## Progress
+
+- **Pass 1 (this repo's dogfood) — DONE 2026-06-26.** Schema upgraded **beyond the bare D-054 columns** (a brainstorm convergence, [`~/brainstorms/2026-06-25-scaffold-board-tags-formats.md`](../../brainstorms/2026-06-25-scaffold-board-tags-formats.md)): columns are now **`Item · Type · Lane · Seq · Tags · Gloss · Refs`** (7 — **no Next**). `Tags` = two axes `gate:`/`area:`, max 2, validated by the render against a `<!-- TAGS -->` block. `Gloss` = the plain-English line. Render restyled Vercel-clean (white/zinc, no card left-stripe, headline-is-the-ticket-link). Commits `f2ba832` (schema) + `5706f1b` (design). **Items 1–6 below now target this 7-col schema, not the bare D-054 one.** Model on this repo's [`BACKLOG.md`](../BACKLOG.md) as it stands post-Pass-1.
+- **Full plan (Pass 2 + 3):** `~/.claude/plans/validated-tumbling-pine.md` — twice-baked (furnace preflight + 3 Cowork rounds). Pass 3 emits the render tool to **`.claude/scripts/`** (not `scripts/` — allowlist), resolves project root by walking up to the ancestor with `BACKLOG.md`, and logs **D-070** (supersede D-068; name the D-001 trail).
+
 ## What to build
 
 Port the **one-board kanban model + the rendered view** into the scaffold, both shapes + fixture:

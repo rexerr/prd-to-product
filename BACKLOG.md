@@ -15,7 +15,7 @@ area:  which part of the system — scaffold · generator · render · skill · 
 
 | Item | Type | Lane | Seq | Tags | Gloss | Refs |
 |---|---|---|---|---|---|---|
-| [Build the kanban system into the scaffold](tickets/kanban-into-scaffold.md) | feature | active | 1 | gate:furnace, area:scaffold | Ship the board + cards I use here into every new project — building now, across passes ([D-069], reverses D-068). | [ticket](tickets/kanban-into-scaffold.md), [D-069](docs/DECISIONS.md) |
+| [Build the kanban system into the scaffold](tickets/kanban-into-scaffold.md) | feature | next | 1 | gate:furnace, area:scaffold | Ship the board + cards I use here into every new project — Pass 1 (this repo's board + render) done; Pass 2/3 port to the scaffold. | [ticket](tickets/kanban-into-scaffold.md), [D-069](docs/DECISIONS.md) |
 | Agent-process & context-harness upgrades | feature | next | 2 | area:scaffold | Leftover polish on how the agent works across sessions — one in-repo dogfood self-edit loose end remains. | [brief](docs/agent-process-brief.md) |
 | Invariant/semantic output checks | feature | next | 3 | area:generator | Make the generator catch when its output drifts from source — only the "is this claim grounded?" check is left (write-guard + no-jargon-leak done). | [council](docs/council/council-report-2026-06-08.html), [D-064](docs/DECISIONS.md#d-064) |
 | Crib adoption (residual) | chore | watching | — | area:crib, gate:rule-of-2 | Folding lessons mined from other repos into ours — waves 1–3 done; re-enters only on a new mine. | [crib plan](docs/cribs-adoption-roadmap.md), [D-059](docs/DECISIONS.md#d-059) |
