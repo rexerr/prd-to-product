@@ -163,7 +163,7 @@ At the start of a new session, read the most recent retro before doing anything 
 
 ## When BACKLOG outgrows the session-start read
 
-`BACKLOG.md` loads every session, so it has a size budget. When it grows past a quick scan, split it into a thin one-line-per-item index, move each item's working detail into an on-demand `docs/tickets/<slug>.md`, and retire resolved items via `/end-session` (archive to `docs/tickets/archive/`, never delete). **Failure it prevents:** an always-loaded registry growing unbounded until it blows the session-start read budget and orientation gets expensive.
+`BACKLOG.md` is a single kanban board — one row per unit of work, sorted by `Seq` within a lane (`active`/`next`/`watching`/`backlog`/`blocked`/`icebox`); the board sorted by `Seq` *is* the roadmap. It's thin by construction (one line per row, working detail in the linked retro/decision) and it loads every session, so keep it thin on touch. When a row needs more than its one line, spin its detail into an on-demand `docs/tickets/<slug>.md` — the board stays the one-line index, so graduation is the detail-split, not a reshape. Retire resolved rows via `/end-session` (archive cards to `docs/tickets/archive/`, never delete). **Failure it prevents:** an always-loaded registry growing unbounded until it blows the session-start read budget and orientation gets expensive.
 
 ## Where new docs go
 

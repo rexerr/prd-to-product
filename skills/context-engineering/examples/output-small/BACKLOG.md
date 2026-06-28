@@ -2,60 +2,58 @@
 
 # Backlog — simple-form
 
-What's left, in priority order. Read at session start with the most recent retro. Entries are one line + a pointer — detail lives in the linked retro/decision, never inline. As the Build-plan phases get checked off, this file becomes a flat backlog.
+A single **kanban board** of every open unit of work — one row per unit, read whole at session start. **The board *is* the roadmap:** sort by `Seq` within a lane to see order — there is no separate roadmap file. Working detail lives in the linked retro/decision (or a `docs/tickets/<slug>.md` card once the board graduates), never inline here. The `Gloss` column is a one-line plain-English label, not an exception to that.
 
----
+Read this at session start alongside the most recent retro in `docs/retros/`.
 
-## Build plan
+## Board
 
-### Phase 1: Ship deployable shell to Vercel
+One row per live unit: **Item · Type · Lane · Seq · Tags · Gloss · Refs**. `Seq` orders the actionable lanes (`active`/`next`) — the next item to pick up is the lowest `Seq`; `—` elsewhere. The allowed `Tags` vocabulary lives in the `<!-- TAGS -->` comment below; keep rows within it.
 
-**Goal:** Confirm production is reachable and the build pipeline works before any feature work begins. Catches deploy-environment surprises (env loading, build step, framework adapter, CDN config) on day one rather than month six.
+<!-- TAGS · max 2 per row · two axes only — the render validates rows against this list:
+gate:  what must happen before it moves — needs-decision · blocked-on-<dep> · review · visual-confirm
+area:  which part of the system — form · api · email · infra · docs
+-->
 
-- [ ] Push the repo to GitHub.
-- [ ] Connect the repo in the Vercel dashboard; confirm the framework preset is detected.
-- [ ] Push a trivial commit; confirm the auto-deploy fires on push to `main`.
-- [ ] Open the Vercel-assigned URL; confirm the page loads with no build errors.
-- [ ] Add `<h1>simple-form</h1>` to the landing page; push; confirm production shows the change.
-- [ ] Tag the commit `v0.0.1-deployed`.
-
-**Done when:** Production URL serves a page containing the project name in an `<h1>`.
-
----
-
-### Phase 2: MVP launch
-
-**Goal:** Replace the third-party iframe form with the in-house form on the live portfolio site.
-
-- [ ] Wire `/api/contact` to Resend, deploy, swap iframe out of portfolio site.
-
-**Done when:** Form is live on portfolio site, Jordan has received a successful test submission, iframe is removed.
-
----
-
-## In progress
-
-(none yet)
-
-## Backlog
-
-(none yet)
-
-## Open decisions
-
-Move into `docs/DECISIONS.md` when resolved.
-
-(none)
+| Item | Type | Lane | Seq | Tags | Gloss | Refs |
+|---|---|---|---|---|---|---|
+| Ship deployable shell to Vercel | chore | next | 1 | area:infra | Push to GitHub, connect Vercel, confirm auto-deploy fires and the URL serves an `<h1>` — catch deploy surprises on day one. | docs/PRD.md |
+| Wire `/api/contact` to Resend | feature | next | 2 | area:api | Validate the payload and send it through Resend in the API route. | docs/PRD.md |
+| Swap iframe out of portfolio site | feature | next | 3 | gate:visual-confirm, area:form | Replace the third-party iframe with the in-house form once Jordan confirms a test submission. | docs/PRD.md |
+| Spam-filter upgrade beyond honeypot | feature | icebox | — | area:api | Stronger spam filtering if the honeypot proves insufficient — not soon. | docs/PRD.md |
 
 ## Done
 
-See `docs/retros/` for the session-by-session record.
+Resolved rows leave the board — see `docs/retros/` for the session-by-session record. Once the board graduates to `docs/tickets/`, archive resolved cards to `docs/tickets/archive/` (archive, don't delete). Done rows do not return.
 
-## Conventions
+## Format
 
-- One line + a pointer per entry; never paste reasoning inline (this file loads every session).
-- In progress names a "done when"; Backlog names a promotion trigger; resolved items move to a retro, not back here.
-- **When this file outgrows the session-start read,** split it into a thin one-line-per-item index + on-demand `docs/tickets/<slug>.md` parts, retiring resolved items via `/end-session` (archive, don't delete). See the session-discipline rule in `AGENTS.md`.
+**Columns:**
+
+- **Item** — the unit of work (links its `docs/tickets/<slug>.md` card once one exists).
+- **Type** — one word: `feature · chore · decision · research · fix · spike`.
+- **Lane** — the kanban column (see below).
+- **Seq** — order within the actionable lanes (`active`/`next`); the next item to pick up is the lowest `Seq`. `—` elsewhere. `Seq` answers *which item is next*; the linked card answers *how*.
+- **Tags** — **max 2**, two axes only: `gate:` (what must happen before it moves) and `area:` (which part of the system). Allowed values live in the `<!-- TAGS -->` comment above the board.
+- **Gloss** — one plain-English line saying what the item *is* (and, for parked items, the trigger that un-parks it). A label, **not** inline reasoning — that stays in the linked retro/decision/ticket.
+- **Refs** — pointers to the card, decision, or retro that hold the *why* and the operational detail.
+
+**Lanes:**
+
+- `active` — being worked **this session**.
+- `next` — queued and ready to pick up; `Seq` orders it.
+- `watching` — parked on a **named trigger** (in the gloss); fires when the trigger trips, not on a schedule.
+- `backlog` — real work, not yet queued.
+- `blocked` — can't proceed until a dependency clears (the gloss names it).
+- `icebox` — someday/maybe; deliberately not soon.
+
+**Rules:**
+
+- **One line per row.** The context to *act* lives in the linked retro/decision/ticket, never inline. The `Gloss` is a one-line label, not an exception.
+- **`Seq` orders the actionable lanes** (`active`/`next`); `—` for `watching`/`backlog`/`blocked`/`icebox`.
+- **Tags stay within the `<!-- TAGS -->` vocabulary, max 2 per row.** A new value earns its place in the comment block first.
+- **Retire, don't re-accrete.** A resolved row leaves the board; once graduated, its card is archived to `docs/tickets/archive/` (archive, don't delete).
+- **New idea → a new row**, lane `icebox` or `backlog`. It earns a card when you start it.
 
 ## Cross-references
 

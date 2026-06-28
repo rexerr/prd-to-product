@@ -68,7 +68,7 @@ The actual commands a session needs. Use these; do not invent alternatives.
   - Delegate to a subagent when you need the conclusion, not the artifact — hand it only the artifact + acceptance criteria, never your own conclusion or the path you took (a verifier shown the author's framing rubber-stamps). No subagent available → say `Self-verified — independent sub-task unavailable`, don't pass anchored self-review off as independent.
 - **Commit gate (UI changes).** Do not commit until Jordan visually confirms.
 - **Session retros.** Write a retro at the end of every non-trivial session: `docs/retros/YYYY-MM-DD-topic.md`. Read the most recent retro at session start.
-- **Graduate BACKLOG when it outgrows the session-start read.** When `BACKLOG.md` grows past a quick scan, split it into a thin one-line-per-item index + on-demand `docs/tickets/<slug>.md` parts, and retire resolved items via `/end-session` (archive to `docs/tickets/archive/`, never delete). Prevents an always-loaded registry blowing the read budget.
+- **When `BACKLOG.md` outgrows the session-start read.** It's a single kanban board (one row per unit, sorted by `Seq` within a lane) — thin by construction and loaded every session. When a row needs more than its one line, spin its detail into an on-demand `docs/tickets/<slug>.md` (the board stays the one-line index); retire resolved rows via `/end-session` (archive to `docs/tickets/archive/`, never delete). Prevents an always-loaded registry blowing the read budget.
 
 ---
 
