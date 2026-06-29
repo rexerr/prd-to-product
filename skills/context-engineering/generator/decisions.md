@@ -44,7 +44,7 @@ The generator should hold answers in a state map with these keys:
 | `artifact_routing_lines` | derived | string (markdown block) | Built from `artifact_skills_list`: one bullet per opted-in skill (`- \`<skill>\` → \`docs/<folder>/\` (name: <pattern>)`). See "Doc-routing pre-seed" below. Empty when `artifact_skills_list` is empty (the `artifact_routing_block` OPTIONAL gate drops it). |
 | `include_synthesis_rule` | Q35a | bool | Default false. Gates the modular-only `synthesis-even-coverage.md` rule. Only asked when `rule_shape == "modular"` (Cluster 6, after rule-shape determination). |
 | `workflows` | Q30 | list of `{name, description}` | |
-| `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` | Q31 | strings | User-defined first phase. Routed into `phase_1_*` or `phase_2_*` template parameters by the Phase 1 derivation below. |
+| `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` | Q31 | strings | The user's first chunk of real work. Composed into `board_seed_rows` (see "Board seeding" below), not template phase parameters. |
 | (all other content fills) | Q28–Q35 | strings | Used as direct substitutions. |
 
 ## Stack and deploy-target defaults
@@ -97,68 +97,43 @@ When `deploy_target_has_cli_conflict == true`, the flat-AGENTS template's "Code 
 | `node-cli` | `fly` | `Node CLI on Fly.io` |
 | `python` | `manual` | `Python (deployed manually)` |
 
-## Phase 1 derivation (deploy-shell scaffold)
+## Board seeding (`board_seed_rows` + `backlog_tags_block`)
 
-Implements the "Smallest deployable first" opinion from [`docs/build-defaults-brief.md`](../../../docs/build-defaults-brief.md) item 1. When a deploy target exists, the generator scaffolds Phase 1 as "ship a deployable production shell" — feature work begins in Phase 2.
+The kanban `BACKLOG.md.template` carries two `<!-- PARAMETERIZE -->` markers the generator **composes from the intake answers** — the same way it fills PRD/ARCHITECTURE content, *not* from a fixed stack table. The board is the project's actual near-term work, tagged with the project's actual subsystems; `stack`/`deploy_target` supply only a small generic base, everything else is read from the user's answers (workflows, data flow, folder structure, phase tasks, out-of-scope list). *Failure it prevents:* a generic stack table can't name a project's real surfaces (a contact form's `form`/`api`/`email`), so the seeded board would be inert boilerplate the user must rewrite.
 
-### Routing
+Implements the "Smallest deployable first" opinion from [`docs/build-defaults-brief.md`](../../../docs/build-defaults-brief.md) item 1: when a deploy target exists, the first seeded row ships a deployable production shell before feature work — catching production-environment surprises (env loading, build step, framework adapter, CDN config) on day one rather than month six. The user edits any seeded row after generation; the board is the default starting point, not a lock.
 
-`BACKLOG.md.template`'s Build-plan section carries four template parameters for Phase 1 (`phase_1_name`, `phase_1_goal`, `phase_1_tasks`, `phase_1_done_when`) and four for the optional Phase 2 block (`phase_2_name`, `phase_2_goal`, `phase_2_task_placeholder`, `phase_2_done_when`). Q31's captured `phase_user_*` values are routed based on `deploy_target`:
+### `backlog_tags_block`
 
-| `deploy_target` | Phase 1 source | Phase 2 source | `phase_2_section` OPTIONAL gate |
-|---|---|---|---|
-| `none` | `phase_user_*` (wrapped: `phase_1_tasks` = `- [ ] {phase_user_task_placeholder}`) | (suppressed) | false |
-| `vercel`, `netlify`, `cloudflare`, `fly`, `railway`, `manual` | Derived from the table below | `phase_user_*` | true |
+Emit the vocabulary comment in this exact shape (the render tool validates rows against it; the axis lines read `axis:  <prose> — value · value · …`):
 
-Rationale for the override: the brief's meta-problem is that the user cannot evaluate at the code level, so the skill cannot rely on user-observed failures to discover what's missing. Scaffolding a hello-world deploy as Phase 1 catches production-environment surprises (env vars, build step, framework adapter) on day one rather than month six. The user can still edit Phase 1 of the emitted `BACKLOG.md` Build plan after the fact; the scaffold is the default, not a lock.
+```
+<!-- TAGS · max 2 per row · two axes only — the render validates rows against this list:
+gate:  what must happen before it moves — <gate values>
+area:  which part of the system — <area values>
+-->
+```
 
-### Phase 1 derivation table (when `deploy_target != "none"`)
+- **`gate:` axis (generic).** Always `needs-decision · blocked-on-<dep> · review`. Append `visual-confirm` **iff `uses_visual_confirmation_gate == true`** (the "generic-vs-visual-confirm" logic). No other gate values.
+- **`area:` axis (project-derived).** The project's own subsystems, read from `main_workflow_steps`, `primary_data_flow_steps`, `folder_structure_summary`, and `external_integrations_list_or_none`. Always include `infra` (deploy / tooling / CI) and `docs`. Include `api` when the project exposes a server surface (`stack_has_client_server_split == true`, or a backend/CLI with routes). Keep it to ~4–6 short, lowercase, single-word values — starter values the user edits. *Example (contact form with a `/contact` page, a `/api/contact` route, Resend email): `form · api · email · infra · docs`.*
 
-All derived blocks share the same `phase_1_goal` and `phase_1_done_when` shape; only the task list varies by `deploy_target`.
+### `board_seed_rows`
 
-**`phase_1_name`** — `Ship deployable shell to <deploy_target_name>`.
+Compose the table body — one row per concrete near-term unit — in `Seq` order within the `next` lane. Each row is `Item · Type · Lane · Seq · Tags · Gloss · Refs`; `Refs` points to `docs/PRD.md` (the seed source). The `Gloss` is one plain-English line; operational detail stays in the PRD. Tags obey the `area:`/`gate:` vocabulary above (max 2).
 
-**`phase_1_goal`** — `Confirm production is reachable and the build pipeline works before any feature work begins. Catches deploy-environment surprises (env loading, build step, framework adapter, CDN config) on day one rather than month six.`
+1. **Deploy-shell row** — emit **only when `deploy_target != "none"`**, as `Seq` 1: Item `Ship deployable shell to <deploy_target_name>`, Type `chore`, Lane `next`, Tag `area:infra`. `Gloss` = one line compressing the deploy steps + the day-one rationale, per `deploy_target` (gist table below). For a UI stack (`stack_has_ui == true`) the gloss ends "…the URL serves an `<h1>`"; for a non-UI stack, "…a root/health route returns the project name."
+2. **User's first work** — from Q31 (`phase_user_*`). Split `phase_user_task_placeholder` into one row per discrete task (a "deploy" sub-task folds into the deploy-shell row above, not its own row), `Seq` continuing 2, 3, …, Type `feature` (or `chore`/`fix` as fits), Lane `next`. Tag each with its `area:`, plus `gate:visual-confirm` when it touches UI and the visual gate is on. `Gloss` = the task in one plain line.
+3. **Deferred items** — from `out_of_scope_list` / `deferred_capabilities_list_or_none`, only those that are genuine *future* work (not hard exclusions): emit as `icebox` rows, `Seq —`, tagged by `area:`, gloss naming what would un-park them.
 
-**`phase_1_done_when`** — depends on `stack_has_ui`:
+**Deploy-step gist for the shell-row gloss** (compressed, per `deploy_target`):
 
-- `stack_has_ui == true`: `Production URL serves a page containing the project name in an <h1>.`
-- `stack_has_ui == false`: `Production endpoint responds with the project name in its response body (e.g., GET / returns 200 with the name).`
-
-**`phase_1_tasks`** — bulleted task list, per `deploy_target`. The penultimate task ("add the project name") varies on `stack_has_ui`: UI projects add `<h1>{project_name}</h1>`; non-UI projects add a root or health route that returns the project name.
-
-| `deploy_target` | Tasks |
+| `deploy_target` | Gloss gist |
 |---|---|
-| `vercel` | `Push the repo to GitHub` → `Connect the repo in the Vercel dashboard; confirm the framework preset is detected` → `Push a trivial commit; confirm the auto-deploy fires on push to main` → `Open the Vercel-assigned URL; confirm the page loads with no build errors` → `Add the project-name marker (see done-when); push; confirm production shows the change` → `Tag the commit v0.0.1-deployed` |
-| `netlify` | Parallel to `vercel`. Substitute "Netlify" for "Vercel"; URL is the Netlify-assigned subdomain. |
-| `cloudflare` | `Push the repo to GitHub` → `Run wrangler login if not already authenticated` → `For Pages: connect the repo in the Cloudflare dashboard, or for Workers: run wrangler deploy` → `Confirm the *.pages.dev or *.workers.dev URL serves the build` → `Add the project-name marker; deploy; confirm production` → `Tag the commit v0.0.1-deployed` |
-| `fly` | `Push the repo to GitHub` → `Run fly launch (accept defaults; do not deploy yet if asked)` → `Run fly deploy` → `Open the *.fly.dev URL; confirm the app responds` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
-| `railway` | `Push the repo to GitHub` → `Connect the repo in Railway, or run railway up from the CLI` → `Confirm Railway provisions and the generated URL responds` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
-| `manual` | `Push the repo to GitHub` → `Document the deploy command in AGENTS.md/CLAUDE.md Commands (if not already)` → `Run the deploy command once; record the production URL or artifact path` → `Add the project-name marker; redeploy; confirm production` → `Tag the commit v0.0.1-deployed` |
-
-The generator emits each task as a `- [ ]` checkbox on its own line; the table above lists them inline for brevity.
-
-### Phase 2 routing
-
-When `deploy_target != "none"`:
-
-- `phase_2_name` ← `phase_user_name`
-- `phase_2_goal` ← `phase_user_goal`
-- `phase_2_task_placeholder` ← `phase_user_task_placeholder`
-- `phase_2_done_when` ← `phase_user_done_when`
-- The `<!-- OPTIONAL: phase_2_section -->` gate evaluates to true; the entire Phase 2 section through the next `---` divider is kept.
-
-When `deploy_target == "none"`:
-
-- `phase_1_name` ← `phase_user_name`
-- `phase_1_goal` ← `phase_user_goal`
-- `phase_1_tasks` ← `- [ ] {phase_user_task_placeholder}` (single checkbox bullet, preserving the original single-task scaffold)
-- `phase_1_done_when` ← `phase_user_done_when`
-- The `<!-- OPTIONAL: phase_2_section -->` gate evaluates to false; the entire Phase 2 section through the next `---` divider is dropped.
-
-### OPTIONAL gate convention extension
-
-`phase_2_section` uses the OPTIONAL marker convention, with one extension: when the marker precedes a heading-anchored block (a `##` section), the gate covers the entire section through the next `---` divider on its own line (rather than the next blank line). This is required because the gated content here is a multi-paragraph section with internal blank lines. The general OPTIONAL spec at "OPTIONAL block handling" below permits this under "depending on context"; this row makes the context-specific rule explicit so future template edits do not break the convention.
+| `vercel` / `netlify` | Push to GitHub, connect <deploy_target_name>, confirm auto-deploy fires on push, and the URL serves the project name. |
+| `cloudflare` | Push to GitHub, connect Pages (or `wrangler deploy` for Workers), confirm the `*.pages.dev` / `*.workers.dev` URL serves it. |
+| `fly` | `fly launch` then `fly deploy`; confirm the `*.fly.dev` URL responds with the project name. |
+| `railway` | Connect the repo / `railway up`; confirm the generated URL responds. |
+| `manual` | Document the deploy command in Commands, run it once, record the production URL. |
 
 ## Server-only AI call rule (conditional)
 

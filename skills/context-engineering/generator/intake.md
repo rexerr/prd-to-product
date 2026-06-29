@@ -230,11 +230,9 @@ Free-text fills for the docs templates:
 28. **PRD content.** `product_summary_paragraph`, `target_users_list`, `core_problem_paragraph`, `main_workflow_steps`, `out_of_scope_list`, `deferred_capabilities_list_or_none`.
 29. **Architecture content.** `primary_data_flow_name`, `primary_data_flow_steps`, optional `secondary_flow_name`/`secondary_flow_steps`, `data_persistence_paragraph`, `external_integrations_list_or_none`, `folder_structure_summary`.
 30. **Workflow names.** Up to N. → `workflow_<n>_name`, `workflow_<n>_description`.
-31. **Build-plan first user-defined phase.** Captured as `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when`. The question framing depends on `deploy_target` (Q5c):
-    - **`deploy_target == "none"`** — ask for **Phase 1**. The user's answers fill Phase 1 directly. No Phase 2 scaffold is emitted.
-    - **`deploy_target != "none"`** — ask for **Phase 2**. The agent must tell the user, in one short sentence: "Phase 1 is the deploy hello-world shell (the scaffolded default — ship a deployable production page before feature work begins). Phase 2 is the first phase you define." Then ask for `phase_user_*`. `decisions.md` builds Phase 1 from the stack-aware table; the user's answers fill Phase 2.
+31. **First chunk of real work.** Captured as `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when`. Ask: "What's the first concrete chunk of work — the tasks you'd pick up first, and what 'done' looks like?" When `deploy_target != "none"`, tell the user in one sentence that the board already seeds a deploy-shell row first (ship a deployable production page before feature work — the scaffolded default), so their answer is the work that follows it. `decisions.md` ("Board seeding") composes these into `board_seed_rows`: the deploy-shell row (when a deploy target exists) plus one `next`-lane row per discrete task here.
 
-    Rationale: the brief at [docs/build-defaults-brief.md](../../../docs/build-defaults-brief.md) item 1 ("Smallest deployable first") landed as a scaffolded default when a deploy target exists. The user's first user-defined phase becomes Phase 2 in that case. When there is no deploy target, no shell phase is meaningful and Q31 fills Phase 1 as before.
+    Rationale: the brief at [docs/build-defaults-brief.md](../../../docs/build-defaults-brief.md) item 1 ("Smallest deployable first") seeds the deploy-shell as the first board row when a deploy target exists; the user's first real work is seeded after it. With no deploy target, no shell row is meaningful and the user's tasks seed the board directly.
 32. **Stack additions beyond the framework + deploy target captured in cluster 1.5.** Database, jobs runner, AI provider, external integrations. → `additional_stack_summary`.
 33. **Vocabulary lock.** Canonical names and forbidden old values, if any. → `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule`.
 34. **Architecture rules** (only for flat shape). 3–5 numbered architecture rules. → `architecture_rules_numbered_list`.
@@ -384,13 +382,13 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 - `folder_structure_summary` — Q29
 - `workflow_1_name`, `workflow_1_description` — Q30 (per workflow)
 - `workflow_2_name`, `workflow_2_description` — Q30 (per workflow, etc.)
-- `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` — Q31 (state map). `decisions.md` routes these into `phase_1_*` or `phase_2_*` template parameters depending on `deploy_target`.
+- `phase_user_name`, `phase_user_goal`, `phase_user_task_placeholder`, `phase_user_done_when` — Q31 (state map). `decisions.md` ("Board seeding") composes these into `board_seed_rows`.
 - `additional_stack_summary` — Q32
 - `canonical_vocabulary_list`, `forbidden_vocabulary_list`, `vocabulary_lock_rule` — Q33
 - `architecture_rules_numbered_list` — Q34 (only for flat shape)
 - `product_ux_rules_list`, `critical_invariants` — Q35 (only for flat shape, if applicable)
 - `include_synthesis_rule` — Q35a (state map; only for modular shape). Gates the `synthesis-even-coverage.md` rule.
 - `numbered_product_rules_list` — only if `include_product_rules == true`. Free-text 3–10 rules.
-- `open_decisions_list_or_none` — Q31 sub-fill (open decisions for the build plan, free text)
+- (retired) `open_decisions_list_or_none` — the old Build-plan "open decisions" sub-fill. The board has no open-decisions section; a live open decision is a board row tagged `gate:needs-decision` (the decision itself, once made, lives in `docs/DECISIONS.md`).
 - `ux_row_doc_names` — only for flat shape. Either drop the row (handled in decisions.md) or fill from project's UX docs.
 - `path_scoped_rule_list` — derived (built from the per-template inclusion table in decisions.md)
