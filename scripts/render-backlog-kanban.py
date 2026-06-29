@@ -54,10 +54,16 @@ def plain(text: str) -> str:
 def parse_allowed_tags(md: str) -> dict:
     """Read the `<!-- TAGS ... -->` block into {axis: {allowed values}}."""
     allowed = {"gate": set(), "area": set()}
-    m = re.search(r"<!--\s*TAGS.*?-->", md, re.S)
-    if not m:
+    # The board-intro prose also says `<!-- TAGS -->` literally, so match the
+    # *real* vocabulary block — the one whose body defines both axes — not the
+    # first comment that happens to start with TAGS.
+    block = next(
+        (m.group(0) for m in re.finditer(r"<!--\s*TAGS.*?-->", md, re.S)
+         if "gate:" in m.group(0) and "area:" in m.group(0)),
+        None,
+    )
+    if not block:
         return allowed
-    block = m.group(0)
     for axis in allowed:
         am = re.search(rf"^\s*{axis}:.*?—(.*)$", block, re.M)
         if am:
