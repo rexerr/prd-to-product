@@ -267,6 +267,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `docs/README.md.template` | always | `docs/README.md` (the doc-routing map — see "Doc-routing pre-seed" below) |
 | `claude-commands/session-start.md.template` | always | `.claude/commands/session-start.md` |
 | `claude-commands/end-session.md.template` | always | `.claude/commands/end-session.md` |
+| `claude-scripts/render-backlog-kanban.py.template` | always | `.claude/scripts/render-backlog-kanban.py` (chmod +x) — generic kanban renderer for `BACKLOG.md`. Ships always: the board ships always, so does its view tool. Emitted under `.claude/scripts/` (inside the allowlist, same category as the `.sh` hooks under `.claude/hooks/`), **not** `scripts/` (off-allowlist). Trigger precedent: the `always` command rows above; `chmod +x` mechanics: the hook rows below. |
 | `codex-config.toml.template` | `codex_usage in ("regular", "occasional")` | `.codex/config.toml` |
 | `agents-skills-README.md.template` | `codex_usage == "regular"` | `.agents/skills/README.md` |
 | `claude-settings.json.template` | `enforce_rules_as_hooks == true` | `.claude/settings.json` |
@@ -347,6 +348,7 @@ Every file the generator emits leads with a one-line **provenance banner** so a 
 | Markdown `.md`, no frontmatter | `<!-- … -->` | First line, before the H1 / `@import`. |
 | Markdown `.md` with YAML frontmatter (path-scoped rules; slash commands carry a `description`) | `<!-- … -->` | The line **directly after the closing `---`** (no blank between), then a blank line, then the H1 or body. A comment *before* `---` breaks frontmatter parsing. |
 | Shell `.sh` | two `# …` lines | After the `#!/usr/bin/env bash` shebang, before the `# Hook:`/`# Reason:` lines. |
+| Python `.py` | two `# …` lines | After the `#!/usr/bin/env python3` shebang, before the module docstring. Carries no authoring block (like the shell hooks), so the strip step is a no-op and the banner is emitted verbatim from template source. |
 | TOML `.codex/config.toml` | two `# …` lines | First emitted lines (replaces the stripped authoring block as the top). |
 | JSON `.claude/settings.json` | n/a — JSON has no comments | Carried by the existing top `"//"` documentation key; **no separate banner**. |
 

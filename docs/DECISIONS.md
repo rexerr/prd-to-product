@@ -655,6 +655,20 @@ This governs DECISIONS.md declines (e.g. D-008, D-013) and the **Parked** sectio
 **Verified:** Audit grep found the "median/weekend-dev" caricature in **zero** repo files (council-imported, not doc-sourced); the real seed lines that quietly default the lens to "audience" are CLAUDE.md:9 ("product … consumed"), CLAUDE.md:98 ("scaffolded projects … inherit"), principles.md:94 (other projects' authors as users), README ("you"). Softening tracked on the board.
 **Mirrored** to [`DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md) — a binding framing constraint that governs future decisions and is not visible from code.
 
+---
+
+### D-070 — Build the kanban board + generic render tool into the scaffold (implements D-069)
+
+**Date:** 2026-06-29
+**Context:** [D-069] reversed [D-068] and committed to building the one-board kanban system (model + view) into the `context-engineering` scaffold. This records the implementation. The ported schema is the upgraded board — `Item · Type · Lane · Seq · Tags · Gloss · Refs`, two-axis `gate:`/`area:` tags capped at 2 per row, a plain-English `Gloss` column, render-time tag validation — built in three passes (this repo's own board + render → scaffold templates + `output-small` fixture → generator wiring + emitted render tool).
+**Decision:** The scaffold emits `.claude/scripts/render-backlog-kanban.py` — a generic, shape-agnostic kanban renderer — into every scaffolded project (inclusion-table trigger `always`, `chmod +x`), alongside the kanban `BACKLOG.md.template`. The board ships always, so its view tool ships always. Output path is `.claude/scripts/` (inside the generator's closed allowlist), **not** `scripts/` (off-allowlist).
+**Reason:** [D-069] named Rex as primary audience and required the scaffold to track what is engineered here; the readable board + render tool he uses in this repo is exactly that artifact. `.claude/scripts/` keeps the tool inside the allowlist, the same category as the `.sh` hooks under `.claude/hooks/` — no allowlist change or council needed.
+**Markdown-only invariant ([D-001]):** the render tool *generates* HTML, so the interaction is named explicitly — this does **not** breach the markdown-only invariant, because it is **tooling** in the same category as the `.sh` hooks the skill already emits, **not** a skill HTML *product* path. The clearance rests on that leg alone; it does **not** rely on the view being gitignored — the generator cannot write `.gitignore` downstream (it is off-allowlist), so `output-summary.md` instructs the user to add `BACKLOG.html` to `.gitignore` instead.
+**Relation to prior decisions:** completes [D-069]'s build mandate; [D-068]'s "graduation-target-only / local-view-instead" disposition was already reversed by [D-069] and is fully retired here (D-070 does not re-supersede it).
+**Verified:** emitted render tool live-fired this session — walk-up root resolution writes `BACKLOG.html` at project root (not `.claude/`), parses the `output-small` fixture board with zero tag warnings, RED-capable (an off-vocabulary `gate:` and an over-budget 3-tag row each warn), and exits non-zero without writing when no `BACKLOG.md` ancestor exists.
+**Revisit if:** the markdown-only invariant is tightened to forbid HTML-*generating* tooling (not just HTML product), or a project needs the board in a non-HTML view.
+**Mirrored** to [`DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md) — the markdown-only carve-out (an HTML-generating dev tool under `.claude/scripts/` is permitted as tooling) is a binding constraint not visible from code.
+
 - Currently-binding subset (curated): [`docs/DECISIONS_ACTIVE.md`](DECISIONS_ACTIVE.md).
 - Decisions-log discipline (what counts as significant): [`CLAUDE.md`](../CLAUDE.md) "Decisions log".
 - Open work: [`BACKLOG.md`](../BACKLOG.md).
