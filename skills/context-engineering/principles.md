@@ -115,7 +115,6 @@ Use these when the project's shape calls for them.
 - **Design system rule.** Use when the project has a token file (CSS custom properties or equivalent) and a "no hardcoded values" enforcement target.
 - **Design heuristics rule.** Use when the project applies named UX laws (Fitts, Hick, Miller, Nielsen) to specific in-app decisions.
 - **`.codex/config.toml` and `.agents/skills/`.** Use when Codex sessions are part of the workflow and per-repo skills are worth maintaining.
-- **`BACKLOG.md` `Later / V2` section.** Optional (gated on `backlog_include_v2`). Use for V2-and-beyond items worth a standing section; otherwise V2 ideas arrive as ordinary Backlog entries when they become real.
 
 ## The recency safeguard
 
@@ -156,7 +155,7 @@ The generator asks the user about these. Defaults exist for a few; most must be 
 - Whether the project has a design system with a token file.
 - Whether the project produces user-facing copy that needs a voice-and-tone rule.
 - Whether Codex sessions are part of the workflow.
-- Whether `DECISIONS_ACTIVE.md` should be included, and whether `BACKLOG.md` carries an optional `Later / V2` section.
+- Whether `DECISIONS_ACTIVE.md` should be included.
 - Domain vocabulary, if any, for the vocabulary lock pattern.
 
 What it does not ask about: branch policy (direct-on-main, no worktrees), retro location (`docs/retros/`), session-start command location (`.claude/commands/session-start.md`). These are hardcoded.

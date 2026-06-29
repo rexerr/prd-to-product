@@ -80,7 +80,6 @@ Derived:
 ## Cluster 5: conditional patterns
 
 - `include_decisions_active`: yes
-- `backlog_include_v2`: no (V2 items arrive as `BACKLOG.md` Backlog entries when they become real)
 - `codex_usage`: occasional → emit `.codex/config.toml`, skip `.agents/skills/`
 - `canonical_workflow_doc_name`: none
 - `include_product_rules`: no

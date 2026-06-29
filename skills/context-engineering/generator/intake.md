@@ -189,9 +189,7 @@ First call:
 23. **Include `DECISIONS_ACTIVE.md`?**
    - Yes (recommended) — curated subset of binding decisions.
    - No — project is small enough that `DECISIONS.md` alone is fine.
-24. **Add a `Later / V2` section to `BACKLOG.md`?** (Mid-session deferrals and parked work always have a home in `BACKLOG.md`'s In progress / Backlog sections — no separate file. This question is only about a dedicated V2-and-beyond section.)
-   - Yes — project has a clear V2-and-beyond list worth a standing section.
-   - No (default) — V2 ideas, when they arise, live as a Backlog entry; no empty section.
+24. *(retired)* — the kanban board's `icebox`/`backlog` lanes hold deferred and V2-and-beyond work, so there is no separate `Later / V2` section to gate. The number is left as a gap to avoid renumbering 24a/25+ (the state map keys off those numbers).
 24a. **Which artifact-emitting skills will this project run regularly?** (Multi-select; default none.) Skills like `llm-council` and `brainstorm` write to a generic output location and rely on the project's convention to land tidily. For each selected, the generator pre-seeds its landing zone in the doc-routing rule + the `docs/README.md` map — the **steering line only**; the folder materializes on the skill's first write, not now. → `artifact_skills_list`.
    - `llm-council` — council reports/transcripts → `docs/council/`.
    - `brainstorm` — brainstorm outputs → `docs/brainstorms/`.
@@ -221,7 +219,7 @@ Third call (only if `codex_usage in ("regular", "occasional")`):
 
 **If the PRD has a `## Decisions` or `## Decisions made` section:** extract decisions as candidates for `DECISIONS.md` seeding. See `decisions.md` "Decisions seeding from PRD" for the per-decision criteria check before any are mirrored to `DECISIONS_ACTIVE.md`.
 
-**If the PRD has a `## V2`, `## Future`, or `## Deferred capabilities` section:** extract into the `BACKLOG.md` `Later / V2` section if `backlog_include_v2 == true`; otherwise leave the items in the PRD's "Deferred capabilities" subsection.
+**If the PRD has a `## V2`, `## Future`, or `## Deferred capabilities` section:** lift genuine future-work items into `board_seed_rows` as `icebox`/`backlog` rows (see `decisions.md` "V2/V3 extraction"); leave hard exclusions in the PRD's "Deferred capabilities" subsection.
 
 **If no PRD:** ask all questions cold.
 
@@ -354,7 +352,6 @@ These keys gate downstream extraction behavior; they do not substitute into temp
 ### Cluster 5: conditional patterns
 
 - `include_decisions_active` — Q23 (state map)
-- `backlog_include_v2` — Q24 (state map)
 - `codex_usage` — Q25 (state map)
 - `canonical_workflow_doc_name` — Q26 (only if user named one)
 - `include_product_rules` — Q27 (state map)

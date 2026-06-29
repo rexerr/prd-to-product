@@ -43,4 +43,4 @@ Do not log every small implementation detail. Log the calls that matter.
 
 - Currently-binding subset (curated): `docs/DECISIONS_ACTIVE.md`.
 - Decisions-log discipline (what counts as significant): `AGENTS.md` "Decisions log".
-- Build plan and open decisions: `BACKLOG.md`.
+- Open work (a live open decision is a `gate:needs-decision` board row): `BACKLOG.md`.

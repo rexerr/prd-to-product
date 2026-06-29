@@ -54,9 +54,9 @@ The full output tree this transcript produces lives in `output-small/`.
 
 ## Cluster 5: conditional patterns
 
-> **Skill:** Two at once: include `DECISIONS_ACTIVE.md`? Add a `Later / V2` section to `BACKLOG.md`? (Mid-session deferrals always have a home in `BACKLOG.md` — no separate file.)
+> **Skill:** Include `DECISIONS_ACTIVE.md`? (For a project this small, `DECISIONS.md` alone is usually fine; deferred work lives in the board's `icebox`/`backlog` lanes either way.)
 
-**User:** DECISIONS_ACTIVE no, no V2 section.
+**User:** No.
 
 > **Skill:** Three more: Codex used in workflow (regular / occasional / no)? Tiebreaker doc name (or none)? `product-rules.md` always-on rule needed?
 
@@ -78,10 +78,10 @@ The full output tree this transcript produces lives in `output-small/`.
 - `data_persistence_paragraph`: No persistence. The app does not own a database. Submissions are forwarded to Resend and forgotten.
 - `external_integrations_list_or_none`: Resend (email delivery).
 - `folder_structure_summary`: Standard App Router. `app/contact/page.jsx`, `app/api/contact/route.js`, `lib/email.js` for the Resend client wrapper.
-- `phase_1_name`: MVP launch.
-- `phase_1_goal`: Replace the third-party iframe form with the in-house form on the live portfolio site.
-- `phase_1_task_placeholder`: Wire `/api/contact` to Resend, deploy, swap iframe out of portfolio site.
-- `phase_1_done_when`: Form is live on portfolio site, Jordan has received a successful test submission, iframe is removed.
+- `phase_user_name` (Q31, first chunk of real work): MVP launch.
+- `phase_user_goal`: Replace the third-party iframe form with the in-house form on the live portfolio site.
+- `phase_user_task_placeholder`: Wire `/api/contact` to Resend, deploy, swap iframe out of portfolio site.
+- `phase_user_done_when`: Form is live on portfolio site, Jordan has received a successful test submission, iframe is removed.
 - `architecture_rules_numbered_list` (flat shape):
   1. **Validate before sending.** The API route validates name, email format, and message length before calling Resend. Never forward an unvalidated payload.
   2. **No client-side Resend.** The Resend SDK only runs in `app/api/contact/route.js`. Never import it from a client component.

@@ -69,7 +69,7 @@ Workflows:
 Mandatory at session start:
 
 1. `AGENTS.md` — this file (loaded automatically; Claude Code loads it via `@AGENTS.md` in root `CLAUDE.md`).
-2. `BACKLOG.md` — build plan, in-progress, backlog, open decisions.
+2. `BACKLOG.md` — the kanban board of all open work (one row per unit; lanes + `Seq`; the board sorted by `Seq` is the roadmap).
 3. Most recent file in `docs/retros/` — resume from last session.
 
 Read when relevant:

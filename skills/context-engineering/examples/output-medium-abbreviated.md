@@ -37,7 +37,7 @@ Companion to [`transcript-medium.md`](transcript-medium.md). The medium case lan
         └── README.md
 ```
 
-No `.agents/skills/` (codex_usage is `occasional`, not `regular`). No `product-rules.md` (`include_product_rules == false`). No `synthesis-even-coverage.md` (`include_synthesis_rule == false`). No `design-system.md` or `design-heuristics.md` (`design_shape == "basic_styling"`). No `Later / V2` section in `BACKLOG.md` (`backlog_include_v2 == false`). No surface-specific frontmatter pollution.
+No `.agents/skills/` (codex_usage is `occasional`, not `regular`). No `product-rules.md` (`include_product_rules == false`). No `synthesis-even-coverage.md` (`include_synthesis_rule == false`). No `design-system.md` or `design-heuristics.md` (`design_shape == "basic_styling"`). No surface-specific frontmatter pollution.
 
 ## Stack parameterization (visible in output)
 
@@ -133,7 +133,6 @@ A one-file map of this whole convention lives in `docs/README.md`.
 - `product-rules.md` (`include_product_rules == false`).
 - `synthesis-even-coverage.md` (`include_synthesis_rule == false`).
 - `design-system.md`, `design-heuristics.md` (`design_shape == "basic_styling"`).
-- `Later / V2` section in `BACKLOG.md` (`backlog_include_v2 == false`).
 - `block-deploy-cli.sh` and its `settings.json` entry (`deploy_target_has_cli_conflict == false`).
 - Vocabulary lock section in AGENTS.md (no canonical/forbidden lists).
 

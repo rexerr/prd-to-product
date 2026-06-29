@@ -153,7 +153,7 @@ Claude is responsible for starting and running the dev server. <!-- PARAMETERIZE
 
 At the end of every non-trivial session:
 
-1. Check off completed Build-plan tasks and update `BACKLOG.md` (move resolved items out to a retro, not back into the file).
+1. Update the `BACKLOG.md` board — move each touched row to the lane that now reflects its state; resolved rows leave the board for a retro, not back into the file.
 2. Write a retro to `docs/retros/YYYY-MM-DD-topic.md`. Template: `docs/retros/README.md`.
 3. <!-- OPTIONAL: tooling_check_step --> Run `npm run check`, then commit and push including doc updates.
 
@@ -197,4 +197,4 @@ Experience-derived failure modes. Each is a real failure that has happened more 
 - Product invariants the agent must enforce on feature decisions: `.claude/rules/product-rules.md`.
 - Retro template: `docs/retros/README.md`.
 - Session orientation slash command: `.claude/commands/session-start.md`.
-- Build plan, in-progress, backlog, open decisions: `BACKLOG.md`.
+- All open work (lanes + `Seq`; the board sorted by `Seq` is the roadmap): `BACKLOG.md`.

@@ -40,7 +40,7 @@ Stack: <!-- PARAMETERIZE: stack_summary_one_line -->. <!-- OPTIONAL: tech_stack_
 ## Cross-references
 
 - Product requirements (canonical for product behavior): `docs/PRD.md`.
-- Build plan and current phase: `BACKLOG.md`.
+- Open work and what's next: `BACKLOG.md`.
 <!-- OPTIONAL: ai_xref -->
 - AI rules (model split, prompt structure, surface-specific rules): `.claude/rules/ai-shared.md`.
 <!-- OPTIONAL: workflow_xref -->

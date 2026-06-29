@@ -36,7 +36,6 @@ The generator should hold answers in a state map with these keys:
 | `apply_design_heuristics` | Q20 | bool | |
 | `voice_and_tone` | Q21 | bool | |
 | `include_decisions_active` | Q23 | bool | |
-| `backlog_include_v2` | Q24 | bool | Default false. Gates the optional `Later / V2` section in `BACKLOG.md`. Mid-session deferrals are not gated — they always have a home in BACKLOG's In progress / Backlog sections. |
 | `codex_usage` | Q25 | enum | `regular`, `occasional`, `none`. |
 | `canonical_workflow_doc_name` | Q26 | string or null | |
 | `include_product_rules` | Q27 | bool | |
@@ -235,7 +234,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `claude-rules-modular/synthesis-even-coverage.md.template` | `rule_shape == "modular" and include_synthesis_rule` | `.claude/rules/synthesis-even-coverage.md` |
 | `docs/PRD.md.template` | always | `docs/PRD.md` |
 | `docs/ARCHITECTURE.md.template` | always | `docs/ARCHITECTURE.md` |
-| `docs/BACKLOG.md.template` | always | `BACKLOG.md` (root) — the single work-tracking surface (build plan + in-progress + backlog + open decisions + done). Optional `Later / V2` section gated on `backlog_include_v2`. |
+| `docs/BACKLOG.md.template` | always | `BACKLOG.md` (root) — the single kanban work-tracking board (one row per unit; lanes `active`/`next`/`watching`/`backlog`/`blocked`/`icebox`; the board sorted by `Seq` **is** the roadmap). Tag vocabulary + seed rows composed per "Board seeding". |
 | `docs/DECISIONS.md.template` | always | `docs/DECISIONS.md` |
 | `docs/DECISIONS_ACTIVE.md.template` | `include_decisions_active` | `docs/DECISIONS_ACTIVE.md` |
 | `docs/retros/README.md.template` | always | `docs/retros/README.md` |
@@ -276,7 +275,7 @@ Substitution must run before the file is written. If the YAML frontmatter contai
 
 ### OPTIONAL block handling
 
-`<!-- OPTIONAL: <key> -->` markers gate the line or block immediately following. Each marker has a condition expressed in the comment (e.g., `include if backlog_include_v2 == true`).
+`<!-- OPTIONAL: <key> -->` markers gate the line or block immediately following. Each marker has a condition expressed in the comment (e.g., `include if include_decisions_active == true`).
 
 Behavior:
 
@@ -440,11 +439,11 @@ If `canonical_workflow_doc_name` is null and `source_prd_present == true`, mark 
 
 If a `canonical_workflow_doc_name` is named, it owns the tiebreaker role and the PRD does not.
 
-### V2/V3 extraction from PRD into the BACKLOG `Later / V2` section
+### V2/V3 extraction from PRD into the board's deferred lanes
 
-If `source_prd_present == true` and `backlog_include_v2 == true`, scan the PRD for sections named `## V2`, `## V3`, `## Future`, `## Deferred capabilities`, `## Roadmap V2`, or similar. Lift the items as one-line entries into the `Later / V2` section of `BACKLOG.md` (the optional section gated on `backlog_include_v2`).
+If `source_prd_present == true`, scan the PRD for sections named `## V2`, `## V3`, `## Future`, `## Deferred capabilities`, `## Roadmap V2`, or similar. Lift the items that are genuine future work as `icebox` (or `backlog`) seed rows in `board_seed_rows` — one row each, `Seq —`, gloss naming what would un-park them. The board's `icebox`/`backlog` lanes are where deferred work lives; there is no separate `Later / V2` section.
 
-If `backlog_include_v2 == false` but the PRD has a deferred-capabilities section, leave the items in the PRD's "Deferred capabilities" subsection (which `PRD.md.template` already provides for via `deferred_capabilities_list_or_none`); they reach the backlog only as a Backlog entry if and when one becomes real.
+Leave items that are hard exclusions (never-doing) in the PRD's "Deferred capabilities" subsection (which `PRD.md.template` provides via `deferred_capabilities_list_or_none`); they reach the board only if and when one becomes real.
 
 ### Decisions seeding from PRD
 

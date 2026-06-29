@@ -98,7 +98,7 @@ This combination is the structural parameterization demo. Four derived flags res
 ## Cluster 5: conditional patterns
 
 - `include_decisions_active`: yes
-- `backlog_include_v2`: yes → `BACKLOG.md` carries a `Later / V2` section (switch from API LLM to fine-tuned classifier for high-volume topics; add streaming summary for real-time agent UI; per-team confidence thresholds)
+- Deferred work (from the PRD's V2 section) seeds `icebox` board rows: switch from API LLM to fine-tuned classifier for high-volume topics; add streaming summary for real-time agent UI; per-team confidence thresholds
 - `codex_usage`: regular → emit both `.codex/config.toml` and `.agents/skills/README.md`
 - `canonical_workflow_doc_name`: none
 - `include_product_rules`: no (PRD plus per-surface AI rules carry the load)
@@ -150,7 +150,7 @@ The combination `stack=python + deploy_target=fly + design_shape=none + voice_an
 > **Files to write:**
 > - `AGENTS.md` (canonical, modular, minimal recency)
 > - `CLAUDE.md` (one line: `@AGENTS.md`)
-> - `BACKLOG.md` (incl. `Later / V2` section — `backlog_include_v2 == true`)
+> - `BACKLOG.md` (single kanban board; the PRD's V2 items seed `icebox` rows)
 > - `.claude/commands/session-start.md`
 > - `.claude/settings.json` (one hook only)
 > - `.claude/hooks/block-env-commit.sh` + `README.md`

@@ -10,7 +10,7 @@ Companion to [`transcript-large.md`](transcript-large.md). The large case is the
 /Users/devon/Sites/triage-classifier/
 ├── AGENTS.md                          # canonical, modular shape, minimal recency
 ├── CLAUDE.md                          # one line: @AGENTS.md
-├── BACKLOG.md                         # incl. Later / V2 section (backlog_include_v2 == true)
+├── BACKLOG.md                         # single kanban board; deferred work in icebox/backlog lanes
 ├── .codex/
 │   └── config.toml
 ├── .agents/

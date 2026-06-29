@@ -15,7 +15,6 @@ The PRD requires the generator to produce usable output for three project shapes
 
 - Modular `.claude/rules/` directory: keep as-is for Large.
 - Multiple AI surface rules: keep as-is for Large (Large case has 3 AI surfaces).
-- `BACKLOG.md` with a `Later / V2` section: keep as-is for Large (`backlog_include_v2 == true`).
 - `.codex/config.toml` and `.agents/skills/`: include for Large since Codex is in active use.
 
 **On flat-vs-modular for assessment-shaped projects:** earlier framing said "assessment is canonical flat shape." Removed after the `epost-assessment` retrospective validation revealed assessment's own PRD describes a token-system-with-linter design, which crosses the modular threshold. The criterion in `decisions.md` correctly reads from the PRD's claims, so a project whose PRD describes a token system will land modular even if the current code doesn't have one yet. That's the right behavior — the PRD is forward-looking, the rules describe the target state.
@@ -112,7 +111,7 @@ templates/
 ├── docs/
 │   ├── PRD.md.template                   Required
 │   ├── ARCHITECTURE.md.template          Required
-│   ├── BACKLOG.md.template               Required (build plan + in-progress + backlog + open decisions; optional Later/V2; graduates to thin-index + docs/tickets/ via /end-session when it outgrows the session-start read — D-049)
+│   ├── BACKLOG.md.template               Required (single kanban board, one row per unit, lanes active/next/watching/backlog/blocked/icebox; graduates to thin-index + docs/tickets/ via /end-session when it outgrows the session-start read — D-049)
 │   ├── DECISIONS.md.template             Required
 │   ├── DECISIONS_ACTIVE.md.template      Optional (recommended)
 │   └── retros/README.md.template         Required
