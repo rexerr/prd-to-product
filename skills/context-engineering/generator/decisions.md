@@ -23,7 +23,7 @@ The generator should hold answers in a state map with these keys:
 | `stack_has_client_server_split` | derived | bool | True for `nextjs`, `react-vite` (with backend), false for `node-cli`, `python`. Drives the server-only AI call rule. |
 | `stack_has_ui` | derived | bool | True for `nextjs`, `react-vite`, false for `node-cli`, `python`. Drives whether visual confirmation gates commits. |
 | `uses_visual_confirmation_gate` | derived | bool | True when `stack_has_ui == true` *and* `visual_confirmer_name` is set. Drives the worktree restriction (worktrees break visual confirmation in single-dev-server workflows). False suppresses worktree-restriction rules and the visual-confirmation recency item. |
-| `enforce_rules_as_hooks` | Q5f | bool | When true, emit `.claude/settings.json` and `.claude/hooks/*.sh` to enforce load-bearing rules as actual blocks rather than prose. Default true; user can opt out. |
+| `enforce_rules_as_hooks` | Q5f | bool | When true, emit the `hooks` block in `.claude/settings.json` plus `.claude/hooks/*.sh` to enforce load-bearing rules as actual blocks rather than prose. Default true; user can opt out — `.claude/settings.json` still ships with its seeded `permissions.allow` (only the `hooks` block is dropped). |
 | `autonomy_gate_override` | Q27b | string | Non-default human-gate boundary for the "Autonomy — run to done" section. Usually empty (the section renders from `uses_visual_confirmation_gate` + `visual_confirmer_name`). Set only when the user names an exception to the default gated-surface split. |
 | `deploy_cli_lower` | derived | string | Lowercased deploy CLI name for use in shell command matchers (`vercel`, `netlify`). Empty when `deploy_target_has_cli_conflict == false`. |
 | `install_cmd`, `dev_cmd`, `check_cmd`, `test_cmd`, `build_cmd` | Q5c | string | Commands. Defaults inferred from stack. |
@@ -244,7 +244,7 @@ Each row names a conditional template, the answer that triggers it, and the outp
 | `claude-scripts/render-backlog-kanban.py.template` | always | `.claude/scripts/render-backlog-kanban.py` (chmod +x) — generic kanban renderer for `BACKLOG.md`. Ships always: the board ships always, so does its view tool. Emitted under `.claude/scripts/` (inside the allowlist, same category as the `.sh` hooks under `.claude/hooks/`), **not** `scripts/` (off-allowlist). Trigger precedent: the `always` command rows above; `chmod +x` mechanics: the hook rows below. |
 | `codex-config.toml.template` | `codex_usage in ("regular", "occasional")` | `.codex/config.toml` |
 | `agents-skills-README.md.template` | `codex_usage == "regular"` | `.agents/skills/README.md` |
-| `claude-settings.json.template` | `enforce_rules_as_hooks == true` | `.claude/settings.json` |
+| `claude-settings.json.template` | always | `.claude/settings.json` — the seeded `permissions.allow` allowlist ships **always** (see "Seeded `permissions.allow`"); the inner `hooks` block is conditional and **drops when `enforce_rules_as_hooks == false`**, leaving a permissions-only file (per the template's `//permissions` note). |
 | `claude-hooks/README.md.template` | `enforce_rules_as_hooks == true` | `.claude/hooks/README.md` |
 | `claude-hooks/block-env-commit.sh.template` | `enforce_rules_as_hooks == true` | `.claude/hooks/block-env-commit.sh` (chmod +x) |
 | `claude-hooks/block-deploy-cli.sh.template` | `enforce_rules_as_hooks == true and deploy_target_has_cli_conflict == true` | `.claude/hooks/block-deploy-cli.sh` (chmod +x) |
@@ -339,7 +339,7 @@ This section also documents, for the first time, that the authoring-metadata blo
 
 ## Hooks enforcement (parallel to prose rules)
 
-When `enforce_rules_as_hooks == true`, the generator emits `.claude/settings.json` and supporting scripts under `.claude/hooks/`. The rationale is the AGENTS.md study finding that prose rules are interpreted as guidelines; for load-bearing constraints, the right enforcement layer is a hook from the harness, not a sentence in CLAUDE.md.
+When `enforce_rules_as_hooks == true`, the generator emits the `hooks` block in `.claude/settings.json` plus the supporting scripts under `.claude/hooks/`. (`.claude/settings.json` itself is emitted **regardless** — its seeded `permissions.allow` allowlist is independent of hook enforcement; opting out drops only the `hooks` block. See "Seeded `permissions.allow`".) The rationale is the AGENTS.md study finding that prose rules are interpreted as guidelines; for load-bearing constraints, the right enforcement layer is a hook from the harness, not a sentence in CLAUDE.md.
 
 Hooks emitted:
 
