@@ -11,7 +11,7 @@ Turns a rough idea or working brief into a structured `PRD.md` via an interview 
 
 - **Never silently absorb context** — draft-and-present from any brief; ask cold only where it's thin.
 - **No internal scaffolding in user-facing copy** — "Cluster 0" / `D-NNN` are machinery, not the user's words.
-- **Never speculate about source-material age** — describe what the material contains, not provenance you can't cite.
+- **Never speculate about source-material age, or attribute a fact to a source the material doesn't name** ("based on your research" when no research was given) — describe what the material contains, not provenance you can't cite.
 
 Full failure modes in Gotchas (bottom).
 
@@ -77,4 +77,4 @@ Read `principles.md` only when the user asks why a pattern exists, or when you h
 
 - **Asking cold for what the brief already answers reads as not having read it.** The anti-silent-absorption rule (cluster 0) correctly bans absorbing a brief without confirmation, but the fix is draft-and-present, not re-interrogating the user from scratch. A thorough brief that gets asked cold makes the user push back ("doesn't my brief tell you this?") and is the overcorrection a Squirreled validation run surfaced. Draft from the brief, present for edit; ask cold only where the brief is thin.
 - **Internal scaffolding leaks into the conversation.** "Cluster 0," draft "D-001 candidate" narration, and "(from cluster 3)" provenance tags are the skill's machinery, not the user's vocabulary. Naming them mid-interview reads as form-processing instead of understanding. Keep user-facing copy in natural language; confirmed `D-NNN` IDs surface only at the cluster 5 read-back and in the written PRD, where they are part of the deliverable.
-- **Speculating about source-material age invents provenance.** Claiming a brief was "written days ago" or that "your framing may have sharpened since" when nothing states a date is an ungrounded factual claim that undermines trust in everything else the skill asserts. Describe what the material contains, not how old it is, unless the material itself carries a date you can cite.
+- **Speculating about source-material age — or inventing where a fact came from — invents provenance.** Claiming a brief was "written days ago" or that "your framing may have sharpened since" when nothing states a date, or attributing a claim to "your research" / "your interviews" the material never names, is an ungrounded factual claim that undermines trust in everything else the skill asserts. Describe what the material contains, and cite a source only when the material names it.

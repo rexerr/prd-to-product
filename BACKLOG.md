@@ -15,7 +15,6 @@ area:  which part of the system — scaffold · generator · render · skill · 
 
 | Item | Type | Lane | Seq | Tags | Gloss | Refs |
 |---|---|---|---|---|---|---|
-| Invariant/semantic output checks | feature | next | 1 | area:generator | Make the generator catch when its output drifts from source — only the "is this claim grounded?" check is left (write-guard + no-jargon-leak done). | [council](docs/council/council-report-2026-06-08.html), [D-064](docs/DECISIONS.md#d-064) |
 | Crib adoption (residual) | chore | watching | — | area:crib, gate:rule-of-2 | Folding lessons mined from other repos into ours — waves 1–3 done; re-enters only on a new mine. | [crib plan](docs/cribs-adoption-roadmap.md), [D-059](docs/DECISIONS.md#d-059) |
 | CF-22 family router (`/which-skill`) | feature | watching | — | gate:rule-of-2, area:skill | A helper that picks the right skill for a task — build only once skill-picking actually misfires (logged) or the family opens to a 2nd author. | [D-059](docs/DECISIONS.md#d-059) |
 | C-01/C-02 furnace mechanical primitives | feature | watching | — | gate:furnace, area:furnace-plan | Two safety checks for the plan-authoring tool — build when a dropped requirement bites or the furnace opens to a 2nd author. | [D-062](docs/DECISIONS.md#d-062) |
