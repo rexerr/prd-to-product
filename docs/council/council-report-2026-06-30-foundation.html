@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundation gap: build a skill, or not?</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Foundation gap: build a skill, or not?</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>Should the &quot;prd-to-product&quot; Claude Code skill toolkit (maintained by a single designer, NOT an engineer, who delegates engineering judgment to Claude) add a capability that takes a planned project to a correct, secure, tested TECHNICAL FOUNDATION in an appropriate stack — stack selection, init, API/auth, QA, CI, security? The chain prd-creator → context-engineering (which scaffolds AI-context markdown but is barred from writing product code per the D-001 &quot;skills emit markdown, not code&quot; invariant) has a [GAP] before feature-building. Options: A) new code-writing &quot;foundation&quot; skill; B) expand context-engineering to write code; C) stack-specific foundation skills; D) no skill, ad hoc per project. Repo enforces an anti-speculation &quot;Rule-of-Two&quot;. Single non-engineer maintainer; one shipped Swift app, open to React Native.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>Don&#x27;t build a foundation skill yet — capture the judgment as a hand-written FOUNDATION.md on your next real project, let live Claude execute it, and extract a skill only if a stable pattern recurs.</h3>
+    <p>Go with INSTRUMENTED D — the Architect&#x27;s split, not the Skeptic&#x27;s pure ad-hoc. Reject A and C outright (a code skill or per-stack skills are depreciating maintenance debt a solo non-engineer cannot honor; B is the same error twice). The reason to side with the instrumented majority over pure-D is that pure-D has a quiet failure mode the reviewers exposed: with no artifact, the Rule-of-Two evidence never accrues — you&#x27;ll hit the gap three more times, solve it three different ways from scratch, and still have nothing to extract. Writing a hand-made FOUNDATION.md on your next real project costs almost nothing, breaks no invariant (it&#x27;s a decision record — the shape context-engineering already emits), and IS itself the instrument that tells you whether a skill is ever warranted. Critically, it captures judgment as a checklist Claude executes live with current knowledge: you are not freezing the auth library, you are freezing the QUESTION &quot;is auth wired to current best practice?&quot; That question doesn&#x27;t rot; the answer is recomputed every session. That&#x27;s the whole trick, and it&#x27;s why it respects both the markdown-only invariant and your delegated-engineering-judgment posture.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Before writing any skill or even the FOUNDATION.md template, verify the load-bearing premise: count how many times you&#x27;ve actually stood up a technical foundation and whether the same things genuinely went wrong each time. One Swift app is one data point; if React Native makes two and you can name a repeated failure, the gap is earned and the FOUNDATION.md experiment starts on your next build. If it&#x27;s truly a single past instance, you write nothing reusable yet — you hand-author the FOUNDATION.md on the next real project as the first deliberate data point, and only recurrence decides the skill.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Pure D, build nothing</span></td>
+  <td>The gap is a sample-size-of-one hunch and any frozen foundation rots unaudited under a non-engineer.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">D-plus markdown artifact</span></td>
+  <td>Split judgment (markdown FOUNDATION.md, in-scope) from execution (live Claude); hand-write it once, extract only if it recurs.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Pure D, let friction write spec</span></td>
+  <td>Freezing a quarterly-moving field into a skill ships stale security a non-engineer can&#x27;t catch.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">D now, instrument it</span></td>
+  <td>Encoded engineering judgment is the fastest-depreciating asset in the repo; extract markdown only on recurrence.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">A in spirit, markdown not code</span></td>
+  <td>The need is real but it&#x27;s judgment, which rots when frozen; emit a foundation plan Claude executes, never product code.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>The convergence is unusually strong, and that matters. All five advisors independently rejected A, B, and C — nobody defended a code-writing skill in any form. Shared reasoning: foundation work is the fastest-depreciating thing you could freeze in this repo. Stack conventions, auth libraries, CI config, and security baselines move quarterly; a 2026 &quot;secure&quot; foundation is a 2028 liability, and you — a non-engineer — are least able to spot when your own skill&#x27;s security baseline has silently gone stale. Live Claude queries current best practice at build time; frozen markdown (or worse, code) cannot. Four of five also converged on the constructive half: the judgment part (chosen stack, why, security baseline, QA gates) is legitimately a markdown artifact that does NOT break the markdown-only invariant — and all five reviewers independently ranked the Architect&#x27;s judgment-vs-execution split as the strongest single contribution. &quot;Hand-write it once, extract only if it recurs&quot; is the agreed path through Rule-of-Two.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>The only real fault line is timing, not direction: the Skeptic/Stranger&#x27;s PURE D (handle it ad hoc, write nothing structured until friction forces it) versus the Architect/Long-View/Veteran&#x27;s INSTRUMENTED D (produce a markdown FOUNDATION.md now as a deliberate decision-record-and-checklist). The Skeptic would wait for three real builds before writing anything reusable; the Architect would write the artifact on build one precisely so the Rule-of-Two evidence can accrue. Everything else — reject A, reject B as a category error, reject C as multiplying the rot — is unanimous.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer round surfaced two gaps no single advisor caught. First, load-bearing: every advisor asserted &quot;Rex shipped one app, so the gap is a sample-size-of-one hunch&quot; — and nobody verified it. The entire anti-build case (Rule-of-Two says don&#x27;t build on one data point) rests on that headcount, lifted straight from the prompt. But the counter-reading is just as available: the [GAP] is a named, designed node every project structurally hits — closer to &quot;earned repeated need&quot; than &quot;one-off hunch.&quot; The frequency of the gap is the hinge of the whole decision, and it is currently unestablished. Second, the unauditability problem may just be relocating, not dissolving: the Architect&#x27;s move assumes a markdown FOUNDATION.md + live Claude reliably produces sound auth/CI/security, but a non-engineer can&#x27;t audit THAT output any better than frozen code — so &quot;markdown keeps judgment liquid&quot; might move the can&#x27;t-verify-it problem one step downstream. (One reviewer&#x27;s counter: a plain-English checklist&#x27;s staleness is at least auditable in a way code&#x27;s isn&#x27;t — real, but it doesn&#x27;t establish the executed foundation is sound.) The recommendation holds regardless of the headcount, but the headcount sets how fast you move from &quot;ad hoc&quot; to &quot;skill,&quot; so step one must resolve it.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>Option D — no new skill, handle foundation ad hoc — the only choice that survives the repo&#x27;s own rules. Building any foundation skill now violates Rule-of-Two; the GAP is theoretical (one shipped Swift app = sample size of one, zero repeated foundation failures). The fatal flaw in A/B/C is staleness, worse than skill-elegance: a foundation skill freezes one snapshot of engineering judgment (Expo SDK version, auth library, CI config, dependency pins) into markdown a non-engineer cannot audit; when it rots in ~6 months Rex can&#x27;t see it&#x27;s wrong and will trust an outdated security baseline because he&#x27;s delegating the judgment to verify it. Bare Claude, invoked per project, queries current best practice at build time — the skill actively makes the outcome worse for the one user who can&#x27;t catch the error. C is the trap dressed as rigor: expo-foundation AND swift-foundation AND whatever&#x27;s next, each rotting independently under a lone non-engineer. B is worst — it knifes the D-001 invariant that gives the whole product coherence, for a gap you haven&#x27;t proven hurts. The real test: build foundation the ad-hoc way three times, log what Claude redoes identically each time. If a stable, non-stale pattern emerges, THEN scaffold that checklist — and only that. Don&#x27;t scaffold the judgment; scaffold the checklist, if one even survives contact with reality.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>Foundation work isn&#x27;t one job — it&#x27;s two glued together by a false assumption. Job one: pick the right stack and decree the architecture (judgment, irreversible, high-stakes). Job two: run init, wire auth, set up CI (mechanical, deterministic, low-judgment). You&#x27;re treating &quot;fill the gap&quot; as a single skill because the gap looks like one hole. It isn&#x27;t. Once split, the answer falls out. The judgment half is already a markdown artifact — a stack-decision record, a security baseline checklist, an architecture-of-record. That&#x27;s exactly what context-engineering shaped (CLAUDE.md, rules, docs) and it does NOT break the markdown-only invariant. The execution half — actual npx create-expo, dependency installs — is what Claude already does well ad hoc, per project, with current knowledge no frozen skill can match. A skill that hardcodes &quot;the 2026 secure Expo setup&quot; rots the day Expo ships a new default. So: not A, not B, not C. The real answer is D-plus-a-markdown-artifact. Extend context-engineering (or a thin sibling) to emit a FOUNDATION.md — chosen stack + why, security baseline, QA gates, CI expectations, init commands as a checklist Claude executes live. Markdown decides; Claude&#x27;s live session does. No invariant broken, no stack-specific proliferation, no frozen engineering judgment. Smallest experiment that proves it: next real project, have Claude hand-write that FOUNDATION.md and execute from it once. If it reliably produces a sound foundation, THEN extract the skill — Rule-of-Two satisfied by evidence, not hunch. You don&#x27;t have a skill-shaped problem yet. You have one un-run experiment.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Stack-agnostic stack selection is the load-bearing phrase that hides the problem. &quot;Claude picks the right stack per job&quot; sounds like delegated expertise, but a skill is frozen text — the moment you write down &quot;for mobile, prefer Expo/React Native; wire auth like this,&quot; you&#x27;ve hardcoded a 2026 snapshot of a field that moves quarterly. The expertise Rex thinks he&#x27;s encoding is exactly the thing that rots fastest, and he — a non-engineer — is the least equipped person to notice when the security baseline or auth pattern in his own skill has gone stale and started shipping vulnerabilities into his apps. A code-writing skill maintained by someone who can&#x27;t read the code is a liability that compounds silently. Who&#x27;s actually affected: Rex, six months from now, generating a &quot;foundation&quot; he trusts because his own skill produced it — and the users of whatever app he ships on top of a CI/auth/security setup nobody competent re-validated. Words doing unexamined work: &quot;correct, secure, tested foundation&quot; assumes there&#x27;s one right answer per stack. There isn&#x27;t; that&#x27;s why it&#x27;s judgment, not a template. The tell against building anything: the repo&#x27;s own Rule-of-Two says build on repeated real need. Rex has shipped one app. He has a [GAP] in a diagram, not a documented pattern of pain. That is a hunch wearing a flowchart. Pick D. Build foundations ad hoc with live Claude, which re-derives current judgment every time instead of freezing it. Let the repeated friction — the same setup steps, hand-done three times — write the spec for you. If a pattern emerges, capture it then, stack-specific (C), as a checklist Claude executes, not as Claude&#x27;s brain in a jar.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Stack-specific skills (option C) is a trap that&#x27;s invisible today and obvious in three years: you&#x27;d be signing a lone non-engineer up to track the security baseline, auth patterns, and CI conventions of Expo and Swift and whatever&#x27;s next — as each one drifts underneath you. Encoded engineering judgment is the fastest-depreciating asset you can put in this repo. A &quot;correct, secure&quot; foundation written in 2026 is a liability by 2028; Claude&#x27;s live judgment isn&#x27;t. You&#x27;d be freezing the one thing that should stay liquid. That&#x27;s the second-order effect hiding behind the gap: the gap isn&#x27;t a missing skill, it&#x27;s a desire to pin down expertise you&#x27;ve deliberately chosen to delegate. Every line of stack-specific foundation code you commit is a maintenance debt that compounds while the underlying model that could&#x27;ve just done it fresh keeps getting better. You&#x27;d be racing the platform — and losing. What compounds in your favor instead: the markdown-only invariant (D-001) and the anti-speculation discipline. Those are reputation-grade assets — they&#x27;re why this toolkit stays legible to you, a non-engineer, three years on. Option A or B spends that identity to buy a depreciating artifact. Bad trade. The move: D now, and let the gap teach you. Handle foundation ad hoc with Claude, but instrument it — keep a thin markdown log of what Claude picks and where it stumbles. If after several real builds the same failure recurs, you&#x27;ll have earned (per Rule-of-Two) a markdown skill that encodes foundation judgment — a checklist, a decision tree, security questions to ask — not foundation code. That honors the invariant and captures the only thing worth capturing: the repeatable judgment, never the perishable output.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>The obvious move here is D — handle it ad hoc — and the standard playbook usually says exactly that. I&#x27;ve watched a dozen toolkits die of premature skill-proliferation: someone builds an &quot;any-stack bootstrap&quot; skill, it encodes their 2024 opinion of Expo, and eighteen months later it&#x27;s confidently wiring up deprecated auth patterns nobody caught because a markdown skill can&#x27;t fail a test. That&#x27;s the pattern, and it&#x27;s brutal for a lone maintainer. A code-writing foundation skill is a liability that ages, unlike your markdown skills which age into mild staleness, not broken builds. So why isn&#x27;t D just the answer? Because the Rule-of-Two cuts the other way: this isn&#x27;t a hunch. The [GAP] is real, repeated, and named — every project hits it. That&#x27;s earned, not speculative. But &quot;the need is real&quot; does not license &quot;build a code skill.&quot; The need is judgment at the foundation step, and judgment is the one thing that rots fastest when frozen into a generated scaffold. The case that&#x27;s special: your skills are markdown because markdown survives. The moment a skill emits product code, it inherits a maintenance contract — test it, secure it, version it against the stack — that a non-engineer solo maintainer cannot honor. That&#x27;s not skill design, that&#x27;s a different product (B is the category error; it poisons the one skill that works). The honest move: A in spirit, but the skill should emit a stack-decision-and-foundation plan — markdown, checklists, a security/QA baseline Claude executes live — not code. Keep markdown-only. Let Claude write the code each time with current knowledge. Don&#x27;t freeze the judgment; scaffold the questions. Reject C — stack-specific skills are the proliferation trap dressed as rigor.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name architect">The Architect</span></td><td><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span><span class="vote-dot architect"></span></td><td><span class="vote-empty">—</span></td></tr>
+<tr><td><span class="advisor-name stranger">The Stranger</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span><span class="vote-dot stranger"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">None verifies the load-bearing premise that Rex has shipped only one app — the actual count of past foundation builds is the hinge of the whole decision and nobody checked it. And all five collapse &#x27;no foundation skill&#x27; with &#x27;do nothing,&#x27; missing that ad-hoc-WITH-a-logging-instrument is itself a design choice that must be specified NOW, or the Rule-of-Two evidence never accrues.</span><span class="missed-attribution">flagged by The Skeptic</span></li>
+<li><span class="missed-text">None verifies that a markdown FOUNDATION.md actually yields a correct/secure foundation when executed — a non-engineer can&#x27;t audit markdown-checklist + live Claude any better than frozen code, so &#x27;markdown survives, judgment stays liquid&#x27; quietly RELOCATES the unauditability problem rather than solving it. Nobody ran the cheap test, so all five argue over an experiment whose result no one has.</span><span class="missed-attribution">flagged by The Architect</span></li>
+<li><span class="missed-text">All assert as fact that Rex shipped one app and the GAP is &#x27;theoretical,&#x27; but none verified — the GAP is a named, DESIGNED node every project structurally hits, closer to earned repeated need than &#x27;sample size of one&#x27; admits. And a foundation checklist still hardcodes WHICH security questions to ask, so even &#x27;capture only the judgment&#x27; carries some staleness risk the responses wave away as costless.</span><span class="missed-attribution">flagged by The Stranger</span></li>
+<li><span class="missed-text">Every response treats the gap&#x27;s frequency as proven or unproven to suit its conclusion; the Rule-of-Two verdict hinges entirely on that unestablished fact. And none asks whether the FOUNDATION.md artifact is just context-engineering&#x27;s EXISTING output by another name — i.e., whether the GAP is real or an artifact of mislabeling what the current chain already emits.</span><span class="missed-attribution">flagged by The Long View</span></li>
+<li><span class="missed-text">The &#x27;one app / sample size of one&#x27; headcount is an unverified premise lifted from the prompt, and the entire anti-build case rests on it. And a checklist/decision-record is itself an executable artifact whose staleness is AUDITABLE in plain English by a non-engineer, unlike code — so the staleness objection cuts against CODE specifically, not against a markdown FOUNDATION.md at all.</span><span class="missed-attribution">flagged by The Veteran</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="skeptic"><summary><span class="label">Reviewer 01</span><span class="name">The Skeptic</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It alone dissolves the false binary by splitting foundation into judgment (markdown, already in scope) versus mechanical execution (live Claude), giving a concrete FOUNDATION.md artifact and a one-run experiment that satisfies Rule-of-Two without breaking any invariant.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It asserts &#x27;Rex shipped one app&#x27; as decisive yet conflates repetition of a workflow STEP with repetition of foundation FAILURES — the GAP recurs in the chain&#x27;s own design for every project.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None verifies the load-bearing premise that Rex has shipped only one app — the actual count of past foundation builds is the hinge of the whole decision and nobody checked it. And all five collapse &#x27;no foundation skill&#x27; with &#x27;do nothing,&#x27; missing that ad-hoc-WITH-a-logging-instrument is itself a design choice that must be specified NOW, or the Rule-of-Two evidence never accrues.</div></div></div></details>
+<details class="architect"><summary><span class="label">Reviewer 02</span><span class="name">The Architect</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It dissolves the dilemma by splitting judgment (markdown-able now, no invariant broken) from mechanical execution (Claude live), then names the single cheapest experiment to earn the skill — the most actionable, least dogmatic answer.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It dramatizes staleness as fatal but never grapples that a markdown checklist Claude executes live (which it concedes at the end) sidesteps the very rot it spent the whole answer on.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None verifies that a markdown FOUNDATION.md actually yields a correct/secure foundation when executed — a non-engineer can&#x27;t audit markdown-checklist + live Claude any better than frozen code, so &#x27;markdown survives, judgment stays liquid&#x27; quietly RELOCATES the unauditability problem rather than solving it. Nobody ran the cheap test, so all five argue over an experiment whose result no one has.</div></div></div></details>
+<details class="stranger"><summary><span class="label">Reviewer 03</span><span class="name">The Stranger</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It alone splits irreversible judgment (markdown, already in-scope) from mechanical execution (live Claude), yielding a concrete FOUNDATION.md and a falsifiable one-project experiment that satisfies Rule-of-Two by evidence.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It is so committed to pure-D that it never considers a markdown foundation artifact could capture the judgment now without freezing perishable code — the synthesis the strongest response reaches.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">All assert as fact that Rex shipped one app and the GAP is &#x27;theoretical,&#x27; but none verified — the GAP is a named, DESIGNED node every project structurally hits, closer to earned repeated need than &#x27;sample size of one&#x27; admits. And a foundation checklist still hardcodes WHICH security questions to ask, so even &#x27;capture only the judgment&#x27; carries some staleness risk the responses wave away as costless.</div></div></div></details>
+<details class="longview"><summary><span class="label">Reviewer 04</span><span class="name">The Long View</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It decomposes &#x27;foundation&#x27; into an irreversible judgment half (markdown — invariant-safe) and a mechanical execution half (live Claude), dissolving the A/B/C/D dilemma rather than just picking the safe option, and names the smallest disconfirming experiment.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It asserts &#x27;one app&#x27; as decisive but never reconciles that with the question&#x27;s own claim that the GAP is hit by &#x27;every project&#x27; — it skips testing whether the repeated-need bar is already met.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response treats the gap&#x27;s frequency as proven or unproven to suit its conclusion; the Rule-of-Two verdict hinges entirely on that unestablished fact. And none asks whether the FOUNDATION.md artifact is just context-engineering&#x27;s EXISTING output by another name — i.e., whether the GAP is real or an artifact of mislabeling what the current chain already emits.</div></div></div></details>
+<details class="veteran"><summary><span class="label">Reviewer 05</span><span class="name">The Veteran</span><span class="picks">Strongest: <span class="advisor-name architect">The Architect</span> · Blind spot: <span class="advisor-name stranger">The Stranger</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name architect">The Architect</span></span></div>
+<div class="row-explanation">It splits judgment vs. execution, dissolves the false binary every other response wrestles with, and yields a concrete smallest-experiment.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name stranger">The Stranger</span></span></div>
+<div class="row-explanation">It treats the [GAP] as &#x27;a hunch wearing a flowchart&#x27; yet never engages the counter that a markdown decision-record could satisfy the need without any code or staleness risk — it argues only against the code-skill strawman.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">The &#x27;one app / sample size of one&#x27; headcount is an unverified premise lifted from the prompt, and the entire anti-build case rests on it. And a checklist/decision-record is itself an executable artifact whose staleness is AUDITABLE in plain English by a non-engineer, unlike code — so the staleness objection cuts against CODE specifically, not against a markdown FOUNDATION.md at all.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Foundation gap: build a skill, or not?</p>
+  <p>Generated by the LLM Council skill · 2026-06-30T12:00:00</p>
+</footer>
+
+</div>
+</body>
+</html>
