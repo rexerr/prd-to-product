@@ -1,3 +1,5 @@
+**The goal — set your lens by this first.** This repo's skills (`context-engineering`, `prd-creator`, `design-system-bootstrap`, siblings) exist to **improve Rex's future projects**. Judge any task by whether it changes what a skill *produces for a real downstream project*. This repo's own process docs are exhaust from that work — necessary, minimal, never the deliverable. Refining paperwork or a skill's prose without changing its output is the wrong altitude.
+
 Read the following files in this order before responding:
 
 1. BACKLOG.md
