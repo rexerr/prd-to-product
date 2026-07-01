@@ -27,6 +27,17 @@ Pressure scenarios combine 3+ pressures (time, sunk cost, authority, social) and
 - **Variance is the headline metric, not the pass rate** — their 60-trial eval found the real defect was one fixture giving 3 different answers in 4 trials; two confidently-wrong N=1 reads are documented in the same doc. Confirms this ticket's ≥3-trials precondition with field data.
 - **Grade from the transcript, never the model's self-report.**
 
+**Harness design (TanStack/intent remainder mine, 2026-07-01)** — `evals/intent-discovery/` is a shipping instance of this exact experiment (does ambient guidance prose change agent behavior?). The methodology is now design-complete; what remains is instantiating a runner on scripted Claude Code sessions. Lift these structures ([mined doc IR-1](../docs/mined/2026-07-01-tanstack-intent-remainder.md) has citations):
+
+- **Condition lattice + diagnostic ceiling arm** — no-prose / current-prose / candidate-prose conditions scored; an explicit-instruction arm runs as a ceiling check but is *excluded from the headline score*. Prompt explicitness is a separate controlled dimension, not mixed into the conditions.
+- **Materialize the prose from the product** — the harness injects the actual SKILL.md/rules file under test (imported/copied at run time), never a paraphrase, so measured prose can't drift from shipped prose.
+- **Calibrate the grader first** — hand-written known-outcome transcripts (including expected *failures*) regression-test the grading before any live run is trusted; a grader that can't reproduce known verdicts invalidates the run, not the rule.
+- **Two failure channels** — harness-integrity failures fail the experiment; behavioral failures are diagnostic data. Never let a broken harness read as a behavioral result.
+- **pass@k AND pass^k over ≥3 runs** — pass^k (every run complies) is the reliable-not-lucky metric; report per-condition rates + a failure-class histogram.
+- **Judge quarantine** — any LLM judge annotates subjective residue only, with a mandated "unknown"; it never touches deterministic scores.
+- **Anti-contamination guards** — a *mention* of the behavior must not grade as the behavior (their parser requires command-position forms); the rule text itself must not be parseable as compliance evidence.
+- **Failure taxonomy** — their corpus names 13 classes; the host-relevant ones beyond pass/fail: `reference-only` (talked about the rule, didn't apply it), `late-load` (applied after the harmful act), `instruction-ignored`, `context-saturation`.
+
 ## Why (pointers)
 
 [superpowers handoff brief](../docs/superpowers-context-engineering-handoff.md); github.com/obra/superpowers `writing-skills`; [CE-plugin mine](../docs/mined/2026-07-01-compound-engineering-plugin.md) P-3 (`safe-auto-rubric-calibration.md`, `paired-old-vs-new-injection-skill-evals.md`, `fake-cli-harness-for-skill-judgment-evals.md` in the clone). Promotion = Rule of Two (two real prose defects caught). Complements the 2026-06-08 council's "structural assertions, not byte-diffs" on the behavioral side.
