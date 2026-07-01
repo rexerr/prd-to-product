@@ -20,6 +20,13 @@ Verify the auto-load assumption first; run **≥3 trials per condition**; only a
 
 Pressure scenarios combine 3+ pressures (time, sunk cost, authority, social) and force a concrete A/B/C choice with no "I'd ask the user" exit. Meta-test the violator: "how could the rule have been written to make the right answer unambiguous?" (ignored-it → foundational principle; should-have-said-X → add X verbatim; didn't-see-Y → surface earlier). Bulletproof = complies under max pressure AND cites the rule AND acknowledges the temptation. **Adopt the method, not superpowers' persuasion-heavy tone.**
 
+**Measured counterpart (CE-plugin mine, 2026-07-01)** — Every's plugin runs the same idea as a working eval discipline; fold these into any slice:
+
+- **Paired blind old-vs-new injection** — run both prose versions blind against the same fixtures; outcomes classify as *improvement* / *no-regression* / **already-emergent-at-this-tier** (an honest third bucket our plan lacked: the rule may be a no-op because the model already does it).
+- **Fixtures must be discriminating** — a scenario both versions pass proves nothing; design the case where old fails and new succeeds, or conclude "no demonstrated improvement."
+- **Variance is the headline metric, not the pass rate** — their 60-trial eval found the real defect was one fixture giving 3 different answers in 4 trials; two confidently-wrong N=1 reads are documented in the same doc. Confirms this ticket's ≥3-trials precondition with field data.
+- **Grade from the transcript, never the model's self-report.**
+
 ## Why (pointers)
 
-[superpowers handoff brief](../docs/superpowers-context-engineering-handoff.md); github.com/obra/superpowers `writing-skills`. Promotion = Rule of Two (two real prose defects caught). Complements the 2026-06-08 council's "structural assertions, not byte-diffs" on the behavioral side.
+[superpowers handoff brief](../docs/superpowers-context-engineering-handoff.md); github.com/obra/superpowers `writing-skills`; [CE-plugin mine](../docs/mined/2026-07-01-compound-engineering-plugin.md) P-3 (`safe-auto-rubric-calibration.md`, `paired-old-vs-new-injection-skill-evals.md`, `fake-cli-harness-for-skill-judgment-evals.md` in the clone). Promotion = Rule of Two (two real prose defects caught). Complements the 2026-06-08 council's "structural assertions, not byte-diffs" on the behavioral side.
