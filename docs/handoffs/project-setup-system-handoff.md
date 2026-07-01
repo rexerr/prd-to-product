@@ -60,6 +60,8 @@ Council artifacts (this session): [report](../council/council-report-2026-06-30-
 | **Security** checks | **Thin** — a few commit-blocking hooks; no actual audit |
 | **Code audits** | **Partial** — built-in `/code-review`, `/security-review` exist, but not project-aware or guaranteed to run |
 | **Tests** | **Not established** — rules can *reference* tests; nothing sets up a harness or gates coverage |
+| Product **instrumentation / metrics** *(added 2026-07-01)* | **Not covered by anything mined** — no repo in the Track-2 set touches it (gstack's telemetry serves itself, not the scaffolded product). Reference shape: Every's product-pulse pattern — instrumentation framed as a *setup step* ("if not instrumented, stop and set that up"), strategy-seeded KPIs → dated one-page reports → a folder of pulses as the product's working memory ([mine](../mined/2026-07-01-every-agent-native-guides.md)) |
+| **Agent-environment parity** (dev-workflow: agent can run the app/tests, see logs, screenshot, PR) *(added 2026-07-01)* | **Not covered** — surfaced by Every's compound-engineering guide ("every capability you withhold becomes a task you do yourself"). **Attribution note:** cite that guide only — Every's *agent-native architectures* guide is a different axis (in-product parity for agent-native products; a product-architecture concern, not a foundation gate) ([mine](../mined/2026-07-01-every-agent-native-guides.md)) |
 
 ## 5. The reframe: compose, don't freeze
 
@@ -79,6 +81,7 @@ The likely answer is **not** "Rex authors a foundation skill" and **not** "do no
   - **→ Recommend a council at the actual compose-vs-build decision** (costly + hard to reverse, per the "recommend a council at genuine forks" rule). The mine fed the fork; it did not settle it. Guard captured: do **not** import gstack's "Boil the Ocean" no-scope-gate / no-file-cap ethos — it is the philosophical opposite of our scope-gate discipline.
 
 **Track 3 — Deep online research (insights + inspiration).** What's out there for setting up iOS / React Native / web apps *for success* — existing skills, starters, security/audit/test tooling, "production-ready foundation" systems? Pull insights and inspiration for our system. The `/deep-research` skill fits this; frame it around "what a sound project-setup layer covers, and who already does it well."
+  - *Partially served 2026-07-01:* the Every agent-native guide cluster was mined ([mine](../mined/2026-07-01-every-agent-native-guides.md)) — it added the two coverage-map dimensions above (instrumentation/metrics, agent-environment parity) and a strategy-layer-upstream-of-PRD candidate. The broader `/deep-research` sweep remains open.
 
 ## 7. Connects to existing backlog (Rex's own board already half-agrees)
 
