@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project-setup connective layer — build vs compose, and delivery</title>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --rule: #e4e4e7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+.micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+header h1 {
+  font-size: 32px;
+  font-weight: 200;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+header .meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.question p:first-child { margin-top: 0; }
+.question p:last-child { margin-bottom: 0; }
+.question strong { color: var(--ink); font-weight: 500; }
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+}
+.box h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.box h3:first-child { margin-top: 0; }
+.box p { margin: 0 0 12px; }
+.box p:last-child { margin-bottom: 0; }
+.box ol, .box ul { margin: 12px 0; padding-left: 24px; }
+.box li { margin-bottom: 8px; }
+
+.recommendation {
+  background: var(--ink);
+  color: var(--surface);
+  padding: 28px 32px;
+}
+.recommendation .micro { color: var(--ink-faint); }
+.recommendation h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0 12px;
+  color: var(--surface);
+  letter-spacing: -0.01em;
+}
+.recommendation p {
+  font-size: 15px;
+  margin: 0 0 10px;
+  font-weight: 300;
+  color: #e4e4e7;
+}
+.recommendation p:last-child { margin-bottom: 0; }
+
+.first-step {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+}
+.first-step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.first-step strong { font-weight: 500; }
+
+.alignment {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.alignment table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alignment th, .alignment td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.alignment th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.alignment td:first-child { font-weight: 500; width: 26%; }
+.alignment td.position { width: 22%; }
+.alignment tr:last-child td { border-bottom: none; }
+.pos {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+
+details {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+details summary {
+  padding: 18px 24px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 18px;
+}
+details[open] summary::after { content: '−'; }
+details summary .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+details summary .name {
+  color: var(--ink);
+}
+details .body {
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+  padding-top: 20px;
+  color: var(--ink-soft);
+}
+details .body p:first-child { margin-top: 0; }
+details .body p:last-child { margin-bottom: 0; }
+
+  .skeptic .name, .advisor-name.skeptic { color: #b91c1c; }
+  .vote-dot.skeptic { background: #b91c1c; }
+  .architect .name, .advisor-name.architect { color: #1e40af; }
+  .vote-dot.architect { background: #1e40af; }
+  .stranger .name, .advisor-name.stranger { color: #166534; }
+  .vote-dot.stranger { background: #166534; }
+  .longview .name, .advisor-name.longview { color: #6b21a8; }
+  .vote-dot.longview { background: #6b21a8; }
+  .veteran .name, .advisor-name.veteran { color: #92400e; }
+  .vote-dot.veteran { background: #92400e; }
+
+.reviews details summary { padding: 14px 24px; font-size: 13px; gap: 12px; flex-wrap: wrap; }
+.reviews details .body { font-size: 13px; }
+.reviews .picks {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: auto;
+  padding-right: 24px;
+}
+.reviews details summary::after { margin-left: 0; }
+.sub-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.votes {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.votes table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.votes th, .votes td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.votes th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  background: var(--bg);
+}
+.votes td:first-child { font-weight: 500; width: 38%; }
+.votes td:nth-child(2), .votes td:nth-child(3) { width: 31%; }
+.votes tr:last-child td { border-bottom: none; }
+.vote-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: var(--ink-faint);
+}
+.vote-empty { color: var(--ink-faint); font-size: 14px; }
+
+.missed-box {
+  padding: 8px 36px;
+}
+.missed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.missed-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.missed-list li:first-child { padding-top: 18px; }
+.missed-list li:last-child { border-bottom: none; padding-bottom: 18px; }
+.missed-text {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.missed-attribution {
+  display: block;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.review-detail { display: grid; gap: 6px; }
+.review-detail .row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.review-detail .row:first-child { margin-top: 0; }
+.review-detail .row-value { font-size: 13px; text-transform: none; letter-spacing: 0; }
+.review-detail .row-explanation {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+footer p { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="micro">Council Report</div>
+  <h1>Project-setup connective layer — build vs compose, and delivery</h1>
+  <div class="meta">5 advisors · anonymous peer review · chairman synthesis</div>
+</header>
+
+<section>
+  <h2>The question</h2>
+  <div class="question"><p>What shape should a &quot;project-setup connective layer&quot; take for prd-to-product&#x27;s Claude Code skill ecosystem — how much to BUILD vs COMPOSE, and how to DELIVER it (plugin/marketplace vs vendored)? The skills&#x27; owner (Rex) is a designer who delegates ALL engineering judgment to Claude. A two-project review (seance, native iOS shipped; Strays, RN/Expo frozen at the trio→build seam) verified a recurring gap between the trio (prd-creator→context-engineering→design-system-bootstrap, which plans+scaffolds) and standing up stack/security/tests/deploy. Deep research found the market sells every individual CAPABILITY as maintained tools but NOBODY sells the per-project-type composition+verification GLUE. Guardrail from a prior council: capture durable QUESTIONS not perishable ANSWERS; composing externally-maintained tools is not freezing. Hard constraint: verification often can&#x27;t run in the agent&#x27;s shell (iOS CI industry-broken on Xcode 26), so it must route to a capable actor. Four forks: (1) BUILD vs COMPOSE the glue (borrowables: cruft linked-template drift model; verify-it-ran ladder = doctor probes + Terraform check + GitHub needs:-DAG); (2) DELIVERY plugin/marketplace vs vendored; (3) starter lane per stack; (4) iOS submission Fastlane vs Xcode Cloud.</p></div>
+</section>
+
+<section>
+  <h2>The recommendation</h2>
+  <div class="recommendation">
+    <div class="micro">Council verdict</div>
+    <h3>COMPOSE the glue and VENDOR it now — but build nothing until you prove a specific human can actually read a red verification rung, because the whole routing design silently assumes a &quot;capable actor&quot; the premise says doesn&#x27;t exist.</h3>
+    <p>Compose, don&#x27;t build. Vendor now, defer plugin/marketplace and forks #3/#4 with a decision rule. But treat the verification-routing table as an unproven hypothesis, not a settled design — and gate everything on one test first. I side with the majority on direction because it survives every objection: building glue is a maintenance business one non-engineer cannot staff, and vendoring is the reversible choice at N=2. But I weight the Skeptic&#x27;s dissent heavily on mechanism, because four peer reviewers independently confirmed his two contradictions are real and unanswered. The synthesis: the durable question-set is the only thing that compounds, and it is worth authoring even if everything else fails — so author that first and let it prove whether a routing layer is real. Do not adopt cruft on faith; its drift-propagation may be incompatible with your own guardrail, and you can get the durable question checklist without it. Do not build the routing table as polished prose before a single instance has unfrozen a real frozen seam. The honest risk is that at N=2 this is a personal workflow dressed as a product; the discipline that keeps you honest is refusing to build the abstraction until one concrete instance earns it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing to do first</h2>
+  <div class="first-step">
+    <p>Before writing any glue, hand-write the verification-routing table for one real frozen seam (Strays&#x27; RN seam, or seance&#x27;s iOS gap) — four columns: check / who judges it / what red looks like / what green looks like — then physically test whether Rex can read a deliberately-failed rung. If Rex looks at a red cruft check (or a failed doctor probe) and cannot tell whether it&#x27;s actionable or noise, the routing terminates at a blind judge and the layer is theater — stop and redesign around CI-as-judge or don&#x27;t build it. If it unfreezes the seam and Rex can read the signal, the layer is real and you build outward from that proven instance. This single test verifies premise #1 (a capable actor exists) and premise #3 (the glue is needed, not a hand-note substitute) — the two the whole recommendation depends on and no advisor established.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Council alignment</h2>
+  <div class="alignment">
+    <table>
+      <thead>
+        <tr><th>Advisor</th><th>Position</th><th>Core argument</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td><span class="advisor-name skeptic">The Skeptic</span></td>
+  <td class="position"><span class="pos">Compose, but don&#x27;t build until you name the judge</span></td>
+  <td>The verify-it-ran ladder routes to a &#x27;capable actor&#x27; who by premise delegates ALL engineering judgment, so it terminates at a judge who can&#x27;t read the signal; and cruft&#x27;s drift-propagation requires the pinned answers the questions-not-answers guardrail forbids — both shared recommendations incoherent as stated.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name architect">The Architect</span></td>
+  <td class="position"><span class="pos">Compose; routing table is the product</span></td>
+  <td>The whitespace is an orchestration + judgment-routing gap, not a capability gap; bind cruft to externally-maintained templates so updates pull the maintainer&#x27;s fixes not Rex&#x27;s rot; refuse to build the table until one frozen seam earns it.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name stranger">The Stranger</span></td>
+  <td class="position"><span class="pos">Compose; deliver as a plugin</span></td>
+  <td>BUILD is disqualified by maintainability-by-this-specific-human; the plugin is the one channel where cruft check in CI can nag an owner who otherwise can&#x27;t see drift.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name longview">The Long View</span></td>
+  <td class="position"><span class="pos">Compose; vendor first, plugin later</span></td>
+  <td>On a 3-year axis only the QUESTION SET compounds; every pin depreciates on a 6–18mo clock, so author the durable checklist and borrow everything executable; the maintainability asymmetry decides fork #1 and vendoring stays reversible while plugin conventions churn.</td>
+</tr>
+<tr>
+  <td><span class="advisor-name veteran">The Veteran</span></td>
+  <td class="position"><span class="pos">Compose; vendor now, marketplace later</span></td>
+  <td>The trap is a big helpful setup skill that rots into a liability; author durable questions + composition ORDER and shell out for every answer; verification is a routing artifact that refuses to self-certify — but he names concrete pins without confronting the judgment-blind-owner problem.</td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the council agrees</h2>
+  <div class="box"><p>All five advisors converge, unusually tightly, on the two central forks. On BUILD vs COMPOSE it is unanimous: compose externally-maintained tools; author only the durable question-set and the verification-routing table. Every advisor independently reaches the same reason — a single non-engineer cannot staff the maintenance treadmill that building glue creates, the exact &#x27;freeze perishable judgment&#x27; rot the prior council warned against. On DELIVERY, four of five say vendor now, plugin/marketplace later — the packaging tax only pays off at N-consumers and you have two projects; cruft check in CI is the drift alarm that makes vendoring survivable. Only the Stranger dissents toward plugin-first. On forks #3 and #4, unanimous: defer with a decision rule, favoring company-backed maintained options where Rex can&#x27;t judge staleness (Tuist over XcodeGen, Xcode Cloud over Fastlane), because those pins depreciate on a 6–18 month clock. The council also agrees the routing table — not any tool — is the actual product.</p></div>
+</section>
+
+<section>
+  <h2>Where the council clashes</h2>
+  <div class="box"><p>Two real clashes, one fatal. First, delivery: the Stranger argues plugin-first because &#x27;the plugin is the one channel where cruft check in CI can nag Rex,&#x27; while the majority argues vendor-first because plugins GA&#x27;d only nine months ago and conventions will churn — you&#x27;d freeze a distribution shape before you have usage. The majority is stronger: vendoring is reversible, plugin-later is a one-way door you can defer cheaply. Second, more serious: whether the shared recommendation is even coherent. The Skeptic stands alone against four on a structural objection the majority never answers: (a) the verify-it-ran ladder &#x27;routes to the capable actor,&#x27; but the only actor delegates ALL engineering judgment — so the ladder terminates at someone who cannot tell a real red rung from noise; and (b) cruft&#x27;s linked-template model propagates canonical template answers via cruft update, contradicting &#x27;capture questions, not answers.&#x27; Four advisors adopt cruft AND endorse questions-not-answers without noticing these collide — the Veteran most sharply, naming concrete pins in the same breath as endorsing questions-only.</p></div>
+</section>
+
+<section>
+  <h2>Blind spots the council caught</h2>
+  <div class="box"><p>The peer reviews are damning and consistent — four of five reviewers independently flagged the Skeptic&#x27;s two contradictions as the thing everyone else glided past. Three load-bearing, unverified premises emerge, and they undercut the majority verdict: (1) The routing table may terminate at a judgment-blind owner. Every advisor except the Skeptic treats &#x27;route verification to the capable actor&#x27; as a solution without establishing a capable actor exists. If Rex cannot read a red rung, the ladder is unfalsifiable theater whether you build or compose. (2) &#x27;Cruft propagates only shape/questions&#x27; is asserted, never verified — the compose-with-cruft consensus may rest on a mechanism that structurally cannot honor the guardrail. (3) &#x27;Nobody sells the composition glue&#x27; is treated as verified whitespace by all five — and at N=2 that is equally consistent with &#x27;the glue is unsellable/unneeded.&#x27; No advisor priced the abstraction against the honest baseline: writing per-project setup notes by hand, twice. Given three unverified load-bearing premises, confidence in the specific mechanism (cruft + routing table) is low-to-moderate; confidence in the direction (compose over build, vendor over plugin) stays high because it survives even if the premises fail — a hand-maintained checklist is still compose-not-build, still vendored.</p></div>
+</section>
+
+<section>
+  <h2>Advisor responses</h2>
+  <details class="skeptic">
+  <summary>
+    <span class="label">01</span>
+    <span class="name">The Skeptic</span>
+  </summary>
+  <div class="body"><p>The composition thesis is sound; the delivery mechanism is where this dies. The fatal flaw hides in Fork #1&#x27;s own hard constraint: verification &quot;must route to the capable actor — owner&#x27;s eye, GUI, or CI,&quot; but the capable actor is a designer who delegates ALL engineering judgment to Claude. So the verify-it-ran ladder terminates at a human who cannot judge whether the rung passed. &quot;Route to the owner&#x27;s eye&quot; is a null instruction when the eye can&#x27;t read the signal. The iOS PTY wall isn&#x27;t the real wall — the JUDGMENT wall is. Who confirms `cruft check` failing in CI means something actionable vs noise? Not Rex. So either CI becomes the judge (and now you&#x27;re maintaining CI config — the exact perishable-pin rot the guardrail forbids), or the ladder is theater. Second: cruft&#x27;s linked-template model contradicts the guardrail — `cruft update` propagates template CHANGES, meaning the template carries answers concrete enough to propagate (pins). You can&#x27;t simultaneously (a) capture only durable questions and (b) run a drift-propagation mechanism — a question has nothing to propagate. Third: &quot;nobody sells the glue&quot; for a two-project single-designer sample isn&#x27;t whitespace — it&#x27;s a market of one; the composition surface changes faster than any single maintainer can track. You&#x27;d become the under-resourced Fastlane you&#x27;re wary of. Next step: before ANY build, write down who judges each verification rung when red — by name. If it&#x27;s &quot;Rex&quot; and Rex can&#x27;t read it, stop.</p></div>
+</details>
+<details class="architect">
+  <summary>
+    <span class="label">02</span>
+    <span class="name">The Architect</span>
+  </summary>
+  <div class="body"><p>COMPOSE the glue; author only the composition manifest and the verification-routing table — nothing that pins a version. The whitespace isn&#x27;t a capability gap, it&#x27;s an ORCHESTRATION + JUDGMENT-ROUTING gap, so building tools would put you in a maintenance business you can&#x27;t staff. Borrow cruft&#x27;s linked-template model but bind it to EXTERNALLY-MAINTAINED templates (Obytes for RN, Tuist for iOS), not one you author — so `cruft update` pulls the maintainer&#x27;s fixes, not Rex&#x27;s rotting pins. The only thing you write is the durable QUESTION set and the verify-it-ran ladder. Reframe the hard constraint: the PTY wall isn&#x27;t a bug to engineer around, it&#x27;s the DEFINING FEATURE. The layer&#x27;s real job is &quot;route each verification to the actor who can actually judge it.&quot; That table (agent-shell / owner&#x27;s-eye / GUI / CI) IS the product. Fork #2: vendored, decisively — plugins pay off at N-projects and multiple consumers; you have one developer. Vendoring drifts, but `cruft check` in CI turns drift into a visible signal. #3/#4: defer with a rule — company-backed maintained option when Rex can&#x27;t judge staleness (Tuist over XcodeGen; Xcode Cloud over Fastlane). Biggest risk: the routing table ossifies into stale prose. Counter: at N=2 this is over-engineering a pattern not a product. Refuse to build until the table earns it. Next step: hand-write the verification-routing table for Strays&#x27; frozen seam — four columns, real checks. If it unfreezes Strays, the layer is real.</p></div>
+</details>
+<details class="stranger">
+  <summary>
+    <span class="label">03</span>
+    <span class="name">The Stranger</span>
+  </summary>
+  <div class="body"><p>Compose, don&#x27;t build. Deliver as a PLUGIN. Defer #3/#4. The load-bearing fact: &quot;verify-it-ran ladder&quot;/&quot;PTY wall&quot; means the agent literally cannot see whether what it set up works. The only user is Rex — a designer who cannot judge when an engineering pin is stale; his lived experience of a self-built glue layer is: works twice, then silently rots, no eye to catch it. BUILD is disqualified not on effort but on maintainability-by-this-specific-human. Compose externally-maintained tools (cruft for drift-binding, doctor-probes reporting to Rex&#x27;s eye/CI, not the agent&#x27;s shell). The durable thing you author is the question checklist per stack, never the answers. Delivery: plugin, because vendored copies drift and Rex can&#x27;t see the drift; the plugin is the one channel where &quot;cruft check in CI&quot; can nag him. Biggest risk: even the composition layer names tools that die (Fastlane #29713). Counterargument: a checklist with no runnable teeth is just a nag Rex ignores. Next step: write the per-stack verification checklist — questions only, zero pins — test against Strays&#x27; frozen seam.</p></div>
+</details>
+<details class="longview">
+  <summary>
+    <span class="label">04</span>
+    <span class="name">The Long View</span>
+  </summary>
+  <div class="body"><p>Compose, don&#x27;t build; VENDOR FIRST, plugin later; defer #3/#4 with a decision rule. Three years out, what compounds is not the glue — it&#x27;s the QUESTION SET. Specific pins depreciate to zero on a 6–18 month clock; you&#x27;ll be wrong about Fastlane-vs-Xcode-Cloud within a year regardless. What survives is the durable checklist and the routing. Author that; borrow everything executable. Second-order effect: if you BUILD the glue, you inherit a maintenance liability only you can service — a non-engineer maintaining perishable config is the exact rot the prior council warned against. Composing cruft + doctor-probes + CI DAGs means someone else eats the upgrade treadmill; that asymmetry decides fork #1 alone. Delivery: vendor now — plugins GA&#x27;d nine months ago, young, conventions will churn; vendoring is reversible and you gain real usage from seance/Strays before freezing a distribution shape. Adopt cruft&#x27;s linked-template model so vendored copies aren&#x27;t orphaned. Biggest risk: the verification-routing abstraction is genuinely hard and you&#x27;ll under-build it. Counter: composition means N brittle external dependencies. Next step: write the durable question-set checklist for one stack (RN/Strays) — no pins.</p></div>
+</details>
+<details class="veteran">
+  <summary>
+    <span class="label">05</span>
+    <span class="name">The Veteran</span>
+  </summary>
+  <div class="body"><p>Compose, don&#x27;t build; vendor now, marketplace later; defer #3/#4 with a decision rule. The obvious move is to write a big helpful setup skill — the trap, the &quot;freeze perishable judgment&quot; failure the prior council flagged; setup scripts rot into liabilities. The skill authors the checklist of durable questions per stack and the composition ORDER, and shells out to externally-maintained tools for every answer. Adopt cruft&#x27;s linked-template model conceptually. Adopt the verify-it-ran ladder — but the agent cannot judge iOS CI in its own shell, so verification is a ROUTING artifact: names who checks (owner&#x27;s eye / GUI / CI green), asserts the specific symptom, refuses to self-certify. That&#x27;s the whole product. Vendor now — the GA marketplace packaging tax isn&#x27;t worth it before two consumers; you have two projects. Let `cruft check` in CI be your drift alarm. #3/#4: Defer with a rule. iOS: Xcode Cloud until you outgrow the free 25 hrs — Fastlane&#x27;s &quot;#29713 is this dead?&quot; is the tell. Starters: official-minimal for RN, XcodeGen for iOS — single-maintainer simplicity you can read. Biggest risk: verification ladder becomes checkbox theater. Counter: two projects may not generalize. Next step: write the iOS durable-question checklist from seance&#x27;s actual gap.</p></div>
+</details>
+</section>
+
+<section class="reviews"><h2>Peer review</h2><h3 class="sub-heading">Council votes</h3><div class="votes"><table><thead><tr><th>Advisor</th><th>Strongest argument</th><th>Biggest blind spot</th></tr></thead><tbody><tr><td><span class="advisor-name skeptic">The Skeptic</span></td><td><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span></td><td><span class="vote-dot skeptic"></span><span class="vote-dot skeptic"></span></td></tr>
+<tr><td><span class="advisor-name longview">The Long View</span></td><td><span class="vote-dot longview"></span><span class="vote-dot longview"></span><span class="vote-dot longview"></span></td><td><span class="vote-dot longview"></span></td></tr>
+<tr><td><span class="advisor-name veteran">The Veteran</span></td><td><span class="vote-empty">—</span></td><td><span class="vote-dot veteran"></span><span class="vote-dot veteran"></span></td></tr></tbody></table></div><h3 class="sub-heading">What the council collectively missed</h3><div class="box missed-box"><ul class="missed-list"><li><span class="missed-text">Every response except the Skeptic treats &#x27;route verification to the capable actor&#x27; as a solution, but none establish that a capable actor exists — the owner delegates ALL engineering judgment, so the routing table may terminate at a human who cannot read a red rung. And all five assert &#x27;nobody sells the glue&#x27; as verified whitespace without questioning whether a market-of-one is opportunity or evidence the surface is too fast-moving for any single maintainer — the same reason they distrust Fastlane.</span><span class="missed-attribution">flagged by Reviewer 1</span></li>
+<li><span class="missed-text">None verified that cruft actually propagates only questions/shape rather than concrete pins — the whole &#x27;adopt cruft&#x27; consensus may rest on a mechanism that structurally can&#x27;t honor the guardrail. And all five accept &#x27;nobody sells the glue&#x27; and &#x27;iOS CI broken&#x27; as given without asking whether the whitespace is empty because it&#x27;s hard to staff or because the need is niche — which decides whether building any glue is worth it at N=2.</span><span class="missed-attribution">flagged by Reviewer 2</span></li>
+<li><span class="missed-text">None tests the premise that a designer who delegates ALL engineering judgment can operate ANY routing — even a pure question-set needs him to judge whether a red rung is real, so the Skeptic&#x27;s contradiction sinks every response, not just its own. And at N=2 the whole exercise may be a personal workflow, not a product, which changes both the build/compose and delivery calculus.</span><span class="missed-attribution">flagged by Reviewer 3</span></li>
+<li><span class="missed-text">Every response asserts the market premise and N=2 as settled, but none verifies whether the gap is real whitespace vs a market-of-one not worth productizing — whether to build ANYTHING vs a per-project one-off checklist Rex maintains by hand goes unasked. And all five treat &#x27;iOS CI broken/PTY wall&#x27; as eternal without dating it — exactly the perishable fact their own guardrail warns will rot.</span><span class="missed-attribution">flagged by Reviewer 4</span></li>
+<li><span class="missed-text">Every response asserts &#x27;nobody sells the composition+verification glue&#x27; without a single check; at N=2 that is equally consistent with &#x27;the glue is unsellable/unneeded.&#x27; And none costed the maintenance of a question-only checklist + routing table against just writing per-project setup notes by hand twice — the compose-vs-build verdict rests on an unpriced abstraction.</span><span class="missed-attribution">flagged by Reviewer 5</span></li></ul></div><h3 class="sub-heading">Individual reviews</h3><details class="reviewer"><summary><span class="label">Reviewer 01</span><span class="name">Reviewer 1</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name longview">The Long View</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Clearest case that the durable QUESTION set is the only compounding asset while every pin depreciates on a 6-18mo clock, and its cruft adoption buys drift-detection without premature plugin-ization.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Never resolves the contradiction the Skeptic exposed — cruft update propagates canonical template answers, colliding with &#x27;capture questions not answers.&#x27;</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response except the Skeptic treats &#x27;route verification to the capable actor&#x27; as a solution, but none establish that a capable actor exists — the owner delegates ALL engineering judgment, so the routing table may terminate at a human who cannot read a red rung. And all five assert &#x27;nobody sells the glue&#x27; as verified whitespace without questioning whether a market-of-one is opportunity or evidence the surface is too fast-moving for any single maintainer — the same reason they distrust Fastlane.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 02</span><span class="name">Reviewer 2</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name skeptic">The Skeptic</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Justifies the compose+vendor verdict on a time-axis argument (pins depreciate, the question set compounds) — the tightest reasoning-to-conclusion chain.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">Surfaces the two contradictions everyone else glides past: the ladder terminates at a human who can&#x27;t judge the red signal, and cruft&#x27;s drift-propagation presupposes a canonical answer the guardrail forbids.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None verified that cruft actually propagates only questions/shape rather than concrete pins — the whole &#x27;adopt cruft&#x27; consensus may rest on a mechanism that structurally can&#x27;t honor the guardrail. And all five accept &#x27;nobody sells the glue&#x27; and &#x27;iOS CI broken&#x27; as given without asking whether the whitespace is empty because it&#x27;s hard to staff or because the need is niche — which decides whether building any glue is worth it at N=2.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 03</span><span class="name">Reviewer 3</span><span class="picks">Strongest: <span class="advisor-name longview">The Long View</span> · Blind spot: <span class="advisor-name skeptic">The Skeptic</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name longview">The Long View</span></span></div>
+<div class="row-explanation">Fuses the maintainability-asymmetry case for COMPOSE with the clearest depreciation-clock argument and concrete reversibility reasoning for vendoring — the tightest end-to-end verdict.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">Lands the sharpest structural critique — the ladder terminates at a judge who can&#x27;t read the signal, and cruft&#x27;s drift-propagation logically requires the pinned answers the guardrail forbids.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">None tests the premise that a designer who delegates ALL engineering judgment can operate ANY routing — even a pure question-set needs him to judge whether a red rung is real, so the Skeptic&#x27;s contradiction sinks every response, not just its own. And at N=2 the whole exercise may be a personal workflow, not a product, which changes both the build/compose and delivery calculus.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 04</span><span class="name">Reviewer 4</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">Alone exposes the fatal recursion — verification routes to an actor who by the problem&#x27;s own premise cannot judge the signal — and shows cruft&#x27;s drift-propagation contradicts the questions-not-answers guardrail.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">Names concrete pins (Xcode Cloud, XcodeGen, official-minimal RN) as the answer while endorsing capture-questions-not-answers, never confronting the ladder-to-a-judgment-blind-owner problem.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response asserts the market premise and N=2 as settled, but none verifies whether the gap is real whitespace vs a market-of-one not worth productizing — whether to build ANYTHING vs a per-project one-off checklist Rex maintains by hand goes unasked. And all five treat &#x27;iOS CI broken/PTY wall&#x27; as eternal without dating it — exactly the perishable fact their own guardrail warns will rot.</div></div></div></details>
+<details class="reviewer"><summary><span class="label">Reviewer 05</span><span class="name">Reviewer 5</span><span class="picks">Strongest: <span class="advisor-name skeptic">The Skeptic</span> · Blind spot: <span class="advisor-name veteran">The Veteran</span></span></summary><div class="body"><div class="review-detail"><div class="row"><span>Strongest</span><span class="row-value"><span class="advisor-name skeptic">The Skeptic</span></span></div>
+<div class="row-explanation">Drives the guardrail to its hardest conclusion — the ladder terminates at a human who cannot judge the signal, and cruft&#x27;s drift-propagation contradicts capture-questions-not-answers — showing both shared recommendations are incoherent as stated.</div>
+<div class="row"><span>Biggest blind spot</span><span class="row-value"><span class="advisor-name veteran">The Veteran</span></span></div>
+<div class="row-explanation">Cheerfully names concrete pins as the answer while endorsing questions-not-answers, and never notices the ladder-to-judgment-blind-owner problem.</div>
+<div class="row"><span>What all five missed</span></div>
+<div class="row-explanation">Every response asserts &#x27;nobody sells the composition+verification glue&#x27; without a single check; at N=2 that is equally consistent with &#x27;the glue is unsellable/unneeded.&#x27; And none costed the maintenance of a question-only checklist + routing table against just writing per-project setup notes by hand twice — the compose-vs-build verdict rests on an unpriced abstraction.</div></div></div></details></section>
+
+<footer>
+  <p>Counciled: Project-setup connective layer — build vs compose, and delivery</p>
+  <p>Generated by the LLM Council skill · 2026-07-01T23:28:45</p>
+</footer>
+
+</div>
+</body>
+</html>
